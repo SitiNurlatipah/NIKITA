@@ -55,10 +55,10 @@ h4 {
   margin: 0 auto;
   text-align: center;
   position: absolute;
-  top: 22px;
+  /* top: 22px;
   right: 150px;
-  left: 150px;
-  font-family: 'Bahnschrift', 'Nunito';
+  left: 150px; */
+  font-family: 'Monteserrat', 'Nunito';
   font-size: 29px;
   font-weight: 600;
   color: #373435;
@@ -395,7 +395,7 @@ function displayTime(){
   document.getElementById('date').innerText = timeNow.toLocaleString('id-ID',{
     dateStyle:'full'
   });
-  // console.log(timeNow);
+  // console.log(timeNow);  
 }
 
 displayTime();

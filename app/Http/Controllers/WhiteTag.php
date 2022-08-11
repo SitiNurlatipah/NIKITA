@@ -350,7 +350,7 @@ class WhiteTag extends Controller
         try{
             $data = $this->validate_input_v2($request);
             $skillId = [1,2];
-            WhiteTagModel::whereRaw("id_user = '".$request->user_id."' AND (select count(*) from taging_reason where taging_reason.id_white_tag = white_tag.id_white_tag) <= 0 ")
+            $cek = WhiteTagModel::whereRaw("id_user = '".$request->user_id."' AND (select count(*) from taging_reason where taging_reason.id_white_tag = white_tag.id_white_tag) <= 0 ")
                         ->join("competencies_directory",function ($join) use ($skillId){
                             $join->on('competencies_directory.id_directory','white_tag.id_directory')
                                 ->join('curriculum','curriculum.id_curriculum','competencies_directory.id_curriculum')
@@ -370,7 +370,7 @@ class WhiteTag extends Controller
                         ];
                     }
                 }
-                WhiteTagModel::insert($insert);
+                if(count($insert) > 0)WhiteTagModel::insert($insert);
             }
             DB::commit();
         }catch(\Exception $e){

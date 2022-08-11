@@ -233,6 +233,16 @@
 @push('script')
 <script type="text/javascript">
   $(document).ready(function () {
+    // var tableEdit = $("#tableEdit").DataTable({
+    //     searching: true,
+    //     columnDefs: [
+    //         {
+    //             orderable: false,
+    //             targets: [6, 7, 8],
+    //         },
+    //     ]
+    // });
+
     $(".nav-pills a").click(function(){
         $(this).tab('show');
     });
@@ -247,10 +257,6 @@
         });
     })
 
-    $("#tableEdit").DataTable({
-        searching: true
-    });
-
     chartSkillCategory();
     whiteTagAllDataTable();
     initDatatable();
@@ -262,10 +268,13 @@
     });
 
     $("#submitWhiteTag").click(function (e) {
+        var tableEdit = $('#tableEdit').DataTable();
         e.preventDefault()
         var form = $("#formWhiteTag")
         const url = form.attr("action");
-        var formData = form.serialize();
+        var formSerialize = $("#formWhiteTag > input[name=user_id], input[name=_token]").serialize()
+        var serializeDatatable = tableEdit.$('input,select').serialize()
+        var formData = formSerialize+'&'+serializeDatatable
         $.ajax({
             url:url,
             type:"post",
@@ -276,7 +285,7 @@
                 $('#table-cg').DataTable().destroy();
                 initDatatable();
                 Swal.fire({
-                    position:'top-end',
+                    position:'center',
                     icon:'success',
                     title:data.message,
                     showConfirmButton:false,
@@ -285,7 +294,7 @@
             },
             error:function(err){
                 Swal.fire({
-                    position: 'top-end',
+                    position: 'center',
                     icon: 'error',
                     title: err.responseJSON.message,
                     showConfirmButton: false,
@@ -314,8 +323,14 @@
           success: function(html) {
               $("#formMapComp").html(html);
               $('#tableEdit').DataTable({
-                searching: true
-              }).reload();
+                searching: true,
+                columnDefs: [
+                    {
+                        orderable: false,
+                        targets: [6, 7, 8],
+                    },
+                ]
+              });
           },
           error: function(req, sts, err) {
               console.log(err);

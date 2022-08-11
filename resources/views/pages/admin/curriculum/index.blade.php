@@ -58,7 +58,7 @@
                                                 <td>{{ $data->training_module_desc }}</td>
                                                 <td>
                                                     @php
-                                                        $jobs = explode(",", $data->job_title);
+                                                        $jobs = explode(",",$data->job_title);
                                                     @endphp
                                                     <ul>
                                                         @foreach ($jobs as $job)
@@ -67,16 +67,10 @@
                                                     </ul>
                                                 </td>
                                                 <td>
-                                                <button data-id="{{ $data->id_curriculum }}"
-                                                        class="btn btn-inverse-info btn-icon info-button mr-1 mr-1 info-button"
-                                                        data-toggle="modal" data-target="#modal-info"><i
-                                                            class="icon-eye menu-icon"></i></button>
-
                                                     <button data-id="{{ $data->id_curriculum }}" onclick="editdata(this)"
                                                         class="btn btn-inverse-success btn-icon delete-button mr-1 mr-1 Edit-button"
                                                         data-toggle="modal" data-target="#modal-edit"><i
                                                             class="icon-file menu-icon"></i></button>
-
                                                     <button data-id="{{ $data->id_curriculum }}"
                                                         class="btn btn-inverse-danger btn-icon mr-1 cr-hapus"
                                                         data-toggle="modal" data-target="#modal-cr-hapus">
@@ -205,27 +199,6 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button id="btnHapus" onclick="deleteCurriculum(this)" data-id="" class="btn btn-danger">Hapus</button>
-                </div>
-            </div>
-            </form>
-        </div>
-    </div>
-
-    <div class="modal fade" id="modal-info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel17"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel17">Info Depart</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
             </form>

@@ -20,32 +20,6 @@
 </style>
 @endpush
 @section('content')
-{{-- <div class="row">
-<div class="col-md-6 grid-margin stretch-card mb-0">
-<div id="accordion" class="accordion ">
-    <div class="card">
-        <div class="card-header card-title" data-toggle="collapse" href="#collapseOne">
-        General Key Level
-        </div>
-        <div id="collapseOne" class="card-body collapse show" data-parent="#accordion" aria-expanded="true">
-            <img src="{{ asset('assets/images/general.png') }}" alt="General" class="img-accordion mt-4">
-        </div>
-    </div>
-</div>
-</div>
-<div class="col-md-6 grid-margin stretch-card mb-0 pl-0">
-    <div id="accordion" class="accordion">
-        <div class="card">
-            <div class="card-header card-title" data-toggle="collapse" href="#collapseOne">
-            Functional Key Level
-            </div>
-            <div id="collapseOne" class="card-body collapse show" data-parent="#accordion" aria-expanded="true">
-                <img src="{{ asset('assets/images/functional.png') }}" alt="General" class="img-accordion mt-4">
-            </div>
-        </div>
-    </div>
-    </div>
-</div> --}}
 <div class="row">
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
@@ -90,7 +64,7 @@
                   <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{!!route('storeCompetencyDirectory')!!}" id="formCompetencyDirectory" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('storeCompetencyDirectory') }}" id="formCompetencyDirectory" method="POST" enctype="multipart/form-data">
                 @csrf
             <div class="modal-body pt-3" id="formCompetency"></div>
             <div class="modal-footer">
@@ -165,7 +139,7 @@
                         $('#table-cd').DataTable().destroy();
                         initDatatable();
                         Swal.fire({
-                            position:'top-end',
+                            position:'center',
                             icon:'success',
                             title:data.message,
                             showConfirmButton:false,
@@ -173,10 +147,11 @@
                         });
                     },
                     error:function (err) {
+                        console.log(err);
                         Swal.fire({
-                            position: 'top-end',
+                            position: 'center',
                             icon: 'error',
-                            title: err.responseJSON.message,
+                            title: err.responseJSON,
                             showConfirmButton: false,
                             timer: 1500
                         })
@@ -199,7 +174,7 @@
                 },
                 error: function (response) {
                     Swal.fire({
-                            position: 'top-end',
+                            position: 'center',
                             icon: 'error',
                             title: response.responseJSON.errors,
                             showConfirmButton: false,
@@ -241,7 +216,7 @@
                 },
                 error:function(err){
                     Swal.fire({
-                        position: 'top-end',
+                        position: 'center',
                         icon: 'error',
                         title: err.responseJSON.message,
                         showConfirmButton: false,
