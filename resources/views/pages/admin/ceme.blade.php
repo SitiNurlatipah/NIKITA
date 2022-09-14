@@ -3,20 +3,22 @@
 @section('title', 'CEME')
 
 @section('content')
-    <div class="row mb-3">
+    <div class="row">
         <div class="col-md-12">
-                <ul class="nav nav-pills mb-3">
+                <ul class="nav nav-pills" style="border-bottom:0px">
                     <li class="nav-item active">
                         <a class="nav-link @if(request('q') !== 'all') btn-primary @else btn-secondary @endif btnDc btn-primary"  href="{{ route('ceme') }}" type="button">CEME CG</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link btnDc  @if(request('q') === 'all') btn-primary @else btn-secondary @endif"  href="{{ route('ceme.all') }}" type="button">CEME All </a>
-                    </li>
+                    @if(Auth::user()->peran_pengguna == 1)
+                        <li class="nav-item">
+                            <a class="nav-link btnDc  @if(request('q') === 'all') btn-primary @else btn-secondary @endif"  href="{{ route('ceme.all') }}" type="button">CEME All </a>
+                        </li>
+                    @endif
                 </ul>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12 grid-margin">
+        <div class="col-md-12 mb-4">
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">CEME</h4>
@@ -970,7 +972,7 @@
                 datasets: [{
                 data: pieTotalScore,
                 backgroundColor: bgCeme,
-                borderColor: bCeme,
+                borderColor: '#ffffff',
                 }],
 
                 // These labels appear in the legend and in the tooltips when hovering different arcs

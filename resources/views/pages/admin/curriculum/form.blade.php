@@ -21,7 +21,7 @@
         <div class="form-group">
             <label for="training_module_group2">Competency Group</label>
             <select id="training_module_group2" class="form-control form-control-sm" name="training_module_group">
-                <option value="">Pilih Competencie Group</option>
+                <option value="#" disabled>-- Pilih Competencie Group --</option>
             </select>
         </div>
     </div>
@@ -44,12 +44,12 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="noModule">Competency Desc</label>
+            <label for="noModule">Competency Description</label>
             <textarea class="form-control" id="training_module_desc" name="training_module_desc"
                 rows="3">{!! $curriculum->training_module_desc !!}</textarea>
         </div>
         <div class="form-group">
-            <label for="noModule">Job Title CG</label>
+            <label for="noModule">Job Title</label>
             <select class="form-control selectpicker form-control-sm" id="id_job_titles" name="id_job_title[]"
                 data-live-search="true" data-hide-disabled="true" multiple data-actions-box="true">
                 <option value="">Pilih Job Title</option>

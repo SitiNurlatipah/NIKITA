@@ -1,4 +1,5 @@
 @forelse ($comps as $key => $comp)
+{{-- {{ dd($comp) }} --}}
 <tr>
     <td>{{$key+1}}</td>
     <td>{{$comp->no_training}}</td>
@@ -38,7 +39,18 @@
             @endif
         </td>
         <td>
-            <input class ="form-control" type="text" value="{{$comp->target}}" disabled>
+            <input class="form-control pr-0" style="width: 50px;" type="text" value="{{$comp->target}}" disabled>
+        </td>
+        <td>
+            @if($comp->cntTagingReason > 0)
+                <textarea class="form-control p-1" rows="3" value="{{$comp->catatan}}" disabled>{{$comp->catatan}}</textarea>
+            @else
+                @if($comp->catatan == "")
+                <textarea class="form-control p-1" rows="3" name="data[{{$key.time()}}][catatan]" placeholder="Keterangan"></textarea>
+                @else
+                <textarea class="form-control p-1" rows="3" disabled>{{$comp->catatan}}</textarea>
+                @endif
+            @endif
         </td>
         <td>
             @if ($comp->tagingStatus == 'Finish')

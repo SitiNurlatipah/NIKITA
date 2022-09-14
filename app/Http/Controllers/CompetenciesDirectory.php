@@ -26,8 +26,8 @@ class CompetenciesDirectory extends Controller
                                             ->get();
         return DataTables::of($data)
                         ->addColumn('action', function ($row) {
-                            $btn = '<div class="d-flex-wrap text-center m-auto"><button data-toggle="modal" data-target="#modal-tambah" data-id="'.$row->id_curriculum.'" onclick="formCompetencyDirectory(this)" class="btn btn-inverse-success float btn-icon edit-directory mr-1"><i class="icon-file menu-icon"></i></button>
-                            <button data-toggle="modal" data-target="#modal-detail" onclick="detailCompetencyDirectory(this)" data-id="'.$row->id_curriculum.'"  class="btn btn-inverse-info float btn-icon"><i class="icon-eye"></i></button></div>';
+            $btn = '<button class="btn btn-inverse-success btn-icon edit-directory mr-1" data-toggle="modal" data-target="#modal-tambah" data-id="' . $row->id_curriculum . '" onclick="formCompetencyDirectory(this)"><i class="icon-file menu-icon"></i></button>
+                            <button class="btn btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail" onclick="detailCompetencyDirectory(this)" data-id="' . $row->id_curriculum . '"><i class="icon-eye"></i></button>';
                             return $btn;
                         })
                         ->rawColumns(['action'])

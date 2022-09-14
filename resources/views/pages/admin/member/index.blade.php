@@ -75,7 +75,7 @@
                             <table class="display expandable-table table-striped table-hover" id="table-cg" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th>No#</th>
+                                        <th>No</th>
                                         <th>NIK</th>
                                         <th>Employee Name</th>
                                         <th>Join Date

@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'White Tag General')
+@section('title', 'Mapping Competencies General')
 @push('style')
 <style>
      
@@ -24,6 +24,15 @@
         border-radius: 40px !important;
     }
 
+#table-white-tag-all td{
+    font-size: 0.75rem;
+    padding: 0px;
+} 
+
+table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
+    padding-right: 0px;
+}
+
 </style>
 @endpush
 @section('content')
@@ -32,9 +41,9 @@
         <div id="accordion-gen" class="accordion">
         <div class="card">
             <div class="card-header card-title" data-toggle="collapse" href="#graphgen">
-            White Tag
+            Mapping Competencies
             </div>
-                <div id="graphgen" class="card-body collapse show" data-parent="#accordion-gen" aria-expanded="true">
+                <div id="graphgen" class="card-body collapse show pb-1" data-parent="#accordion-gen" aria-expanded="true">
                         <div class="row mb-0">
                             <label class="col-sm-2 col-form-label pr-0">Circle Group</label>
                             <div class="col-sm-4 pl-0 m-auto">
@@ -50,7 +59,7 @@
                             <canvas id="pieChart" class="mb-2"></canvas>
                         </div>
                         <div id="elementCompGroup" class="col-md-6" style="display: none">
-                            <canvas id="pieCompGroup" class="mb-2 "></canvas>
+                            <canvas id="pieCompGroup" class="mb-2"></canvas>
                         </div>
                     </div>
                 </div>
@@ -69,10 +78,10 @@
                 {{-- <p class="card-title">White Tag</p> --}}
                 <ul class="nav nav-pills mb-3">
                     <li class="nav-item active">
-                        <a class="nav-link active btn-primary" data-toggle="tab" href="#pills-home" type="button">White Tag CG</a>
+                        <a class="nav-link active btn-primary" data-toggle="tab" href="#pills-home" type="button">Edit</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn-primary" data-toggle="tab" href="#pills-profile" type="button">White Tag All</a>
+                        <a class="nav-link btn-primary" data-toggle="tab" href="#pills-profile" type="button">Preview</a>
                     </li>
                 </ul>
                 <div class="row">
@@ -100,14 +109,15 @@
                                 <a href="{!!route('exportWhiteTagAll')!!}" class="btn btn-inverse-info float-left mb-2">Export</a>
                             @endif
                             <div class="table-responsive">
-                                <table class="display nowrap expandable-table table-striped table-hover" id="table-white-tag-all" style="width:100%">
+                                {{-- display nowrap expandable-table --}}
+                                <table class="table table-sm table-striped table-hover text-center" id="table-white-tag-all" style="width:100% !important">
                                     <thead>
                                         <tr>
                                             <th class="text-center">No</th>
                                             <th>Nama Anggota</th>
                                             <th>No Competency</th>
                                             <th>Skill Category</th>
-                                            <th>Competency</th>
+                                            <th style="width: 20px!important">Competency</th>
                                             <th>Level</th>
                                             <th>Competency Group</th>
                                             {{-- <th>Competency Group</th> --}}
@@ -152,13 +162,14 @@
                                     <th rowspan="2">Competency</th>
                                     <th rowspan="2">Level</th>
                                     <th rowspan="2">Competency Group</th>
-                                    <th colspan="3" class="text-center">Action</th>
+                                    <th colspan="4" class="text-center">Action</th>
                                     <th class="text-center" rowspan="2">Status</th>
                                 </tr> 
                                 <tr>
                                     <th class="text-center" style="min-width:90px">Start</th>
                                     <th class="text-center" style="min-width:90px">Actual</th>
-                                    <th class="text-center" style="min-width:90px">Target</th>
+                                    <th class="text-center" style="min-width:50px">Target</th>
+                                    <th class="text-center" style="min-width:90px">Keterangan</th>
                                 </tr>
                             </thead>
                             <tbody id="formMapComp">
@@ -199,6 +210,7 @@
                                 <th class="text-center">Start</th>
                                 <th class="text-center">Actual</th>
                                 <th class="text-center">Target</th>
+                                <th class="text-center">Keterangan</th>
                                 <th class="text-center">Status</th>
                             </tr> 
                         </thead>
@@ -233,6 +245,16 @@
 @push('script')
 <script type="text/javascript">
   $(document).ready(function () {
+    // var tableEdit = $("#tableEdit").DataTable({
+    //     searching: true,
+    //     columnDefs: [
+    //         {
+    //             orderable: false,
+    //             targets: [6, 7, 8],
+    //         },
+    //     ]
+    // });
+
     $(".nav-pills a").click(function(){
         $(this).tab('show');
     });
@@ -247,10 +269,6 @@
         });
     })
 
-    $("#tableEdit").DataTable({
-        searching: true
-    });
-
     chartSkillCategory();
     whiteTagAllDataTable();
     initDatatable();
@@ -262,21 +280,28 @@
     });
 
     $("#submitWhiteTag").click(function (e) {
+        var tableEdit = $('#tableEdit').DataTable();
         e.preventDefault()
         var form = $("#formWhiteTag")
         const url = form.attr("action");
-        var formData = form.serialize();
+        var formSerialize = $("#formWhiteTag > input[name=user_id], input[name=_token]").serialize()
+        var serializeDatatable = tableEdit.$('input,select,textarea').serialize()
+        var formData = formSerialize+'&'+serializeDatatable
+
+        // console.log(serializeDatatable);
+        // exit();
         $.ajax({
             url:url,
             type:"post",
             cache:false,
             data:formData,
             success:function(data){
+                console.log(data);
                 $("#modal-tambah").modal('hide');
                 $('#table-cg').DataTable().destroy();
                 initDatatable();
                 Swal.fire({
-                    position:'top-end',
+                    position:'center',
                     icon:'success',
                     title:data.message,
                     showConfirmButton:false,
@@ -285,7 +310,7 @@
             },
             error:function(err){
                 Swal.fire({
-                    position: 'top-end',
+                    position: 'center',
                     icon: 'error',
                     title: err.responseJSON.message,
                     showConfirmButton: false,
@@ -314,8 +339,14 @@
           success: function(html) {
               $("#formMapComp").html(html);
               $('#tableEdit').DataTable({
-                searching: true
-              }).reload();
+                searching: true,
+                columnDefs: [
+                    {
+                        orderable: false,
+                        targets: [6, 7, 8],
+                    },
+                ]
+              });
           },
           error: function(req, sts, err) {
               console.log(err);
@@ -370,6 +401,9 @@
                 },
                 {
                     data: 'target'
+                },
+                {
+                    data: 'catatan'
                 },
                 {
                     data: 'tagingStatus'
@@ -438,8 +472,8 @@
           ],
           searching: true,
           dom: '<"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
-          displayLength: 10,
-          lengthMenu: [10, 15, 20],
+          displayLength: 20,
+          lengthMenu: [20, 30, 50],
           language: {
               paginate: {
                   // remove previous & next text from pagination
@@ -447,7 +481,7 @@
                   next: '&nbsp;'
               }
           },
-          scrollX: true,
+          scrollX: false,
           columns: [
               {
                   data: 'DT_RowIndex', name: 'DT_RowIndex'

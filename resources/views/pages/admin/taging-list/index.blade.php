@@ -10,9 +10,11 @@
             <div class="card-body">
                 <p class="card-title">Tagging List</p>
                 <ul class="nav nav-pills mb-3">
-                    <li class="nav-item active">
-                        <a class="nav-link active btn-primary" data-toggle="tab" href="#pills-home" type="button">Tagging All</a>
-                    </li>
+                    @if(Auth::user()->peran_pengguna == '1')
+                        <li class="nav-item active">
+                            <a class="nav-link active btn-primary" data-toggle="tab" href="#pills-home" type="button">Tagging All</a>
+                        </li>
+                    @endif
                     <li class="nav-item">
                         <a class="nav-link btn-primary" data-toggle="tab" href="#pills-profile" type="button">Tagging CG</a>
                     </li>
