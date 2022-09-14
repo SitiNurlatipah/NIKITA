@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 11, 2022 at 07:00 AM
+-- Generation Time: Sep 14, 2022 at 06:31 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.15
 
@@ -34579,7 +34579,8 @@ INSERT INTO `curriculum` (`id_curriculum`, `no_training_module`, `id_skill_categ
 (1384, '1174/KMI/MAT/FUNC', 1, 'API Connection', 'I', '8', 'Onehealth API Connection', NULL, NULL),
 (1385, '51/KMI/FUNC', 1, 'Prosedur pengajuan training', 'B', '8', 'berisi penjelasan mengenai pengajuan training', '2022-06-08 03:59:11', '2022-06-08 03:59:11'),
 (1386, '52/KMI/FUNC', 1, 'Membuka dan menutup training', 'B', '8', 'Berisi mengenai membuka dan menutup training', '2022-06-08 03:58:42', '2022-06-08 03:58:42'),
-(1387, '815/KMI/FUNC', 1, 'contoh', 'I', '8', 'contoh', '2022-06-29 20:41:17', '2022-06-29 20:41:17');
+(1387, '815/KMI/FUNC', 1, 'contoh', 'I', '8', 'contoh', '2022-06-29 20:41:17', '2022-06-29 20:41:17'),
+(1388, '931/KMI/GEN', 2, 'TPM 2022', 'A', '7', 'Mempelajari TPM untuk para suvervisor', '2022-09-11 18:56:34', '2022-09-11 18:56:34');
 
 -- --------------------------------------------------------
 
@@ -41327,7 +41328,22 @@ INSERT INTO `curriculum_to_job` (`id_ctb`, `id_curriculum`, `id_job_title`) VALU
 (7276, 24, 'JT-0086'),
 (7277, 24, 'JT-0087'),
 (7278, 28, 'JT-0086'),
-(7279, 1040, 'JT-0086');
+(7279, 1040, 'JT-0086'),
+(7280, 1388, 'JT-0041'),
+(7281, 1388, 'JT-0044'),
+(7282, 1388, 'JT-0054'),
+(7283, 1388, 'JT-0056'),
+(7284, 1388, 'JT-0060'),
+(7285, 1388, 'JT-0068'),
+(7286, 1388, 'JT-0075'),
+(7287, 1388, 'JT-0078'),
+(7288, 1388, 'JT-0088'),
+(7289, 1388, 'JT-0090'),
+(7290, 1388, 'JT-0096'),
+(7291, 1388, 'JT-0112'),
+(7292, 1388, 'JT-0153'),
+(7293, 1388, 'JT-0159'),
+(7294, 1388, 'JT-0163');
 
 -- --------------------------------------------------------
 
@@ -42245,24 +42261,39 @@ CREATE TABLE `white_tag` (
   `id_directory` int(11) NOT NULL,
   `id_user` int(11) NOT NULL,
   `start` tinyint(2) NOT NULL,
-  `actual` tinyint(2) NOT NULL
+  `actual` tinyint(2) NOT NULL,
+  `catatan` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `white_tag`
 --
 
-INSERT INTO `white_tag` (`id_white_tag`, `id_directory`, `id_user`, `start`, `actual`) VALUES
-('1veLi1657767909', 1334, 230, 3, 3),
-('5Ysar1657767909', 1286, 230, 3, 3),
-('6pLy31657767909', 1142, 230, 3, 3),
-('7BVOG1657767909', 1118, 230, 1, 1),
-('8TcPk1657767909', 1166, 230, 1, 1),
-('p8pb41657767909', 1244, 230, 1, 1),
-('R8l9x1657767909', 1358, 230, 2, 2),
-('RpEqK1657767909', 1034, 230, 3, 3),
-('uKpwg1657767909', 1094, 230, 3, 3),
-('UtxDI1657767909', 1010, 230, 3, 3);
+INSERT INTO `white_tag` (`id_white_tag`, `id_directory`, `id_user`, `start`, `actual`, `catatan`) VALUES
+('4Wv001662947576', 998, 227, 0, 4, ''),
+('CjwJd1662525157', 1021, 1, 1, 3, ''),
+('dqZkW1662538742', 1334, 230, 3, 3, ''),
+('DTGuP1662538742', 1118, 230, 1, 1, ''),
+('f1cNn1662947576', 488, 227, 4, 4, ''),
+('fEfwq1662538742', 1010, 230, 3, 3, ''),
+('fiEWt1662538742', 1244, 230, 1, 1, ''),
+('FqCCl1661761845', 4169, 192, 1, 2, ''),
+('IeC1y1662947576', 980, 227, 0, 3, ''),
+('ix3It1662538742', 1034, 230, 3, 3, ''),
+('J7E2Q1662604167', 955, 361, 2, 2, 'ahaha'),
+('LbFjl1662947576', 1046, 227, 3, 3, ''),
+('lokOK1662538742', 1358, 230, 2, 2, ''),
+('mant01662538742', 1418, 230, 1, 4, ''),
+('OGnZG1662947576', 464, 227, 4, 4, ''),
+('Q7MFS1662538742', 1094, 230, 3, 3, ''),
+('qjSE91662538742', 1166, 230, 1, 1, ''),
+('swmGo1662947576', 1082, 227, 0, 3, 'Karyawan telah paham'),
+('U4AAC1662538742', 1142, 230, 3, 3, ''),
+('VFloX1662525157', 1003, 1, 0, 3, ''),
+('xJW0m1662947576', 1064, 227, 1, 3, ''),
+('xOJF31662538742', 1286, 230, 3, 3, ''),
+('XplCU1662947576', 1028, 227, 3, 3, ''),
+('yOBiq1662947576', 440, 227, 4, 4, '');
 
 --
 -- Indexes for dumped tables
@@ -42415,13 +42446,13 @@ ALTER TABLE `competencie_groups`
 -- AUTO_INCREMENT for table `curriculum`
 --
 ALTER TABLE `curriculum`
-  MODIFY `id_curriculum` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1388;
+  MODIFY `id_curriculum` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1389;
 
 --
 -- AUTO_INCREMENT for table `curriculum_to_job`
 --
 ALTER TABLE `curriculum_to_job`
-  MODIFY `id_ctb` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7280;
+  MODIFY `id_ctb` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7295;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -42463,7 +42494,7 @@ ALTER TABLE `skill_category`
 -- AUTO_INCREMENT for table `taging_reason`
 --
 ALTER TABLE `taging_reason`
-  MODIFY `id_taging_reason` int(255) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id_taging_reason` int(255) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `targets`
