@@ -26,8 +26,8 @@ class CompetenciesDirectory extends Controller
                                             ->get();
         return DataTables::of($data)
                         ->addColumn('action', function ($row) {
-            $btn = '<button class="btn btn-inverse-success btn-icon edit-directory mr-1" data-toggle="modal" data-target="#modal-tambah" data-id="' . $row->id_curriculum . '" onclick="formCompetencyDirectory(this)"><i class="icon-file menu-icon"></i></button>
-                            <button class="btn btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail" onclick="detailCompetencyDirectory(this)" data-id="' . $row->id_curriculum . '"><i class="icon-eye"></i></button>';
+            $btn = '<button class="btn btn-inverse-success btn-icon edit-directory mr-1" data-toggle="modal" data-target="#modal-tambah" data-id="' . $row->id_curriculum . '" onclick="formCompetencyDirectory(this)" data-placement="top" title="Atur Target"><i class="icon-file menu-icon"></i></button>
+                            <button class="btn btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail" onclick="detailCompetencyDirectory(this)" data-id="' . $row->id_curriculum . '" data-placement="top" title="Lihat Target"><i class="icon-eye"></i></button>';
                             return $btn;
                         })
                         ->rawColumns(['action'])
@@ -41,7 +41,7 @@ class CompetenciesDirectory extends Controller
                                             ->join("job_title as jt","jt.id_job_title","competencies_directory.id_job_title")
                                             ->groupBy("competencies_directory.id_job_title","competencies_directory.id_curriculum")
                                             ->get();
-                                            dd($jobTitles);
+                                            // dd($jobTitles);
         $select = [
             "no_training_module","training_module"
         ];

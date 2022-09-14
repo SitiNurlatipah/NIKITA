@@ -8,7 +8,7 @@
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <p class="card-title">Tagging List</p>
+                <p class="card-title">White Tag</p>
                 <ul class="nav nav-pills mb-3">
                     @if(Auth::user()->peran_pengguna == '1')
                         <li class="nav-item active">

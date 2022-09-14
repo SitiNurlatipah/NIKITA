@@ -78,10 +78,10 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                 {{-- <p class="card-title">White Tag</p> --}}
                 <ul class="nav nav-pills mb-3">
                     <li class="nav-item active">
-                        <a class="nav-link active btn-primary" data-toggle="tab" href="#pills-home" type="button">Edit</a>
+                        <a class="nav-link active btn-primary" data-toggle="tab" href="#pills-home" type="button" data-toggle="tooltip" data-placement="top" title="Edit Actual Point">Edit</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn-primary" data-toggle="tab" href="#pills-profile" type="button">Preview</a>
+                        <a class="nav-link btn-primary" data-toggle="tab" href="#pills-profile" type="button" data-toggle="tooltip" data-placement="top" title="Lihat Semua Competencies">Preview</a>
                     </li>
                 </ul>
                 <div class="row">
@@ -113,18 +113,19 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                                 <table class="table table-sm table-striped table-hover text-center" id="table-white-tag-all" style="width:100% !important">
                                     <thead>
                                         <tr>
-                                            <th class="text-center">No</th>
+                                            <th>No</th>
                                             <th>Nama Anggota</th>
                                             <th>No Competency</th>
                                             <th>Skill Category</th>
-                                            <th style="width: 20px!important">Competency</th>
+                                            <th>Competency</th>
                                             <th>Level</th>
                                             <th>Competency Group</th>
                                             {{-- <th>Competency Group</th> --}}
                                             <th>Start</th>
                                             <th>Actual</th>
                                             <th>Target</th>
-                                            <th class="text-center">Status</th>
+                                            <th>Status</th>
+                                            <th>Keterangan</th>
                                         </tr> 
                                     </thead>
                                     <tbody></tbody>
@@ -143,7 +144,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header p-3">
-                <h5 class="modal-title" id="modal-tambahLabel">Edit White Tag General</h5>
+                <h5 class="modal-title" id="modal-tambahLabel">Edit Mapping Competencies</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -518,6 +519,9 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
               },
               {
                   data:'tagingStatus'
+              },
+              {
+                  data:'catatan'
               }
           ],
       })

@@ -50,7 +50,7 @@
           </button>
       </div>
   </div>
-  <div class="table-responsive">
+  <div class="table-responsive" style="overflow-x: unset;">
       <table class="display nowrap expandable-table table-striped table-hover" style="width:100%">
           <thead>
               <tr>

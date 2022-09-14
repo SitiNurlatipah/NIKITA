@@ -21,6 +21,10 @@
       background-position: 98% -5.8%; 
       background-size: 300px 240px;
     } */
+
+    .content-wrapper {
+      padding-top: 15px;
+    }
   </style>
 </head>
 

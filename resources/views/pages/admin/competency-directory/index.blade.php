@@ -31,8 +31,8 @@
                 <p class="card-title">Competency Dictionary</p>
                 <div class="row">
                     <div class="col-md mb-2">
-                        <button class="btn btn-success float-right add-directory" data-toggle="modal" data-id="" onclick="formCompetencyDirectory(this)" data-target="#modal-tambah"><i class="icon-plus"></i> Add Competency Dictionary</button>
-                    </div>
+                        <button class="btn btn-success float-right add-directory" data-toggle="modal" data-id="" onclick="formCompetencyDirectory(this)" data-target="#modal-tambah" data-placement="top" title="Tambah Data"><i class="icon-plus"></i> Add Competency Dictionary</button>
+                    </div> 
                 </div>
                 <div class="row">
                     <div class="col-12">

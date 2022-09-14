@@ -107,7 +107,7 @@
           <li class="nav-item">
             <a class="nav-link" href="{{ route('TagList') }}">
                 <i class="icon-tag menu-icon"></i>
-                <span class="menu-title">Tagging List</span>
+                <span class="menu-title">White Tag</span>
             </a>
           </li>
           <li class="nav-item">
