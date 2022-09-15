@@ -10,31 +10,31 @@
     <meta name="keywords" content="admin template, Vuexy admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="PIXINVENT">
     <title>Mapping Competencies</title>
-    <link rel="apple-touch-icon" href="../../theme/images/ico/apple-icon-120.png">
+    <link rel="apple-touch-icon" href="{{ asset('theme/images/ico/apple-icon-120.png') }}">
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('theme/images/ico/logo-map.png') }}">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
 
     <!-- BEGIN: Vendor CSS-->
-    <link rel="stylesheet" type="text/css" href="../../theme/vendors/css/vendors.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('theme/vendors/css/vendors.min.css') }}">
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
-    <link rel="stylesheet" type="text/css" href="../../theme/css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="../../theme/css/bootstrap-extended.css">
-    <link rel="stylesheet" type="text/css" href="../../theme/css/colors.css">
-    <link rel="stylesheet" type="text/css" href="../../theme/css/components.css">
-    <link rel="stylesheet" type="text/css" href="../../theme/css/themes/dark-layout.css">
-    <link rel="stylesheet" type="text/css" href="../../theme/css/themes/bordered-layout.css">
-    <link rel="stylesheet" type="text/css" href="../../theme/css/themes/semi-dark-layout.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('theme/css/bootstrap.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('theme/css/bootstrap-extended.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('theme/css/colors.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('theme/css/components.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('theme/css/themes/dark-layout.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('theme/css/themes/bordered-layout.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('theme/css/themes/semi-dark-layout.css') }}">
 
     <!-- BEGIN: Page CSS-->
-    <link rel="stylesheet" type="text/css" href="../../theme/css/core/menu/menu-types/vertical-menu.css">
-    <link rel="stylesheet" type="text/css" href="../../theme/css/plugins/forms/form-validation.css">
-    <link rel="stylesheet" type="text/css" href="../../theme/css/pages/page-auth.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('theme/css/core/menu/menu-types/vertical-menu.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('theme/css/plugins/forms/form-validation.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('theme/css/pages/page-auth.css') }}">
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
-    <link rel="stylesheet" type="text/css" href="../../assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
     <!-- END: Custom CSS-->
 
 </head>
@@ -104,20 +104,20 @@
 
 
     <!-- BEGIN: Vendor JS-->
-    <script src="../../theme/vendors/js/vendors.min.js"></script>
+    <script src="{{ asset('theme/vendors/js/vendors.min.js') }}"></script>
     <!-- BEGIN Vendor JS-->
 
     <!-- BEGIN: Page Vendor JS-->
-    <script src="../../theme/vendors/js/forms/validation/jquery.validate.min.js"></script>
+    <script src="{{ asset('theme/vendors/js/forms/validation/jquery.validate.min.js') }}"></script>
     <!-- END: Page Vendor JS-->
 
     <!-- BEGIN: Theme JS-->
-    <script src="../../theme/js/core/app-menu.js"></script>
-    <script src="../../theme/js/core/app.js"></script>
+    <script src="{{ asset('theme/js/core/app-menu.js') }}"></script>
+    <script src="{{ asset('theme/js/core/app.js') }}"></script>
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
-    <script src="../../theme/js/scripts/pages/page-auth-login.js"></script>
+    <script src="{{ asset('theme/js/scripts/pages/page-auth-login.js') }}"></script>
     <!-- END: Page JS-->
 
     <script>
