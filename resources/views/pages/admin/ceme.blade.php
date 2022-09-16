@@ -37,7 +37,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-5 grid-margin">
+        <div class="col-md-12 grid-margin">
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">Competent Employee</h4>
@@ -92,8 +92,10 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="col-md-7 grid-margin stretch-card">
+    <div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
                     <p class="card-title">Multiskill Employee</p>
@@ -150,6 +152,7 @@
                                 <div class="form-group">
                                     <label for="">Job Title</label>
                                     <select name="job_title" id="job_title" class="form-control" required>
+                                    <option value="#">- Pilih Job Title -</option>
                                     </select>
                                 </div>
                             </div>

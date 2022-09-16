@@ -82,7 +82,7 @@ h4 {
                   echo 'CG Leader';
                 }
                 else{
-                  echo 'Anggota';
+                  echo 'Member';
                 }
             @endphp
           </span></h6>
