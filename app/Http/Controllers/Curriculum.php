@@ -18,8 +18,15 @@ class Curriculum extends Controller
         $data = CurriculumModel::leftJoin('skill_category as sc', 'curriculum.id_skill_category', '=', 'sc.id_skill_category')
         ->join("competencie_groups as compGroup","compGroup.id","curriculum.training_module_group")
         ->get(['curriculum.*', 'sc.skill_category','compGroup.name as compGroupName', $jobtitle]);
-        // dd($data);
-        return view('pages.admin.curriculum.index', compact('data'));
+
+        $chart = CurriculumModel::leftJoin('skill_category as sc', 'curriculum.id_skill_category', '=', 'sc.id_skill_category')
+        ->join("competencie_groups as compGroup","compGroup.id","curriculum.training_module_group")
+        ->select('training_module_group', DB::raw("COUNT('id_curriculum') as count"))
+        ->groupBy("compGroup.name")
+        ->get(['count', 'compGroup.name']);
+
+        // dd($chart);
+        return view('pages.admin.curriculum.index', compact('data' , 'chart'));
     }
 
     public function getFormEditCurriculum(Request $request)

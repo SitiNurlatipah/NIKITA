@@ -21,8 +21,24 @@
 @endpush
 @section('content')
 
-    <div class="row">
+<!-- <div class="row">
+    <div class="col-md-12 grid-margin mb-0">
+        <div id="accordion-gen" class="accordion">
+        <div class="card">
+            <div class="card-header card-title" data-toggle="collapse" href="#graphgen">
+            Chart Curriculum
+            </div>
+            <div id="graphgen" class="card-body collapse show pb-1" data-parent="#accordion-gen" aria-expanded="true">
+            <figure class="highcharts-figure">
+                <div id="container"></div>
+            </figure>
+            </div>
+        </div>
+        </div>
+      </div>
+</div> -->
 
+    <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
@@ -227,6 +243,12 @@
 
 @endsection
 @push('script')
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+
     <script type="text/javascript">
         $.ajaxSetup({
             headers: {
@@ -426,6 +448,66 @@
         $(document).ready(function() {
             getJabatan();
             getSkill();
+
+
+            // Data retrieved from https://netmarketshare.com/
+// Make monochrome colors
+var pieColors = (function () {
+    var colors = [],
+        base = Highcharts.getOptions().colors[0],
+        i;
+
+    for (i = 0; i < 10; i += 1) {
+        // Start out with a darkened base color (negative brighten), and end
+        // up with a much brighter color
+        colors.push(Highcharts.color(base).brighten((i - 3) / 7).get());
+    }
+    return colors;
+}());
+
+// Build the chart
+Highcharts.chart('container', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: {
+        text: 'Graphic Group Competencies'
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    accessibility: {
+        point: {
+            valueSuffix: '%'
+        }
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            colors: pieColors,
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
+                distance: -50,
+                filter: {
+                    property: 'percentage',
+                    operator: '>',
+                    value: 4
+                }
+            }
+        }
+    },
+    series: [{
+        name: 'Share',
+        data: '{{ json_encode($chart) }}'
+        
+    }]
+});
+
         });
     </script>
 @endpush

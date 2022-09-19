@@ -10,14 +10,14 @@
             <div class="card-body">
                 <p class="card-title">White Tag</p>
                 <ul class="nav nav-pills mb-3">
-                    @if(Auth::user()->peran_pengguna == '1')
                         <li class="nav-item active">
-                            <a class="nav-link active btn-primary" data-toggle="tab" href="#pills-home" type="button">Tagging All</a>
+                            <a class="nav-link active btn-primary" data-toggle="tab" href="#pills-home" type="button">White Tag CG</a>
                         </li>
-                    @endif
+                    @if(Auth::user()->peran_pengguna == '1')
                     <li class="nav-item">
-                        <a class="nav-link btn-primary" data-toggle="tab" href="#pills-profile" type="button">Tagging CG</a>
+                        <a class="nav-link btn-primary" data-toggle="tab" href="#pills-profile" type="button">White Tag ALL</a>
                     </li>
+                    @endif
                 </ul>
                 <div class="row">
                     <div class="col-12 flex">
@@ -116,9 +116,9 @@
                         <label for="category">Kategori Export</label>
                         <select name="category" id="category" class="form-control form-control-sm" required>
                             <option value="">Pilih Kateori Export</option>
-                            <option value="0">Semua</option>
-                            <option value="1">Belum Finish</option>
-                            <option value="2">Finish</option>
+                            <option value="0">All</option>
+                            <option value="1">Open</option>
+                            <option value="2">Close</option>
                         </select>
                     </div>
                 </div>
@@ -148,8 +148,8 @@
                         <select name="category" id="category" class="form-control form-control-sm" required>
                             <option value="">Pilih Kateori Export</option>
                             <option value="0">Semua</option>
-                            <option value="1">Belum Finish</option>
-                            <option value="2">Finish</option>
+                            <option value="1">Open</option>
+                            <option value="2">Close</option>
                         </select>
                     </div>
                 </div>
