@@ -310,10 +310,11 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                 });
             },
             error:function(err){
+                console.log(err)
                 Swal.fire({
                     position: 'center',
                     icon: 'error',
-                    title: err.responseJSON.message,
+                    title: err.statusText,
                     showConfirmButton: false,
                     timer: 1500
                 })
@@ -331,16 +332,22 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
     var idSkillCategory = null
 
   function getMapComp(id) {
-    $('#tableEdit').DataTable().destroy()
+    // $('#tableEdit').DataTable().destroy()
     $("#user_id").val(id);
       const url = "{!! route('formWhiteTag') !!}?id="+id+"&type=general";
       $.ajax({
           url:url,
           cache:false,
           success: function(html) {
-              $("#formMapComp").html(html);
-              $('#tableEdit').DataTable({
-                searching: true,
+            $("#formMapComp").show();
+                    if($.fn.DataTable.isDataTable( '#tableEdit' )){
+                        $('#tableEdit').DataTable().destroy()
+                    }
+                    $("#formMapComp").html(html);
+                    tableEdit = $('#tableEdit').DataTable({
+                        searching: true,
+                        retrieve: true,
+                        paging: true,
                 columnDefs: [
                     {
                         orderable: false,

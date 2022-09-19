@@ -43,7 +43,7 @@
         </td>
         <td>
             @if($comp->cntTagingReason > 0)
-                <textarea class="form-control p-1" rows="3" value="{{$comp->catatan}}" disabled>{{$comp->catatan}}</textarea>
+            <input type="text"  class="form-control p-1" value="{{$comp->catatan}}" disabled>
             @else
                 @if($comp->catatan == "")
                 <textarea class="form-control p-1" rows="3" name="data[{{$key.time()}}][catatan]" placeholder="Keterangan"></textarea>
@@ -53,7 +53,7 @@
             @endif
         </td>
         <td>
-            @if ($comp->tagingStatus == 'Finish')
+            @if ($comp->tagingStatus == 'Close')
                 <span class="badge badge-success">{{$comp->tagingStatus}}</span>
             @else
                 <span class="badge badge-secondary text-white">{{$comp->tagingStatus}}</span>
@@ -61,9 +61,9 @@
         </td>
     </tr>
 @empty
-    <tr>
+    <!-- <tr>
         <td colspan="9" class="text-center">
             Data Kompetensi untuk job title terkait tidak tersedia
         </td>
-    </tr>
+    </tr> -->
 @endforelse
