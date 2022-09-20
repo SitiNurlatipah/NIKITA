@@ -217,6 +217,7 @@ h4 {
       </div>
     </div>
   </div>
+  @if(Auth::user()->peran_pengguna == 1)
   <div class="row">
     <div class="col-md-12 grid-margin stretch-card">
       <div class="card position-relative">
@@ -369,6 +370,7 @@ h4 {
       </div>
     </div>
   </div>
+  @endif
   @php
       $url = "../storage/app/public/".Auth::User()->gambar;
       if ((isset(Auth::User()->gambar) && Auth::User()->gambar != "") && file_exists($url)) {

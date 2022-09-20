@@ -94,7 +94,7 @@
                 </div>
               </div>
               <div class="text-primary mb-3">
-                <h5 class="text-center">Curriculum Finish</h5>
+                <h5 class="text-center">Curriculum Close</h5>
               </div>
               <div class="row">
                 <div class="col-12">
