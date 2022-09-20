@@ -361,7 +361,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
       });
   }
 
-  function detailWhiteTag(id) {
+  function detailWhiteTag(id, el) {
       const url = "{{ route('detailWhiteTag') }}?id="+id+"&type=general";
       var name = $(el).attr("userName");
       $("#modal-detailLabel").html('Detail Mapping Competencies <b>('+name+')</b>')

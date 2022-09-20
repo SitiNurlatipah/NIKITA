@@ -128,7 +128,7 @@
     {{-- Modal --}}
     <div class="modal fade" id="modal-tambah" tabindex="-1" role="dialog" aria-labelledby="modal-tambahLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-md" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header p-3">
                     <h5 class="modal-title" id="modal-tambahLabel">Add New Curriculum</h5>
@@ -144,22 +144,16 @@
                                 <div class="form-group">
                                     <label for="skillCategory">Skill Category</label>
                                     <select id="id_skill_category" class="form-control form-control-sm" name="id_skill_category">
-                                        {{-- <option value="">Pilih Skill Category</option> --}}
+                                        <option value="">- Pilih Skill Category -</option>
                                     </select>
                                 </div>
-                            </div>
-                            <div class="col-6">
                                 <div class="form-group">
                                     <label for="training_module_group">Competency Group</label>
                                     <select id="training_module_group" class="form-control form-control-sm"
                                         name="training_module_group">
-                                        {{-- <option value="#">-- Pilih Competencie Group --</option> --}}
+                                        <option value="#">- Pilih Competencie Group -</option>
                                     </select>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
                                 <div class="form-group">
                                     <label for="training_module">Competency</label>
                                     <input type="text" class="form-control" id="training_module" name="training_module"
@@ -178,7 +172,9 @@
                                     <label for="noModule">Competency Description</label>
                                     <textarea class="form-control" id="training_module_desc" name="training_module_desc" rows="3"></textarea>
                                 </div>
-                                <div class="form-group">
+                            </div>
+                            <div class="col-6">
+                            <div class="form-group">
                                     <label for="noModule">Job Title</label>
                                     <select id="id_job_title" class="selectpicker form-control form-control-sm"
                                         name="id_job_title[]" data-live-search="true" data-hide-disabled="true" multiple
@@ -187,6 +183,10 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- <div class="row">
+                            <div class="col-12">
+                            </div>
+                        </div> -->
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
