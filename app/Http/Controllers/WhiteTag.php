@@ -29,6 +29,7 @@ class WhiteTag extends Controller
                     ->where('users.id_cg',$cgAuth);
             })
             ->leftJoin('divisi', 'users.id_divisi', '=', 'divisi.id_divisi')
+            ->orderBy('users.nama_pengguna', 'DESC')
             ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','cg.nama_cg','divisi.nama_divisi']);
         return Datatables::of($data)
             ->addIndexColumn()
