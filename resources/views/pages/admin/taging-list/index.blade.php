@@ -9,15 +9,15 @@
         <div class="card">
             <div class="card-body">
                 <p class="card-title">White Tag</p>
+                @if(Auth::user()->peran_pengguna == '1')
                 <ul class="nav nav-pills mb-3">
                         <li class="nav-item active">
                             <a class="nav-link active btn-primary" data-toggle="tab" href="#pills-home" type="button">White Tag CG</a>
                         </li>
-                    @if(Auth::user()->peran_pengguna == '1')
                     <li class="nav-item">
                         <a class="nav-link btn-primary" data-toggle="tab" href="#pills-profile" type="button">White Tag ALL</a>
                     </li>
-                    @endif
+                    
                 </ul>
                 <div class="row">
                     <div class="col-12 flex">
@@ -73,6 +73,33 @@
                         </div>
                     </div>
                 </div>
+                @endif
+
+
+                <div class="container" id="pills-profile">
+                            <div class="table-responsive">
+                                <table class="display nowrap expandable-table table-striped table-hover" id="table-taging-list-cg" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>No Taging</th>
+                                            <th>Employee Name</th>
+                                            <th>Skill Category</th>
+                                            <th>Competency</th>
+                                            <th>Level</th>
+                                            <th>Competenc Group</th>
+                                            <th>Actual</th>
+                                            <th>Target</th>
+                                            <th>Gap</th>
+                                            <th style="width: max-content" class="text-center">Tagging Status</th>
+                                            <th style="width: max-content" class="text-center">Action</th>
+                                        </tr> 
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
             </div>
         </div>
     </div>

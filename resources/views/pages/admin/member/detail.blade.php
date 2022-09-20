@@ -184,9 +184,9 @@
         var areaData = {
           labels: ["Basic","Intermediate","Advence"],
           datasets: [{
-              data: [{{$b}},{{$c}},{{$a}}],
+              data: [{{$b}},{{$c}},{{$a}}, "4"],
               backgroundColor: [
-                "#4B49AC","#FFC100", "#248AFD",
+                "#4B49AC","#FFC100", "#248AFD", "#EEEEEE"
               ],
               borderColor: "rgba(0,0,0,0)"
             }
@@ -219,6 +219,9 @@
             text.push('</div>');
             text.push('<div class="d-flex justify-content-between mx-4 mx-xl-5 mt-3"><div class="d-flex align-items-center"><div class="mr-3" style="width:20px; height:20px; border-radius: 50%; background-color: ' + chart.data.datasets[0].backgroundColor[2] + '"></div><p class="mb-0">Total Advance</p></div>');
             text.push('<p class="mb-0">{{$a}}</p>');
+            text.push('</div>');
+            text.push('<div class="d-flex justify-content-between mx-4 mx-xl-5 mt-3"><div class="d-flex align-items-center"><div class="mr-3" style="width:20px; height:20px; border-radius: 50%; background-color:#DDDDDD"></div><p class="mb-0">Total White Tag Open</p></div>');
+            text.push('<p class="mb-0">4</p>');
             text.push('</div>');
           text.push('</div>');
           return text.join("");

@@ -116,12 +116,26 @@
                   <span class="menu-title">CEME</span>
               </a>
           </li>
-          {{-- <li class="nav-item">
-              <a class="nav-link" href="pages/documentation/documentation.html">
+          @if(Auth::user()->peran_pengguna == 1)
+          <li class="nav-item">
+              <a class="nav-link" href="#">
                   <i class="icon-paper menu-icon"></i>
-                  <span class="menu-title">Internal Trainer Report</span>
+                  <span class="menu-title">Competencies Superman</span>
               </a>
-          </li> --}}
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="#">
+                  <i class="icon-paper menu-icon"></i>
+                  <span class="menu-title">Competencies 4.0</span>
+              </a>
+          </li>  
+          <li class="nav-item">
+              <a class="nav-link" href="#">
+                  <i class="icon-paper menu-icon"></i>
+                  <span class="menu-title">Management System</span>
+              </a>
+          </li>  
+          @endif
       </ul>
   </nav>
   <!-- END: Main Menu-->
