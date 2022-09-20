@@ -410,6 +410,7 @@ class WhiteTag extends Controller
                                                     ->where("white_tag.id_user",$user->id);
                                             })
                                             ->groupBy("competencies_directory.id_curriculum")
+                                            ->orderBy("tagingStatus", "DESC")
                                             ->get();
         return Datatables::of($data)
         ->addIndexColumn()
