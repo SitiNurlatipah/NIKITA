@@ -209,10 +209,13 @@ class Tagging extends Controller
                 "taging_reason.date_open as date_open",
                 "taging_reason.due_date as due_date",
                 "taging_reason.date_plan_implementation as date_plan_implementation",
-                DB::raw("(CASE WHEN taging_reason.learning_method = '0' THEN 'Internal'
-                                WHEN taging_reason.learning_method = '1' THEN 'External'
-                                WHEN taging_reason.learning_method = '2' THEN 'Inhouse'
-                                WHEN taging_reason.learning_method = '3' THEN 'Online' 
+                DB::raw("(CASE WHEN taging_reason.learning_method = '0' THEN 'Internal Training'
+                                        WHEN taging_reason.learning_method = '1' THEN 'External Training'
+                                        WHEN taging_reason.learning_method = '2' THEN 'In House Training'
+                                        WHEN taging_reason.learning_method = '3' THEN 'Learn From Expertise' 
+                                        WHEN taging_reason.learning_method = '4' THEN 'Learn From Book' 
+                                        WHEN taging_reason.learning_method = '5' THEN 'On the-Job Training' 
+                                        WHEN taging_reason.learning_method = '6' THEN 'Sharing'  
                                 ELSE 'Readbook' END) as learning_method"),
                 "taging_reason.trainer as trainer",
                 "taging_reason.notes_learning_implementation as notes_learning_implementation",
@@ -282,10 +285,13 @@ class Tagging extends Controller
             "taging_reason.date_open as date_open",
             "taging_reason.due_date as due_date",
             "taging_reason.date_plan_implementation as date_plan_implementation",
-            DB::raw("(CASE WHEN taging_reason.learning_method = '0' THEN 'Internal'
-                            WHEN taging_reason.learning_method = '1' THEN 'External'
-                            WHEN taging_reason.learning_method = '2' THEN 'Inhouse'
-                            WHEN taging_reason.learning_method = '3' THEN 'Online' 
+            DB::raw("(CASE WHEN taging_reason.learning_method = '0' THEN 'Internal Training'
+                            WHEN taging_reason.learning_method = '1' THEN 'External Training'
+                            WHEN taging_reason.learning_method = '2' THEN 'In House Training'
+                            WHEN taging_reason.learning_method = '3' THEN 'Learn From Expertise' 
+                            WHEN taging_reason.learning_method = '4' THEN 'Learn From Book' 
+                            WHEN taging_reason.learning_method = '5' THEN 'On the-Job Training' 
+                            WHEN taging_reason.learning_method = '6' THEN 'Sharing' 
                             ELSE 'Readbook' END) as learning_method"),
             "taging_reason.trainer as trainer",
             "taging_reason.notes_learning_implementation as notes_learning_implementation",

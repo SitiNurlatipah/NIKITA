@@ -26,7 +26,7 @@
                                 <button class="btn btn-inverse-success float-left mb-2" data-toggle="modal" data-target="#modal-export">Export to Excel</button>
                             @endif
                             <div class="table-responsive">
-                                <table class="display nowrap expandable-table table-striped table-hover" id="table-taging-list" style="width:100%">
+                                <table class="display expandable-table table-striped table-hover" id="table-taging-list" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>No Taging</th>
@@ -51,7 +51,7 @@
                                 <button class="btn btn-inverse-success float-left mb-2" data-toggle="modal" data-target="#modal-export-cg">Export to Excel</button>
                             @endif
                             <div class="table-responsive">
-                                <table class="display nowrap expandable-table table-striped table-hover" id="table-taging-list-cg" style="width:100%">
+                                <table class="display expandable-table table-striped table-hover" id="table-taging-list-cg" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>No Taging</th>
@@ -82,7 +82,7 @@
                                             <th>No Taging</th>
                                             <th>Employee Name</th>
                                             <th>Skill Category</th>
-                                            <th>Competency</th>
+                                            <th width="100px">Competency</th>
                                             <th>Level</th>
                                             <th>Competenc Group</th>
                                             <th>Actual</th>

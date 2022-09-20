@@ -24,14 +24,14 @@
         border-radius: 40px !important;
     }
 
-#table-white-tag-all td{
+/* #table-white-tag-all td{
     font-size: 0.75rem;
     padding: 0px;
 } 
 
 table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
     padding-right: 0px;
-}
+} */
 
 </style>
 @endpush
@@ -109,8 +109,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                                 <a href="{!!route('exportWhiteTagAll')!!}" class="btn btn-inverse-info float-left mb-2">Export</a>
                             @endif
                             <div class="table-responsive">
-                                {{-- display nowrap expandable-table --}}
-                                <table class="table table-sm table-striped table-hover text-center" id="table-white-tag-all" style="width:100% !important">
+                                <table class="display expandable-table table-sm table-striped table-hover" id="table-white-tag-all" style="width:100% !important">
                                     <thead>
                                         <tr>
                                             <th>No</th>

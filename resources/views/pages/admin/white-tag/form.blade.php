@@ -57,6 +57,8 @@
         <td>
             @if ($comp->tagingStatus == 'Close')
                 <span class="badge badge-success">{{$comp->tagingStatus}}</span>
+            @elseif($comp->tagingStatus == 'Open')
+            <span class="badge badge-danger text-white">{{$comp->tagingStatus}}</span>
             @else
                 <span class="badge badge-secondary text-white">{{$comp->tagingStatus}}</span>
             @endif

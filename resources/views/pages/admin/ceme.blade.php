@@ -40,7 +40,7 @@
         <div class="col-md-12 grid-margin">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Competent Employee</h4>
+                    <h4 class="card-title">Competent Employee </h4><span>Indicate as Competent Employee</span>
                     <div class="row">
                         <div class="col-12">
                             <div class="table-responsive">

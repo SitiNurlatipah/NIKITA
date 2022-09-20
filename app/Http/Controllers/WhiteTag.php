@@ -48,7 +48,7 @@ class WhiteTag extends Controller
         $cgAuth = Auth::user()->id_cg;
         $select = [
             "nama_pengguna","no_training_module","skill_category","training_module","level","training_module_group","start","actual","target","compGroup.name as compGroupName", "white_tag.keterangan as ket",
-            DB::raw("(IF(actual < target,'Tidak Mencapai Target','Close' )) as tagingStatus")
+            DB::raw("(IF(actual < target,'Open','Close' )) as tagingStatus")
         ];
         $data = WhiteTagModel::select($select)
                 ->join("users","users.id","white_tag.id_user")
@@ -138,7 +138,10 @@ class WhiteTag extends Controller
                     if ($row->tagingStatus == 'Close') {
                         $label = '<span class="badge badge-success">' . $row->tagingStatus . '</span>';
                         return $label;
-                    } else {
+                    }elseif ($row->tagingStatus == 'Open') {
+                        $label = '<span class="badge badge-danger text-white">' . $row->tagingStatus . '</span>';
+                        return $label;
+                    }else{
                         $label = '<span class="badge badge-secondary text-white">' . $row->tagingStatus . '</span>';
                         return $label;
                     }
@@ -319,8 +322,8 @@ class WhiteTag extends Controller
             "white_tag.actual as actual","competencies_directory.target as target",
             "white_tag.keterangan as ket",
             DB::raw("(SELECT COUNT(*) FROM taging_reason as tr where tr.id_white_tag = white_tag.id_white_tag) as cntTagingReason"),
-            // DB::raw("(IF(((white_tag.actual - competencies_directory.target) < 0),'Tidak Mencapai Target','Close' )) as tagingStatus")
-            DB::raw("(CASE WHEN (white_tag.actual - competencies_directory.target) < 0 THEN 'Tidak Mencapai Target'
+            // DB::raw("(IF(((white_tag.actual - competencies_directory.target) < 0),'Open','Close' )) as tagingStatus")
+            DB::raw("(CASE WHEN (white_tag.actual - competencies_directory.target) < 0 THEN 'Open'
                             WHEN (white_tag.actual IS NULL) THEN 'Belum diatur'
                             WHEN white_tag.actual >= competencies_directory.target THEN 'Close' 
                             END) as tagingStatus"),"compGroup.name as compGroupName"
@@ -391,8 +394,8 @@ class WhiteTag extends Controller
         $skillId = [1,2];
         $select = [
             "curriculum.no_training_module as no_training","curriculum.training_module as training_module","curriculum.training_module_group as training_module_group","curriculum.level as level","skill_category.skill_category as skill_category","white_tag.start as start","white_tag.actual as actual","competencies_directory.target as target",
-            // DB::raw("(IF((white_tag.actual - competencies_directory.target) < 0,'Tidak Mencapai Target','Close' )) as tagingStatus")
-            DB::raw("(CASE WHEN (white_tag.actual - competencies_directory.target) < 0 THEN 'Tidak Mencapai Target'
+            // DB::raw("(IF((white_tag.actual - competencies_directory.target) < 0,'Open','Close' )) as tagingStatus")
+            DB::raw("(CASE WHEN (white_tag.actual - competencies_directory.target) < 0 THEN 'Open'
                             WHEN (white_tag.actual IS NULL) THEN 'Belum diatur'
                             WHEN white_tag.actual >= competencies_directory.target THEN 'Close' 
                             END) as tagingStatus"),
