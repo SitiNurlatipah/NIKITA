@@ -44,6 +44,7 @@ class WhiteTag extends Controller
 
     public function whiteTagAll(Request $request)
     {
+        $cgAuth = Auth::user()->id_cg;
         $select = [
             "nama_pengguna","no_training_module","skill_category","training_module","level","training_module_group","start","actual","target","compGroup.name as compGroupName", "white_tag.keterangan as ket",
             DB::raw("(IF(actual < target,'Tidak Mencapai Target','Close' )) as tagingStatus")
@@ -54,8 +55,8 @@ class WhiteTag extends Controller
                 ->join("curriculum AS crclm","crclm.id_curriculum","cd.id_curriculum")
                 ->join("competencie_groups as compGroup","compGroup.id","crclm.training_module_group")
                 ->join("skill_category AS sc","sc.id_skill_category","crclm.id_skill_category")
-                ->whereRaw("white_tag.actual >= cd.target AND white_tag.actual > 0 AND white_tag.start >= 0")
-                // ->where("white_tag.actual",">=","cd.target")
+                // ->whereRaw("white_tag.actual >= cd.target AND white_tag.actual > 0 AND white_tag.start >= 0")
+                ->where("users.id_cg", $cgAuth)
                 ->get();
         return Datatables::of($data)
         ->addIndexColumn()
