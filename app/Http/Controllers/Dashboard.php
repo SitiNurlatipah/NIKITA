@@ -48,6 +48,7 @@ class Dashboard extends Controller
         $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
             ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
             ->where('id_cg', $cg)
+            ->orderBy('nik', 'ASC')
         ->get(['users.*', 'dp.*', 'jt.*']);
         return view('pages.admin.dashboard', compact(
             'data',
@@ -66,6 +67,7 @@ class Dashboard extends Controller
         $profile = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
             ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
             ->where('id_cg', $cg)
+            ->orderBy('nik', 'DESC')
         ->get(['users.*', 'dp.*', 'jt.*']);
         return response()->json([
             'data' => $profile,
