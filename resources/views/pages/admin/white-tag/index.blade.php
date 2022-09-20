@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Mapping Competencies General')
+@section('title', 'Mapping Competencies')
 @push('style')
 <style>
      
@@ -246,15 +246,6 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
 @push('script')
 <script type="text/javascript">
   $(document).ready(function () {
-    // var tableEdit = $("#tableEdit").DataTable({
-    //     searching: true,
-    //     columnDefs: [
-    //         {
-    //             orderable: false,
-    //             targets: [6, 7, 8],
-    //         },
-    //     ]
-    // });
 
     $(".nav-pills a").click(function(){
         $(this).tab('show');
@@ -331,9 +322,12 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
 
     var idSkillCategory = null
 
-  function getMapComp(id) {
+  function getMapComp(id, el) {
     // $('#tableEdit').DataTable().destroy()
     $("#user_id").val(id);
+    var nama = $(el).attr("userName")
+    console.log(nama)
+    $("#modal-tambahLabel").html('Edit Mapping Competencies <b>('+nama+')</b>')
       const url = "{!! route('formWhiteTag') !!}?id="+id+"&type=general";
       $.ajax({
           url:url,
@@ -353,6 +347,10 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                         orderable: false,
                         targets: [6, 7, 8],
                     },
+                    { 
+                                width: "200px", 
+                                targets: 9 
+                            }
                 ]
               });
           },
@@ -365,6 +363,8 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
 
   function detailWhiteTag(id) {
       const url = "{{ route('detailWhiteTag') }}?id="+id+"&type=general";
+      var name = $(el).attr("userName");
+      $("#modal-detailLabel").html('Detail Mapping Competencies <b>('+name+')</b>')
       $('#table-detail').DataTable().destroy();
       var dtJson = $('#table-detail').DataTable({
           ajax:  url,
@@ -381,6 +381,9 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                   next: '&nbsp;'
               }
           },
+          columnDefs: [
+                { "width": "150px", "targets": 9 }
+          ],
           scrollX: true,
           columns: [
               {
@@ -411,7 +414,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                     data: 'target'
                 },
                 {
-                    data: 'catatan'
+                    data: 'ket'
                 },
                 {
                     data: 'tagingStatus'
@@ -528,7 +531,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                   data:'tagingStatus'
               },
               {
-                  data:'catatan'
+                  data:'ket'
               }
           ],
       })

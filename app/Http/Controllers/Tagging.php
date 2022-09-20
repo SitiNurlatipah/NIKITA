@@ -24,9 +24,7 @@ class Tagging extends Controller
     public function tagingJson(Request $request)
     {
         $where = "white_tag.actual < cd.target OR (SELECT COUNT(*) FROM taging_reason where white_tag.id_white_tag = taging_reason.id_white_tag) > 0";
-        if(isset($request->type) && $request->type == 'cg'){
-            $where .= " AND users.id_cg = '".Auth::user()->id_cg."'";
-        }
+        $cgAuth = Auth::user()->id_cg;
         $select = [
             "id_taging_reason","white_tag.id_white_tag","tr.no_taging as noTaging","nama_pengguna as employee_name",
             "skill_category","training_module",
@@ -38,7 +36,12 @@ class Tagging extends Controller
                                 $join->on("cd.id_directory","white_tag.id_directory");
                             })
                             ->leftJoin("taging_reason as tr","tr.id_white_tag","white_tag.id_white_tag")
-                            ->join("users","users.id","white_tag.id_user")
+                            ->join("users",function ($join) use ($request,$cgAuth) {
+                                $join->on("users.id","white_tag.id_user");
+                                if(isset($request->type) && $request->type == 'cg'){
+                                    $join->where("users.id_cg",$cgAuth);
+                                }
+                            })
                             ->join("curriculum","curriculum.id_curriculum","cd.id_curriculum")
                             ->join("skill_category as sc","sc.id_skill_category","curriculum.id_skill_category")
                             ->whereRaw($where)
