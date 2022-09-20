@@ -189,9 +189,10 @@ h4 {
         <div class="text-center card-box">
           <div class="member-card" style="width: 150px">
             <div class="thumb-lg member-thumb mx-auto"><img src="{{$url}}" class="rounded-circle img-thumbnail" alt="profile-image"></div>
-              <div class="float-none" style="height: 140px">
-                  <h5 style="height: 40px">{{ ucwords($member->nama_pengguna) }}</h4>
-                  <p class="text-muted">{{$member->nama_department}}</span></p>
+              <div class="float-none" style="height: 160px">
+                  <h6 style="height: 40px" class="mb-0">{{ ucwords($member->nama_pengguna) }}</h6>
+                  <p class="text-muted mb-0">{{$member->nik}}</span></p>
+                  <p class="text-muted mb-0">{{$member->nama_department}}</span></p>
               </div>
               <div class="d-flex flex-row justify-content-center">
                 <button type="button" style="position:absolute; bottom:50px;" class="btn btn-primary btn-rounded" data-toggle="modal" data-target="#modal-detail-user" onclick="detail({{$member->id}})">Detail</button>
