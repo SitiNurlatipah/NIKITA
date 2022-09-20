@@ -155,7 +155,7 @@
                         Swal.fire({
                             position: 'center',
                             icon: 'error',
-                            title: err.responseJSON,
+                            title: err.statusText,
                             showConfirmButton: false,
                             timer: 1500
                         })
