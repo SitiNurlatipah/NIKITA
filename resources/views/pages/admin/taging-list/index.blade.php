@@ -73,9 +73,7 @@
                         </div>
                     </div>
                 </div>
-                @endif
-
-
+                @else
                 <div class="container" id="pills-profile">
                             <div class="table-responsive">
                                 <table class="display nowrap expandable-table table-striped table-hover" id="table-taging-list-cg" style="width:100%">
@@ -98,7 +96,7 @@
                                 </table>
                             </div>
                         </div>
-
+                @endif
 
             </div>
         </div>
