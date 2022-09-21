@@ -40,11 +40,12 @@
         <div class="col-md-12 grid-margin">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Competent Employee </h4><span>Indicate as Competent Employee</span>
+                    <h4 class="card-title">Competent Employee </h4>
+                    <span style="font-size: 14px;"><div class="mr-1 mt-1 mb-0 bg-warning" style="display:inline-block; width:15px; height:15px; border-radius: 50%; "></div><i>Indicate as Competent Employee</i></span>
                     <div class="row">
                         <div class="col-12">
                             <div class="table-responsive">
-                                <table class="display expandable-table table table-sm table-striped table-hover"
+                                <table class="display expandable-table table table-sm table-striped table-hover mt-1"
                                     id="table-ce" style="width:100%">
                                     <thead>
                                         <tr>
@@ -66,16 +67,16 @@
                                     <tbody>
 
                                         @foreach ($wt as $item)
-                                        <tr>
+                                            @php
+                                                $avg = round($item->totalScore($item->id),2);
+                                            @endphp
+                                        <tr class="{{ $avg >= 81.37  ? 'bg-warning' : '' }}">
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->nama_pengguna }}.</td>
                                             <td>{{ round($item->score($item->id,'B'),2) }}%</td>
                                             <td>{{ round($item->score($item->id,'I'),2) }}%</td>
                                             <td>{{ round($item->score($item->id,'A'),2) }}%</td>
                                             <td>
-                                                @php
-                                                    $avg = round($item->totalScore($item->id),2);
-                                                @endphp
                                                 @if ($avg >= 81.37)
                                                     <span class="badge badge-warning">{{ $avg }}%</span>
                                                 @else
