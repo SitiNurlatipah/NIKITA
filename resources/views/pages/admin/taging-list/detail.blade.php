@@ -53,7 +53,7 @@
       margin-bottom: 1rem;
   }
 
-  .modal-header {
+  /* .modal-header {
     padding:9px 15px;
     border-bottom:1px solid #eee;
     background-color: #0480be;
@@ -63,19 +63,314 @@
     -moz-border-radius-topright: 5px;
      border-top-left-radius: 5px;
      border-top-right-radius: 5px;
- }
-  
+ } */
+  p {
+    font-size: 14px;
+  }
+
+  .col-form-label {
+    font-size: 14px;
+  }
+
+  hr {
+    margin-top: 8px;
+    margin-bottom : 8px;
+  }
   </style>
-<style>
-  input[type="number"] {
-    font-weight:0.7rem;
-  }
-  input[type="text"] 
-  {
-    font-weight:0.7rem;
-  }
-</style>
-<div class="container">
+<section style="background-color: #eee;">
+  <div class="container py-1">
+    <div class="row">
+      <div class="col-lg-4 pr-0">
+        <div class="card mb-4">
+          <div class="card-body text-center">
+            <img src="{{ asset('assets/images/tpm.png') }}" alt="avatar"
+              class="rounded-circle img-fluid" style="width: 150px;">
+            <h5 class="my-3">White Tag</h5>
+            <p class="text-muted mb-1">No : {{$data->no_taging}}</p>
+            <p class="text-muted mb-1">Year : {{$data->year}}</p>
+            <p class="text-muted mb-4">Period : {{$data->period}}</p>
+            <!-- <div class="d-flex justify-content-center mb-2">
+              <button type="button" class="btn btn-primary">Follow</button>
+              <button type="button" class="btn btn-outline-primary ms-1">Message</button>
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="card mb-2">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Full Name</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{$data->name}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Circle Group</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{$data->training_module_group}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Competency</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{$data->training_module}}</p>
+              </div>
+            </div>
+            <!-- <hr> -->
+            <!-- <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Mobile</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">(098) 765-4321</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Address</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">Bay Area, San Francisco, CA</p>
+              </div>
+            </div> -->
+          </div>
+        </div>
+        <div class="card mb-2">
+          <div class="card-body">
+          <!-- <p class="mb-4"><span class="text-primary font-italic me-1">assigment</span> Project Status
+                </p> -->
+              <div class="row">
+                <div class="col-md-5">
+                <div class="col-sm-12 rounded border d-flex mb-2">
+                  <label class="col-form-label pl-1 col-sm-7">Existing</label>
+                  <div>
+                      @php
+                          switch($data->actual){
+                            case 0:
+                              $existingUrl = asset('assets/images/point/0.png');
+                            break;
+                            case 1:
+                              $existingUrl = asset('assets/images/point/1.png');
+                            break;
+                            case 2:
+                              $existingUrl = asset('assets/images/point/2.png');
+                            break;
+                            case 3:
+                              $existingUrl = asset('assets/images/point/3.png');
+                            break;
+                            case 4:
+                              $existingUrl = asset('assets/images/point/4.png');
+                            break;
+                            case 5:
+                              $existingUrl = asset('assets/images/point/5.png');
+                            break;
+                            default:
+                              $existingUrl = "";
+                            break;
+                          }
+                      @endphp
+                      <img class="col-sm-5" style="max-width:60px;height:50px;padding:5px" src="{{$existingUrl}}">
+                  </div>
+                </div>
+                <div class="col-sm-12 rounded border d-flex mb-2">
+                  <label class="col-form-label pl-1 col-sm-7">Target</label>
+                  <div>
+                    @php
+                      switch($data->target){
+                        case 0:
+                          $targetUrl = asset('assets/images/point/0.png');
+                        break;
+                        case 1:
+                          $targetUrl = asset('assets/images/point/1.png');
+                        break;
+                        case 2:
+                          $targetUrl = asset('assets/images/point/2.png');
+                        break;
+                        case 3:
+                          $targetUrl = asset('assets/images/point/3.png');
+                        break;
+                        case 4:
+                          $targetUrl = asset('assets/images/point/4.png');
+                        break;
+                        case 5:
+                          $targetUrl = asset('assets/images/point/5.png');
+                        break;
+                        default:
+                          $targetUrl = "";
+                        break;
+                      }
+                    @endphp
+                      <img class="col-sm-5" style="max-width:60px;height:50px;padding:5px" src="{{$targetUrl}}">
+                  </div>
+                </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="col-sm-12 rounded border mb-2 d-flex">
+                    <label class="col-sm-5 col-form-label">Date Open</label>
+                    <div class="col-sm-7 m-auto">
+                      <p>{{$data->date_open}}</p>
+                    </div>
+                  </div>
+                  <div class="col-sm-12 rounded border mb-2 d-flex">
+                  <label class="col-sm-5 col-form-label">Due Date</label>
+                    <div class="col-sm-7 m-auto">
+                      <p>{{$data->due_date}}</p>
+                    </div>
+                </div>
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="card mb-2">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-5">
+                <p class="mb-0">Learning Method</p>
+              </div>
+              <div class="col-sm-7">
+                <p class="text-muted mb-0">{{$data->name}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-5">
+                <p class="mb-0">Trainer</p>
+              </div>
+              <div class="col-sm-7">
+                <p class="text-muted mb-0">{{$data->trainer}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-5">
+                <p class="mb-0">Date Plan Implementation</p>
+              </div>
+              <div class="col-sm-7">
+                <p class="text-muted mb-0">{{$data->date_plan_implementation}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-5">
+                <p class="mb-0">Notes Learning Implementation</p>
+              </div>
+              <div class="col-sm-7">
+                <p class="text-muted mb-0">{!! $data->notes_learning_implementation !!}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-5">
+                <p class="mb-0">Date Closed</p>
+              </div>
+              <div class="col-sm-7">
+                <p class="text-muted mb-0">{{$data->date_closed}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-5">
+                <p class="mb-0">Training Hours</p>
+              </div>
+              <div class="col-sm-7">
+                <p class="text-muted mb-0">{{$data->start}}
+                {{$data->finish}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-5">
+                <p class="mb-0">Date Verified</p>
+              </div>
+              <div class="col-sm-7">
+                <p class="text-muted mb-0">{{$data->date_verified}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-5">
+                <p class="mb-0">Verified By</p>
+              </div>
+              <div class="col-sm-7">
+                <p class="text-muted mb-0">{{$data->verified_by}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-5">
+                <p class="mb-0">Result</p>
+              </div>
+              <div class="col-sm-7">
+              @php
+                        switch($data->result_score){
+                          case 0:
+                            $scoreUrl = asset('assets/images/point/0.png');
+                          break;
+                          case 1:
+                            $scoreUrl = asset('assets/images/point/1.png');
+                          break;
+                          case 2:
+                            $scoreUrl = asset('assets/images/point/2.png');
+                          break;
+                          case 3:
+                            $scoreUrl = asset('assets/images/point/3.png');
+                          break;
+                          case 4:
+                            $scoreUrl = asset('assets/images/point/4.png');
+                          break;
+                          case 5:
+                            $scoreUrl = asset('assets/images/point/5.png');
+                          break;
+                          default:
+                            $scoreUrl = "";
+                          break;
+                        }
+                      @endphp
+                      <img style="width:45px;height:45px;padding:5px" src="{{$scoreUrl}}" alt="">
+                <!-- <p class="text-muted mb-0">{{$data->training_module_group}}</p> -->
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-5">
+                <p class="mb-0">Notes For Result</p>
+              </div>
+              <div class="col-sm-7">
+                <p class="text-muted mb-0">{!!$data->notes_for_result!!}</p>
+              </div>
+            </div>
+            <hr>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="container">
   <div class="row gutters">
   <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 pl-0">
     <div class="card h-100">
@@ -145,30 +440,6 @@
                     </div>
                 </div>
             </div>
-            {{-- <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-              <div class="form-group">
-                <label for="nik">NIK</label>
-                <input type="text" class="form-control" id="nik" placeholder="nik" value="" disabled>
-              </div>
-            </div>
-            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-              <div class="form-group">
-                <label for="role">Peran Pengguna</label>
-                <input type="text" class="form-control" id="role" placeholder="peran pengguna" value="" disabled>
-              </div>
-            </div>
-            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-              <div class="form-group">
-                <label for="tgl_masuk">Tanggal Masuk</label>
-                <input type="text" class="form-control" id="tgl_masuk" placeholder="Enter tgl_masuk number" value="" disabled>
-              </div>
-            </div>
-            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-              <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" placeholder="email" value="" disabled>
-              </div>
-            </div> --}}
           </div>
           <div class="row gutters mb-3">
             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
@@ -354,5 +625,5 @@
     </div>
     
   </div>
-</div>
+</div> -->
 

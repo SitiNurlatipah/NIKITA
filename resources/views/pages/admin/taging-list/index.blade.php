@@ -188,19 +188,19 @@
 </div>
 
 <div class="modal fade m-auto"  id="modal-detail" tabindex="-1" role="dialog" aria-labelledby="modal-detailLabel" aria-hidden="true">
-    <div class="modal-lg modal-dialog" role="document">
+    <div class="modal-xl modal-dialog" style="max-width: 750px;" role="document">
         <div class="modal-content">
-            <div class="modal-header p-3">
-                <h5 class="modal-title m-auto text-center" id="modal-detailLabel">COMPETENCY TAG</h5>
+            <div class="modal-header bg-primary p-3">
+                <h5 class="modal-title text-white" id="modal-detailLabel">White Tag</h5>
                 <button type="button" class="close ml-0" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" id="body-detail" style="padding : 5px 25px !important;">
+            <div class="modal-body" id="body-detail" style="padding : 10px 10px !important; background-color: #eee;">
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" id="btn-print" onclick="printCompetencyTag(this)" data-id="" class="btn btn-primary">Print</button>
+            <div class="modal-footer p-1">
+                <button type="button" class="btn btn-md btn-secondary text-white" data-dismiss="modal">Close</button>
+                <button type="button" id="btn-print" onclick="printCompetencyTag(this)" data-id="" class="btn btn-md btn-primary">Print</button>
             </div>
         </div>
     </div>
