@@ -28,10 +28,10 @@
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <p class="card-title">Competency Dictionary</p>
-                <div class="row">
+            <div class="row">
+                    <p class="card-title ml-4">Competency Dictionary</p>
                     <div class="col-md mb-2">
-                        <button class="btn btn-success float-right add-directory" data-toggle="modal" data-id="" onclick="formCompetencyDirectory(this)" data-target="#modal-tambah" data-placement="top" title="Tambah Data"><i class="icon-plus"></i> Add Competency Dictionary</button>
+                        <button class="btn btn-sm btn-success float-right add-directory" data-toggle="modal" data-id="" onclick="formCompetencyDirectory(this)" data-target="#modal-tambah" data-placement="top" title="Tambah Data"><i class="icon-plus"></i> Add Competency Dictionary</button>
                     </div> 
                 </div>
                 <div class="row">

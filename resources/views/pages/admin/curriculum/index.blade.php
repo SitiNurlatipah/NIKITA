@@ -42,14 +42,14 @@
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <p class="card-title">Curriculum</p>
-                    <div class="row">
-                        <div class="col-md mb-2">
-                            <a class="btn btn-success float-right" href="javascript:void(0)" id="createNewItem"
+                <div class="row">
+                    <p class="card-title ml-4">Curriculumn</p>
+                    <div class="col-md mb-2">
+                            <a class="btn btn-sm btn-success float-right" href="javascript:void(0)" id="createNewItem"
                                 data-toggle="modal" data-target="#modal-tambah"><i class="icon-plus"></i> Add
                                 Curriculum</a>
                         </div>
-                    </div>
+                </div>
                     <div class="row">
                         <div class="col-12">
                             <div class="table-responsive">

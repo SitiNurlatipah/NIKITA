@@ -8,24 +8,27 @@
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <p class="card-title">White Tag</p>
+                <div class="row">
+                    <p class="card-title ml-4">White Tag</p>
+                </div>
+
+
                 @if(Auth::user()->peran_pengguna == '1')
-                <ul class="nav nav-pills mb-3">
+                <ul class="nav nav-pills">
                         <li class="nav-item active">
                             <a class="nav-link active btn-primary" data-toggle="tab" href="#pills-home" type="button">White Tag CG</a>
                         </li>
                     <li class="nav-item">
                         <a class="nav-link btn-primary" data-toggle="tab" href="#pills-profile" type="button">White Tag ALL</a>
                     </li>
-                    
                 </ul>
                 <div class="row">
                     <div class="col-12 flex">
                         <div class="tab-pane container fade in active show" id="pills-home">
-                            @if(Auth::user()->peran_pengguna == '1')
-                                <button class="btn btn-inverse-success float-left mb-2" data-toggle="modal" data-target="#modal-export">Export to Excel</button>
-                            @endif
-                            <div class="table-responsive">
+                        @if(Auth::user()->peran_pengguna == '1')
+                        <button class="btn btn-inverse-success mb-2 btn-sm float-right" data-toggle="modal" data-target="#modal-export">Export to Excel</button>
+                        @endif    
+                        <div class="table-responsive">
                                 <table class="display expandable-table table-striped table-hover" id="table-taging-list" style="width:100%">
                                     <thead>
                                         <tr>
@@ -48,7 +51,7 @@
                         </div>
                         <div class="tab-pane container fade" id="pills-profile">
                             @if(Auth::user()->peran_pengguna == '1')
-                                <button class="btn btn-inverse-success float-left mb-2" data-toggle="modal" data-target="#modal-export-cg">Export to Excel</button>
+                                <button class="btn btn-inverse-success mb-2 btn-sm float-right" data-toggle="modal" data-target="#modal-export-cg">Export to Excel</button>
                             @endif
                             <div class="table-responsive">
                                 <table class="display expandable-table table-striped table-hover" id="table-taging-list-cg" style="width:100%">
@@ -76,7 +79,7 @@
                 @else
                 <div class="container" id="pills-profile">
                             <div class="table-responsive">
-                                <table class="display nowrap expandable-table table-striped table-hover" id="table-taging-list-cg" style="width:100%">
+                                <table class="display expandable-table table-striped table-hover" id="table-taging-list-cg" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>No Taging</th>

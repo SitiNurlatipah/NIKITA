@@ -63,10 +63,10 @@
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <p class="card-title">Employee Data</p>
                 <div class="row">
+                    <p class="card-title ml-4">Employee Data</p>
                     <div class="col-md mb-2">
-                        <a class="btn btn-success float-right" href="javascript:void(0)" id="createNewItem" data-toggle="modal" data-target="#modal-tambah"><i class="icon-plus"></i> Add User</a>
+                        <a class="btn btn-sm btn-success float-right" href="javascript:void(0)" id="createNewItem" data-toggle="modal" data-target="#modal-tambah"><i class="icon-plus"></i> Add User</a>
                     </div>
                 </div>
                 <div class="row">
