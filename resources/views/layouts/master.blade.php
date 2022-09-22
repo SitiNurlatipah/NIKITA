@@ -29,6 +29,11 @@
     .modal .modal-dialog {
       margin-top: 10px;
     }
+
+    .expandable-table tr td {
+    padding: 10px;
+    font-size: 13px;
+}
   </style>
 </head>
 

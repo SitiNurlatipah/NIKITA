@@ -26,7 +26,7 @@
                     <div class="col-12 flex">
                         <div class="tab-pane container fade in active show" id="pills-home">
                         @if(Auth::user()->peran_pengguna == '1')
-                        <button class="btn btn-inverse-success mb-2 btn-sm float-right" data-toggle="modal" data-target="#modal-export">Export to Excel</button>
+                        <button class="btn btn-inverse-success mb-2 btn-sm float-right" data-toggle="modal" data-target="#modal-export"><i class="icon-file"></i> Export to Excel</button>
                         @endif    
                         <div class="table-responsive">
                                 <table class="display expandable-table table-striped table-hover" id="table-taging-list" style="width:100%">
@@ -37,7 +37,7 @@
                                             <th>Skill Category</th>
                                             <th>Competency</th>
                                             <th>Level</th>
-                                            <th>Competenc Group</th>
+                                            <!-- <th>Competenc Group</th> -->
                                             <th>Actual</th>
                                             <th>Target</th>
                                             <th>Gap</th>
@@ -51,7 +51,7 @@
                         </div>
                         <div class="tab-pane container fade" id="pills-profile">
                             @if(Auth::user()->peran_pengguna == '1')
-                                <button class="btn btn-inverse-success mb-2 btn-sm float-right" data-toggle="modal" data-target="#modal-export-cg">Export to Excel</button>
+                                <button class="btn btn-inverse-success mb-2 btn-sm float-right" data-toggle="modal" data-target="#modal-export-cg"><i class="icon-file"></i> Export to Excel</button>
                             @endif
                             <div class="table-responsive">
                                 <table class="display expandable-table table-striped table-hover" id="table-taging-list-cg" style="width:100%">
@@ -62,7 +62,7 @@
                                             <th>Skill Category</th>
                                             <th>Competency</th>
                                             <th>Level</th>
-                                            <th>Competenc Group</th>
+                                            <!-- <th>Competenc Group</th> -->
                                             <th>Actual</th>
                                             <th>Target</th>
                                             <th>Gap</th>
@@ -87,7 +87,7 @@
                                             <th>Skill Category</th>
                                             <th width="100px">Competency</th>
                                             <th>Level</th>
-                                            <th>Competenc Group</th>
+                                            <!-- <th>Competenc Group</th> -->
                                             <th>Actual</th>
                                             <th>Target</th>
                                             <th>Gap</th>
@@ -152,7 +152,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Export to Excel</button>
+                    <button type="submit" class="btn btn-primary"><i class="icon-file"></i>  Export to Excel</button>
                 </div>
             </form>
         </div>
@@ -451,9 +451,9 @@
               {
                   data: 'level'
               },
-              {
-                  data: 'training_module_group'
-              },
+            //   {
+            //       data: 'training_module_group'
+            //   },
               {
                   data: 'actual'
               },
@@ -510,9 +510,9 @@
               {
                   data: 'level'
               },
-              {
-                  data: 'training_module_group'
-              },
+            //   {
+            //       data: 'training_module_group'
+            //   },
               {
                   data: 'actual'
               },
