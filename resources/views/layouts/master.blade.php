@@ -25,6 +25,10 @@
     .content-wrapper {
       padding-top: 15px;
     }
+
+    .modal .modal-dialog {
+      margin-top: 10px;
+    }
   </style>
 </head>
 

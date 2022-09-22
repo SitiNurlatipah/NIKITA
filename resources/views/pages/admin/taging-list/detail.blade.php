@@ -78,10 +78,10 @@
   }
   </style>
 <section style="background-color: #eee;">
-  <div class="container py-1">
+  <div class="container">
     <div class="row">
-      <div class="col-lg-4 pr-0">
-        <div class="card mb-4">
+      <div class="col-sm-4 pr-0">
+        <div class="card">
           <div class="card-body text-center">
             <img src="{{ asset('assets/images/tpm.png') }}" alt="avatar"
               class="rounded-circle img-fluid" style="width: 150px;">
@@ -96,8 +96,8 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-8">
-        <div class="card mb-2">
+      <div class="col-sm-8">
+        <div class="card">
           <div class="card-body">
             <div class="row">
               <div class="col-sm-3">
@@ -113,7 +113,7 @@
                 <p class="mb-0">Circle Group</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">{{$data->training_module_group}}</p>
+                <p class="text-muted mb-0">{{$data->name_cg}}</p>
               </div>
             </div>
             <hr>
@@ -145,7 +145,7 @@
             </div> -->
           </div>
         </div>
-        <div class="card mb-2">
+        <div class="card">
           <div class="card-body">
           <!-- <p class="mb-4"><span class="text-primary font-italic me-1">assigment</span> Project Status
                 </p> -->
@@ -231,129 +231,136 @@
               </div>
           </div>
         </div>
-        <div class="card mb-2">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-sm-5">
-                <p class="mb-0">Learning Method</p>
-              </div>
-              <div class="col-sm-7">
-                <p class="text-muted mb-0">{{$data->name}}</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-5">
-                <p class="mb-0">Trainer</p>
-              </div>
-              <div class="col-sm-7">
-                <p class="text-muted mb-0">{{$data->trainer}}</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-5">
-                <p class="mb-0">Date Plan Implementation</p>
-              </div>
-              <div class="col-sm-7">
-                <p class="text-muted mb-0">{{$data->date_plan_implementation}}</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-5">
-                <p class="mb-0">Notes Learning Implementation</p>
-              </div>
-              <div class="col-sm-7">
-                <p class="text-muted mb-0">{!! $data->notes_learning_implementation !!}</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-5">
-                <p class="mb-0">Date Closed</p>
-              </div>
-              <div class="col-sm-7">
-                <p class="text-muted mb-0">{{$data->date_closed}}</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-5">
-                <p class="mb-0">Training Hours</p>
-              </div>
-              <div class="col-sm-7">
-                <p class="text-muted mb-0">{{$data->start}}
-                {{$data->finish}}</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-5">
-                <p class="mb-0">Date Verified</p>
-              </div>
-              <div class="col-sm-7">
-                <p class="text-muted mb-0">{{$data->date_verified}}</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-5">
-                <p class="mb-0">Verified By</p>
-              </div>
-              <div class="col-sm-7">
-                <p class="text-muted mb-0">{{$data->verified_by}}</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-5">
-                <p class="mb-0">Result</p>
-              </div>
-              <div class="col-sm-7">
-              @php
-                        switch($data->result_score){
-                          case 0:
-                            $scoreUrl = asset('assets/images/point/0.png');
-                          break;
-                          case 1:
-                            $scoreUrl = asset('assets/images/point/1.png');
-                          break;
-                          case 2:
-                            $scoreUrl = asset('assets/images/point/2.png');
-                          break;
-                          case 3:
-                            $scoreUrl = asset('assets/images/point/3.png');
-                          break;
-                          case 4:
-                            $scoreUrl = asset('assets/images/point/4.png');
-                          break;
-                          case 5:
-                            $scoreUrl = asset('assets/images/point/5.png');
-                          break;
-                          default:
-                            $scoreUrl = "";
-                          break;
-                        }
-                      @endphp
-                      <img style="width:45px;height:45px;padding:5px" src="{{$scoreUrl}}" alt="">
-                <!-- <p class="text-muted mb-0">{{$data->training_module_group}}</p> -->
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-5">
-                <p class="mb-0">Notes For Result</p>
-              </div>
-              <div class="col-sm-7">
-                <p class="text-muted mb-0">{!!$data->notes_for_result!!}</p>
-              </div>
-            </div>
-            <hr>
-          </div>
-        </div>
       </div>
     </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-6">
+                <div class="row">
+                <div class="col-sm-5">
+                  <p class="mb-0">Learning Method</p>
+                </div>
+                <div class="col-sm-7">
+                  <p class="text-muted mb-0">{{$data->learning_method}}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-5">
+                  <p class="mb-0">Trainer</p>
+                </div>
+                <div class="col-sm-7">
+                  <p class="text-muted mb-0">{{$data->trainer}}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-5">
+                  <p class="mb-0">Date Plan Implementation</p>
+                </div>
+                <div class="col-sm-7">
+                  <p class="text-muted mb-0">{{$data->date_plan_implementation}}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-5">
+                  <p class="mb-0">Notes Learning Implementation</p>
+                </div>
+                <div class="col-sm-7">
+                  <p class="text-muted mb-0">{!! $data->notes_learning_implementation !!}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-5">
+                  <p class="mb-0">Date Closed</p>
+                </div>
+                <div class="col-sm-7">
+                  <p class="text-muted mb-0">{{$data->date_closed}}</p>
+                </div>
+              </div>
+            </div>
+                <div class="col-sm-6">
+                <div class="row">
+                <div class="col-sm-5">
+                  <p class="mb-0">Training Hours</p>
+                </div>
+                <div class="col-sm-7">
+                  <p class="text-muted mb-0">{{$data->start}} S/d {{$data->finish}} WIB</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-5">
+                  <p class="mb-0">Date Verified</p>
+                </div>
+                <div class="col-sm-7">
+                  <p class="text-muted mb-0">{{$data->date_verified}}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-5">
+                  <p class="mb-0">Verified By</p>
+                </div>
+                <div class="col-sm-7">
+                  <p class="text-muted mb-0">{{$data->verified_by}}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-5">
+                  <p class="mb-0">Result</p>
+                </div>
+                <div class="col-sm-7">
+                @php
+                          switch($data->result_score){
+                            case 0:
+                              $scoreUrl = asset('assets/images/point/0.png');
+                            break;
+                            case 1:
+                              $scoreUrl = asset('assets/images/point/1.png');
+                            break;
+                            case 2:
+                              $scoreUrl = asset('assets/images/point/2.png');
+                            break;
+                            case 3:
+                              $scoreUrl = asset('assets/images/point/3.png');
+                            break;
+                            case 4:
+                              $scoreUrl = asset('assets/images/point/4.png');
+                            break;
+                            case 5:
+                              $scoreUrl = asset('assets/images/point/5.png');
+                            break;
+                            default:
+                              $scoreUrl = "";
+                            break;
+                          }
+                        @endphp
+                        <img style="width:45px;height:45px;padding:5px" src="{{$scoreUrl}}" alt="">
+                  <!-- <p class="text-muted mb-0">{{$data->training_module_group}}</p> -->
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-5">
+                  <p class="mb-0">Notes For Result</p>
+                </div>
+                <div class="col-sm-7">
+                  <p class="text-muted mb-0">{!!$data->notes_for_result!!}</p>
+                </div>
+              </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>              
+      </div>
   </div>
 </section>
 

@@ -128,7 +128,7 @@
     {{-- Modal --}}
     <div class="modal fade" id="modal-tambah" tabindex="-1" role="dialog" aria-labelledby="modal-tambahLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-xl" style="max-width: 750px;" role="document">
             <div class="modal-content">
                 <div class="modal-header p-3">
                     <h5 class="modal-title" id="modal-tambahLabel">Add New Curriculum</h5>

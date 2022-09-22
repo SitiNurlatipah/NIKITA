@@ -202,6 +202,7 @@ class Tagging extends Controller
                 "taging_reason.year as year",
                 "taging_reason.period as period",
                 "member.nama_pengguna as name",
+                "cg.nama_cg as name_cg",
                 "curriculum.training_module_group as training_module_group",
                 "curriculum.training_module as training_module",
                 "wt.actual as actual",
@@ -236,6 +237,7 @@ class Tagging extends Controller
                                 ->join("users as member","member.id","wt.id_user")
                                 ->join("competencies_directory as cd","cd.id_directory","wt.id_directory")
                                 ->join("curriculum","curriculum.id_curriculum","cd.id_curriculum")
+                                ->join("cg","cg.id_cg","member.id_cg")
                                 ->first();
             return view("pages.admin.taging-list.detail",compact("data"));
         }
