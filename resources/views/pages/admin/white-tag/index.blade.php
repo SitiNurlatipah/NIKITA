@@ -71,7 +71,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <ul class="nav nav-pills mb-3">
+                <ul class="nav nav-pills">
                     <li class="nav-item active">
                         <a class="nav-link active btn-primary" data-toggle="tab" href="#pills-home" type="button" data-toggle="tooltip" data-placement="top" title="Edit Actual Point">Edit</a>
                     </li>

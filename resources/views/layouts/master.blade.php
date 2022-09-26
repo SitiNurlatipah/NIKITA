@@ -33,7 +33,22 @@
     .expandable-table tr td {
     padding: 10px;
     font-size: 13px;
-}
+    }
+
+    .dataTables_wrapper .dataTable .btn i {
+    font-size : 0.775rem;
+    margin-right:0.0rem;
+    }
+
+    .btn.btn-icon {		   
+    width: 37px;
+    height: 37px;
+    padding: 0;
+    }
+
+    .btn {
+    border-radius: 14px;
+    }
   </style>
 </head>
 

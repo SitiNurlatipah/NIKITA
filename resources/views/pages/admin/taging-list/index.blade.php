@@ -1,20 +1,51 @@
 @extends('layouts.master')
 
 @section('title', 'Tagging List')
+@push('style')
+<style>
+    .accordion {
+        width: 100%;
+    }
 
+    .card-header {
+        padding: 1.2rem !important;
+        border-radius: 40px !important;
+    }
+
+</style>
+@endpush
 @section('content')
- 
+<div class="row">
+    <div class="col-12 grid-margin mb-0">
+        <div id="accordion-white" class="accordion">
+        <div class="card">
+            <div class="card-header card-title" data-toggle="collapse" href="#white-tag-show">
+            White Tag
+            </div>
+                <div id="white-tag-show" class="card-body collapse show pb-1" data-parent="#accordion-white" aria-expanded="true">
+                        <div class="row mb-2">
+                            <label class="col-sm-2 col-form-label pr-0">Circle Group</label>
+                            <div class="col-sm-4 pl-0 m-auto">
+                                <select name="" id="selectCG" class="float-right form-control form-control-sm">
+                                    <option value="all">-- Filter By Cirle Group --</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-6"></div>
+                        </div>
+                </div>
+        </div>
+        </div>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <div class="row">
+                <!-- <div class="row">
                     <p class="card-title ml-4">White Tag</p>
-                </div>
-
-
+                </div> -->
                 @if(Auth::user()->peran_pengguna == '1')
-                <ul class="nav nav-pills">
+                <ul class="nav nav-pills pb-0">
                         <li class="nav-item active">
                             <a class="nav-link active btn-primary" data-toggle="tab" href="#pills-home" type="button">White Tag CG</a>
                         </li>
@@ -22,12 +53,15 @@
                         <a class="nav-link btn-primary" data-toggle="tab" href="#pills-profile" type="button">White Tag ALL</a>
                     </li>
                 </ul>
+                        </div>
                 <div class="row">
                     <div class="col-12 flex">
                         <div class="tab-pane container fade in active show" id="pills-home">
                         @if(Auth::user()->peran_pengguna == '1')
                         <button class="btn btn-inverse-success mb-2 btn-sm float-right" data-toggle="modal" data-target="#modal-export"><i class="icon-file"></i> Export to Excel</button>
-                        @endif    
+                        @endif
+                        
+
                         <div class="table-responsive">
                                 <table class="display expandable-table table-striped table-hover" id="table-taging-list" style="width:100%">
                                     <thead>

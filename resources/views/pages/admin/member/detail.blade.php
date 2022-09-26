@@ -1,7 +1,7 @@
 <style>
 .account-settings .user-profile {
     margin: 0 0 1rem 0;
-    padding-bottom: 1rem;
+    /* padding-bottom: 1rem; */
     text-align: center;
 }
 .account-settings .user-profile .user-avatar {
@@ -34,7 +34,7 @@
 .account-settings .about p {
     font-size: 0.825rem;
 }
-.form-control {
+.form-control form-control-sm {
     border: 1px solid #cfd1d8;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
@@ -74,7 +74,7 @@
         <div class="row gutters">
         <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 pl-0">
           <div class="card h-100">
-            <div class="card-body">
+            <div class="card-body pl-0 pr-0 pb-2">
               <div class="account-settings">
                 <div class="user-profile">
                   <div class="user-avatar">
@@ -86,14 +86,14 @@
                         $url = asset('assets/images/faces/face0.png');
                     }
                 @endphp
-                <img src="{{$url}}" style="height: 180px;width:180px;" class="rounded-circle img-thumbnail m-auto" />
+                <img src="{{$url}}" style="height: 160px;width:160px;" class="rounded-circle img-thumbnail m-auto" />
                     {{-- <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Maxwell Admin"> --}}
                   </div>
                   <h5 class="user-name">{{$user->nama_pengguna}}</h5>
                   <h6 class="user-email">{{ $user->nama_cg }}</h6>
                 </div>
               </div>
-              <div class="text-primary mb-3">
+              <div class="text-primary">
                 <h5 class="text-center">Curriculum Close</h5>
               </div>
               <div class="row">
@@ -115,25 +115,25 @@
                   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                     <div class="form-group">
                       <label for="nik">NIK</label>
-                      <input type="text" class="form-control" id="nik" placeholder="nik" value="{{$user->nik}}" disabled>
+                      <input type="text" class="form-control form-control-sm" id="nik" placeholder="nik" value="{{$user->nik}}" disabled>
                     </div>
                   </div>
                   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                     <div class="form-group">
                       <label for="role">Role</label>
-                      <input type="text" class="form-control" id="role" placeholder="peran pengguna" value="{{$user->role}}" disabled>
+                      <input type="text" class="form-control form-control-sm" id="role" placeholder="peran pengguna" value="{{$user->role}}" disabled>
                     </div>
                   </div>
                   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                     <div class="form-group">
                       <label for="tgl_masuk">Join Date</label>
-                      <input type="text" class="form-control" id="tgl_masuk" placeholder="Enter tgl_masuk number" value="{{ $user->tgl_masuk }}" disabled>
+                      <input type="text" class="form-control form-control-sm" id="tgl_masuk" placeholder="Enter tgl_masuk number" value="{{ $user->tgl_masuk }}" disabled>
                     </div>
                   </div>
                   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                     <div class="form-group">
                       <label for="email">Email</label>
-                      <input type="email" class="form-control" id="email" placeholder="email" value="{{ $user->email }}" disabled>
+                      <input type="email" class="form-control form-control-sm" id="email" placeholder="email" value="{{ $user->email }}" disabled>
                     </div>
                   </div>
                 </div>
@@ -144,25 +144,25 @@
                   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                     <div class="form-group">
                       <label for="jabatan">Job Title</label>
-                      <input type="name" class="form-control" id="jabatan" placeholder="Enter jabatan" value="{{$user->nama_job_title}}" disabled>
+                      <input type="name" class="form-control form-control-sm" id="jabatan" placeholder="Enter jabatan" value="{{$user->nama_job_title}}" disabled>
                     </div>
                   </div>
                   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                     <div class="form-group">
                       <label for="Level">Level</label>
-                      <input type="name" class="form-control" id="Level" placeholder="Enter Level" value="{{$user->nama_level}}" disabled>
+                      <input type="name" class="form-control form-control-sm" id="Level" placeholder="Enter Level" value="{{$user->nama_level}}" disabled>
                     </div>
                   </div>
                   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                     <div class="form-group">
                       <label for="Department">Department</label>
-                      <input type="text" class="form-control" id="Department" placeholder="Enter Department" value="{{$user->nama_department}}" disabled>
+                      <input type="text" class="form-control form-control-sm" id="Department" placeholder="Enter Department" value="{{$user->nama_department}}" disabled>
                     </div>
                   </div>
                   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                     <div class="form-group">
                       <label for="sd">Sub Department</label>
-                      <input type="text" class="form-control" id="sd" placeholder="sd Code" value="{{$user->nama_subdepartment}}" disabled>
+                      <input type="text" class="form-control form-control-sm" id="sd" placeholder="sd Code" value="{{$user->nama_subdepartment}}" disabled>
                     </div>
                   </div>
                 </div>

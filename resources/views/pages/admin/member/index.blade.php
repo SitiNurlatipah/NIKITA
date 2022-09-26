@@ -295,17 +295,17 @@
 <div class="modal fade" id="modal-detail" tabindex="-1" role="dialog" aria-labelledby="modal-detail" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header p-3">
                     <h4 class="modal-title" id="myModalLabel17">Detail Employee</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body" id="bodyDetail" style="padding: 20px 26px">
+                <div class="modal-body pb-0 pt-0" id="bodyDetail">
                     
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <div class="modal-footer p-2">
+                    <button type="button" class="btn text-white btn-secondary" data-dismiss="modal">Close</button>
                     {{-- <a href="" class="btn btn-danger">Hapus</a> --}}
                 </div>
             </div>

@@ -202,18 +202,15 @@ h4 {
       </div>
       @endforeach
     <div class="modal fade" id="modal-detail-user" tabindex="-1" role="dialog" aria-labelledby="modal-detail-user" aria-hidden="true">
-      <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
-          <div class="modal-header" style="padding: 15px">
+          <div class="modal-header p-3">
             <h4 class="modal-title" id="myModalLabel17">Detail Employee</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body" id="bodyDetail" style="padding: 20px 26px"></div>
-          {{-- <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div> --}}
+          <div class="modal-body pb-2 pt-0" id="bodyDetail"></div>
         </div>
       </div>
     </div>
