@@ -22,7 +22,7 @@
             <div class="card-header card-title" data-toggle="collapse" href="#white-tag-show">
             White Tag
             </div>
-            @if(!Auth::user()->peran_pengguna == 3)
+            @if(Auth::user()->peran_pengguna == '1')
                 <div id="white-tag-show" class="card-body collapse show pb-1" data-parent="#accordion-white" aria-expanded="true">
                         <div class="row mb-2">
                             <label class="col-sm-2 col-form-label pr-0">Circle Group</label>

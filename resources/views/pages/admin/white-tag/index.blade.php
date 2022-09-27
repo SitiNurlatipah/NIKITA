@@ -43,7 +43,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
             <div class="card-header card-title" data-toggle="collapse" href="#graphgen">
             Mapping Competencies
             </div>
-            @if(!Auth::user()->peran_pengguna == '3')
+            @if(Auth::user()->peran_pengguna == '1')
                 <div id="graphgen" class="card-body collapse show pb-1" data-parent="#accordion-gen" aria-expanded="true">
                         <div class="row mb-0">
                             <label class="col-sm-2 col-form-label pr-0">Circle Group</label>
