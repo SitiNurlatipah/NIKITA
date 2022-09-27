@@ -22,17 +22,19 @@
             <div class="card-header card-title" data-toggle="collapse" href="#white-tag-show">
             White Tag
             </div>
+            @if(!Auth::user()->peran_pengguna == 3)
                 <div id="white-tag-show" class="card-body collapse show pb-1" data-parent="#accordion-white" aria-expanded="true">
                         <div class="row mb-2">
                             <label class="col-sm-2 col-form-label pr-0">Circle Group</label>
                             <div class="col-sm-4 pl-0 m-auto">
-                                <select name="" id="selectCG" class="float-right form-control form-control-sm">
+                                <select name="" id="get-cg" class="float-right form-control form-control-sm">
                                     <option value="all">-- Filter By Cirle Group --</option>
                                 </select>
                             </div>
                             <div class="col-sm-6"></div>
                         </div>
                 </div>
+                @endif    
         </div>
         </div>
     </div>
@@ -45,96 +47,112 @@
                     <p class="card-title ml-4">White Tag</p>
                 </div> -->
                 @if(Auth::user()->peran_pengguna == '1')
-                <ul class="nav nav-pills pb-0">
+                    <ul class="nav nav-pills pb-0">
                         <li class="nav-item active">
-                            <a class="nav-link active btn-primary" data-toggle="tab" href="#pills-home" type="button">White Tag CG</a>
+                            <a class="nav-link active btn-primary" data-toggle="tab" href="#pills-home" type="button">White Tag ALL</a>
                         </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn-primary" data-toggle="tab" href="#pills-profile" type="button">White Tag ALL</a>
-                    </li>
-                </ul>
-                        </div>
-                <div class="row">
-                    <div class="col-12 flex">
-                        <div class="tab-pane container fade in active show" id="pills-home">
-                        @if(Auth::user()->peran_pengguna == '1')
-                        <button class="btn btn-inverse-success mb-2 btn-sm float-right" data-toggle="modal" data-target="#modal-export"><i class="icon-file"></i> Export to Excel</button>
-                        @endif
-                        
-
-                        <div class="table-responsive">
-                                <table class="display expandable-table table-striped table-hover" id="table-taging-list" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>No Taging</th>
-                                            <th>Employee Name</th>
-                                            <th>Skill Category</th>
-                                            <th>Competency</th>
-                                            <th>Level</th>
-                                            <!-- <th>Competenc Group</th> -->
-                                            <th>Actual</th>
-                                            <th>Target</th>
-                                            <th>Gap</th>
-                                            <th style="width: max-content" class="text-center">Tagging Status</th>
-                                            <th style="width: max-content" class="text-center">Action</th>
-                                        </tr> 
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="tab-pane container fade" id="pills-profile">
-                            @if(Auth::user()->peran_pengguna == '1')
-                                <button class="btn btn-inverse-success mb-2 btn-sm float-right" data-toggle="modal" data-target="#modal-export-cg"><i class="icon-file"></i> Export to Excel</button>
-                            @endif
-                            <div class="table-responsive">
-                                <table class="display expandable-table table-striped table-hover" id="table-taging-list-cg" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>No Taging</th>
-                                            <th>Employee Name</th>
-                                            <th>Skill Category</th>
-                                            <th>Competency</th>
-                                            <th>Level</th>
-                                            <!-- <th>Competenc Group</th> -->
-                                            <th>Actual</th>
-                                            <th>Target</th>
-                                            <th>Gap</th>
-                                            <th style="width: max-content" class="text-center">Tagging Status</th>
-                                            <th style="width: max-content" class="text-center">Action</th>
-                                        </tr> 
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
-                            </div>
+                        <li class="nav-item">
+                            <a class="nav-link btn-primary" data-toggle="tab" href="#pills-profile" type="button">White Tag CG</a>
+                        </li>
+                    </ul>
+                    <div class="row">
+                        <div class="col-12 flex">
+                                <div class="tab-pane container fade in active show" id="pills-home">
+                                @if(Auth::user()->peran_pengguna == '1')
+                                    <button class="btn btn-inverse-success mb-2 btn-sm float-right" data-toggle="modal" data-target="#modal-export"><i class="icon-file"></i> Export to Excel</button>
+                                @endif
+                                    <div class="table-responsive">
+                                            <table class="display expandable-table table-striped table-hover" id="table-taging-list" style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>No Taging</th>
+                                                        <th>Employee Name</th>
+                                                        <th>Skill Category</th>
+                                                        <th>Competency</th>
+                                                        <th>Level</th>
+                                                        <!-- <th>Competenc Group</th> -->
+                                                        <th>Actual</th>
+                                                        <th>Target</th>
+                                                        <th>Gap</th>
+                                                        <th style="width: max-content" class="text-center">Tagging Status</th>
+                                                        <th style="width: max-content" class="text-center">Action</th>
+                                                    </tr> 
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                    </div>
+                                </div>
+                                <div class="tab-pane container fade" id="pills-profile">
+                                    @if(Auth::user()->peran_pengguna == '1')
+                                        <button class="btn btn-inverse-success mb-2 btn-sm float-right" data-toggle="modal" data-target="#modal-export-cg"><i class="icon-file"></i> Export to Excel</button>
+                                    @endif
+                                    <div class="table-responsive">
+                                        <table class="display expandable-table table-striped table-hover" id="table-taging-list-cg" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>No Taging</th>
+                                                    <th>Employee Name</th>
+                                                    <th>Skill Category</th>
+                                                    <th>Competency</th>
+                                                    <th>Level</th>
+                                                    <!-- <th>Competenc Group</th> -->
+                                                    <th>Actual</th>
+                                                    <th>Target</th>
+                                                    <th>Gap</th>
+                                                    <th style="width: max-content" class="text-center">Tagging Status</th>
+                                                    <th style="width: max-content" class="text-center">Action</th>
+                                                </tr> 
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
                         </div>
                     </div>
-                </div>
-                @else
-                <div class="container" id="pills-profile">
-                            <div class="table-responsive">
-                                <table class="display expandable-table table-striped table-hover" id="table-taging-list-cg" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>No Taging</th>
-                                            <th>Employee Name</th>
-                                            <th>Skill Category</th>
-                                            <th width="100px">Competency</th>
-                                            <th>Level</th>
-                                            <!-- <th>Competenc Group</th> -->
-                                            <th>Actual</th>
-                                            <th>Target</th>
-                                            <th>Gap</th>
-                                            <th style="width: max-content" class="text-center">Tagging Status</th>
-                                            <th style="width: max-content" class="text-center">Action</th>
-                                        </tr> 
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
-                            </div>
+                @elseif(Auth::user()->peran_pengguna == '2')
+                    <div class="container" id="pills-profile">
+                        <div class="table-responsive">
+                            <table class="display expandable-table table-striped table-hover" id="table-taging-list-cg" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>No Taging</th>
+                                        <th>Employee Name</th>
+                                        <th>Skill Category</th>
+                                        <th width="100px">Competency</th>
+                                        <th>Level</th>
+                                        <!-- <th>Competenc Group</th> -->
+                                        <th>Actual</th>
+                                        <th>Target</th>
+                                        <th>Gap</th>
+                                        <th style="width: max-content" class="text-center">Tagging Status</th>
+                                        <th style="width: max-content" class="text-center">Action</th>
+                                    </tr> 
+                                </thead>
+                                <tbody></tbody>
+                            </table>
                         </div>
+                    </div>
+                @elseif(Auth::user()->peran_pengguna == '3')
+                    <div class="table-responsive">
+                        <table class="display expandable-table table-striped table-hover" id="tbl-tag-member" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>No Taging</th>
+                                    <th>Employee Name</th>
+                                    <th>Skill Category</th>
+                                    <th>Competency</th>
+                                    <th>Level</th>
+                                    <th>Actual</th>
+                                    <th>Target</th>
+                                    <th>Gap</th>
+                                    <th style="width: max-content" class="text-center">Tagging Status</th>
+                                    <th style="width: max-content" class="text-center">Action</th>
+                                </tr> 
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
                 @endif
-
             </div>
         </div>
     </div>
@@ -262,7 +280,14 @@
     })
 
       iniDatatable();
+      getCg();
       tagingCgDataTable();
+      tagMemberDataTable();
+
+      $("#get-cg").change(function(){
+        
+        })
+
       $("#formSubmit").click(function (e) {
           e.preventDefault();
           var tagingForm = $("#formTaging");
@@ -506,6 +531,61 @@
           ]
       });
   }
+  function tagMemberDataTable() {
+        var dtJson = $('#tbl-tag-member').DataTable({
+          ajax: "{{ route('taggingJsonMember') }}?type=member",
+          responsive:true,
+          serverSide: true,
+          processing: true,
+          aaSorting: [
+              [0, "desc"]
+          ],
+          searching: true,
+          dom: '<"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+          displayLength: 10,
+          // lengthMenu: [10, 15, 20],
+          language: {
+              paginate: {
+                  previous: '&nbsp;',
+                  next: '&nbsp;'
+              }
+          },
+          scrollX: true,
+          columns: [
+              {
+                  data: 'noTaging',
+              },
+              {
+                  data: 'employee_name'
+              },
+              {
+                  data: 'skill_category'
+              },
+              {
+                  data: 'training_module'
+              },
+              {
+                  data: 'level'
+              },
+              {
+                  data: 'actual'
+              },
+              {
+                  data: 'target'
+              },
+              {
+                  data: 'actualTarget'
+              },
+              {
+                 data: 'tagingStatus'
+              },
+              {
+                 data: 'action'
+              }
+          ]
+      });
+    }
+
 
     function tagingCgDataTable() {
         var dtJson = $('#table-taging-list-cg').DataTable({
@@ -565,5 +645,25 @@
           ]
       });
     }
+
+    function getCg() {
+            $.ajax({
+                type: "GET",
+                url: "{{ route('get.cg') }}",
+                success: function(res) {
+                    var option = "";
+                    for (let i = 0; i < res.data.length; i++) {
+                        option += '<option value="' + res.data[i].id_cg + '">' + res.data[i].nama_cg + '</option>';
+                    }
+                    $('#get-cg').html();
+                    $('#get-cg').append(option);
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    console.log(xhr);
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            })
+        }
 </script>
 @endpush

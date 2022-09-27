@@ -43,6 +43,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
             <div class="card-header card-title" data-toggle="collapse" href="#graphgen">
             Mapping Competencies
             </div>
+            @if(!Auth::user()->peran_pengguna == '3')
                 <div id="graphgen" class="card-body collapse show pb-1" data-parent="#accordion-gen" aria-expanded="true">
                         <div class="row mb-0">
                             <label class="col-sm-2 col-form-label pr-0">Circle Group</label>
@@ -63,6 +64,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                         </div>
                     </div>
                 </div>
+            @endif    
         </div>
         </div>
       </div>
@@ -71,6 +73,33 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
+            @if(Auth::user()->peran_pengguna == '3')
+            <div class="row">
+                    <div class="col-12 flex">
+                            <div class="table-responsive">
+                                <table class="display expandable-table table-sm table-striped table-hover" id="table-role-member" style="width:100% !important">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Nama Anggota</th>
+                                            <th>No Competency</th>
+                                            <th>Skill Category</th>
+                                            <th>Competency</th>
+                                            <th>Level</th>
+                                            <th>Competency Group</th>
+                                            <th>Start</th>
+                                            <th>Actual</th>
+                                            <th>Target</th>
+                                            <th>Status</th>
+                                            <th>Keterangan</th>
+                                        </tr> 
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                    </div>
+                </div>
+            @else
                 <ul class="nav nav-pills">
                     <li class="nav-item active">
                         <a class="nav-link active btn-primary" data-toggle="tab" href="#pills-home" type="button" data-toggle="tooltip" data-placement="top" title="Edit Actual Point">Edit</a>
@@ -128,6 +157,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                         </div>
                     </div>
                 </div>
+            @endif
             </div>
         </div>
     </div>
@@ -148,7 +178,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                 <input type="hidden" id="user_id" name="user_id" value="">
                 <div class="modal-body">
                     <div class="table-responsive">
-                        <table class=" display expandable-table table-striped table-hover" id="tableEdit" style="width:100%">
+                        <table class="display expandable-table table-striped table-hover" id="tableEdit" style="width:100%">
                             <thead>
                                 <tr>
                                     <th rowspan="2" class="text-center">No</th>
@@ -193,7 +223,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
             </div>
             <div class="modal-body">
                 <div class="table-responsive">
-                    <table class=" display expandable-table table-striped table-hover" id="table-detail" style="width:100%">
+                    <table class="display expandable-table table-striped table-hover" id="table-detail" style="width:100%">
                         <thead>
                             <tr>
                                 <th class="text-center">No</th>
@@ -255,10 +285,22 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
         });
     })
 
+    var peran_pengguna = "{{Auth::user()->peran_pengguna}}"
+    // if (peran_pengguna = 1){
+    //     chartSkillCategory();
+    //     getCg();
+    //     whiteTagAllDataTable();
+    //     initDatatable();
+    // }else if(peran_pengguna = 2){
+        
+    // }else if(peran_pengguna = 3){
+        
+    // }
     chartSkillCategory();
+    getCg();
     whiteTagAllDataTable();
     initDatatable();
-    getCg();
+    whiteTagDataTableRoleMember();
     $('[data-toggle="tooltip"]').tooltip({
         animation: true,
         placement: "top",
@@ -465,6 +507,69 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
           ],
       })
   }
+
+  function whiteTagDataTableRoleMember(){
+    var dtJson = $('#table-role-member').DataTable({
+          ajax: "{{ route('whiteTagRoleMember') }}",
+          autoWidth: false,
+          serverSide: true,
+          processing: true,
+          aaSorting: [
+              [0, "desc"]
+          ],
+          searching: true,
+          dom: '<"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+          displayLength: 20,
+          lengthMenu: [20, 30, 50],
+          language: {
+              paginate: {
+                  // remove previous & next text from pagination
+                  previous: '&nbsp;',
+                  next: '&nbsp;'
+              }
+          },
+          scrollX: false,
+          columns: [
+              {
+                  data: 'DT_RowIndex', name: 'DT_RowIndex'
+              },
+              {
+                  data: 'nama_pengguna'
+              },
+              {
+                  data: 'no_training_module'
+              },
+              {
+                  data: 'skill_category'
+              },
+              {
+                  data: 'training_module'
+              },
+              {
+                  data: 'level'
+              },
+              {
+                data: 'compGroupName'
+              },
+              {
+                  data: 'start'
+              },
+              {
+                  data: 'actual'
+              },
+              {
+                  data:'target'
+              },
+              {
+                  data:'tagingStatus'
+              },
+              {
+                  data:'ket'
+              }
+          ],
+      })
+  }
+
 
   function whiteTagAllDataTable(){
     var dtJson = $('#table-white-tag-all').DataTable({

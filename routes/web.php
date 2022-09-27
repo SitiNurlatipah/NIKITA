@@ -51,6 +51,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::prefix("tagging-list")->group(function () {
         Route::get('/', 'Tagging@index')->name('TagList');
         Route::get('/tagging-json','Tagging@tagingJson')->name('taggingJson');
+        Route::get('/tagging-member','Tagging@tagingJsonMember')->name('taggingJsonMember');
         Route::get('/form','Tagging@formTaggingList')->name('tagingForm');
         Route::post('/action','Tagging@actionTagingList')->name('actionTagingList');
         Route::get('/detail','Tagging@detail')->name('tagingDetail');
@@ -75,6 +76,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/', 'WhiteTag@index')->name('WhiteTag');
         Route::get('/white-tag-json', 'WhiteTag@whiteTagJson')->name('memberJson');
         Route::get('/white-tag-all-json', 'WhiteTag@whiteTagAll')->name('whiteTagAll');
+        Route::get('/white-tag-member', 'WhiteTag@whiteTagRoleMember')->name('whiteTagRoleMember');
         Route::get('/white-tag-all-export','WhiteTag@exportWhiteTagAll')->middleware(['isAdmin'])->name('exportWhiteTagAll');
         Route::get('/form','WhiteTag@formWhiteTag')->name("formWhiteTag");
         Route::post('/action','WhiteTag@actionWhiteTag')->name("actionWhiteTag");

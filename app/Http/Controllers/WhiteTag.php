@@ -166,6 +166,131 @@ class WhiteTag extends Controller
         ->make(true);
     }
 
+    public function whiteTagRoleMember(Request $request)
+    {
+        $id = Auth::user()->id;
+        $select = [
+            "nama_pengguna","no_training_module","skill_category","training_module","level","training_module_group","start","actual","target","compGroup.name as compGroupName", "white_tag.keterangan as ket",
+            DB::raw("(IF(actual < target,'Open','Close' )) as tagingStatus")
+        ];
+        $data = WhiteTagModel::select($select)
+                ->join("users","users.id","white_tag.id_user")
+                ->join("competencies_directory AS cd","cd.id_directory","white_tag.id_directory")
+                ->join("curriculum AS crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->join("competencie_groups as compGroup","compGroup.id","crclm.training_module_group")
+                ->join("skill_category AS sc","sc.id_skill_category","crclm.id_skill_category")
+                // ->whereRaw("white_tag.actual >= cd.target AND white_tag.actual > 0 AND white_tag.start >= 0")
+                ->where("users.id", $id)
+                ->orderBy("tagingStatus")
+                ->get();
+                
+        return Datatables::of($data)
+        ->addIndexColumn()
+        ->editColumn('start', function ($row) {
+            switch($row->start){
+                case 0:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->start.'" class="mx-auto"><img class="img-thumbnail mx-auto tooltip-info" src="'.asset('assets/images/point/0.png').'"></div>';
+                break;
+                case 1:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->start.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/1.png').'"></div>';
+                break;
+                case 2:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->start.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/2.png').'"></div>';
+                break;
+                case 3:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->start.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/3.png').'"></div>';
+                break;
+                case 4:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->start.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/4.png').'"></div>';
+                break;
+                case 5:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->start.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/5.png').'"></div>';
+                break;
+                    
+            }
+            return $icon;
+        })
+        ->editColumn('actual', function ($row) {
+            switch($row->actual){
+                case 0:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->actual.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/0.png').'"></div>';
+                break;
+                case 1:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->actual.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/1.png').'"></div>';
+                break;
+                case 2:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->actual.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/2.png').'"></div>';
+                break;
+                case 3:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->actual.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/3.png').'"></div>';
+                break;
+                case 4:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->actual.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/4.png').'"></div>';
+                break;
+                case 5:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->actual.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/5.png').'"></div>';
+                break;
+                    
+            }
+            return $icon;
+        })
+        ->editColumn('target', function ($row) {
+            switch($row->target){
+                case 0:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->target.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/0.png').'"></div>';
+                break;
+                case 1:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->target.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/1.png').'"></div>';
+                break;
+                case 2:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->target.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/2.png').'"></div>';
+                break;
+                case 3:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->target.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/3.png').'"></div>';
+                break;
+                case 4:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->target.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/4.png').'"></div>';
+                break;
+                case 5:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->target.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/5.png').'"></div>';
+                break;
+                    
+            }
+            return $icon;
+        })
+        ->addColumn('tagingStatus', function ($row) {
+                if (isset($row->tagingStatus)) {
+                    if ($row->tagingStatus == 'Close') {
+                        $label = '<span class="badge badge-success">' . $row->tagingStatus . '</span>';
+                        return $label;
+                    }elseif ($row->tagingStatus == 'Open') {
+                        $label = '<span class="badge badge-danger text-white">' . $row->tagingStatus . '</span>';
+                        return $label;
+                    }else{
+                        $label = '<span class="badge badge-secondary text-white">' . $row->tagingStatus . '</span>';
+                        return $label;
+                    }
+
+                    // switch ($row->tagingStatus) {
+                    //     case "Closeed":
+                    //         $label = '<span class="badge badge-success">"' . $row->tagingStatus . '"</span>';
+                    //         return $label;
+                    //         break;
+                    //     case "Follow Up":
+                    //         $label = '<span class="badge badge-secondary">"' . $row->tagingStatus . '"</span>';
+                    //         return $label;
+                    //         break;
+                    //     default:
+                    //         return '';
+                    // }
+                }
+            })
+            
+        ->addIndexColumn()
+        ->rawColumns(['start','actual','target','tagingStatus'])
+        ->make(true);
+    }
+
     public function exportWhiteTagAll()
     {
         $dateTime = date("d-m-Y H:i");        
