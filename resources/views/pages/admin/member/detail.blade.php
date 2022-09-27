@@ -55,6 +55,7 @@
 
 </style>
 @php
+
         $a = 0;
         $b = 0;
         $c = 0;
@@ -68,6 +69,11 @@
           }elseif($counting[$i]->level == "I"){
             $c = $counting[$i]->cnt;
           }
+        }
+
+        $total_open = 0;
+        for ($i=0; $i < count($data_open) ; $i++) { 
+          $total_open += $data_open[$i]->cnt; 
         }
       @endphp
       <div class="container">
@@ -184,7 +190,7 @@
         var areaData = {
           labels: ["Basic","Intermediate","Advence"],
           datasets: [{
-              data: [{{$b}},{{$c}},{{$a}}, "4"],
+              data: [{{$b}},{{$c}},{{$a}}, {{ $total_open }}],
               backgroundColor: [
                 "#4B49AC","#FFC100", "#248AFD", "#EEEEEE"
               ],
@@ -221,7 +227,7 @@
             text.push('<p class="mb-0">{{$a}}</p>');
             text.push('</div>');
             text.push('<div class="d-flex justify-content-between mx-4 mx-xl-5 mt-3"><div class="d-flex align-items-center"><div class="mr-3" style="width:20px; height:20px; border-radius: 50%; background-color:#DDDDDD"></div><p class="mb-0">Total White Tag Open</p></div>');
-            text.push('<p class="mb-0">4</p>');
+            text.push('<p class="mb-0">{{$total_open}}</p>');
             text.push('</div>');
           text.push('</div>');
           return text.join("");

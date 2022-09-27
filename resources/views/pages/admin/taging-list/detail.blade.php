@@ -150,7 +150,7 @@
           <!-- <p class="mb-4"><span class="text-primary font-italic me-1">assigment</span> Project Status
                 </p> -->
               <div class="row">
-                <div class="col-md-5">
+                <div class="col-md-7">
                 <div class="col-sm-12 rounded border d-flex mb-2">
                   <label class="col-form-label pl-1 col-sm-7">Existing</label>
                   <div>
@@ -214,7 +214,21 @@
                   </div>
                 </div>
                 </div>
-                <div class="col-md-7">
+                <div class="col-md-5">
+                    <div class="col-sm-12 rounded border mb-2 d-flex">
+                    <label class="col-sm-7 col-form-label">Value</label>
+                    <div class="col-sm-5 m-auto">
+                      <p>{{$data->actual}}</p>
+                    </div>
+                  </div>
+                  <div class="col-sm-12 rounded border mb-2 d-flex">
+                  <label class="col-sm-7 col-form-label">Value</label>
+                    <div class="col-sm-5 m-auto">
+                      <p>{{$data->target}}</p>
+                    </div>
+                </div>
+                </div>
+                <!-- <div class="col-md-7">
                     <div class="col-sm-12 rounded border mb-2 d-flex">
                     <label class="col-sm-5 col-form-label">Date Open</label>
                     <div class="col-sm-7 m-auto">
@@ -227,7 +241,7 @@
                       <p>{{$data->due_date}}</p>
                     </div>
                 </div>
-                </div>
+                </div> -->
               </div>
           </div>
         </div>
@@ -265,8 +279,8 @@
                   <p class="text-muted mb-0">{{$data->date_plan_implementation}}</p>
                 </div>
               </div>
-              <hr>
-              <div class="row">
+              <!-- <hr> -->
+              <!-- <div class="row">
                 <div class="col-sm-5">
                   <p class="mb-0">Notes Learning Implementation</p>
                 </div>
@@ -282,10 +296,10 @@
                 <div class="col-sm-7">
                   <p class="text-muted mb-0">{{$data->date_closed}}</p>
                 </div>
-              </div>
+              </div> -->
             </div>
                 <div class="col-sm-6">
-                <div class="row">
+                <!-- <div class="row">
                 <div class="col-sm-5">
                   <p class="mb-0">Training Hours</p>
                 </div>
@@ -293,7 +307,7 @@
                   <p class="text-muted mb-0">{{$data->start}} S/d {{$data->finish}} WIB</p>
                 </div>
               </div>
-              <hr>
+              <hr> -->
               <div class="row">
                 <div class="col-sm-5">
                   <p class="mb-0">Date Verified</p>

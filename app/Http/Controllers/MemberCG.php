@@ -181,6 +181,7 @@ class MemberCG extends Controller
                     ->leftJoin("cg","cg.id_cg","users.id_cg")
                     ->where("id",$request->id)
                     ->first();
+
         $counting = WhiteTagModel::select(DB::raw("COUNT(*) as cnt"),"level")
                                 ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
                                 ->join("users",function ($join) use ($request){
@@ -195,8 +196,23 @@ class MemberCG extends Controller
                                  ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
                                  ->groupBy("level")
                                  ->get();
+            $select_open = [
+            "nama_pengguna","no_training_module",
+            DB::raw("COUNT(*) as cnt", "(IF(actual < target,'Open','Close' )) as tagingStatus")
+        ];                        
+        $data_open = WhiteTagModel::select($select_open)
+            ->join("users","users.id","white_tag.id_user")
+            ->join("competencies_directory AS cd","cd.id_directory","white_tag.id_directory")
+            ->join("curriculum AS crclm","crclm.id_curriculum","cd.id_curriculum")
+            ->join("competencie_groups as compGroup","compGroup.id","crclm.training_module_group")
+            ->join("skill_category AS sc","sc.id_skill_category","crclm.id_skill_category")
+            // ->whereRaw("white_tag.actual >= cd.target AND white_tag.actual > 0 AND white_tag.start >= 0")
+            ->whereRaw("white_tag.actual < cd.target")
+            ->where("users.id", $request->id)
+            ->get();      
+            
 
-        return view('pages.admin.member.detail',compact('user','counting'));
+        return view('pages.admin.member.detail',compact('user','counting', 'data_open'));
     }
 
     public function getDivisi()

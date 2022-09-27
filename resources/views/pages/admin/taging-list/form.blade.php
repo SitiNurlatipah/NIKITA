@@ -6,17 +6,30 @@
   @if(isset($taging->id_taging_reason))
     <input type="hidden" name="id_taging_reason" value="{{$taging->id_taging_reason}}">
   @endif
-  <div class="col-md-3 mb-3">
+  <div class="col-md-4 mb-3">
       <label for="year">Tahun</label>
       <input type="text" class="form-control form-control-sm year" name="year" placeholder="Tahun" id="year" value="{{$taging->year ?? ''}}" required >
       <div class="invalid-feedback" id="feed-back-year"></div>
   </div>
-  <div class="col-md-3 mb-3">
+  <div class="col-md-4 mb-3">
       <label for="period">Periode</label>
       <input type="text" class="form-control form-control-sm" name="period" placeholder="Masukan Periode" id="period" value="{{$taging->period ?? ''}}" required readonly style="background-color: unset">
       <div class="invalid-feedback" id="feed-back-period"></div>
     </div>
-    <div class="col-md-3 mb-3">
+    <div class="col-md-4 mb-3">
+        <label for="date_plan_implementation">Tanggal Implementasi</label>
+        <input type="text" name="date_plan_implementation" class="form-control form-control-sm" id="date_plan_implementation" value="{{$taging->date_plan_implementation ?? ''}}" placeholder="dd-mm-yyyy" required>
+        <div class="invalid-feedback" id="feed-back-date-plan-implementation"></div>
+        <script>
+            $("#date_plan_implementation").datepicker({
+                language: "en",
+                dateFormat: "dd-mm-yyyy",
+                toggleSelected: true,
+                position:'bottom left'
+            });
+        </script>
+    </div>
+    <!-- <div class="col-md-3 mb-3">
         <label for="date_open">Tanggal Pembukaan</label>
         <input type="text" class="form-control form-control-sm" name="date_open" id="date_open" value="{{$taging->date_open ?? ''}}" required placeholder="dd-mm-yyyy">
         <div class="invalid-feedback" id="feed-back-date-open"></div>
@@ -28,8 +41,8 @@
                 position:'bottom left'
             });
         </script>
-    </div>
-    <div class="col-md-3 mb-3">
+    </div> -->
+    <!-- <div class="col-md-3 mb-3">
         <label for="due_date">Tanggal Jatuh Tempo</label>
         <input type="text" class="form-control form-control-sm" name="due_date" id="due_date" value="{{$taging->due_date ?? ''}}" required placeholder="dd-mm-yyyy">
         <div class="invalid-feedback" id="feed-back-due-date"></div>
@@ -41,8 +54,8 @@
                 position:'bottom left'
             });
         </script>
-    </div>
-    <div class="col-md-3 mb-3">
+    </div> -->
+    <div class="col-md-4 mb-3">
         <label for="learning_method">Learning Method</label>
         <select name="learning_method" id="learning_method" class="form-control form-control-sm" required>
             <option value="">Pilih Learning Method</option>
@@ -56,25 +69,12 @@
         </select>
         <div class="invalid-feedback" id="feed-back-learning-method"></div>
     </div>
-    <div class="col-md-3 mb-3">
+    <div class="col-md-4 mb-3">
         <label for="trainer">Pelatih</label>
         <input type="text" name="trainer" class="form-control form-control-sm" placeholder="Masukan Pelatih" id="trainer" value="{{$taging->trainer ?? ''}}" required>
         <div class="invalid-feedback" id="feed-back-trainer"></div>
     </div>
-    <div class="col-md-3 mb-3">
-        <label for="date_plan_implementation">Tanggal Rencana Implementasi</label>
-        <input type="text" name="date_plan_implementation" class="form-control form-control-sm" id="date_plan_implementation" value="{{$taging->date_plan_implementation ?? ''}}" placeholder="dd-mm-yyyy" required>
-        <div class="invalid-feedback" id="feed-back-date-plan-implementation"></div>
-        <script>
-            $("#date_plan_implementation").datepicker({
-                language: "en",
-                dateFormat: "dd-mm-yyyy",
-                toggleSelected: true,
-                position:'bottom left'
-            });
-        </script>
-    </div>
-    <div class="col-md-3 mb-3">
+    <!-- <div class="col-md-3 mb-3">
         <label for="date_closed">Tanggal Penutupan</label>
         <input type="text" name="date_closed" class="form-control form-control-sm" id="date_closed" value="{{$taging->date_closed ?? ''}}" placeholder="dd-mm-yyyy" required>
         <div class="invalid-feedback" id="feed-back-date-closed"></div>
@@ -86,14 +86,14 @@
                 position:'bottom left'
             });
         </script>
-    </div>
-    <div class="col-md-12 mb-3">
+    </div> -->
+    <!-- <div class="col-md-12 mb-3">
         <label for="notes_learning_implementation">Catatan Implementasi</label>
         <textarea class="form-control form-control-sm" name="notes_learning_implementation" id="notes_learning_implementation" cols="10" rows="5">{!!$taging->notes_learning_implementation ?? ""!!}</textarea>
         <div class="invalid-feedback" id="feed-back-notes-learning-implementation"></div>
-    </div>
+    </div> -->
 </div>
-<div class="form-row">
+<!-- <div class="form-row">
     <div class="col-md-12 mb-2">
         <b>Time</b>
     </div>
@@ -112,7 +112,7 @@
         <input type="text" class="form-control form-control-sm" name="duration" placeholder="Durasi" id="duration" value="{{$taging->duration ?? ''}}" readonly>
         <div class="invalid-feedback" id="feed-back-duration"></div>
     </div>
-</div>
+</div> -->
 <div class="form-row">
     <div class="col-md-12 mb-2">
         <b>Result</b>
