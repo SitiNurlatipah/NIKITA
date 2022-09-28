@@ -43,13 +43,23 @@ class Dashboard extends Controller
             ->where('id_cg', '=', $cg)
             ->groupBy('id_cg')
             ->get();
-        $cg = Auth::user()->id_cg;
 
-        $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+        $cg = Auth::user()->id_cg;
+        $id = Auth::user()->id;
+        if(Auth::user()->peran_pengguna == '3'){
+            $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+            ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+            ->where('id', $id)
+            // ->orderBy('nik', 'ASC')
+            ->get(['users.*', 'dp.*', 'jt.*']);
+        }else {
+            $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
             ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
             ->where('id_cg', $cg)
             ->orderBy('nik', 'ASC')
-        ->get(['users.*', 'dp.*', 'jt.*']);
+            ->get(['users.*', 'dp.*', 'jt.*']);
+        }
+
         return view('pages.admin.dashboard', compact(
             'data',
             'jumlah',
