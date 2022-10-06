@@ -79,6 +79,7 @@
                 <option value="1" {{($user->peran_pengguna == '1') ? 'selected' : ''}} >Admin</option>
                 <option value="2" {{($user->peran_pengguna == '2') ? 'selected' : ''}} >CG Leader</option>
                 <option value="3" {{($user->peran_pengguna == '3') ? 'selected' : ''}} >Pengguna</option>
+                <option value="4" {{($user->peran_pengguna == '4') ? 'selected' : ''}} >Atasan</option>
             </select>
             <div class="invalid-feedback" id="feed-back-peran-pengguna-edit"></div>
         </div>

@@ -140,6 +140,7 @@
                                     <option value="1">Admin</option>
                                     <option value="2">CG Leader</option>
                                     <option value="3">Pengguna</option>
+                                    <option value="4">Atasan</option>
                                 </select>
                                 <div class="invalid-feedback" id="feed-back-peran-pengguna"></div>
                             </div>
