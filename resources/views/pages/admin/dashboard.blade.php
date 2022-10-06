@@ -80,9 +80,12 @@ h4 {
                 }
                 else if(Auth::user()->peran_pengguna == 2){
                   echo 'CG Leader';
+                } 
+                else if(Auth::user()->peran_pengguna == 3){
+                  echo 'Member';
                 }
                 else{
-                  echo 'Member';
+                  echo 'Atasan';
                 }
             @endphp
           </span></h6>
