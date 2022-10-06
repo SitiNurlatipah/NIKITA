@@ -45,6 +45,7 @@ class Dashboard extends Controller
             ->get();
 
         $cg = Auth::user()->id_cg;
+        $dp= Auth::user()->id_department;
         $id = Auth::user()->id;
         if(Auth::user()->peran_pengguna == '3'){
             $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
@@ -52,7 +53,13 @@ class Dashboard extends Controller
             ->where('id', $id)
             // ->orderBy('nik', 'ASC')
             ->get(['users.*', 'dp.*', 'jt.*']);
-        }else {
+        }else if(Auth::user()->peran_pengguna == '4'){
+            $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+            ->where('users.id_department', $dp)
+            ->orderBy('nik', 'ASC')
+            ->get(['users.*', 'dp.*']);
+        }
+        else {
             $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
             ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
             ->where('id_cg', $cg)
