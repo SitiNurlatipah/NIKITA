@@ -152,6 +152,26 @@
                             <tbody></tbody>
                         </table>
                     </div>
+                @elseif(Auth::user()->peran_pengguna == '4')
+                    <div class="table-responsive">
+                            <table class="display expandable-table table-striped table-hover" id="tbl-tag-atasan" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>No Taging</th>
+                                        <th>Employee Name</th>
+                                        <th>Skill Category</th>
+                                        <th>Competency</th>
+                                        <th>Level</th>
+                                        <th>Actual</th>
+                                        <th>Target</th>
+                                        <th>Gap</th>
+                                        <th style="width: max-content" class="text-center">Tagging Status</th>
+                                        <th style="width: max-content" class="text-center">Action</th>
+                                    </tr> 
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
                 @endif
             </div>
         </div>
@@ -285,7 +305,6 @@
       tagMemberDataTable();
 
       $("#get-cg").change(function(){
-        
         })
 
       $("#formSubmit").click(function (e) {
