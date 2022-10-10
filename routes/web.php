@@ -182,4 +182,22 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/create', 'TargetController@store')->name('target.store');
         Route::post('/delete','TargetController@destroy')->name('target.destroy');
     });
+
+    Route::prefix("superman")->group(function () {
+        Route::get('/', 'SupermanController@index')->name('superman.index');
+        Route::post('/create', 'SupermanController@store')->name('superman.store');
+        Route::post('/delete','SupermanController@destroy')->name('superman.destroy');
+    });
+
+    Route::prefix("champion")->group(function () {
+        Route::get('/', 'ChampionController@index')->name('champion.index');
+        Route::post('/create', 'ChampionController@store')->name('champion.store');
+        Route::post('/delete','ChampionController@destroy')->name('champion.destroy');
+    });
+
+    Route::prefix("management-system")->group(function () {
+        Route::get('/', 'ManagementSystemController@index')->name('system.index');
+        Route::post('/create', 'ManagementSystemController@store')->name('system.store');
+        Route::post('/delete','ManagementSystemController@destroy')->name('system.destroy');
+    });
 });

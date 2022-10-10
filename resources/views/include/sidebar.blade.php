@@ -67,19 +67,19 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{ route('superman.index') }}">
                     <i class="icon-paper menu-icon"></i>
                     <span class="menu-title">Competencies Superman</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{ route('champion.index') }}">
                     <i class="icon-paper menu-icon"></i>
                     <span class="menu-title">Competencies 4.0</span>
                 </a>
             </li>  
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{ route('system.index') }}">
                     <i class="icon-paper menu-icon"></i>
                     <span class="menu-title">Management System</span>
                 </a>
