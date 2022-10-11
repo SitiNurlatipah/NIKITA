@@ -64,7 +64,7 @@
                                             <th>Level</th>
                                             <th>Competency Group</th>
                                             <th>Competency Description</th>
-                                            <th style="min-width: 650px">Job Title</th>
+                                            <th>Job Title</th>
                                             <th width="15%">Action</th>
                                         </tr>
                                     </thead>
@@ -79,28 +79,7 @@
                                                 <td>{{ $data->compGroupName }}</td>
                                                 <td>{{ $data->training_module_desc }}</td>
                                                 <td>
-                                                    @php
-                                                        $jobs = explode(",",$data->job_title);
-                                                    @endphp
-                                                    <ul>
-                                                        @foreach ($jobs as $job)
-                                                           {{ $job.', '}}
-                                                        @endforeach
-                                                        {{-- @php
-                                                            $string = strip_tags(implode($jobs));
-                                                            if (strlen($string) > 500) {
-
-                                                                // truncate string
-                                                                $stringCut = substr($string, 0, 500);
-                                                                $endPoint = strrpos($stringCut, ' ');
-
-                                                                //if the string doesn't contain any space then it will cut without word basis.
-                                                                $string = $endPoint? substr($stringCut, 0, $endPoint) : substr($stringCut, 0);
-                                                                $string .= '... <a href="/this/story">Read More</a>';
-                                                            }
-                                                            echo $string;
-                                                        @endphp --}}
-                                                    </ul>
+                                                    <button class="btn btn-inverse-info btn-icon btn-hide-list" data-job="{{ $data->job_title }}" data-toggle="modal" data-target="#modal-detail-job"><i class="icon-eye"></i></button>
                                                 </td>
                                                 <td>
                                                     <button data-id="{{ $data->id_curriculum }}" onclick="editdata(this)"
@@ -219,6 +198,24 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modal-detail-job" tabindex="-1" role="dialog" aria-labelledby="modal-editLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header p-3">
+                    <h5 class="modal-title" id="modal-editLabel">Detail Job Title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul id="tampil-job">
+                    </ul> 
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="modal-cr-hapus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel17"
         aria-hidden="true">
         <div class="modal-dialog">
@@ -257,6 +254,18 @@
         });
     </script>
     <script>
+        $('.btn-hide-list').click(function() {
+            var data = $(this).data('job');
+            var data = data.split(",")
+
+            let txt = "";
+            for (x in data) {
+                txt += '<li>'+ data[x] + '</li>'
+            }
+            document.getElementById("tampil-job").innerHTML = txt;
+        })
+
+
         $('#table-cr').DataTable();
 
         function editPost(event) {
