@@ -196,8 +196,17 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     Route::prefix("management-system")->group(function () {
+        Route::get('/master', 'ManagementSystemController@indexMaster')->name('master.system.index');
+        Route::post('/master-create', 'ManagementSystemController@storeMaster')->name('master.system.store');
+        Route::post('/master-delete','ManagementSystemController@destroyMaster')->name('master.system.destroy');
+
         Route::get('/', 'ManagementSystemController@index')->name('system.index');
         Route::post('/create', 'ManagementSystemController@store')->name('system.store');
         Route::post('/delete','ManagementSystemController@destroy')->name('system.destroy');
+    });
+
+    Route::prefix("master-management-system")->group(function(){
+        Route::get('/', 'ManagementSystemController@indexMaster')->name('master.system.index');
+        Route::get('/get', 'ManagementSystemController@getSystem')->name('master.system.get');
     });
 });

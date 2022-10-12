@@ -966,7 +966,7 @@
                 datasets: [{
                 data: totalMultiSkill,
                 backgroundColor: bgMultiSkill,
-                borderColor: bMultiSkill,
+                borderColor: '#ffffff',
                 }],
 
                 labels: nameMultiSkill

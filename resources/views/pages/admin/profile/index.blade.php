@@ -9,7 +9,7 @@
               <p class="card-title">Profile</p>
               <div class="row">
                 <div class="col-12">
-                  @include('pages.admin.member.detail',["user"=>$user,"counting"=>$counting])
+                  @include('pages.admin.member.detail',["user"=>$user,"counting"=>$counting, "data_open"=>$data_open])
                 </div>
               </div>
           </div>

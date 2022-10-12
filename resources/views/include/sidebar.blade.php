@@ -79,11 +79,18 @@
                 </a>
             </li>  
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('system.index') }}">
-                    <i class="icon-paper menu-icon"></i>
+                <a class="nav-link" data-toggle="collapse" href="#management-system" aria-expanded="false" aria-controls="management-system">
+                    <i class="icon-layout menu-icon"></i>
                     <span class="menu-title">Management System</span>
+                    <i class="menu-arrow"></i>
                 </a>
-            </li> 
+                <div class="collapse" id="management-system">
+                    <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('master.system.index') }}">Data Management System</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('system.index') }}">Kelola Management System</a></li>
+                    </ul>
+                </div>
+            </li>
         @elseif(Auth::user()->peran_pengguna == 2)
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('Curriculum') }}">

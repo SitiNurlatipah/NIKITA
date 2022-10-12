@@ -188,7 +188,7 @@
     <script>
       $(document).ready(function () {
         var areaData = {
-          labels: ["Basic","Intermediate","Advence"],
+          labels: ["Basic","Intermediate","Advence", "Total Open"],
           datasets: [{
               data: [{{$b}},{{$c}},{{$a}}, {{ $total_open }}],
               backgroundColor: [
