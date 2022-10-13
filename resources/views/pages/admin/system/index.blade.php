@@ -185,7 +185,37 @@
             var user = $(this).data('user');
             var system = $(this).data('system');
             modalTitle.text('Edit target');
-
+            $.ajax({
+                url: "{{ route('Member.get') }}",
+                type: 'GET',
+                dataType: 'JSON',
+                success: function(response) {
+                    $('#user').empty();
+                    response.data.forEach(el => {
+                        if (el.id == user) {
+                            $('#user').append('<option selected value="' + el.id + '">' + el.nama_pengguna + '</option>');
+                        } else {
+                            $('#user').append('<option value="' + el.id +
+                                '">' + el.nama_pengguna + '</option>');
+                        }
+                    });
+                }
+            })
+            $.ajax({
+                url: "{{ route('master.system.get') }}",
+                type: 'GET',
+                dataType: 'JSON',
+                success: function(response) {
+                    $('#system').empty();
+                    response.data.forEach(el => {
+                        if (el.id_system == system) {
+                            $('#system').append('<option selected value="' + el.id_system + '">' + el.nama_system + '</option>');
+                        } else {
+                            $('#system').append('<option value="' + el.id_system + '">' + el.nama_system + '</option>');
+                        }
+                    });
+                }
+            })
             $('#id').val(id);
             $('#user').val(user);
             $('#system').val(system);

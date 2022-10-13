@@ -67,20 +67,34 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('superman.index') }}">
-                    <i class="icon-paper menu-icon"></i>
-                    <span class="menu-title">Competencies Superman</span>
+                <a class="nav-link" data-toggle="collapse" href="#superman" aria-expanded="false" aria-controls="superman">
+                    <i class="icon-command menu-icon"></i>
+                    <span class="menu-title">Superman</span>
+                    <i class="menu-arrow"></i>
                 </a>
+                <div class="collapse" id="superman">
+                    <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('superman.index') }}">Curriculum Superman</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('superman.index') }}">Kelola Superman</a></li>
+                    </ul>
+                </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('champion.index') }}">
-                    <i class="icon-paper menu-icon"></i>
+                <a class="nav-link" data-toggle="collapse" href="#champion" aria-expanded="false" aria-controls="champion">
+                    <i class="icon-cloud menu-icon"></i>
                     <span class="menu-title">Competencies 4.0</span>
+                    <i class="menu-arrow"></i>
                 </a>
+                <div class="collapse" id="champion">
+                    <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('champion.index') }}">Curriculum 4.0</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('champion.index') }}">Kelola Champion 4.0</a></li>
+                    </ul>
+                </div>
             </li>  
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#management-system" aria-expanded="false" aria-controls="management-system">
-                    <i class="icon-layout menu-icon"></i>
+                    <i class="icon-target menu-icon"></i>
                     <span class="menu-title">Management System</span>
                     <i class="menu-arrow"></i>
                 </a>
