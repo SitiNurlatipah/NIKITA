@@ -570,3 +570,7 @@
 .icon-ellipsis:before {
   content: "\e129";
 }
+
+.icon-refresh-cw:before {
+  content: "\e130";
+}

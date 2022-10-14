@@ -66,7 +66,8 @@
                 <div class="row">
                     <p class="card-title ml-4">Employee Data</p>
                     <div class="col-md mb-2">
-                        <a class="btn btn-sm btn-success float-right" href="javascript:void(0)" id="createNewItem" data-toggle="modal" data-target="#modal-tambah"><i class="icon-plus"></i> Add User</a>
+                        <a class="btn btn-sm btn-success float-right ml-2" href="javascript:void(0)" id="createNewItem" data-toggle="modal" data-target="#modal-tambah"><i class="icon-plus"></i> Add User</a>
+                        <a class="btn btn-sm btn-success float-right btnRotation" href="javascript:void(0)" id="btnRotation" data-toggle="modal" data-target="#modal-rotation"><i class="icon-repeat"></i> Rotation User</a>
                     </div>
                 </div>
                 <div class="row">
@@ -313,12 +314,73 @@
         </form>
     </div>
 </div>
-@endsection
 
+<div class="modal fade" id="modal-rotation" tabindex="-1" role="dialog" aria-labelledby="modal-tambahLabel" aria-hidden="true" style="overflow: auto !important">
+    <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+          <div class="modal-header p-3">
+              <h5 class="modal-title" id="modal-tambahLabel">User Rotation</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="" method="POST" id="formRotation">
+                @csrf
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="col">
+                            <label>Pilih Karyawan</label>
+                            <select id="user-rotation" class="form-control form-control-sm" name="user-rotation">
+                                <option value="">Pilih User</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row mt-3">
+                        <div class="col">
+                            <label>Pilih Job Title Baru</label>
+                            <select id="jabatan-rotation" class="form-control form-control-sm" name="jabatan-rotation">
+                                <option value="">Pilih Jabatan</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row mt-3">
+                        <div class="col">
+                            <label>Pilih CG Baru</label>
+                            <select id="cg-rotation" class="form-control form-control-sm" name="cg-rotation">
+                                <option value="">Pilih Cirle Group</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Rotate</button>
+                </div>
+            </form>
+      </div>
+    </div>
+</div>
+@endsection
+@push('style')
+    <link rel="stylesheet" href="{{ asset('assets/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+@endpush
 @push('script')
 <script src="{{asset('assets/js/cropper-v2.js')}}"></script>
+<script src="{{ asset('assets/select2/js/select2.min.js') }}"></script>
+
 <script type="text/javascript">
-    
+     $('#user-rotation').select2({
+            theme:'bootstrap4'
+     });
+     $('#jabatan-rotation').select2({
+            theme:'bootstrap4'
+     });
+     $('#cg-rotation').select2({
+            theme:'bootstrap4'
+     });
+     
+
     var role = '{{ Auth::user()->peran_pengguna}}';
 
     function initDatatable() {
@@ -716,65 +778,65 @@
                 });
             },
             error:function (request,status,error) {
-                if(message == "The given data was invalid."){
-                    if(errors.nik){ 
-                        $( '#feed-back-nik-edit' ).html(errors.nik[0]); 
+                if(request.responseJSON.message == "The given data was invalid."){
+                    if(request.responseJSON.errors.nik){ 
+                        $( '#feed-back-nik-edit' ).html(request.responseJSON.errors.nik[0]); 
                         $( '#feed-back-nik-edit' ).show();
                         $( '#nik-edit' ).addClass('is-invalid');
                     }
-                    if(errors.peran_pengguna){
-                        $( '#feed-back-peran-pengguna-edit' ).html(errors.peran_pengguna-edit[0]); 
+                    if(request.responseJSON.errors.peran_pengguna){
+                        $( '#feed-back-peran-pengguna-edit' ).html(request.responseJSON.errors.peran_pengguna-edit[0]); 
                         $( '#feed-back-peran-pengguna-edit' ).show();
                         $( '#peran-pengguna-edit' ).addClass('is-invalid');
                     }
-                    if(errors.tgl_masuk){
-                        $( '#feed-back-entry-edit' ).html(errors.tgl_masuk[0]); 
+                    if(request.responseJSON.errors.tgl_masuk){
+                        $( '#feed-back-entry-edit' ).html(request.responseJSON.errors.tgl_masuk[0]); 
                         $( '#feed-back-entry-edit' ).show();
                         $( '#entry-edit' ).addClass('is-invalid');
                     }
-                    if(errors.nama_pengguna){
-                        $( '#feed-back-nama-pengguna-edit' ).html(errors.nama_pengguna[0]); 
+                    if(request.responseJSON.errors.nama_pengguna){
+                        $( '#feed-back-nama-pengguna-edit' ).html(request.responseJSON.errors.nama_pengguna[0]); 
                         $( '#feed-back-nama-pengguna-edit' ).show();
                         $( '#nama-pengguna-edit' ).addClass('is-invalid');
                     }
-                    if(errors.email){
-                        $( '#feed-back-email-edit' ).html(errors.email[0]); 
+                    if(request.responseJSON.errors.email){
+                        $( '#feed-back-email-edit' ).html(request.responseJSON.errors.email[0]); 
                         $( '#feed-back-email-edit' ).show();
                         $( '#email-edit' ).addClass('is-invalid');
                     }
-                    if(errors.divisi){
-                        $( '#feed-back-divisi-edit' ).html(errors.divisi[0]); 
+                    if(request.responseJSON.errors.divisi){
+                        $( '#feed-back-divisi-edit' ).html(request.responseJSON.errors.divisi[0]); 
                         $( '#feed-back-divisi-edit' ).show();
                         $( '#divisi-edit' ).addClass('is-invalid');
                     }
-                    if(errors.job_title){
-                        $( '#feed-back-jabatan-edit' ).html(errors.job_title[0]); 
+                    if(request.responseJSON.errors.job_title){
+                        $( '#feed-back-jabatan-edit' ).html(request.responseJSON.errors.job_title[0]); 
                         $( '#feed-back-jabatan-edit' ).show();
                         $( '#jabatan-edit' ).addClass('is-invalid');
                     }
-                    if(errors.level){
-                        $( '#feed-back-level-edit' ).html(errors.level[0]); 
+                    if(request.responseJSON.errors.level){
+                        $( '#feed-back-level-edit' ).html(request.responseJSON.errors.level[0]); 
                         $( '#feed-back-level-edit' ).show();
                         $( '#level-edit' ).addClass('is-invalid');
                     }
-                    if(errors.department){
-                        $( '#feed-back-department-edit' ).html(errors.department[0]); 
+                    if(request.responseJSON.errors.department){
+                        $( '#feed-back-department-edit' ).html(request.responseJSON.errors.department[0]); 
                         $( '#feed-back-department-edit' ).show();
                         $( '#department-edit' ).addClass('is-invalid');
                     }
-                    if(errors.sub_department){
-                        $( '#feed-back-sub-department-edit' ).html(errors.sub_department[0]); 
+                    if(request.responseJSON.errors.sub_department){
+                        $( '#feed-back-sub-department-edit' ).html(request.responseJSON.errors.sub_department[0]); 
                         $( '#feed-back-sub-department-edit' ).show();
                         $( '#sub-department-edit' ).addClass('is-invalid');
                     }
-                    if(errors.cg){
-                        $( '#feed-back-cg-edit' ).html(errors.cg[0]); 
+                    if(request.responseJSON.errors.cg){
+                        $( '#feed-back-cg-edit' ).html(request.responseJSON.errors.cg[0]); 
                         $( '#feed-back-cg-edit' ).show();
                         $( '#cg-edit' ).addClass('is-invalid');
                     }
                 }else{
                     Swal.fire({
-                        position: 'top-end',
+                        position: 'center',
                         icon: 'error',
                         title: 'Terjadi kesalahan saat penyimpanan data',
                         showConfirmButton: false,
@@ -807,6 +869,69 @@
         })
         }
     });
+
+    $('#btnRotation').on('click', function() {
+            $('#id').val('');
+            $('#user-rotation').val('');
+            $('#jabatan-rotation').val('');
+            $('#cg-rotation').val('');
+            $.get("{{ route('Member.get') }}", function( response ) {
+                $('#user-rotation').empty();
+                $('#user-rotation').append('<option selected disabled>-- Pilih Karyawan --</option>');
+                response.data.forEach(el => {
+                    $('#user-rotation').append('<option value="' + el.id + '">' + el.nama_pengguna + ' - ' + el.nama_department + '</option>');
+                });
+            });
+            $.get("{{ route('get.jabatan') }}", function( response ) {
+                $('#jabatan-rotation').empty();
+                $('#jabatan-rotation').append('<option selected disabled>-- Pilih Jabatan --</option>');
+                response.data.forEach(el => {
+                    $('#jabatan-rotation').append('<option value="' + el.id_job_title + '">' + el.nama_job_title + '</option>');
+                });
+            });
+            $.get("{{ route('get.cg') }}", function( response ) {
+                $('#cg-rotation').empty();
+                $('#cg-rotation').append('<option selected disabled>-- Pilih Circle Group --</option>');
+                response.data.forEach(el => {
+                    $('#cg-rotation').append('<option value="' + el.id_cg + '">' + el.nama_cg + '</option>');
+                });
+            });
+            modal.modal('show');
+    })
+
+    $("#formRotation").submit(function (e) {
+        e.preventDefault();
+        var form = $("#formRotation")
+        const url = form.attr("action");
+        var formData = form.serialize();
+        $.ajax({
+            url:url,
+            type:"post",
+            cache: false,
+            data:formData,
+            success:function (data) {
+                $("#modal-edit").modal('hide');
+                $('#table-cg').DataTable().destroy();
+                initDatatable();
+                Swal.fire({
+                    position:'top-end',
+                    icon:'success',
+                    title:data.message,
+                    showConfirmButton:false,
+                    timer:1500
+                });
+            },
+            error:function (request,status,error) {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Terjadi kesalahan saat penyimpanan data',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+            }
+        })
+    })
 
     $(document).ready(function() {
         var $modal = $('#modal');
