@@ -172,13 +172,28 @@
                     </div>
                   </div>
                 </div>
-                {{-- <div class="row gutters">
-                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <div class="text-right">
-                      <button type="button" id="submit" name="submit" class="btn btn-primary">Update</button>
-                    </div>
+                <div class="row gutters">
+                <div class="col-md-3">
+                    @if($user->is_competent == 1)
+                    <img src="{{ asset('assets/images/system.png')}}" style="width: 150px; padding:15px 0 0 15px" alt="Maxwell Admin">
+                    @endif
                   </div>
-                </div> --}}
+                  <div class="col-md-3">
+                    @if($user->is_system_management == 1)
+                    <img src="{{ asset('assets/images/system.png')}}" style="width: 150px; padding:15px 0 0 15px" alt="Maxwell Admin">
+                    @endif
+                  </div>
+                  <div class="col-md-3">
+                    @if($user->is_champion == 1)
+                    <img src="{{ asset('assets/images/champion.png')}}" style="width: 150px; padding:15px 0 0 15px" alt="Maxwell Admin">
+                    @endif
+                  </div>
+                  <div class="col-md-3">
+                    @if($user->is_superman == 1)
+                    <img src="{{ asset('assets/images/superman.png')}}" style="width: 150px; padding:15px 0 0 15px" alt="Maxwell Admin">
+                    @endif
+                  </div>
+                </div> 
               </div>
             </div>
           </div>

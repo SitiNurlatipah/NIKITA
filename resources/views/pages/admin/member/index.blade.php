@@ -324,13 +324,13 @@
                   <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="" method="POST" id="formRotation">
+            <form action="{{ route('Member.rotation') }}" method="POST" id="formRotation">
                 @csrf
                 <div class="modal-body">
                     <div class="form-row">
                         <div class="col">
                             <label>Pilih Karyawan</label>
-                            <select id="user-rotation" class="form-control form-control-sm" name="user-rotation">
+                            <select id="user_rotation" class="form-control form-control-sm" name="user_rotation">
                                 <option value="">Pilih User</option>
                             </select>
                         </div>
@@ -338,7 +338,7 @@
                     <div class="form-row mt-3">
                         <div class="col">
                             <label>Pilih Job Title Baru</label>
-                            <select id="jabatan-rotation" class="form-control form-control-sm" name="jabatan-rotation">
+                            <select id="jabatan_rotation" class="form-control form-control-sm" name="jabatan_rotation">
                                 <option value="">Pilih Jabatan</option>
                             </select>
                         </div>
@@ -346,7 +346,7 @@
                     <div class="form-row mt-3">
                         <div class="col">
                             <label>Pilih CG Baru</label>
-                            <select id="cg-rotation" class="form-control form-control-sm" name="cg-rotation">
+                            <select id="cg_rotation" class="form-control form-control-sm" name="cg_rotation">
                                 <option value="">Pilih Cirle Group</option>
                             </select>
                         </div>
@@ -370,13 +370,13 @@
 <script src="{{ asset('assets/select2/js/select2.min.js') }}"></script>
 
 <script type="text/javascript">
-     $('#user-rotation').select2({
+     $('#user_rotation').select2({
             theme:'bootstrap4'
      });
-     $('#jabatan-rotation').select2({
+     $('#jabatan_rotation').select2({
             theme:'bootstrap4'
      });
-     $('#cg-rotation').select2({
+     $('#cg_rotation').select2({
             theme:'bootstrap4'
      });
      
@@ -435,7 +435,6 @@
         $('#btnHapus').attr('data-id',id);
     })
     
-
     function deleteMember(el) {
         var id = $(el).attr("data-id");
         var token = $("meta[name='csrf-token']").attr("content");
@@ -872,31 +871,31 @@
 
     $('#btnRotation').on('click', function() {
             $('#id').val('');
-            $('#user-rotation').val('');
-            $('#jabatan-rotation').val('');
-            $('#cg-rotation').val('');
+            $('#user_rotation').val('');
+            $('#jabatan_rotation').val('');
+            $('#cg_rotation').val('');
             $.get("{{ route('Member.get') }}", function( response ) {
-                $('#user-rotation').empty();
-                $('#user-rotation').append('<option selected disabled>-- Pilih Karyawan --</option>');
+                $('#user_rotation').empty();
+                $('#user_rotation').append('<option selected disabled>-- Pilih Karyawan --</option>');
                 response.data.forEach(el => {
-                    $('#user-rotation').append('<option value="' + el.id + '">' + el.nama_pengguna + ' - ' + el.nama_department + '</option>');
+                    $('#user_rotation').append('<option value="' + el.id + '">' + el.nama_pengguna + ' - ' + el.nama_department + '</option>');
                 });
             });
             $.get("{{ route('get.jabatan') }}", function( response ) {
-                $('#jabatan-rotation').empty();
-                $('#jabatan-rotation').append('<option selected disabled>-- Pilih Jabatan --</option>');
+                $('#jabatan_rotation').empty();
+                $('#jabatan_rotation').append('<option selected disabled>-- Pilih Jabatan --</option>');
                 response.data.forEach(el => {
-                    $('#jabatan-rotation').append('<option value="' + el.id_job_title + '">' + el.nama_job_title + '</option>');
+                    $('#jabatan_rotation').append('<option value="' + el.id_job_title + '">' + el.nama_job_title + '</option>');
                 });
             });
             $.get("{{ route('get.cg') }}", function( response ) {
-                $('#cg-rotation').empty();
-                $('#cg-rotation').append('<option selected disabled>-- Pilih Circle Group --</option>');
+                $('#cg_rotation').empty();
+                $('#cg_rotation').append('<option selected disabled>-- Pilih Circle Group --</option>');
                 response.data.forEach(el => {
-                    $('#cg-rotation').append('<option value="' + el.id_cg + '">' + el.nama_cg + '</option>');
+                    $('#cg_rotation').append('<option value="' + el.id_cg + '">' + el.nama_cg + '</option>');
                 });
             });
-            modal.modal('show');
+            // $modal.modal('show');
     })
 
     $("#formRotation").submit(function (e) {

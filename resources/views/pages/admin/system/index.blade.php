@@ -48,10 +48,8 @@
                                                         data-target="{{ $item->name }}" data-value="{{ $item->value }}"
                                                         class="btn btn-inverse-success btn-icon delete-button mr-1 mr-1 btnEdit"><i
                                                             class="icon-file menu-icon"></i></button>
-                                                    <button data-id="{{ $item->id }}"
-                                                        class="btn btn-inverse-danger btn-icon mr-1 cr-hapus btnHapus">
-                                                        <i class="icon-trash">
-                                                        </i></button>
+                                                    <button data-id="{{ $item->id }}" class="btn btn-inverse-danger btn-icon mr-1 cr-hapus btnHapus">
+                                                        <i class="icon-trash"></i></button>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -224,6 +222,7 @@
 
         $('body').on('click', '.btnHapus', function() {
             var id = $(this).data('id');
+            console.log(id)
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",

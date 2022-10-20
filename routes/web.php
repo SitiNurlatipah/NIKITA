@@ -24,6 +24,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/member-edit','MemberCG@update')->name('Member.update');
         Route::get('/member-detail', 'MemberCG@detail')->name('Member.detail');
         Route::get('/member-delete/{id}', 'MemberCG@deleteMember')->name('Member.delete');
+        Route::post('/member-rotation', 'MemberCG@memberRotation')->name('Member.rotation');
     });
 
     Route::get('/get-divisi', 'MemberCG@getDivisi')->name('get.divisi');

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\ManagementSystem;
 use App\ManagementSystemToUser;
-use App\Target;
+use App\User;
 use Validator;
 use Illuminate\Http\Request;
 
@@ -53,6 +53,7 @@ class ManagementSystemController extends Controller
                 'nama_system' => request('nama_system'),
                 'description' => request('description')
             ]);
+
              $response = [
                  'code' => 200,
                  'status' => 'success',
@@ -136,6 +137,10 @@ class ManagementSystemController extends Controller
                 'id_user' => request('user'),
                 'id_system' => request('system'),
             ]);
+            $data = User::where('id',request('user'))->update([
+                'is_system_management' => 1,
+            ]);
+
              $response = [
                  'code' => 200,
                  'status' => 'success',
@@ -159,7 +164,7 @@ class ManagementSystemController extends Controller
         }
 
         $id = request('id');
-        Target::where('id_mstu',$id)->delete();
+        ManagementSystemToUser::where('id_mstu',$id)->delete();
 
         $response = [
             'code' => 200,

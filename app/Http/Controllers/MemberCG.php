@@ -14,7 +14,9 @@ use App\CG;
 use App\Level;
 use App\SubDepartment;
 use App\Department;
+use App\WhiteTagHistory;
 use App\WhiteTagModel;
+
 class MemberCG extends Controller
 {
     public function index(Request $request)
@@ -169,7 +171,7 @@ class MemberCG extends Controller
             "id"=>"required|numeric"
         ]);
         $select = [
-            "nama_pengguna","nik","email","gambar",DB::raw("DATE_FORMAT(tgl_masuk,'%d-%m-%y') AS tgl_masuk"),"jt.nama_job_title","divisi.nama_divisi","dprtm.nama_department","s_dprtm.nama_subdepartment","level.nama_level","nama_cg","role"
+            "nama_pengguna","nik","email","gambar",DB::raw("DATE_FORMAT(tgl_masuk,'%d-%m-%y') AS tgl_masuk"),"jt.nama_job_title","divisi.nama_divisi","dprtm.nama_department","s_dprtm.nama_subdepartment","level.nama_level","nama_cg","role", "is_system_management", "is_champion", "is_superman", "is_competent"
         ];
         $user = User::select($select)
                     ->leftJoin("role","role.id_role","peran_pengguna")
@@ -179,6 +181,7 @@ class MemberCG extends Controller
                     ->leftJoin("department as dprtm","dprtm.id_department","users.id_department")
                     ->leftJoin("sub_department as s_dprtm","s_dprtm.id_subdepartment","users.id_sub_department")
                     ->leftJoin("cg","cg.id_cg","users.id_cg")
+                    ->leftJoin("management_system_to_user as mstu","mstu.id_user","users.id")
                     ->where("id",$request->id)
                     ->first();
 
@@ -215,6 +218,71 @@ class MemberCG extends Controller
         return view('pages.admin.member.detail',compact('user','counting', 'data_open'));
     }
 
+    public function memberRotation(Request $request){
+        $messages = [
+            'required' => ':attribute wajib diisi !',
+        ];
+
+        $this->validate($request,[
+            "user_rotation" => "required",
+            "jabatan_rotation" => "required",
+            "cg_rotation" => "required",
+        ],$messages);
+
+        $id_user = $request->user_rotation;
+        $id_job_title = $request->jabatan_rotation;
+        $id_cg = $request->cg_rotation;
+
+        try {
+        DB::beginTransaction();
+        
+        //get data white tag
+        $data_whitetag =  DB::table('white_tag')
+                            ->leftJoin('competencies_directory', 'white_tag.id_directory', '=' ,'competencies_directory.id_directory' )
+                            ->leftJoin('users', 'white_tag.id_user', '=' ,'users.id')
+                            ->leftJoin('cg', 'users.id_cg', '=' ,'cg.id_cg')
+                            ->leftJoin('curriculum', 'competencies_directory.id_curriculum', '=' ,'curriculum.id_curriculum')
+                            ->leftJoin('job_title', 'competencies_directory.id_job_title', '=' ,'job_title.id_job_title')
+                            ->where('white_tag.id_user', $id_user)
+                            ->select('white_tag.id_user', 'white_tag.id_directory', 'curriculum.training_module', 'users.nama_pengguna', 'white_tag.start', 'white_tag.actual', 'competencies_directory.target', 'white_tag.keterangan', 'job_title.nama_job_title')
+                            ->get();
+                            //insert data into white tag history
+                            foreach ($data_whitetag as $history) {
+                                $history = WhiteTagHistory::create(
+                                    [
+                                        'id_user' => $history->id_user,
+                                        'id_directory' => $history->id_directory,
+                                        'id_curriculum' => $history->training_module,
+                                        'nama_pengguna' => $history->nama_pengguna,
+                                        'start' => $history->start,
+                                        'actual' => $history->actual,
+                                        'target' => $history->target,
+                                        'keterangan' => $history->keterangan,
+                                        'nama_job_title' => $history->nama_job_title,
+                                    ]
+                                );
+                                $history->save();
+                            }                    
+        // delete data table white tag
+        $deleteWT = WhiteTagModel::where('id_user', $id_user);
+        $deleteWT->delete();                    
+        // Update data user
+        $data = [
+            'id_job_title' => $id_job_title,
+            'id_cg' => $id_cg,
+        ];
+        User::where('id',$id_user)->update($data);
+            
+
+        DB::commit();
+            return response()->json(['success' => $messages]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['errors' => $e->getMessage(),'message'=>'error'],402);
+        
+        }    
+    }
+
     public function getDivisi()
     {
         $provinsi = Divisi::all();
@@ -224,7 +292,6 @@ class MemberCG extends Controller
             'success' => true,
         ]);
     }
-
 
     public function getLevel()
     {
