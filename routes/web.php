@@ -186,6 +186,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::prefix("superman")->group(function () {
         Route::get('/', 'SupermanController@index')->name('superman.index');
+        Route::get('/get', 'SupermanController@getSuperman')->name('superman.get');
         Route::post('/create', 'SupermanController@store')->name('superman.store');
         Route::post('/delete','SupermanController@destroy')->name('superman.destroy');
     });

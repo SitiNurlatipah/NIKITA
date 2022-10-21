@@ -227,7 +227,7 @@ class MemberCG extends Controller
             "user_rotation" => "required",
             "jabatan_rotation" => "required",
             "cg_rotation" => "required",
-        ],$messages);
+        ]);
 
         $id_user = $request->user_rotation;
         $id_job_title = $request->jabatan_rotation;
@@ -275,10 +275,10 @@ class MemberCG extends Controller
             
 
         DB::commit();
-            return response()->json(['success' => $messages]);
+            return response()->json(['code' => 200, 'message' => 'Rotation successfully'], 200);
         } catch (\Exception $e) {
             DB::rollback();
-            return response()->json(['errors' => $e->getMessage(),'message'=>'error'],402);
+            return response()->json(['errors' => $e->getMessage(),'message'=> $messages],402);
         
         }    
     }

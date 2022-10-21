@@ -2,91 +2,95 @@
 
 namespace App\Http\Controllers;
 
+use App\CurriculumSuperman;
+use App\CurriculumSupermanToUser;
 use App\Target;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class SupermanController extends Controller
 {
     public function index()
     {
         $items = Target::with('jobtitle')->orderBy('name','ASC')->get();
-        return view('pages.admin.target.index',compact('items'));
+        return view('pages.admin.superman.index-curriculum',compact('items'));
     }
 
-    public function store()
+    public function getSuperman()
+    {
+        $superman = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+            ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+            ->where('is_superman', 1)
+            ->get(['users.id', 'users.nama_pengguna', 'users.id_department', 'dp.nama_department', 'jt.id_job_title', 'jt.nama_job_title']);
+
+        return response()->json($superman);
+    }
+
+    public function store(Request $request)
     {
         $validator = Validator::make(request()->all(),[
-            'job_title' => ['required'],
-            'nama_target' => ['required'],
-            'value' => ['required','numeric']
+            'id_skill_category' => ['required'],
+            'curriculum_superman' => ['required'],
+            'curriculum_group' => ['required'],
+            'curriculum_desc' => ['required'],
+            'target' => ['required'],
         ]);
 
         if($validator->fails())
         {
             $response = [
-                'code' => 400,
+                'code' => 422,
                 'status' => 'error',
                 'message' => $validator->errors()->first(),
-                'data' => NULL
+                'data' => $validator->errors()
             ];
             return response()->json($response);
-        }
+        }else {
+            // $data = $this->validate_input_v2($request);
+            DB::beginTransaction();
+            try {
+                $lastId = CurriculumSuperman::orderBy("created_at","desc")->first();
+                if(isset($lastId)){
+                    $number = explode("/",$lastId->no_training_module);
+                    $lastNumber = (int)$number[0];
+                }else{
+                    $lastNumber = 0;
+                }
+                $number = str_pad($lastNumber+1,3,'0',STR_PAD_LEFT); 
+                if($request->id_skill_category == 1){
+                    $noCurriculum = $number."/SUPERMAN/FUNC";
+                }else if($request->id_skill_category == 2){
+                    $noCurriculum = $number."/SUPERMAN/GEN";
+                }
+                if(isset($request->id_job_title) && count($request->id_job_title) > 0){
+                    $curriculum = new CurriculumSuperman();
+                    $curriculum->no_curriculum_ = $noCurriculum;
+                    $curriculum->id_skill_category = $request->id_skill_category;
+                    $curriculum->curriculum_superman = $request->curriculum_superman;
+                    $curriculum->curriculum_group = $request->curriculum_group;
+                    $curriculum->curriculum_desc = $request->curriculum_desc;
+                    $curriculum->target = $request->target;
+                    $curriculum->save();
+                    $insert = [];
+                    for($i = 0;$i < count($request->id_job_title);$i++){
+                        $insert[$i] = [
+                            'id_curriculum_superman' => $curriculum->id_curriculum_superman,
+                            'id_user' => $request->id_user[$i]
+                        ];
+                    }
+                    if(count($insert) > 0){
+                        CurriculumSupermanToUser::insert($insert);
+                    }
 
-        $id = request('id');
-
-        if($id)
-        {
-            // cek apakah sudah ada di database
-            $tc = Target::where('id_job_title',request('job_title'))->where('name',request('nama_target'))->where('value',request('value'))->count();
-            if($tc > 0)
-            {
-                $response = [
-                    'code' => 400,
-                    'status' => 'error',
-                    'message' => 'Target job title sudah ada.',
-                    'data' => NULL
-                ];
-                return response()->json($response);
+                }
+                DB::commit();
+                return response()->json(['code' => 200, 'message' => 'Post Created successfully'], 200);
+            } catch (\Exception $e) {
+                return response()->json(['code' => 422, 'message' => $e->getMessage()], 422);
             }
-            $data = Target::where('id',$id)->update([
-                'id_job_title' => request('job_title'),
-                'name' => request('nama_target'),
-                'value' => request('value')
-            ]);
-            $response = [
-                 'code' => 200,
-                 'status' => 'success',
-                 'message' => 'Target berhasil diupdate.',
-                 'data' => $data
-             ];
-
-        }else{
-            // cek apakah sudah ada di database
-            $tc = Target::where('id_job_title',request('job_title'))->where('name',request('nama_target'))->count();
-            if($tc > 0)
-            {
-                $response = [
-                    'code' => 400,
-                    'status' => 'error',
-                    'message' => 'Target job title sudah ada.',
-                    'data' => NULL
-                ];
-                return response()->json($response);
-            }
-            $data = Target::create([
-                'id_job_title' => request('job_title'),
-                'name' => request('nama_target'),
-                'value' => request('value')
-            ]);
-             $response = [
-                 'code' => 200,
-                 'status' => 'success',
-                 'message' => 'Target berhasil ditambahkan.',
-                 'data' => $data
-             ];
         }
-
-        return response()->json($response);
     }
 
     public function destroy()

@@ -647,7 +647,7 @@
                 $('#table-cg').DataTable().destroy();
                 initDatatable();
                 Swal.fire({
-                    position:'top-end',
+                    position:'center',
                     icon:'success',
                     title:data.message,
                     showConfirmButton:false,
@@ -720,7 +720,7 @@
                     }
                 }else{
                     Swal.fire({
-                        position: 'top-end',
+                        position: 'center',
                         icon: 'error',
                         title: 'Terjadi kesalahan saat penyimpanan data',
                         showConfirmButton: false,
@@ -909,11 +909,11 @@
             cache: false,
             data:formData,
             success:function (data) {
-                $("#modal-edit").modal('hide');
+                $("#modal-rotation").modal('hide');
                 $('#table-cg').DataTable().destroy();
                 initDatatable();
                 Swal.fire({
-                    position:'top-end',
+                    position:'center',
                     icon:'success',
                     title:data.message,
                     showConfirmButton:false,
@@ -922,7 +922,7 @@
             },
             error:function (request,status,error) {
                     Swal.fire({
-                        position: 'top-end',
+                        position: 'center',
                         icon: 'error',
                         title: 'Terjadi kesalahan saat penyimpanan data',
                         showConfirmButton: false,
@@ -1010,6 +1010,10 @@
             $('.modal-dialog form').attr('action',"{{ route('Member.post') }}");
             // $('input[name="_method"]').remove();
             $('.modal-dialog form')[0].reset();
+        })
+
+        $('.btnRotation').on('click',function () {
+        
         })
     });
 
