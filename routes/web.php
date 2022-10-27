@@ -188,7 +188,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/', 'SupermanController@index')->name('superman.index');
         Route::get('/get', 'SupermanController@getSuperman')->name('superman.get');
         Route::post('/create', 'SupermanController@store')->name('superman.store');
-        Route::post('/delete','SupermanController@destroy')->name('superman.destroy');
+        Route::get('/get-form','SupermanController@getFormEdit')->name('superman.get.form');
+        Route::post('/edit', 'SupermanController@edit')->name('superman.update');
+        Route::get('/delete/{id}','SupermanController@destroy')->name('superman.destroy');
     });
 
     Route::prefix("champion")->group(function () {
@@ -210,5 +212,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::prefix("master-management-system")->group(function(){
         Route::get('/', 'ManagementSystemController@indexMaster')->name('master.system.index');
         Route::get('/get', 'ManagementSystemController@getSystem')->name('master.system.get');
+    });
+
+    Route::prefix("rotation")->group(function(){
+        Route::get('/', 'RotationController@index')->name('rotation.index');
+        Route::get('/get', 'RotationController@getRotation')->name('rotation.get');
     });
 });

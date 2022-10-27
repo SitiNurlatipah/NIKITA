@@ -14,8 +14,10 @@ use App\CG;
 use App\Level;
 use App\SubDepartment;
 use App\Department;
+use App\Rotation;
 use App\WhiteTagHistory;
 use App\WhiteTagModel;
+use Carbon\Carbon;
 
 class MemberCG extends Controller
 {
@@ -232,10 +234,23 @@ class MemberCG extends Controller
         $id_user = $request->user_rotation;
         $id_job_title = $request->jabatan_rotation;
         $id_cg = $request->cg_rotation;
-
         try {
         DB::beginTransaction();
         
+        // id_cg old form users
+        $data_user = DB::table('users')->find($id_user);
+
+        //insert data to history
+        $rotation = Rotation::create(
+            [
+                'id_user' => $id_user,
+                'cg_old' => $data_user->id_cg,
+                'cg_new' => $id_cg,
+                'date' => Carbon::now(),
+            ]
+        );
+        $rotation->save();
+    
         //get data white tag
         $data_whitetag =  DB::table('white_tag')
                             ->leftJoin('competencies_directory', 'white_tag.id_directory', '=' ,'competencies_directory.id_directory' )

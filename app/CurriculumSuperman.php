@@ -8,7 +8,7 @@ class CurriculumSuperman extends Model
 {
     protected $table = 'curriculum_superman';
     protected $fillable = [
-        'id_curriculum_superman', 'no_curriculum_superman', 'curriculum_superman', 'id_skill_category', 'level', 'curriculum_group', 'curriculum_desc', 'created_at', 'updated_at'
+        'id_curriculum_superman', 'no_curriculum_superman', 'curriculum_superman', 'id_skill_category', 'curriculum_group', 'target', 'curriculum_desc', 'created_at', 'updated_at'
     ];
     public $timestamps = true;
 }

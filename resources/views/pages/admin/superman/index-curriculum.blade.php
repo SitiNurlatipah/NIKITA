@@ -8,7 +8,7 @@
             <div class="card">
                 <div class="card-body">
                 <div class="row">
-                    <p class="card-title ml-4">Curriculumn Superman</p>
+                    <p class="card-title ml-4">Curriculum Superman</p>
                     <div class="col-md mb-2">
                             <a class="btn btn-sm btn-success float-right" href="javascript:void(0)" id="createNewItem"
                                 data-toggle="modal" data-target="#modal-tambah"><i class="icon-plus"></i> Add
@@ -18,20 +18,73 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="table-responsive">
-                                <table class="display expandable-table table-striped table-hover" id="table-cr-superman"
-                                    style="width:100%">
+                                <table class="display expandable-table table-striped table-hover" id="table-cr-superman">
                                     <thead>
                                         <tr>
                                             <th>No</th>
+                                            <th>ID Competency</th>
                                             <th>Skill Category</th>
-                                            <th>Competency</th>
+                                            <th>Competency Superman</th>
                                             <th>Competency Group</th>
-                                            <th>Competency Description</th>
                                             <th>Target</th>
+                                            <th>Competency Description</th>
+                                            <th width="15%">Detail</th>
                                             <th width="15%">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    @foreach ($data as $data)
+                                            <tr id="row_{{ $data->id_curriculum_superman }}">
+                                                <th scope="row" class="text-center">{{ $loop->iteration }}</th>
+                                                <td>{{ $data->no_curriculum_superman }}</td>
+                                                <td>{{ $data->skill_category }}</td>
+                                                <td>{{ $data->curriculum_superman }}</td>
+                                                <td>{{ $data->compGroupName }}</td>
+                                                <td>
+                                                    @php
+                                                        switch($data->target){
+                                                        case 0:
+                                                            $target = asset('assets/images/point/0.png');
+                                                        break;
+                                                        case 1:
+                                                            $target = asset('assets/images/point/1.png');
+                                                        break;
+                                                        case 2:
+                                                            $target = asset('assets/images/point/2.png');
+                                                        break;
+                                                        case 3:
+                                                            $target = asset('assets/images/point/3.png');
+                                                        break;
+                                                        case 4:
+                                                            $target = asset('assets/images/point/4.png');
+                                                        break;
+                                                        case 5:
+                                                            $target = asset('assets/images/point/5.png');
+                                                        break;
+                                                        default:
+                                                            $target = "";
+                                                        break;
+                                                        }
+                                                    @endphp
+                                                        <img src="{{$target}}" title="{{$data->target}}" style="width:30px;height:30px" alt="">
+                                                </td>
+                                                <td>{{ $data->curriculum_desc }}</td>
+                                                <td>
+                                                    <button class="btn btn-inverse-info btn-icon btn-detail-user" data-users="{{ $data->users }}" data-toggle="modal" data-target="#modal-detail-user"><i class="icon-eye"></i> </button>
+                                                </td>
+                                                <td>
+                                                    <button data-id="{{ $data->id_curriculum_superman }}" onclick="getFormEdit(this)"
+                                                        class="btn btn-inverse-success btn-icon delete-button mr-1 Edit-button"
+                                                        data-toggle="modal" data-target="#modal-edit" data-toggle="tooltip" data-placement="top" title="Edit Data"><i
+                                                            class="icon-file menu-icon"></i></button>
+                                                    <button data-id="{{ $data->id_curriculum_superman }}"
+                                                        class="btn btn-inverse-danger btn-icon mr-1 cr-hapus"
+                                                        data-toggle="modal" data-target="#modal-hapus" data-toggle="tooltip" data-placement="top" title="Delete Data">
+                                                        <i class="icon-trash">
+                                                        </i></button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -95,7 +148,7 @@
                                 <div class="form-group">
                                 <label for="noModule">Superman Member <small>(Bisa pilih lebih dari 1)</small></label>
                                     <select id="id_user" class="selectpicker form-control form-control-sm"
-                                        name="id_user" data-live-search="true" data-hide-disabled="true" multiple
+                                        name="id_user[]" data-live-search="true" data-hide-disabled="true" multiple
                                         data-actions-box="true">
                                     </select>
                                 </div>
@@ -105,7 +158,7 @@
                             <div class="col-12">
                             <div class="form-group">
                                     <label for="noModule">Competency Description</label>
-                                    <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                                    <textarea class="form-control" id="curriculum_desc" name="curriculum_desc" rows="3"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -121,17 +174,18 @@
 
     <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="modal-editLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-xl" style="max-width: 750px;" role="document">
+        <div class="modal-dialog modal-xl" style="max-width: 1000px;" role="document">
             <div class="modal-content">
                 <div class="modal-header p-3">
-                    <h5 class="modal-title" id="modal-editLabel">Edit Data Kurikulum</h5>
+                    <h5 class="modal-title" id="modal-editLabel">Edit Curriculum Superman</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="" id="formEditCurriculum" method="POST" enctype="multipart/form-data">
+                <form action="" id="formEdit" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <div class="modal-body" id="form-edit"></div>
+                    <div class="modal-body" id="form-edit">
+                    </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" onclick="editPost()">Save</button>
@@ -141,7 +195,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modal-cr-hapus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel17"
+    <div class="modal fade" id="modal-hapus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel17"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -163,32 +217,47 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modal-detail-user" tabindex="-1" role="dialog" aria-labelledby="modal-editLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header p-3">
+                    <h5 class="modal-title" id="modal-editLabel">Detail User Asign</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul id="tampil-user">
+                    </ul> 
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 @push('script')
-<script src="https://cdn.ckeditor.com/4.20.0/standard/ckeditor.js"></script>
     <script type="text/javascript">
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        CKEDITOR.replace('description');
     </script>
     <script>
-        $('.btn-hide-list').click(function() {
-            var data = $(this).data('job');
-            var data = data.split(",")
-
+        $('.btn-detail-user').click(function() {
+            var data = $(this).data('users');
+            var data = data.split(",");
             let txt = "";
             for (x in data) {
                 txt += '<li>'+ data[x] + '</li>'
             }
-            document.getElementById("tampil-job").innerHTML = txt;
+            document.getElementById("tampil-user").innerHTML = txt;
         })
         $('#table-cr-superman').DataTable();
 
         function createPost() {
-            let _url = `{{ route('superman.store') }}`;
+            let _url = "{{ route('superman.store') }}";
             let _token = $('meta[name="csrf-token"]').attr('content');
             const data = $("#formCreate").serialize();
             $.ajax({
@@ -197,7 +266,6 @@
                 data: data,
                 cache: false,
                 success: function(response) {
-                    console.log(response)
                     if (response.code == 200) {
                         Swal.fire({
                             icon: 'success',
@@ -209,7 +277,6 @@
                     $('#no_curriculum_superman').val(''),
                     $('#id_skill_category').val(''),
                     $('#curriculum_superman').val(''),
-                    $('#level').val(''),
                     $('#curriculum_group').val(''),
                     $('#curriculum_desc').val(''),
                     $('#target').val(''),
@@ -217,9 +284,6 @@
                     location.reload();
                 },
                 error: function(err) {
-                    console.log(err)
-                    die();
-                    exit()
                     Swal.fire({
                         icon: 'error',
                         title: err.responseJSON.message,
@@ -230,6 +294,51 @@
             });
         }
 
+        function editPost(event) {
+            var id = $(event).data("id");
+            let _url = "{!! route('superman.update') !!}";
+            var curriculumEditForm = $("#formEdit");
+            var formData = curriculumEditForm.serialize();
+            $.ajax({
+                url: _url,
+                type: "post",
+                data: formData,
+                success: function(response) {
+                    if (response.code == 200) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Your work has been saved',
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                        $('#modal-edit').modal('hide');
+                        location.reload();
+                    }
+                },
+                error: function(err) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: err.responseJSON.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+            });
+        }
+
+        function getFormEdit(el) {
+            var id = $(el).attr("data-id");
+            $.ajax({
+                url: "{!! route('superman.get.form') !!}?id=" + id,
+                mehtod: "get",
+                success: function(html) {
+                    // console.log(html, id)
+                    $("#form-edit").html(html);
+                }
+            })
+        }
+
         $('#table-cr-superman').on('click', '.cr-hapus', function() {
             var id = $(this).data('id');
             $('#btnHapus').attr('data-id', id);
@@ -237,21 +346,31 @@
 
         function deleteCurriculum(el) {
             var id = $(el).attr("data-id");
+            
             var token = $("meta[name='csrf-token']").attr("content");
             $.ajax({
-                url: "curriculum/curriculum-delete/" + id,
+                url: "superman/delete/" + id,
                 mehtod: "delete",
                 data: {
                     "id": id,
                     "_token": token,
                 },
                 success: function(res) {
-                    $("#modal-cr-hapus").modal('hide');
+                    console.log(res)
+                    $("#modal-hapus").modal('hide');
                     window.location.reload();
                     Swal.fire({
                         icon: 'success',
                         title: 'Data berhasil di hapus',
                         showConfirmButton: true,
+                        timer: 1500
+                    })
+                }, error: function(err) {
+                    console.log(err)
+                    Swal.fire({
+                        icon: 'error',
+                        title: err.responseJSON.errors,
+                        showConfirmButton: false,
                         timer: 1500
                     })
                 }
@@ -298,7 +417,7 @@
                 error: function(xhr, ajaxOptions, thrownError) {
                     Swal.fire({
                         icon: 'error',
-                        title: response.responseJSON.errors,
+                        title: xhr ,
                         showConfirmButton: false,
                         timer: 1500
                     })
