@@ -19,27 +19,31 @@
                 <div class="card-body">
                     <p class="card-title">Rotation</p>
                     <div class="row">
-                        <div class="col-md mb-2">
-                            <a class="btn btn-success float-right btnAdd" href="javascript:void(0)" id="createNewItem"><i
-                                    class="icon-plus"></i> Tambah
-                                Target</a>
-                        </div>
-                    </div>
-                    <div class="row">
                         <div class="col-12">
                             <div class="table-responsive">
                                 <table class="display expandable-table table table-striped table-hover" id="table-skill"
                                     style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th width="10">No.#</th>
-                                            <th>Job Title</th>
-                                            <th>Nama Target</th>
-                                            <th>Nilai</th>
-                                            <th width="15%">Action</th>
+                                            <th width="10">No.</th>
+                                            <th>User</th>
+                                            <th>CG Out</th>
+                                            <th>CG In</th>
+                                            <th>Date Rotate</th>
+                                            <th>Detail History</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @foreach($history as $data)
+                                            <th scope="row" class="text-center">{{ $loop->iteration }}</th>
+                                            <td>{{ $data->nama_pengguna }}</td>
+                                            <td><b class="text-danger"><i class="icon-arrow-up text-bold"></i>  {{ $data->nama_cg }}</b></td>
+                                            <td><b class="text-success"><i class="icon-arrow-down text-bold"></i>  {{ $data->cg_old }}</b></td>
+                                            <td>{{ date('d F Y', strtotime($data->date)) }}</td>
+                                            <td>
+                                                <button class="btn btn-inverse-info btn-icon btn-hide-list" data-job="{{ $data->job_title }}" data-toggle="modal" data-target="#modal-detail-job"><i class="icon-eye"></i></button>
+                                            </td>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
