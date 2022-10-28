@@ -44,6 +44,10 @@ class Dashboard extends Controller
             ->groupBy('id_cg')
             ->get();
 
+        $rotate = DB::table('rotation_history')
+            ->select(array(DB::raw('COUNT(cg_old) as cg_out'), DB::raw('COUNT(cg_new) as cg_in')))
+            ->where('cg_old', '=', $cg)
+            ->get();
         $cg = Auth::user()->id_cg;
         $dp= Auth::user()->id_department;
         $id = Auth::user()->id;
@@ -74,6 +78,7 @@ class Dashboard extends Controller
             'jml_cg',
             'total_cg',
             'total_cg_name',
+            'rotate'
         ));
     }
 

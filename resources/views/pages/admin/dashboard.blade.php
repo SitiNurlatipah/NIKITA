@@ -170,7 +170,11 @@ h4 {
           <div class="card card-light-danger">
             <div class="card-body">
               <p class="mb-4">Rotation</p>
-              <p class="fs-30 mb-2">0</p>
+              <div class="row">
+                  <b class="text-white pl-2 pr-2" style="font-size: 24px;"><i class="icon-arrow-up text-bold"></i> OUT {{ $rotate[0]->cg_out }}</b>
+                  <b class="text-white pl-2 pr-2" style="font-size: 24px;"><i class="icon-arrow-down text-bold"></i> IN {{ $rotate[0]->cg_in }}</b>
+              </div>
+              <!-- <p class="fs-30 mb-2"><b class="text-white"></p> -->
               {{-- <p>0.22% (30 days)</p> --}}
             </div>
           </div>
