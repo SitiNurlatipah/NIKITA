@@ -22,6 +22,11 @@ class SupermanController extends Controller
         return view('pages.admin.superman.index-curriculum', compact('data'));
     }
 
+    public function indexKelola(){
+        return view('pages.admin.superman.index');
+
+    }
+
     public function getSuperman()
     {
         $superman = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')

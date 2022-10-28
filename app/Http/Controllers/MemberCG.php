@@ -259,7 +259,7 @@ class MemberCG extends Controller
                             ->leftJoin('curriculum', 'competencies_directory.id_curriculum', '=' ,'curriculum.id_curriculum')
                             ->leftJoin('job_title', 'competencies_directory.id_job_title', '=' ,'job_title.id_job_title')
                             ->where('white_tag.id_user', $id_user)
-                            ->select('white_tag.id_user', 'white_tag.id_directory', 'curriculum.training_module', 'users.nama_pengguna', 'white_tag.start', 'white_tag.actual', 'competencies_directory.target', 'white_tag.keterangan', 'job_title.nama_job_title')
+                            ->select('white_tag.id_user', 'white_tag.id_directory', 'curriculum.id_curriculum', 'curriculum.training_module', 'users.nama_pengguna', 'white_tag.start', 'white_tag.actual', 'competencies_directory.target', 'white_tag.keterangan', 'job_title.id_job_title', 'job_title.nama_job_title')
                             ->get();
                             //insert data into white tag history
                             foreach ($data_whitetag as $history) {
@@ -267,7 +267,9 @@ class MemberCG extends Controller
                                     [
                                         'id_user' => $history->id_user,
                                         'id_directory' => $history->id_directory,
-                                        'id_curriculum' => $history->training_module,
+                                        'id_curriculum' => $history->id_curriculum,
+                                        'id_job_title' => $history->id_job_title,
+                                        'curriculum' => $history->training_module,
                                         'nama_pengguna' => $history->nama_pengguna,
                                         'start' => $history->start,
                                         'actual' => $history->actual,

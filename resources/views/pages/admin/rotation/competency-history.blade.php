@@ -17,34 +17,131 @@
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <p class="card-title">Rotation</p>
+                    <p class="card-title">Competency History</p>
                     <div class="row">
                         <div class="col-12">
                             <div class="table-responsive">
-                                <table class="display expandable-table table table-striped table-hover" id="table-skill"
+                                <table class="display expandable-table table-striped table-hover" id="table-skill"
                                     style="width:100%">
                                     <thead>
                                         <tr>
                                             <th width="10">No.</th>
-                                            <th>User</th>
-                                            <th>CG Out</th>
-                                            <th>CG In</th>
-                                            <th>Date Rotate</th>
-                                            <th>Detail History</th>
+                                            <!-- <th>ID User</th>
+                                            <th>ID Directory</th>
+                                            <th>ID Curriculum</th> -->
+                                            <th>Nama</th>
+                                            <th>Jabatan lama</th>
+                                            <th>Curriculum</th>
+                                            <th>Start</th>
+                                            <th>Actual</th>
+                                            <th>Target</th>
+                                            <th>Keterangan</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($history as $data)
                                         <tr>
                                             <th scope="row" class="text-center">{{ $loop->iteration }}</th>
+                                            <!-- <td>{{ $data->id_user }}</td>
+                                            <td>{{ $data->id_directory }}</td>
+                                            <td>{{ $data->id_curriculum }}</td> -->
                                             <td>{{ $data->nama_pengguna }}</td>
-                                            <td class="bg-danger"><b class="text-white"><i class="icon-arrow-up text-bold"></i>  {{ $data->cg_out }}</b></td>
-                                            <td class="bg-success"><b class="text-white"><i class="icon-arrow-down text-bold"></i>  {{ $data->cg_in }}</b></td>
-                                            <td>{{ date('d F Y', strtotime($data->date)) }}</td>
+                                            <td>{{ $data->nama_job_title }}</td>
+                                            <td>{{ $data->curriculum }}</td>
                                             <td>
-                                                <button class="btn btn-inverse-info btn-icon btn-hide-list" data-job="{{ $data->job_title }}" data-toggle="modal" data-target="#modal-detail-job"><i class="icon-eye"></i></button>
+                                                {{ $data->start }}
+                                                @php
+                                                        switch($data->start){
+                                                        case 0:
+                                                            $start = asset('assets/images/point/0.png');
+                                                        break;
+                                                        case 1:
+                                                            $start = asset('assets/images/point/1.png');
+                                                        break;
+                                                        case 2:
+                                                            $start = asset('assets/images/point/2.png');
+                                                        break;
+                                                        case 3:
+                                                            $start = asset('assets/images/point/3.png');
+                                                        break;
+                                                        case 4:
+                                                            $start = asset('assets/images/point/4.png');
+                                                        break;
+                                                        case 5:
+                                                            $start = asset('assets/images/point/5.png');
+                                                        break;
+                                                        default:
+                                                            $start = "";
+                                                        break;
+                                                        }
+                                                    @endphp
+                                                        <img src="{{$start}}" title="{{$data->start}}" style="width:30px;height:30px" alt="">
                                             </td>
-                                        </tr>   
+                                            <td>
+                                            {{ $data->actual }}
+                                                @php
+                                                        switch($data->actual){
+                                                        case 0:
+                                                            $actual = asset('assets/images/point/0.png');
+                                                        break;
+                                                        case 1:
+                                                            $actual = asset('assets/images/point/1.png');
+                                                        break;
+                                                        case 2:
+                                                            $actual = asset('assets/images/point/2.png');
+                                                        break;
+                                                        case 3:
+                                                            $actual = asset('assets/images/point/3.png');
+                                                        break;
+                                                        case 4:
+                                                            $actual = asset('assets/images/point/4.png');
+                                                        break;
+                                                        case 5:
+                                                            $actual = asset('assets/images/point/5.png');
+                                                        break;
+                                                        default:
+                                                            $actual = "";
+                                                        break;
+                                                        }
+                                                    @endphp
+                                                        <img src="{{$actual}}" title="{{$data->actual}}" style="width:30px;height:30px" alt="">
+                                            </td>
+                                            <td>
+                                            {{ $data->target }}
+
+                                                @php
+                                                        switch($data->target){
+                                                        case 0:
+                                                            $target = asset('assets/images/point/0.png');
+                                                        break;
+                                                        case 1:
+                                                            $target = asset('assets/images/point/1.png');
+                                                        break;
+                                                        case 2:
+                                                            $target = asset('assets/images/point/2.png');
+                                                        break;
+                                                        case 3:
+                                                            $target = asset('assets/images/point/3.png');
+                                                        break;
+                                                        case 4:
+                                                            $target = asset('assets/images/point/4.png');
+                                                        break;
+                                                        case 5:
+                                                            $target = asset('assets/images/point/5.png');
+                                                        break;
+                                                        default:
+                                                            $target = "";
+                                                        break;
+                                                        }
+                                                    @endphp
+                                                        <img src="{{$target}}" title="{{$data->target}}" style="width:30px;height:30px" alt="">
+                                                
+                                            </td>
+                                            <td>{{ $data->keterangan }}</td>
+                                            <!-- <td></td>
+                                            <td><b class="text-success"><i class="icon-arrow-down text-bold"></i>  {{ $data->cg_old }}</b></td>
+                                            <td>{{ date('d F Y', strtotime($data->date)) }}</td> -->
+                                        </tr>
                                         @endforeach
                                     </tbody>
                                 </table>

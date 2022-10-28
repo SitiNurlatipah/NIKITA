@@ -45,7 +45,7 @@
                 <div class="collapse" id="rotation">
                     <ul class="nav flex-column sub-menu">
                     <li class="nav-item"> <a class="nav-link" href="{{ route('rotation.index') }}">History Transaction</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('rotation.index') }}">Competency History</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('comp.history.index') }}">Competency History</a></li>
                     </ul>
                 </div>
             </li>
@@ -88,7 +88,7 @@
                 <div class="collapse" id="superman">
                     <ul class="nav flex-column sub-menu">
                     <li class="nav-item"> <a class="nav-link" href="{{ route('superman.index') }}">Curriculum Superman</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('superman.index') }}">Kelola Superman</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('kelola.superman.index') }}">Kelola Superman</a></li>
                     </ul>
                 </div>
             </li>

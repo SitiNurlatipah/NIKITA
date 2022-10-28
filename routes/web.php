@@ -140,16 +140,16 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
      // jabatan/jobtitle
-     Route::prefix("jabatan")->group(function () {
-         Route::get('/', 'JabatanController@index')->name('jabatan.index');
-         Route::get('/get','JabatanController@get')->name('jabatan.get');
+    Route::prefix("jabatan")->group(function () {
+        Route::get('/', 'JabatanController@index')->name('jabatan.index');
+        Route::get('/get','JabatanController@get')->name('jabatan.get');
         Route::post('/create', 'JabatanController@store')->name('jabatan.store');
         Route::post('/delete','JabatanController@destroy')->name('jabatan.destroy');
     });
 
 
      // grade
-     Route::prefix("grade")->group(function () {
+    Route::prefix("grade")->group(function () {
         Route::get('/', 'Grade@index')->name('grade.index');
         Route::post('/create', 'Grade@store')->name('grade.store');
         Route::post('/delete','Grade@destroy')->name('grade.destroy');
@@ -163,7 +163,7 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
      // level
-     Route::prefix("level")->group(function () {
+    Route::prefix("level")->group(function () {
         Route::get('/', 'LevelController@index')->name('level.index');
         Route::post('/create', 'LevelController@store')->name('level.store');
         Route::post('/delete','LevelController@destroy')->name('level.destroy');
@@ -191,6 +191,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/get-form','SupermanController@getFormEdit')->name('superman.get.form');
         Route::post('/edit', 'SupermanController@edit')->name('superman.update');
         Route::get('/delete/{id}','SupermanController@destroy')->name('superman.destroy');
+
+        Route::get('/kelola/superman', 'SupermanController@indexKelola')->name('kelola.superman.index');
     });
 
     Route::prefix("champion")->group(function () {
@@ -216,6 +218,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::prefix("rotation")->group(function(){
         Route::get('/', 'RotationController@index')->name('rotation.index');
+        Route::get('/comp-history', 'RotationController@indexHistory')->name('comp.history.index');
         Route::get('/get', 'RotationController@getRotation')->name('rotation.get');
     });
 });
