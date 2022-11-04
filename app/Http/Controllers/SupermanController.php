@@ -226,6 +226,7 @@ class SupermanController extends Controller
 
     public function formSuperman(Request $request)
     {
+        dd($request);
         $validator = Validator::make($request->all(),[
             "id" => "requeired|numeric",
             "type" => "required|string|in:functional,general"
@@ -240,19 +241,19 @@ class SupermanController extends Controller
         $select = [
             "curriculum_superman.no_curriculum_superman as no_curriculum_superman",
             "curriculum_superman.curriculum_superman as curriculum_superman","curriculum_superman.curriculum_group as curriculum_group",
-            "skill_category.skill_category as skill_category"
-            ,"white_tag.start as start",
-            "white_tag.actual as actual", "curriculum_superman.target as target",
-            "white_tag.keterangan as ket",
+            "skill_category.skill_category as skill_category", "curriculum_superman.target as target"
+            // ,"white_tag.start as start",
+            // "white_tag.actual as actual",
+            // "white_tag.keterangan as ket",
 
-            DB::raw("(SELECT COUNT(*) FROM taging_reason as tr where tr.id_white_tag = white_tag.id_white_tag) as cntTagingReason"),
+            // DB::raw("(SELECT COUNT(*) FROM taging_reason as tr where tr.id_white_tag = white_tag.id_white_tag) as cntTagingReason"),
             
             // DB::raw("(IF(((white_tag.actual - competencies_directory.target) < 0),'Open','Close' )) as tagingStatus")
             
-            DB::raw("(CASE WHEN (white_tag.actual - curriculum_superman.target) < 0 THEN 'Open'
-                            WHEN (white_tag.actual IS NULL) THEN 'Belum diatur'
-                            WHEN white_tag.actual >= curriculum_superman.target THEN 'Close' 
-                            END) as tagingStatus"),"compGroup.name as compGroupName"
+            // DB::raw("(CASE WHEN (white_tag.actual - curriculum_superman.target) < 0 THEN 'Open'
+            //                 WHEN (white_tag.actual IS NULL) THEN 'Belum diatur'
+            //                 WHEN white_tag.actual >= curriculum_superman.target THEN 'Close' 
+            //                 END) as tagingStatus"),"compGroup.name as compGroupName"
         ];
 
         $comps = CurriculumSupermanToUser::select($select)
@@ -262,10 +263,10 @@ class SupermanController extends Controller
                                             })
                                             ->join("competencie_groups as compGroup","compGroup.id","curriculum_superman.curriculum_group")
                                             ->join("skill_category","skill_category.id_skill_category","curriculum_superman.id_skill_category")
-                                            ->leftJoin("white_tag",function ($join) use ($user){
-                                                $join->on("white_tag.id_directory","curriculum_superman_to_user.id_user")
-                                                    ->where("white_tag.id_user",$user->id);
-                                            })
+                                            // ->leftJoin("white_tag",function ($join) use ($user){
+                                            //     $join->on("white_tag.id_user","curriculum_superman_to_user.id_user")
+                                            //         ->where("white_tag.id_user",$user->id);
+                                            // })
                                             ->get();
 
         dd($comps);                                    

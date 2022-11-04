@@ -50,7 +50,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{!! route('action.superman') !!}" id="formWhiteTag" method="POST" enctype="multipart/form-data">
+                <form action="{!! route('action.superman') !!}" id="formSuperman" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" id="user_id" name="user_id" value="">
                 <div class="modal-body">
@@ -64,15 +64,15 @@
                                     <th rowspan="2">Competency</th>
                                     <th rowspan="2">Level</th>
                                     <th rowspan="2">Competency Group</th>
-                                    <th colspan="4" class="text-center">Action</th>
+                                    <!-- <th colspan="4" class="text-center">Action</th> -->
                                     <th class="text-center" rowspan="2">Status</th>
                                 </tr> 
-                                <tr>
+                                <!-- <tr>
                                     <th class="text-center" style="min-width:90px">Start</th>
                                     <th class="text-center" style="min-width:90px">Actual</th>
                                     <th class="text-center" style="min-width:50px">Target</th>
                                     <th class="text-center" style="min-width:90px">Keterangan</th>
-                                </tr>
+                                </tr> -->
                             </thead>
                             <tbody id="formMapComp">
 
@@ -82,7 +82,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" id="submitWhiteTag" class="btn btn-primary">Save changes</button>
+                    <button type="button" id="submitSuperman" class="btn btn-primary">Save changes</button>
                 </div>
             </form>
             </div>
@@ -209,36 +209,37 @@
     function getCompSuperman(id, el) {
         $("#user_id").val(id);
         var nama = $(el).attr("userName")
-        
+
         $("#modal-tambahLabel").html('Edit Superman Competencies <b>('+nama+')</b>')
         const url = "{!! route('form.superman') !!}?id="+id+"&type=general";
         $.ajax({
             url:url,
             cache:false,
             success: function(html) {
+                
                 $("#formMapComp").show();
-                if($.fn.DataTable.isDataTable( '#tableEdit' )){
-                    $('#tableEdit').DataTable().destroy()
-                }
-                $("#formMapComp").html(html);
-                tableEdit = $('#tableEdit').DataTable({
-                    searching: true,
-                    retrieve: true,
-                    paging: true,
-                    columnDefs: [
-                        {
-                            orderable: false,
-                            targets: [6, 7, 8],
-                        },
-                        { 
-                            width: "200px", 
-                            targets: 9 
-                        }
-                    ]
-                });
+                // if($.fn.DataTable.isDataTable( '#tableEdit' )){
+                //     $('#tableEdit').DataTable().destroy()
+                // }
+                // $("#formMapComp").html(html);
+                // tableEdit = $('#tableEdit').DataTable({
+                //     searching: true,
+                //     retrieve: true,
+                //     paging: true,
+                //     columnDefs: [
+                //         {
+                //             orderable: false,
+                //             targets: [6, 7, 8],
+                //         },
+                //         { 
+                //             width: "200px", 
+                //             targets: 9 
+                //         }
+                //     ]
+                // });
             },
             error: function(req, sts, err) {
-                console.log(err);
+                console.log(req, sts, err);
             }
 
         });

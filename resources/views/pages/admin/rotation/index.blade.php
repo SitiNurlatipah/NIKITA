@@ -38,8 +38,8 @@
                                         <tr>
                                             <th scope="row" class="text-center">{{ $loop->iteration }}</th>
                                             <td>{{ $data->nama_pengguna }}</td>
-                                            <td class="bg-danger"><b class="text-white"><i class="icon-arrow-up text-bold"></i>  {{ $data->cg_out }}</b><p><small>{{ $data->jt_out }}</small></p></td>
-                                            <td class="bg-success"><b class="text-white"><i class="icon-arrow-down text-bold"></i>  {{ $data->cg_in }}</b><p><small>{{ $data->jt_in }}</small></p></td>
+                                            <td class="bg-danger"><b class="text-white"><i class="icon-arrow-up text-bold"></i>  {{ $data->cg_out }}</b><p  class="text-white ml-3"><small>{{ $data->jt_out }}</small></p></td>
+                                            <td class="bg-success"><b class="text-white"><i class="icon-arrow-down text-bold"></i>  {{ $data->cg_in }}</b><p  class="text-white ml-3"><small>{{ $data->jt_in }}</small></p></td>
                                             <td>{{ date('d F Y', strtotime($data->date)) }}</td>
                                             <td>
                                                 <button class="btn btn-inverse-info btn-icon btn-hide-list" data-job="{{ $data->job_title }}" data-toggle="modal" data-target="#modal-detail-job"><i class="icon-eye"></i></button>
