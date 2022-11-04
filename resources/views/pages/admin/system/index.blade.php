@@ -22,7 +22,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="table-responsive">
-                                <table class="display expandable-table table table-striped table-hover" id="table-skill"
+                                <table class="display nowrap expandable-table table table-striped table-hover" id="table-skill"
                                     style="width:100%">
                                     <thead>
                                         <tr>
@@ -41,14 +41,14 @@
                                                 <td>{{ $item->nama_pengguna}}</td>
                                                 <td>{{ $item->nama_system }}</td>
                                                 <td>{{ $item->value }}</td>
-                                                <td>{{ $item->value }}</td>
+                                                <td>{{ $item->description }}</td>
                                                 <td>
-                                                    <button data-id="{{ $item->id }}"
-                                                        data-jobtitle="{{ $item->id_job_title }}"
-                                                        data-target="{{ $item->name }}" data-value="{{ $item->value }}"
+                                                    <button data-id="{{ $item->id_mstu }}"
+                                                        data-nama="{{ $item->id }}"
+                                                        data-system="{{ $item->id_system }}" data-value="{{ $item->value }}"
                                                         class="btn btn-inverse-success btn-icon delete-button mr-1 mr-1 btnEdit"><i
                                                             class="icon-file menu-icon"></i></button>
-                                                    <button data-id="{{ $item->id }}" class="btn btn-inverse-danger btn-icon mr-1 cr-hapus btnHapus">
+                                                    <button data-id="{{ $item->id_mstu }}" class="btn btn-inverse-danger btn-icon mr-1 btnHapus">
                                                         <i class="icon-trash"></i></button>
                                                 </td>
                                             </tr>
@@ -180,7 +180,7 @@
 
         $('body').on('click', '.btnEdit', function() {
             var id = $(this).data('id');
-            var user = $(this).data('user');
+            var user = $(this).data('nama');
             var system = $(this).data('system');
             modalTitle.text('Edit target');
             $.ajax({
@@ -221,8 +221,7 @@
         })
 
         $('body').on('click', '.btnHapus', function() {
-            var id = $(this).data('id');
-            console.log(id)
+            var id_mstu = $(this).data('id');
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -238,7 +237,7 @@
                         type: 'POST',
                         dataType: 'JSON',
                         data: {
-                            id
+                            id_mstu
                         },
                         success: function(response) {
                             Swal.fire({

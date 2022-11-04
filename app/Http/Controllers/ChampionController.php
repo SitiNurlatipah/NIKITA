@@ -10,7 +10,7 @@ class ChampionController extends Controller
     public function index()
     {
         $items = Target::with('jobtitle')->orderBy('name','ASC')->get();
-        return view('pages.admin.target.index',compact('items'));
+        return view('pages.admin.champion.index-curriculum',compact('items'));
     }
 
     public function store()

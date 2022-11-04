@@ -451,7 +451,7 @@
                 initDatatable();
                 $("#modal-hapus").modal('hide');
                 Swal.fire({
-                    position: 'top-end',
+                    position: 'center',
                     icon: 'success',
                     title: 'Data Berhasil Dihapus',
                     showConfirmButton: false,
@@ -769,7 +769,7 @@
                 $('#table-cg').DataTable().destroy();
                 initDatatable();
                 Swal.fire({
-                    position:'top-end',
+                    position:'center',
                     icon:'success',
                     title:data.message,
                     showConfirmButton:false,

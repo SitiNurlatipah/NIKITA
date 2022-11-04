@@ -8,16 +8,16 @@
             <div class="card">
                 <div class="card-body">
                 <div class="row">
-                    <p class="card-title ml-4">Kelola Superman</p>
+                    <p class="card-title ml-4">Kelola Champion</p>
                     <div class="col-md mb-2">
                         <a class="btn btn-sm btn-success float-right" href="javascript:void(0)" id="createNewItem"
-                            data-toggle="modal" data-target="#modal-tambah"><i class="icon-plus"></i> Enroll Superman</a>
+                            data-toggle="modal" data-target="#modal-tambah"><i class="icon-plus"></i> Enroll Champion</a>
                     </div>
                 </div>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="table-responsive">
-                                <table class="nowrap expandable-table table-striped table-hover" id="table-kelola-superman" width="100%">
+                                <table class="nowrap expandable-table table-striped table-hover" id="table-kelola-Champion" width="100%">
                                     <thead>
                                         <tr>
                                             <th>No</th>
@@ -40,7 +40,7 @@
     </div>
 
     {{-- Modal --}}
-    <div class="modal fade" id="modal-tambah" tabindex="-1" role="dialog" aria-labelledby="modal-tambahLabel"
+    <!-- <div class="modal fade" id="modal-tambah" tabindex="-1" role="dialog" aria-labelledby="modal-tambahLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl" style="max-width: 1000px;" role="document">
             <div class="modal-content">
@@ -50,7 +50,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{!! route('action.superman') !!}" id="formWhiteTag" method="POST" enctype="multipart/form-data">
+                <form action="{!!route('actionWhiteTag')!!}" id="formWhiteTag" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" id="user_id" name="user_id" value="">
                 <div class="modal-body">
@@ -88,14 +88,13 @@
             </div>
         </div>
     </div>
-    <!-- 
 
     <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="modal-editLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl" style="max-width: 1000px;" role="document">
             <div class="modal-content">
                 <div class="modal-header p-3">
-                    <h5 class="modal-title" id="modal-editLabel">Edit Curriculum Superman</h5>
+                    <h5 class="modal-title" id="modal-editLabel">Edit Curriculum Champion</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -164,8 +163,8 @@
     </script>
     <script>
     function initDatatable() {
-        var dtJson = $('#table-kelola-superman').DataTable({
-            ajax: "{{ route('superman.json') }}",
+        var dtJson = $('#table-kelola-Champion').DataTable({
+            ajax: "{{ route('Champion.json') }}",
             autoWidth: false,
             serverSide: true,
             processing: true,
@@ -206,44 +205,6 @@
         })
     }
 
-    function getCompSuperman(id, el) {
-        $("#user_id").val(id);
-        var nama = $(el).attr("userName")
-        
-        $("#modal-tambahLabel").html('Edit Mapping Competencies <b>('+nama+')</b>')
-        const url = "{!! route('form.superman') !!}?id="+id+"&type=general";
-        $.ajax({
-            url:url,
-            cache:false,
-            success: function(html) {
-                $("#formMapComp").show();
-                if($.fn.DataTable.isDataTable( '#tableEdit' )){
-                    $('#tableEdit').DataTable().destroy()
-                }
-                $("#formMapComp").html(html);
-                tableEdit = $('#tableEdit').DataTable({
-                    searching: true,
-                    retrieve: true,
-                    paging: true,
-                    columnDefs: [
-                        {
-                            orderable: false,
-                            targets: [6, 7, 8],
-                        },
-                        { 
-                            width: "200px", 
-                            targets: 9 
-                        }
-                    ]
-                });
-            },
-            error: function(req, sts, err) {
-                console.log(err);
-            }
-
-        });
-}
-
         // $('.btn-detail-user').click(function() {
         //     var data = $(this).data('users');
         //     var data = data.split(",");
@@ -255,7 +216,7 @@
         // })
 
         // function createPost() {
-        //     let _url = "{{ route('superman.store') }}";
+        //     let _url = "{{ route('Champion.store') }}";
         //     let _token = $('meta[name="csrf-token"]').attr('content');
         //     const data = $("#formCreate").serialize();
         //     $.ajax({
@@ -294,7 +255,7 @@
 
         // function editPost(event) {
         //     var id = $(event).data("id");
-        //     let _url = "{!! route('superman.update') !!}";
+        //     let _url = "{!! route('Champion.update') !!}";
         //     var curriculumEditForm = $("#formEdit");
         //     var formData = curriculumEditForm.serialize();
         //     $.ajax({
@@ -328,7 +289,7 @@
         // function getFormEdit(el) {
         //     var id = $(el).attr("data-id");
         //     $.ajax({
-        //         url: "{!! route('superman.get.form') !!}?id=" + id,
+        //         url: "{!! route('Champion.get.form') !!}?id=" + id,
         //         mehtod: "get",
         //         success: function(html) {
         //             // console.log(html, id)
@@ -337,7 +298,7 @@
         //     })
         // }
 
-        // $('#table-cr-superman').on('click', '.cr-hapus', function() {
+        // $('#table-cr-Champion').on('click', '.cr-hapus', function() {
         //     var id = $(this).data('id');
         //     $('#btnHapus').attr('data-id', id);
         // })
@@ -347,7 +308,7 @@
             
         //     var token = $("meta[name='csrf-token']").attr("content");
         //     $.ajax({
-        //         url: "superman/delete/" + id,
+        //         url: "Champion/delete/" + id,
         //         mehtod: "delete",
         //         data: {
         //             "id": id,
@@ -402,7 +363,7 @@
         // function getSupermanMember() {
         //     $.ajax({
         //         type: "GET",
-        //         url: "{{ route('superman.get') }}",
+        //         url: "{{ route('Champion.get') }}",
         //         success: function(res) {
         //             var option = "";
         //             for (let i = 0; i < res.length; i++) {

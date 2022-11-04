@@ -94,13 +94,14 @@ class ManagementSystemController extends Controller
         $items = ManagementSystemToUser::
         leftJoin('management_system as ms', 'management_system_to_user.id_system', '=', 'ms.id_system')
         ->leftJoin('users', 'management_system_to_user.id_user', '=', 'users.id')
-        ->get(['users.nama_pengguna', 'ms.nama_system']);
+        ->get(['management_system_to_user.*', 'users.nama_pengguna', 'ms.nama_system', 'ms.id_system', 'users.id', 'ms.description']);
 
         return view('pages.admin.system.index',compact('items'));
     }
 
     public function store()
     {
+        // dd(request()->all());
         $validator = Validator::make(request()->all(),[
             'user' => ['required'],
             'system' => ['required']
@@ -163,13 +164,13 @@ class ManagementSystemController extends Controller
             return response()->json($validator->errors());
         }
 
-        $id = request('id');
+        $id = request('id_mstu');
         ManagementSystemToUser::where('id_mstu',$id)->delete();
 
         $response = [
             'code' => 200,
             'status' => 'success',
-            'message' => 'Target berhasil dihapus.',
+            'message' => 'Sertifikasi berhasil dihapus.',
             'data' => NULL
         ];
 

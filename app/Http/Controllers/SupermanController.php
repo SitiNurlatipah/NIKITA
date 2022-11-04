@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\CurriculumSuperman;
 use App\CurriculumSupermanToUser;
 use App\SkillCategoryModel;
+use App\Superman;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\DataTables;
 
 class SupermanController extends Controller
 {
@@ -22,16 +25,15 @@ class SupermanController extends Controller
         return view('pages.admin.superman.index-curriculum', compact('data'));
     }
 
-    public function indexKelola(){
-        return view('pages.admin.superman.index');
-
-    }
-
     public function getSuperman()
     {
         $superman = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
             ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+            ->leftJoin('level', 'users.id_level', '=', 'level.id_level')
             ->where('is_superman', 1)
+            ->Where('users.id_level', 'LV-0002')
+            ->orWhere('users.id_level', 'LV-0003')
+            ->orWhere('users.id_level', 'LV-0004')
             ->get(['users.id', 'users.nama_pengguna', 'users.id_department', 'dp.nama_department', 'jt.id_job_title', 'jt.nama_job_title']);
 
         return response()->json($superman);
@@ -189,4 +191,129 @@ class SupermanController extends Controller
 
     }
 
+
+    // Kelola User
+    
+    public function indexKelola(){
+        return view('pages.admin.superman.index');
+
+    }
+    public function supermanJson(Request $request)
+    {   
+        $id = Auth::user()->id;
+        $dp = Auth::user()->id_department;
+
+        $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+        ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+        ->leftJoin('level', 'users.id_level', '=', 'level.id_level')
+        ->Where('users.id_level', 'LV-0002')
+        ->orWhere('users.id_level', 'LV-0003')
+        ->orWhere('users.id_level', 'LV-0004')
+        ->orderBy('users.id_level', 'DESC')
+        ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','level.nama_level']);
+
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function ($row) {
+                $btn = '<button data-id="' . $row->id . '" onclick="getCompSuperman('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="button-add btn btn-inverse-success btn-icon mr-1" data-toggle="modal" data-target="#modal-tambah"><i class="icon-plus menu-icon"></i></button>';
+                $btn = $btn . '<button type="button" onclick="detail('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="btn btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail"><i class="ti-eye"></i></button>';
+                    return $btn;
+                })
+            ->addIndexColumn()
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+
+    public function formSuperman(Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            "id" => "requeired|numeric",
+            "type" => "required|string|in:functional,general"
+        ]);
+        $type = $request->type;
+        $user = User::select("id","id_level")
+                    ->where("id",$request->id)
+                    ->orWhere('users.id_level', 'LV-0002')
+                    ->orWhere('users.id_level', 'LV-0003')
+                    ->orWhere('users.id_level', 'LV-0004')
+                    ->first();
+        $select = [
+            "curriculum_superman.no_curriculum_superman as no_curriculum_superman",
+            "curriculum_superman.curriculum_superman as curriculum_superman","curriculum_superman.curriculum_group as curriculum_group",
+            "skill_category.skill_category as skill_category"
+            ,"white_tag.start as start",
+            "white_tag.actual as actual", "curriculum_superman.target as target",
+            "white_tag.keterangan as ket",
+
+            DB::raw("(SELECT COUNT(*) FROM taging_reason as tr where tr.id_white_tag = white_tag.id_white_tag) as cntTagingReason"),
+            
+            // DB::raw("(IF(((white_tag.actual - competencies_directory.target) < 0),'Open','Close' )) as tagingStatus")
+            
+            DB::raw("(CASE WHEN (white_tag.actual - curriculum_superman.target) < 0 THEN 'Open'
+                            WHEN (white_tag.actual IS NULL) THEN 'Belum diatur'
+                            WHEN white_tag.actual >= curriculum_superman.target THEN 'Close' 
+                            END) as tagingStatus"),"compGroup.name as compGroupName"
+        ];
+
+        $comps = CurriculumSupermanToUser::select($select)
+                                            ->join("curriculum_superman",function ($join) use ($user){
+                                                $join->on("curriculum_superman.id_curriculum_superman","curriculum_superman_to_user.id_cstu")
+                                                    ->whereRaw("curriculum_superman_to_user.id_user = '".$user->id."'");
+                                            })
+                                            ->join("competencie_groups as compGroup","compGroup.id","curriculum_superman.curriculum_group")
+                                            ->join("skill_category","skill_category.id_skill_category","curriculum_superman.id_skill_category")
+                                            ->leftJoin("white_tag",function ($join) use ($user){
+                                                $join->on("white_tag.id_directory","curriculum_superman_to_user.id_user")
+                                                    ->where("white_tag.id_user",$user->id);
+                                            })
+                                            ->get();
+
+        dd($comps);                                    
+        return view("pages.admin.superman.form",compact('comps','user','type'));
+    }
+
+    public function actionSuperman(Request $request)
+    {
+        $request->validate([
+            "user_id" => "required|numeric",
+            "data" => "nullable|array",
+            "data.*.id" => "nullable|numeric",
+            "data.*.start" => "nullable|numeric",
+            "data.*.actual" => "nullable|numeric",
+            "data.*.ket" => "nullable|string",
+        ]);
+        DB::beginTransaction();
+        try{
+            $data = $this->validate_input_v2($request);
+            $skillId = [1,2];
+            $cek = Superman::whereRaw("id_user = '".$request->user_id."' AND (select count(*) from taging_reason where taging_reason.id_white_tag = white_tag.id_white_tag) <= 0 ")
+                        ->join("competencies_directory",function ($join) use ($skillId){
+                            $join->on('competencies_directory.id_directory','white_tag.id_directory')
+                                ->join('curriculum','curriculum.id_curriculum','competencies_directory.id_curriculum')
+                                ->whereIn('curriculum.id_skill_category',$skillId);
+                        })
+                        ->delete();
+            if(isset($data["data"]) && count($data["data"]) > 0){
+                $insert = [];
+                for($i=0; $i < count($data["data"]); $i++){
+                    if($data["data"][$i]["start"] != "" && $data["data"][$i]["actual"] != ""){
+                        $insert[$i] = [
+                            "id_white_tag"=> $this->random_string(5,5,false).time(),
+                            "id_directory" => $data["data"][$i]["id"],
+                            "id_user" => $data["user_id"],
+                            "start" => $data["data"][$i]["start"],
+                            "actual" => $data["data"][$i]["actual"],
+                            "keterangan" => $data["data"][$i]["ket"],
+
+                        ];
+                    }
+                }
+                if(count($insert) > 0)Superman::insert($insert);
+            }
+            DB::commit();
+        }catch(\Exception $e){
+            DB::rollback();
+        }
+        return response()->json(['code' => 200, 'message' => 'Post successfully'], 200);
+    }
 }

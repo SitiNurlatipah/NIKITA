@@ -21,7 +21,7 @@
     </div>
 </footer>
 
-<script src="{{ asset('assets/wa-floating/js/wafloatbox-0.2.js') }}"></script>
+<!-- <script src="{{ asset('assets/wa-floating/js/wafloatbox-0.2.js') }}"></script>
 <script>
 $(document).ready(function(){
     $(".myk-wa").WAFloatBox();
@@ -30,4 +30,4 @@ $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip()
 })
 });
-</script>
+</script> -->
