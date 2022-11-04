@@ -239,18 +239,21 @@ class MemberCG extends Controller
         
         // id_cg old form users
         $data_user = DB::table('users')->find($id_user);
-
+        
         //insert data to history
         $rotation = Rotation::create(
             [
                 'id_user' => $id_user,
                 'cg_old' => $data_user->id_cg,
                 'cg_new' => $id_cg,
+                'job_tilte_old' => $data_user->id_job_title,
+                'job_tilte_new' => $id_job_title,
                 'date' => Carbon::now(),
             ]
         );
+        
         $rotation->save();
-    
+        
         //get data white tag
         $data_whitetag =  DB::table('white_tag')
                             ->leftJoin('competencies_directory', 'white_tag.id_directory', '=' ,'competencies_directory.id_directory' )

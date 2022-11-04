@@ -210,7 +210,7 @@
         $("#user_id").val(id);
         var nama = $(el).attr("userName")
         
-        $("#modal-tambahLabel").html('Edit Mapping Competencies <b>('+nama+')</b>')
+        $("#modal-tambahLabel").html('Edit Superman Competencies <b>('+nama+')</b>')
         const url = "{!! route('form.superman') !!}?id="+id+"&type=general";
         $.ajax({
             url:url,

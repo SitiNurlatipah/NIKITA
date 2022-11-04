@@ -38,8 +38,8 @@
                                         <tr>
                                             <th scope="row" class="text-center">{{ $loop->iteration }}</th>
                                             <td>{{ $data->nama_pengguna }}</td>
-                                            <td class="bg-danger"><b class="text-white"><i class="icon-arrow-up text-bold"></i>  {{ $data->cg_out }}</b></td>
-                                            <td class="bg-success"><b class="text-white"><i class="icon-arrow-down text-bold"></i>  {{ $data->cg_in }}</b></td>
+                                            <td class="bg-danger"><b class="text-white"><i class="icon-arrow-up text-bold"></i>  {{ $data->cg_out }}</b><p><small>{{ $data->jt_out }}</small></p></td>
+                                            <td class="bg-success"><b class="text-white"><i class="icon-arrow-down text-bold"></i>  {{ $data->cg_in }}</b><p><small>{{ $data->jt_in }}</small></p></td>
                                             <td>{{ date('d F Y', strtotime($data->date)) }}</td>
                                             <td>
                                                 <button class="btn btn-inverse-info btn-icon btn-hide-list" data-job="{{ $data->job_title }}" data-toggle="modal" data-target="#modal-detail-job"><i class="icon-eye"></i></button>
@@ -136,7 +136,7 @@
             $('#id').val('');
             $('#nama_target').val('');
             $.ajax({
-                url: '{{ route('get.jabatan') }}',
+                url: "{{ route('get.jabatan') }}",
                 type: 'GET',
                 dataType: 'JSON',
                 success: function(response) {
@@ -156,7 +156,7 @@
             var job_title = $(this).data('job_title');
             var value = $(this).data('value');
             $.ajax({
-                url: '{{ route('get.jabatan') }}',
+                url: "{{ route('get.jabatan') }}",
                 type: 'GET',
                 dataType: 'JSON',
                 success: function(response) {
@@ -194,7 +194,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '{{ route('target.destroy') }}',
+                        url: "{{ route('target.destroy') }}",
                         type: 'POST',
                         dataType: 'JSON',
                         data: {
@@ -218,7 +218,7 @@
             e.preventDefault();
             var form = $('#form').serialize();
             $.ajax({
-                url: '{{ route('target.store') }}',
+                url: "{{ route('target.store') }}",
                 type: "POST",
                 data: form,
                 success: function(response) {
