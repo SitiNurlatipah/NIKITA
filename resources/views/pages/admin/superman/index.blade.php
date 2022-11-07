@@ -118,7 +118,7 @@
         $(document).ready(function() {
             initDatatable();
         });
-        
+
     function initDatatable() {
         var dtJson = $('#table-kelola-superman').DataTable({
             ajax: "{{ route('superman.json') }}",
@@ -167,12 +167,12 @@
         var nama = $(el).attr("userName")
 
         $("#modal-edit-title").html('Superman Competencies <b>('+nama+')</b>')
-        const url = "{!! route('form.superman') !!}?id="+id+"&type=general";
+        const url = "{{ route('form.superman') }}?id="+id+"&type=general";
         $.ajax({
             url:url,
             cache:false,
             success: function(html) {
-                
+                console.log(html);
                 $("#formMapComp").show();
                 // if($.fn.DataTable.isDataTable('#table-edit-superman')){
                 //     $('#table-edit-superman').DataTable().destroy()
@@ -195,7 +195,7 @@
                 // });
             },
             error: function(req, sts, err) {
-                console.log(req, sts, err);
+                console.log(err);
             }
 
         });

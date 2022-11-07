@@ -366,9 +366,10 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
     $("#modal-tambahLabel").html('Edit Mapping Competencies <b>('+nama+')</b>')
       const url = "{!! route('formWhiteTag') !!}?id="+id+"&type=general";
       $.ajax({
-          url:url,
-          cache:false,
-          success: function(html) {
+        url:url,
+        // cache:false,
+        type:'GET',
+        success: function(html) {
             $("#formMapComp").show();
                     if($.fn.DataTable.isDataTable( '#tableEdit' )){
                         $('#tableEdit').DataTable().destroy()
@@ -388,11 +389,11 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                                 targets: 9 
                             }
                 ]
-              });
-          },
-          error: function(req, sts, err) {
-              console.log(err);
-          }
+            });
+        },
+        error: function(req, sts, err) {
+            console.log(err);
+        }
 
       });
   }

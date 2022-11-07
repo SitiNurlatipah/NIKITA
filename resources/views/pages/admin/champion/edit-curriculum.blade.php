@@ -1,4 +1,4 @@
-<input type="hidden" name="id_curriculum_superman" value="{{ $curriculum->id_curriculum_superman }}">
+<input type="hidden" name="id_curriculum_champion" value="{{ $curriculum->id_curriculum_champion }}">
 <div class="row">
     <div class="col-4">
         <div class="form-group">
@@ -12,9 +12,9 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="curriculum_superman">Competency Superman</label>
-            <input type="text" class="form-control" id="curriculum_superman" name="curriculum_superman"
-                placeholder="Masukan Competency Name" value="{{ $curriculum->curriculum_superman }}">
+            <label for="curriculum_champion">Competency Superman</label>
+            <input type="text" class="form-control" id="curriculum_champion" name="curriculum_champion"
+                placeholder="Masukan Competency Name" value="{{ $curriculum->curriculum_champion }}">
         </div>
     </div>
     <div class="col-4">

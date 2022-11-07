@@ -33,6 +33,59 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    @foreach ($data as $data)
+                                            <tr id="row_{{ $data->id_curriculum_superman }}">
+                                                <th scope="row" class="text-center">{{ $loop->iteration }}</th>
+                                                <td>{{ $data->no_curriculum_champion }}</td>
+                                                <td>{{ $data->skill_category }}</td>
+                                                <td>{{ $data->curriculum_champion }}</td>
+                                                <td>{{ $data->compGroupName }}</td>
+                                                <td>
+                                                    @php
+                                                        switch($data->target){
+                                                        case 0:
+                                                            $target = asset('assets/images/point/0.png');
+                                                        break;
+                                                        case 1:
+                                                            $target = asset('assets/images/point/1.png');
+                                                        break;
+                                                        case 2:
+                                                            $target = asset('assets/images/point/2.png');
+                                                        break;
+                                                        case 3:
+                                                            $target = asset('assets/images/point/3.png');
+                                                        break;
+                                                        case 4:
+                                                            $target = asset('assets/images/point/4.png');
+                                                        break;
+                                                        case 5:
+                                                            $target = asset('assets/images/point/5.png');
+                                                        break;
+                                                        default:
+                                                            $target = "";
+                                                        break;
+                                                        }
+                                                    @endphp
+                                                        <img src="{{$target}}" title="{{$data->target}}" style="width:30px;height:30px" alt="">
+                                                </td>
+                                                <td>{{ $data->curriculum_desc }}</td>
+                                                <td>
+                                                    <button class="btn btn-inverse-info btn-icon btn-detail-user" data-users="{{ $data->users }}" data-toggle="modal" data-target="#modal-detail-user"><i class="icon-eye"></i> </button>
+                                                </td>
+                                                <td>
+                                                    <button data-id="{{ $data->id_curriculum_champion }}" onclick="getFormEdit(this)"
+                                                        class="btn btn-inverse-success btn-icon delete-button mr-1 Edit-button"
+                                                        data-toggle="modal" data-target="#modal-edit" data-toggle="tooltip" data-placement="top" title="Edit Data"><i
+                                                            class="icon-file menu-icon"></i></button>
+
+                                                    <button data-id="{{ $data->id_curriculum_champion }}"
+                                                        class="btn btn-inverse-danger btn-icon mr-1 cr-hapus"
+                                                        data-toggle="modal" data-target="#modal-hapus" data-toggle="tooltip" data-placement="top" title="Delete Data">
+                                                        <i class="icon-trash">
+                                                        </i></button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -43,13 +96,13 @@
         </div>
     </div>
 
-    {{-- Modal --}}
+    {{-- Modal Tambah--}}
     <div class="modal fade" id="modal-tambah" tabindex="-1" role="dialog" aria-labelledby="modal-tambahLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl" style="max-width: 1000px;" role="document">
             <div class="modal-content">
                 <div class="modal-header p-3">
-                    <h5 class="modal-title" id="modal-tambahLabel">Add New Curriculum</h5>
+                    <h5 class="modal-title" id="modal-tambahLabel">Add New Curriculum Champion</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -66,8 +119,8 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="curriculum_superman">Competency</label>
-                                    <input type="text" class="form-control" id="curriculum_superman" name="curriculum_superman"
+                                    <label for="curriculum_champion">Competency</label>
+                                    <input type="text" class="form-control" id="curriculum_champion" name="curriculum_champion"
                                         placeholder="Masukan Competency Name">
                                 </div>
                             </div>
@@ -80,7 +133,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="noModule">Target</label>
+                                    <label for="target">Target</label>
                                     <select class="form-control form-control-sm" name="target" required>
                                     <option value="">Pilih Target</option>
                                     <option value="0">0</option>
@@ -119,7 +172,8 @@
             </div>
         </div>
     </div>
-
+    
+    {{-- Modal Edit--}}
     <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="modal-editLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl" style="max-width: 1000px;" role="document">
@@ -205,7 +259,7 @@
         $('#table-cr-champion').DataTable();
 
         function createPost() {
-            let _url = "{{ route('superman.store') }}";
+            let _url = "{{ route('champion.store') }}";
             let _token = $('meta[name="csrf-token"]').attr('content');
             const data = $("#formCreate").serialize();
             $.ajax({
@@ -222,9 +276,9 @@
                             timer: 1500
                         })
                     }
-                    $('#no_curriculum_superman').val(''),
+                    $('#no_curriculum_champion').val(''),
                     $('#id_skill_category').val(''),
-                    $('#curriculum_superman').val(''),
+                    $('#curriculum_champion').val(''),
                     $('#curriculum_group').val(''),
                     $('#curriculum_desc').val(''),
                     $('#target').val(''),
@@ -244,7 +298,7 @@
 
         function editPost(event) {
             var id = $(event).data("id");
-            let _url = "{!! route('superman.update') !!}";
+            let _url = "{!! route('champion.update') !!}";
             var curriculumEditForm = $("#formEdit");
             var formData = curriculumEditForm.serialize();
             $.ajax({
@@ -278,7 +332,7 @@
         function getFormEdit(el) {
             var id = $(el).attr("data-id");
             $.ajax({
-                url: "{!! route('superman.get.form') !!}?id=" + id,
+                url: "{!! route('champion.get.form') !!}?id=" + id,
                 mehtod: "get",
                 success: function(html) {
                     // console.log(html, id)
@@ -297,7 +351,7 @@
             
             var token = $("meta[name='csrf-token']").attr("content");
             $.ajax({
-                url: "superman/delete/" + id,
+                url: "champion/delete/" + id,
                 mehtod: "delete",
                 data: {
                     "id": id,
@@ -352,7 +406,7 @@
         function getSupermanMember() {
             $.ajax({
                 type: "GET",
-                url: "{{ route('superman.get') }}",
+                url: "{{ route('champion.get') }}",
                 success: function(res) {
                     var option = "";
                     for (let i = 0; i < res.length; i++) {

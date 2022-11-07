@@ -184,6 +184,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/delete','TargetController@destroy')->name('target.destroy');
     });
 
+    //Superman
     Route::prefix("superman")->group(function () {
         Route::get('/', 'SupermanController@index')->name('superman.index');
         Route::get('/get', 'SupermanController@getSuperman')->name('superman.get');
@@ -198,14 +199,20 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/kelola/action','SupermanController@actionSuperman')->name("action.superman");
     });
 
+    // Champion 4.0
     Route::prefix("champion")->group(function () {
         Route::get('/', 'ChampionController@indexMaster')->name('champion.index');
+        Route::get('/get', 'ChampionController@getChampion')->name('champion.get');
         Route::post('/create', 'ChampionController@store')->name('champion.store');
+        Route::get('/get-form','ChampionController@getFormEdit')->name('champion.get.form');
+        Route::post('/edit', 'ChampionController@edit')->name('champion.update');
+
         Route::post('/delete','ChampionController@destroy')->name('champion.destroy');
 
         Route::get('/kelola/champion', 'ChampionController@index')->name('kelola.champion.index');
     });
 
+    // Management System
     Route::prefix("management-system")->group(function () {
         Route::get('/master', 'ManagementSystemController@indexMaster')->name('master.system.index');
         Route::post('/master-create', 'ManagementSystemController@storeMaster')->name('master.system.store');
@@ -215,12 +222,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/create', 'ManagementSystemController@store')->name('system.store');
         Route::post('/delete','ManagementSystemController@destroy')->name('system.destroy');
     });
-
     Route::prefix("master-management-system")->group(function(){
         Route::get('/', 'ManagementSystemController@indexMaster')->name('master.system.index');
         Route::get('/get', 'ManagementSystemController@getSystem')->name('master.system.get');
     });
 
+    // Rotation
     Route::prefix("rotation")->group(function(){
         Route::get('/', 'RotationController@index')->name('rotation.index');
         Route::get('/comp-history', 'RotationController@indexHistory')->name('comp.history.index');
