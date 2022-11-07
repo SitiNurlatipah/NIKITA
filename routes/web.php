@@ -196,14 +196,14 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/kelola/json', 'SupermanController@supermanJson')->name('superman.json');
         Route::get('/kelola/form','SupermanController@formSuperman')->name("form.superman");
         Route::post('/kelola/action','SupermanController@actionSuperman')->name("action.superman");
-
-
     });
 
     Route::prefix("champion")->group(function () {
-        Route::get('/', 'ChampionController@index')->name('champion.index');
+        Route::get('/', 'ChampionController@indexMaster')->name('champion.index');
         Route::post('/create', 'ChampionController@store')->name('champion.store');
         Route::post('/delete','ChampionController@destroy')->name('champion.destroy');
+
+        Route::get('/kelola/champion', 'ChampionController@index')->name('kelola.champion.index');
     });
 
     Route::prefix("management-system")->group(function () {

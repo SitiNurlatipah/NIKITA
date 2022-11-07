@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class ChampionController extends Controller
 {
-    public function index()
+    public function indexMaster()
     {
         $items = Target::with('jobtitle')->orderBy('name','ASC')->get();
         return view('pages.admin.champion.index-curriculum',compact('items'));
@@ -112,5 +112,15 @@ class ChampionController extends Controller
 
         return response()->json($response);
 
+    }
+
+
+
+
+    // Index
+    public function index()
+    {
+        $items = Target::with('jobtitle')->orderBy('name','ASC')->get();
+        return view('pages.admin.champion.index',compact('items'));
     }
 }

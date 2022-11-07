@@ -22,7 +22,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="table-responsive">
-                                <table class="display nowrap expandable-table table table-striped table-hover" id="table-skill"
+                                <table class="expandable-table table table-striped table-hover" id="table-skill"
                                     style="width:100%">
                                     <thead>
                                         <tr>

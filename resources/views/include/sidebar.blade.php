@@ -101,7 +101,7 @@
                 <div class="collapse" id="champion">
                     <ul class="nav flex-column sub-menu">
                     <li class="nav-item"> <a class="nav-link" href="{{ route('champion.index') }}">Curriculum 4.0</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('champion.index') }}">Kelola Champion 4.0</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('kelola.champion.index') }}">Kelola Champion 4.0</a></li>
                     </ul>
                 </div>
             </li>  

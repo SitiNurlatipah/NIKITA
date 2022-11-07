@@ -31,7 +31,7 @@ class SupermanController extends Controller
             ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
             ->leftJoin('level', 'users.id_level', '=', 'level.id_level')
             ->where('is_superman', 1)
-            ->Where('users.id_level', 'LV-0002')
+            ->orWhere('users.id_level', 'LV-0002')
             ->orWhere('users.id_level', 'LV-0003')
             ->orWhere('users.id_level', 'LV-0004')
             ->get(['users.id', 'users.nama_pengguna', 'users.id_department', 'dp.nama_department', 'jt.id_job_title', 'jt.nama_job_title']);
@@ -118,6 +118,9 @@ class SupermanController extends Controller
                             ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
                             ->leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
                             ->where('is_superman', 1)
+                            ->orWhere('users.id_level', 'LV-0002')
+                            ->orWhere('users.id_level', 'LV-0003')
+                            ->orWhere('users.id_level', 'LV-0004')
                             ->get();
                 // User::
                 // ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
@@ -192,6 +195,14 @@ class SupermanController extends Controller
     }
 
 
+
+
+
+
+
+
+
+
     // Kelola User
     
     public function indexKelola(){
@@ -215,7 +226,7 @@ class SupermanController extends Controller
         return Datatables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
-                $btn = '<button data-id="' . $row->id . '" onclick="getCompSuperman('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="button-add btn btn-inverse-success btn-icon mr-1" data-toggle="modal" data-target="#modal-tambah"><i class="icon-plus menu-icon"></i></button>';
+                $btn = '<button data-id="' . $row->id . '" onclick="getCompSuperman('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="button-add btn btn-inverse-success btn-icon mr-1" data-toggle="modal" data-target="#modal-edit"><i class="icon-plus menu-icon"></i></button>';
                 $btn = $btn . '<button type="button" onclick="detail('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="btn btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail"><i class="ti-eye"></i></button>';
                     return $btn;
                 })
@@ -242,18 +253,18 @@ class SupermanController extends Controller
             "curriculum_superman.no_curriculum_superman as no_curriculum_superman",
             "curriculum_superman.curriculum_superman as curriculum_superman","curriculum_superman.curriculum_group as curriculum_group",
             "skill_category.skill_category as skill_category", "curriculum_superman.target as target"
-            // ,"white_tag.start as start",
-            // "white_tag.actual as actual",
-            // "white_tag.keterangan as ket",
+            ,"white_tag.start as start",
+            "white_tag.actual as actual",
+            "white_tag.keterangan as ket",
 
-            // DB::raw("(SELECT COUNT(*) FROM taging_reason as tr where tr.id_white_tag = white_tag.id_white_tag) as cntTagingReason"),
+            DB::raw("(SELECT COUNT(*) FROM taging_reason as tr where tr.id_white_tag = white_tag.id_white_tag) as cntTagingReason"),
             
             // DB::raw("(IF(((white_tag.actual - competencies_directory.target) < 0),'Open','Close' )) as tagingStatus")
             
-            // DB::raw("(CASE WHEN (white_tag.actual - curriculum_superman.target) < 0 THEN 'Open'
-            //                 WHEN (white_tag.actual IS NULL) THEN 'Belum diatur'
-            //                 WHEN white_tag.actual >= curriculum_superman.target THEN 'Close' 
-            //                 END) as tagingStatus"),"compGroup.name as compGroupName"
+            DB::raw("(CASE WHEN (white_tag.actual - curriculum_superman.target) < 0 THEN 'Open'
+                            WHEN (white_tag.actual IS NULL) THEN 'Belum diatur'
+                            WHEN white_tag.actual >= curriculum_superman.target THEN 'Close' 
+                            END) as tagingStatus"),"compGroup.name as compGroupName"
         ];
 
         $comps = CurriculumSupermanToUser::select($select)
@@ -263,10 +274,10 @@ class SupermanController extends Controller
                                             })
                                             ->join("competencie_groups as compGroup","compGroup.id","curriculum_superman.curriculum_group")
                                             ->join("skill_category","skill_category.id_skill_category","curriculum_superman.id_skill_category")
-                                            // ->leftJoin("white_tag",function ($join) use ($user){
-                                            //     $join->on("white_tag.id_user","curriculum_superman_to_user.id_user")
-                                            //         ->where("white_tag.id_user",$user->id);
-                                            // })
+                                            ->leftJoin("white_tag",function ($join) use ($user){
+                                                $join->on("white_tag.id_user","curriculum_superman_to_user.id_user")
+                                                    ->where("white_tag.id_user",$user->id);
+                                            })
                                             ->get();
 
         dd($comps);                                    
