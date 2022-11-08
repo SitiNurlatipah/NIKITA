@@ -234,6 +234,7 @@ class MemberCG extends Controller
         $id_user = $request->user_rotation;
         $id_job_title = $request->jabatan_rotation;
         $id_cg = $request->cg_rotation;
+        
         try {
         DB::beginTransaction();
         
@@ -241,17 +242,15 @@ class MemberCG extends Controller
         $data_user = DB::table('users')->find($id_user);
         
         //insert data to history
-        $rotation = Rotation::create(
-            [
-                'id_user' => $id_user,
-                'cg_old' => $data_user->id_cg,
-                'cg_new' => $id_cg,
-                'job_tilte_old' => $data_user->id_job_title,
-                'job_tilte_new' => $id_job_title,
-                'date' => Carbon::now(),
-            ]
-        );
-        
+        $data_rotate = [
+            'id_user' => $id_user,
+            'job_title_old' => $data_user->id_job_title,
+            'job_title_new' => $id_job_title,
+            'cg_old' => $data_user->id_cg,
+            'cg_new' => $id_cg,
+            'date' => Carbon::now(),
+        ];
+        $rotation = Rotation::create($data_rotate);
         $rotation->save();
         
         //get data white tag
