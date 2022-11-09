@@ -198,9 +198,9 @@ class MemberCG extends Controller
 
                                     // ]);
                                 })
-                                 ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
-                                 ->groupBy("level")
-                                 ->get();
+                                ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                                ->groupBy("level")
+                                ->get();
             $select_open = [
             "nama_pengguna","no_training_module",
             DB::raw("COUNT(*) as cnt", "(IF(actual < target,'Open','Close' )) as tagingStatus")

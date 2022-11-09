@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html class="loading" lang="en" data-textdirection="ltr">
 <!-- BEGIN: Head-->
-
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimal-ui">
-    <meta name="description" content="Vuexy admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
-    <meta name="keywords" content="admin template, Vuexy admin template, dashboard template, flat admin template, responsive admin template, web app">
-    <meta name="author" content="PIXINVENT">
+    <meta name="description" content="Mapping Competencies application">
+    <meta name="keywords" content="Nikita, Mapping competencies application in PT Kalbe Morinaga Indonesia">
+    <meta name="author" content="Rezki Ramadhan">
     <title>Mapping Competencies</title>
     <link rel="apple-touch-icon" href="{{ asset('theme/images/ico/apple-icon-120.png') }}">
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/images/logo-mini.png') }}">
@@ -34,7 +33,7 @@
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
+    <!-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}"> -->
     <!-- END: Custom CSS-->
 
 </head>
@@ -117,7 +116,7 @@
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
-    <script src="{{ asset('theme/js/scripts/pages/page-auth-login.js') }}"></script>
+    <!-- <script src="{{ asset('theme/js/scripts/pages/page-auth-login.js') }}"></script> -->
     <!-- END: Page JS-->
 
     <script>

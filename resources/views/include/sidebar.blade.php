@@ -107,14 +107,14 @@
             </li>  
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#management-system" aria-expanded="false" aria-controls="management-system">
-                    <i class="icon-target menu-icon"></i>
-                    <span class="menu-title">Management System</span>
+                    <i class="icon-paper menu-icon"></i>
+                    <span class="menu-title">Sertification</span>
                     <i class="menu-arrow"></i>
                 </a>
                 <div class="collapse" id="management-system">
                     <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('master.system.index') }}">Data Management System</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('system.index') }}">Kelola Management System</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('master.system.index') }}">Data Sertification</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('system.index') }}">Kelola Sertification</a></li>
                     </ul>
                 </div>
             </li>

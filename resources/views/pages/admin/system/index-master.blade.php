@@ -12,10 +12,10 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <p class="card-title ml-4">Data Management System</p>
+                        <p class="card-title ml-4">Data Sertification</p>
                         <div class="col-md mb-2">
                         <a class="btn btn-success btn-sm float-right btnAdd" href="javascript:void(0)" id="createNewItem"><i
-                                    class="icon-plus"></i> Add Data System</a>
+                                    class="icon-plus"></i> Add Data Sertification</a>
                         </div>
                     </div>
                     <div class="row">

@@ -206,10 +206,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/create', 'ChampionController@store')->name('champion.store');
         Route::get('/get-form','ChampionController@getFormEdit')->name('champion.get.form');
         Route::post('/edit', 'ChampionController@edit')->name('champion.update');
-
         Route::post('/delete','ChampionController@destroy')->name('champion.destroy');
 
         Route::get('/kelola/champion', 'ChampionController@index')->name('kelola.champion.index');
+        Route::get('/kelola/json', 'ChampionController@getJson')->name('champion.json');
+        Route::get('/kelola/form','ChampionController@formChampion')->name('form.champion');
+
     });
 
     // Management System
