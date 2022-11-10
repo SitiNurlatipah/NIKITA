@@ -15,16 +15,15 @@
 <script src="{{ asset('assets/js/template.js') }}"></script>
 <script src="{{ asset('assets/js/settings.js') }}"></script>
 <script src="{{ asset('assets/js/todolist.js') }}"></script>
-{{-- <script src="{{ asset('assets/js/chart.js') }}"></script> --}}
 <!-- endinject -->
 
 <!-- Custom js for this page Dashboard -->
 <script src="{{ asset('assets/js/dashboard.js') }}"></script>
-{{-- <script src="{{ asset('assets/js/Chart.roundedBarCharts.js') }}"></script> --}}
+<script src="{{ asset('assets/js/Chart.roundedBarCharts.js') }}"></script> 
 <script src="{{ asset('assets/sweetalert2/sweetalert2.js')}}"></script>
 
 {{-- Selectize --}}
 <script src="{{ asset ('assets/select/js/bootstrap-select.js')}}"></script>
 
-<script src="{!! asset("assets/js/datepicker/datepicker.js?v=".time()) !!}" charset="utf-8"></script>
-<script src="{!! asset("assets/js/datepicker/datepicker.en.js?v=".time()) !!}" charset="utf-8"></script>
+<script src="{!! asset('assets/js/datepicker/datepicker.js?v='.time()) !!}" charset="utf-8"></script>
+<script src="{!! asset('assets/js/datepicker/datepicker.en.js?v='.time()) !!}" charset="utf-8"></script>

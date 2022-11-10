@@ -22,14 +22,13 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="table-responsive">
-                                <table class="expandable-table table table-striped table-hover" id="table-skill"
+                                <table class="display expandable-table table table-striped table-hover" id="table-skill"
                                     style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th width="10">No.#</th>
+                                            <th>No.</th>
                                             <th>Nama Kayawan</th>
                                             <th>Management System</th>
-                                            <th>Tingkat</th>
                                             <th>Description</th>
                                             <th width="15%">Action</th>
                                         </tr>
@@ -40,7 +39,6 @@
                                                 <th scope="row" class="text-center">{{ $loop->iteration }}</th>
                                                 <td>{{ $item->nama_pengguna}}</td>
                                                 <td>{{ $item->nama_system }}</td>
-                                                <td>{{ $item->value }}</td>
                                                 <td>{{ $item->description }}</td>
                                                 <td>
                                                     <button data-id="{{ $item->id_mstu }}"

@@ -31,5 +31,5 @@
 <link rel="stylesheet" href="{{asset ('assets/select/css/bootstrap-select.css')}}">
 
 <link rel="stylesheet" href="{!! asset('assets/css/datepicker/datepicker.css?v='.time()) !!}">
-<link rel="stylesheet" href="{{asset ('assets/wa-floating/css/wafloatbox-0.2.css')}}">
+<!-- <link rel="stylesheet" href="{{asset ('assets/wa-floating/css/wafloatbox-0.2.css')}}"> -->
 

@@ -6,6 +6,7 @@ use App\Champion;
 use App\ChampionToUser;
 use App\SkillCategoryModel;
 use App\User;
+use App\WhiteTagModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -208,7 +209,7 @@ class ChampionController extends Controller
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
                 $btn = '<button data-id="' . $row->id . '" onclick="getCompChampion('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="button-add btn btn-inverse-success btn-icon mr-1" data-toggle="modal" data-target="#modal-edit"><i class="icon-plus menu-icon"></i></button>';
-                $btn = $btn . '<button type="button" onclick="detail('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="btn btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail"><i class="ti-eye"></i></button>';
+                $btn = $btn . '<button type="button" onclick="detailMapcomChampion('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="btn btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail"><i class="ti-eye"></i></button>';
                     return $btn;
                 })
             ->addIndexColumn()
@@ -246,7 +247,7 @@ class ChampionController extends Controller
                                     ->join("competencie_groups as compGroup","compGroup.id","curriculum_champion.curriculum_group")
                                     ->join("skill_category","skill_category.id_skill_category","curriculum_champion.id_skill_category")
                                     ->leftJoin("white_tag",function ($join) use ($user){
-                                        $join->on("white_tag.id_curriculum_champion","curriculum_champion.id_curriculum_champion")
+                                        $join->on("white_tag.id_cctu","curriculum_champion_to_user.id_cctu")
                                             ->where("white_tag.id_user",$user->id);
                                     })
                                     ->get();
@@ -268,43 +269,48 @@ class ChampionController extends Controller
         try{
             $data = $this->validate_input_v2($request);
             $skillId = [1,2];
-            $cek = WhiteTagModel::whereRaw("id_user = '".$request->user_id."' AND (select count(*) from taging_reason where taging_reason.id_white_tag = white_tag.id_white_tag) <= 0 ")
-                        ->join("competencies_directory",function ($join) use ($skillId){
-                            $join->on('competencies_directory.id_directory','white_tag.id_directory')
-                                ->join('curriculum','curriculum.id_curriculum','competencies_directory.id_curriculum')
+
+            // Check
+            WhiteTagModel::whereRaw("id_user = '".$request->user_id."' AND (select count(*) from taging_reason where taging_reason.id_white_tag = white_tag.id_white_tag) <= 0 ")
+                        ->join("curriculum_champion_to_user",function ($join) use ($skillId){
+                            $join->on('curriculum_champion_to_user.id_cctu','white_tag.id_cctu')
+                                ->join('curriculum_champion','curriculum_champion.id_curriculum_champion','curriculum_champion_to_user.id_curriculum_champion')
                                 ->whereIn('curriculum.id_skill_category',$skillId);
                         })
                         ->delete();
+
             if(isset($data["data"]) && count($data["data"]) > 0){
                 $insert = [];
                 for($i=0; $i < count($data["data"]); $i++){
                     if($data["data"][$i]["start"] != "" && $data["data"][$i]["actual"] != ""){
                         $insert[$i] = [
                             "id_white_tag"=> $this->random_string(5,5,false).time(),
-                            "id_directory" => $data["data"][$i]["id"],
+                            "id_cctu" => $data["data"][$i]["id"],
                             "id_user" => $data["user_id"],
                             "start" => $data["data"][$i]["start"],
                             "actual" => $data["data"][$i]["actual"],
                             "keterangan" => $data["data"][$i]["ket"],
-
                         ];
                     }
                 }
+                dd($insert);
                 if(count($insert) > 0)WhiteTagModel::insert($insert);
             }
             DB::commit();
         }catch(\Exception $e){
             DB::rollback();
+        return response()->json(['code' => 500, 'message' => $e], 500);
+
         }
         return response()->json(['code' => 200, 'message' => 'Post successfully'], 200);
     }
 
-    public function detailWhiteTag(Request $request)
+    public function detailMapcomChampion(Request $request)
     {
         $user = User::select("id","id_job_title")->where("id",$request->id)->first();
         $skillId = [1,2];
         $select = [
-            "curriculum_champion.no_curriculum_champion as no_curriculum","curriculum_champion.curriculum_champion as curriculum_champion","curriculum_champion.curriculum_group as curriculum_group","curriculum_champion.target as target","skill_category.skill_category as skill_category","white_tag.start as start","white_tag.actual as actual",
+            "curriculum_champion.no_curriculum_champion as no_curriculum","curriculum_champion.curriculum_champion as curriculum_champion","compGroup.name as curriculum_group","curriculum_champion.target as target","skill_category.skill_category as skill_category","white_tag.start as start","white_tag.actual as actual",
             DB::raw("(CASE WHEN (white_tag.actual - curriculum_champion.target) < 0 THEN 'Open'
                             WHEN (white_tag.actual IS NULL) THEN 'Belum diatur'
                             WHEN white_tag.actual >= curriculum_champion.target THEN 'Close' 
@@ -314,17 +320,18 @@ class ChampionController extends Controller
         $data = ChampionToUser::select($select)
                                 ->join("curriculum_champion",function ($join) use ($user,$skillId){
                                     $join->on("curriculum_champion.id_curriculum_champion","curriculum_champion_to_user.id_curriculum_champion")
-                                        ->where("curriculum_champion_to_user.id_job_title",$user->id_job_title)
                                         ->whereIn("id_skill_category",$skillId);
                                 })
                                 ->join("skill_category","skill_category.id_skill_category","curriculum_champion.id_skill_category")
                                 ->leftJoin("white_tag",function ($join) use ($user){
-                                    $join->on("white_tag.id_curriculum_champion","curriculum_champion.id_curriculum_champion")
+                                    $join->on("white_tag.id_cctu","curriculum_champion_to_user.id_cctu")
                                         ->where("white_tag.id_user",$user->id);
                                 })
+                                ->join("competencie_groups as compGroup","compGroup.id","curriculum_champion.curriculum_group")
                                 ->groupBy("curriculum_champion.id_curriculum_champion")
                                 ->orderBy("tagingStatus", "DESC")
                                 ->get();
+        // dd($data);                        
         return Datatables::of($data)
         ->addIndexColumn()
         ->editColumn('start', function ($row) {

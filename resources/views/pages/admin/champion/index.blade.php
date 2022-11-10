@@ -50,12 +50,12 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{!! route('action.superman') !!}" id="formSuperman" method="POST" enctype="multipart/form-data">
+                <form action="{!! route('action.champion') !!}" id="formChampion" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" id="user_id" name="user_id" value="">
                 <div class="modal-body">
                     <div class="table-responsive">
-                        <table class="display expandable-table table-striped table-hover" id="table-edit-superman" style="width:100%">
+                        <table class="display expandable-table table-striped table-hover" id="table-edit-champion" style="width:100%">
                             <thead>
                                 <tr>
                                     <th rowspan="2" class="text-center">No</th>
@@ -81,7 +81,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" id="submitSuperman" class="btn btn-primary">Save changes</button>
+                    <button type="button" id="submitChampion" class="btn btn-primary">Save changes</button>
                 </div>
             </form>
             </div>
@@ -89,33 +89,32 @@
     </div>
 
     <div class="modal fade" id="modal-detail" tabindex="-1" role="dialog" aria-labelledby="modal-detailLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header p-3">
-                    <h5 class="modal-title" id="modal-detailLabel">Detail White Tag General</h5>
+                    <h5 class="modal-title" id="modal-detailLabel">Detail Champion</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="table-responsive">
-                        <table class="display expandable-table table-striped table-hover" id="table-detail" width="100%">
+                        <table class="display expandable-table table-striped table-hover" id="table-detail">
                             <thead>
                                 <tr>
                                     <th class="text-center">No</th>
                                     <th>No Competency</th>
                                     <th>Skill Category</th>
                                     <th>Competency</th>
-                                    <th>Level</th>
                                     <th>Competency Group</th>
-                                    <th class="text-center">Start</th>
-                                    <th class="text-center">Actual</th>
-                                    <th class="text-center">Target</th>
-                                    <th class="text-center">Keterangan</th>
-                                    <th class="text-center">Status</th>
+                                    <th>Start</th>
+                                    <th>Actual</th>
+                                    <th>Target</th>
+                                    <th>Keterangan</th>
+                                    <th>Status</th>
                                 </tr> 
                             </thead>
-                            <tbody id="formMapComp"></tbody>
+                            <tbody></tbody>
                         </table>
                     </div>
                 </div>
@@ -178,34 +177,33 @@
     function getCompChampion(id, el) {
         $("#user_id").val(id);
         var nama = $(el).attr("userName")
-
-        $("#modal-edit-title").html('Superman Competencies <b>('+nama+')</b>')
+        $("#modal-edit-title").html('Champion Competencies <b>('+nama+')</b>')
         const url = "{{ route('form.champion') }}?id="+id+"&type=general";
         $.ajax({
             url:url,
             cache:false,
             success: function(html) {
-                console.log(html);  
+                // console.log(html);  
                 $("#formMapComp").show();
-                // if($.fn.DataTable.isDataTable('#table-edit-superman')){
-                //     $('#table-edit-superman').DataTable().destroy()
-                // }
+                if($.fn.DataTable.isDataTable('#table-edit-champion')){
+                    $('#table-edit-champion').DataTable().destroy()
+                }
                 $("#formMapComp").html(html);
-                // table-edit-superman = $('#table-edit-superman').DataTable({
-                //     searching: true,
-                //     retrieve: true,
-                //     paging: true,
-                //     columnDefs: [
-                //         {
-                //             orderable: false,
-                //             targets: [6, 7, 8],
-                //         },
-                //         { 
-                //             width: "200px", 
-                //             targets: 9 
-                //         }
-                //     ]
-                // });
+                $('#table-edit-champion').DataTable({
+                    searching: true,
+                    retrieve: true,
+                    paging: true,
+                    columnDefs: [
+                        {
+                            orderable: false,
+                            targets: [6, 7, 8],
+                        },
+                        { 
+                            width: "200px", 
+                            targets: 9 
+                        }
+                    ]
+                });
             },
             error: function(req, sts, err) {
                 console.log(err);
@@ -213,8 +211,48 @@
         });
     }
 
-    function detailWhiteTag(id, el) {
-        const url = "{{ route('detailWhiteTag') }}?id="+id+"&type=general";
+    $("#submitChampion").click(function (e) {
+        var tableEdit = $('#table-edit-champion').DataTable();
+        e.preventDefault()
+        var form = $("#submitChampion")
+        const url = form.attr("action");
+        var formSerialize = $("#submitChampion > input[name=user_id], input[name=_token]").serialize()
+        var serializeDatatable = tableEdit.$('input,select,textarea').serialize()
+        var formData = formSerialize+'&'+serializeDatatable
+        // console.log(formSerialize)   
+        $.ajax({
+            url:url,
+            type:"POST",
+            cache:false,
+            data:formData,
+            success:function(data){
+                console.log(data);
+                $("#modal-tambah").modal('hide');
+                $('#table-kelola-champion').DataTable().destroy();
+                initDatatable();
+                Swal.fire({
+                    position:'center',
+                    icon:'success',
+                    title:data.message,
+                    showConfirmButton:false,
+                    timer:1500
+                });
+            },
+            error:function(err){
+                console.log(err)
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: err.statusText,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            }
+        })
+    })
+
+    function detailMapcomChampion(id, el) {
+        const url = "{{ route('detail.kelola.champion') }}?id="+id+"&type=general";
         var name = $(el).attr("userName");
         $("#modal-detailLabel").html('Detail Mapping Competencies <b>('+name+')</b>')
         $('#table-detail').DataTable().destroy();
@@ -242,22 +280,19 @@
                     data: 'DT_RowIndex', name: 'DT_RowIndex'
                 },
                 {
-                    data: 'no_training'
+                    data: 'no_curriculum'
                 },
                 {
                     data: 'skill_category'
                 },
                 {
-                    data: 'training_module'
+                    data: 'curriculum_champion'
                 },
                 {
-                    data: 'level'
+                    data: 'curriculum_group'
                 },
                 {
-                    data: 'training_module_group'
-                },
-                {
-                data: 'start'
+                    data: 'start'
                 },
                 {
                     data: 'actual'

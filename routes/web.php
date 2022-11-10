@@ -73,12 +73,12 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     // White Tag
-    Route::prefix("white-tag")->group(function () {
+    Route::prefix("mapping-competencies")->group(function () {
         Route::get('/', 'WhiteTag@index')->name('WhiteTag');
-        Route::get('/white-tag-json', 'WhiteTag@whiteTagJson')->name('memberJson');
-        Route::get('/white-tag-all-json', 'WhiteTag@whiteTagAll')->name('whiteTagAll');
-        Route::get('/white-tag-member', 'WhiteTag@whiteTagRoleMember')->name('whiteTagRoleMember');
-        Route::get('/white-tag-all-export','WhiteTag@exportWhiteTagAll')->middleware(['isAdmin'])->name('exportWhiteTagAll');
+        Route::get('/mapping-competencies-json', 'WhiteTag@whiteTagJson')->name('memberJson');
+        Route::get('/mapping-competencies-all-json', 'WhiteTag@whiteTagAll')->name('whiteTagAll');
+        Route::get('/mapping-competencies-member', 'WhiteTag@whiteTagRoleMember')->name('whiteTagRoleMember');
+        Route::get('/mapping-competencies-all-export','WhiteTag@exportWhiteTagAll')->middleware(['isAdmin'])->name('exportWhiteTagAll');
         Route::get('/form','WhiteTag@formWhiteTag')->name("formWhiteTag");
         Route::post('/action','WhiteTag@actionWhiteTag')->name("actionWhiteTag");
         Route::get('/detail', 'WhiteTag@detailWhiteTag')->name('detailWhiteTag');
@@ -147,7 +147,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/delete','JabatanController@destroy')->name('jabatan.destroy');
     });
 
-
      // grade
     Route::prefix("grade")->group(function () {
         Route::get('/', 'Grade@index')->name('grade.index');
@@ -211,6 +210,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/kelola/champion', 'ChampionController@index')->name('kelola.champion.index');
         Route::get('/kelola/json', 'ChampionController@getJson')->name('champion.json');
         Route::get('/kelola/form','ChampionController@formChampion')->name('form.champion');
+        Route::post('/kelola/action','ChampionController@actionChampion')->name("action.champion");
+        Route::get('/kelola/detail', 'ChampionController@detailMapcomChampion')->name('detail.kelola.champion');
 
     });
 
