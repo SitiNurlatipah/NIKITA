@@ -255,7 +255,7 @@ class ChampionController extends Controller
         return view("pages.admin.champion.form",compact('comps','user','type'));
     }
 
-    public function actionWhiteTag(Request $request)
+    public function actionChampion(Request $request)
     {
         $request->validate([
             "user_id" => "required|numeric",
@@ -265,20 +265,20 @@ class ChampionController extends Controller
             "data.*.actual" => "nullable|numeric",
             "data.*.ket" => "nullable|string",
         ]);
-        DB::beginTransaction();
+    
         try{
+        DB::beginTransaction();
             $data = $this->validate_input_v2($request);
             $skillId = [1,2];
 
             // Check
-            WhiteTagModel::whereRaw("id_user = '".$request->user_id."' AND (select count(*) from taging_reason where taging_reason.id_white_tag = white_tag.id_white_tag) <= 0 ")
+            $cek = WhiteTagModel::whereRaw("id_user = '".$request->user_id."' AND (select count(*) from taging_reason where taging_reason.id_white_tag = white_tag.id_white_tag) <= 0 ")
                         ->join("curriculum_champion_to_user",function ($join) use ($skillId){
                             $join->on('curriculum_champion_to_user.id_cctu','white_tag.id_cctu')
                                 ->join('curriculum_champion','curriculum_champion.id_curriculum_champion','curriculum_champion_to_user.id_curriculum_champion')
                                 ->whereIn('curriculum.id_skill_category',$skillId);
                         })
                         ->delete();
-
             if(isset($data["data"]) && count($data["data"]) > 0){
                 $insert = [];
                 for($i=0; $i < count($data["data"]); $i++){
@@ -293,7 +293,7 @@ class ChampionController extends Controller
                         ];
                     }
                 }
-                dd($insert);
+                // dd($insert);
                 if(count($insert) > 0)WhiteTagModel::insert($insert);
             }
             DB::commit();

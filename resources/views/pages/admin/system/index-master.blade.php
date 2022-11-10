@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Master Management System')
+@section('title', 'Master Certification')
 
 @push('style')
 @endpush
@@ -12,10 +12,10 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <p class="card-title ml-4">Data Sertification</p>
+                        <p class="card-title ml-4">Data Certification</p>
                         <div class="col-md mb-2">
                         <a class="btn btn-success btn-sm float-right btnAdd" href="javascript:void(0)" id="createNewItem"><i
-                                    class="icon-plus"></i> Add Data Sertification</a>
+                                    class="icon-plus"></i> Add Data Certification</a>
                         </div>
                     </div>
                     <div class="row">
@@ -26,7 +26,8 @@
                                     <thead>
                                         <tr>
                                             <th width="10">No.#</th>
-                                            <th>System Name</th>
+                                            <th>Certification</th>
+                                            <th>Target</th>
                                             <th>Description</th>
                                             <th width="15%">Action</th>
                                         </tr>
@@ -36,6 +37,7 @@
                                             <tr id="row_{{ $sys->id_system }}">
                                                 <th scope="row" class="text-center">{{ $loop->iteration }}</th>
                                                 <td>{{ $sys->nama_system}}</td>
+                                                <td></td>
                                                 <td>{{ $sys->description }}</td>
                                                 <td>
                                                     <button data-id="{{ $sys->id_system }}"
@@ -77,12 +79,26 @@
                     <div class="modal-body">
                         <div class="form-row">
                             <div class="col">
-                                <label>System Name</label>
+                                <label>Certification</label>
                                 <input type="text" class="form-control form-control-sm" name="nama_system"
-                                    placeholder="System Name" id="nama_system">
+                                    placeholder="Certification Name" id="nama_system">
                             </div>
                         </div>
-                        <div class="form-row mt-3">
+                        <div class="form-row mt-2">
+                            <div class="col">
+                                <label for="target">Target</label>
+                                <select class="form-control form-control-sm" name="target" required>
+                                    <option value="">Pilih Target</option>
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row mt-2">
                             <div class="col mb-3">
                                 <label>Description</label>
                                 <textarea class="form-control" placeholder="Input decsription" rows="3" name="description" id="description"></textarea>
@@ -131,7 +147,7 @@
             $('#id').val('');
             $('#nama_system').val('');
             $('#description').val('');
-            modalTitle.text('Add Data System');
+            modalTitle.text('Add Data Certification');
             modal.modal('show');
         })
 
@@ -139,7 +155,7 @@
             var id = $(this).data('id');
             var nama_system = $(this).data('nama_system');
             var description = $(this).data('description');
-            modalTitle.text('Edit Data System');
+            modalTitle.text('Edit Data Certification');
             $('#id').val(id);
             $('#nama_system').val(nama_system);
             $('#description').val(description);

@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Management System')
+@section('title', 'Certification')
 
 @push('style')
 @endpush
@@ -12,7 +12,7 @@
             <div class="card">
                 <div class="card-body">
                 <div class="row">
-                        <p class="card-title ml-4">Manage Sertification</p>
+                        <p class="card-title ml-4">Manage Certification</p>
                         <div class="col-md mb-2">
                         <a class="btn btn-success btn-sm float-right btnAdd" href="javascript:void(0)" id="createNewItem"><i
                                     class="icon-plus"></i> Tambah User</a>
@@ -28,7 +28,7 @@
                                         <tr>
                                             <th>No.</th>
                                             <th>Nama Kayawan</th>
-                                            <th>Management System</th>
+                                            <th>Certification</th>
                                             <th>Description</th>
                                             <th width="15%">Action</th>
                                         </tr>
@@ -86,7 +86,7 @@
                         </div>
                         <div class="form-row mt-3">
                             <div class="col">
-                                <label>Pilih System Management Module</label>
+                                <label>Pilih Certification Module</label>
                                 <select id="system" class="form-control form-control-sm" name="system">
                                     <option value="">Pilih System Module</option>
                                 </select>

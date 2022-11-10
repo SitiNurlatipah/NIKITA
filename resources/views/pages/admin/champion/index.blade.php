@@ -50,7 +50,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{!! route('action.champion') !!}" id="formChampion" enctype="multipart/form-data">
+                <form action="{!!route('action.champion')!!}" id="formChampion" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" id="user_id" name="user_id" value="">
                 <div class="modal-body">
@@ -178,7 +178,7 @@
         $("#user_id").val(id);
         var nama = $(el).attr("userName")
         $("#modal-edit-title").html('Champion Competencies <b>('+nama+')</b>')
-        const url = "{{ route('form.champion') }}?id="+id+"&type=general";
+        const url = "{!! route('form.champion') !!}?id="+id+"&type=general";
         $.ajax({
             url:url,
             cache:false,
@@ -214,15 +214,15 @@
     $("#submitChampion").click(function (e) {
         var tableEdit = $('#table-edit-champion').DataTable();
         e.preventDefault()
-        var form = $("#submitChampion")
+        var form = $("#formChampion")
         const url = form.attr("action");
-        var formSerialize = $("#submitChampion > input[name=user_id], input[name=_token]").serialize()
+        var formSerialize = $("#formChampion > input[name=user_id], input[name=_token]").serialize()
         var serializeDatatable = tableEdit.$('input,select,textarea').serialize()
         var formData = formSerialize+'&'+serializeDatatable
-        // console.log(formSerialize)   
+        console.log(formSerialize)   
         $.ajax({
             url:url,
-            type:"POST",
+            type:"post",
             cache:false,
             data:formData,
             success:function(data){
