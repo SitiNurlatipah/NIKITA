@@ -421,4 +421,10 @@ class ChampionController extends Controller
         ->make(true);
         
     }
+
+
+
+    public function indexMember(){
+        return view('pages.admin.champion.index-member');
+    }
 }

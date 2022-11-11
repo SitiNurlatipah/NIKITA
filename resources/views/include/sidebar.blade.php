@@ -87,8 +87,10 @@
                 </a>
                 <div class="collapse" id="superman">
                     <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('member.superman.index') }}">Member Superman</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('superman.index') }}">Curriculum Superman</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('kelola.superman.index') }}">Kelola Superman</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="#">CEME Superman</a></li>
                     </ul>
                 </div>
             </li>
@@ -100,8 +102,10 @@
                 </a>
                 <div class="collapse" id="champion">
                     <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('member.champion.index') }}">Member Champion</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('champion.index') }}">Curriculum 4.0</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('kelola.champion.index') }}">Kelola Champion 4.0</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="#">CEME Champion</a></li>
                     </ul>
                 </div>
             </li>  

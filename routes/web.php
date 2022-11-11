@@ -16,6 +16,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/', 'ProfileController@profile')->name('profile');
     });
 
+    // Kelola karyawan
     Route::prefix("member")->group(function(){
         Route::get('/', 'MemberCG@index')->name('Member');
         Route::get('/member/cgJson', 'MemberCG@cgJson')->name('Member.get');
@@ -185,6 +186,14 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Superman
     Route::prefix("superman")->group(function () {
+        Route::get('/member-superman', 'SupermanController@indexMember')->name('member.superman.index');
+        Route::get('/member-superman/cgJson', 'SupermanController@cgJson')->name('get.member.superman');
+        Route::post('/member-superman-post', 'SupermanController@store')->name('post.member.superman');
+        Route::get('/form-member-superman-edit', 'SupermanController@edit')->name('edit.member-superman');
+        Route::post('/member-superman-edit','SupermanController@update')->name('update.member-superman');
+        Route::get('/member-superman-detail', 'SupermanController@detail')->name('member-superman.detail');
+        Route::get('/member-superman-delete/{id}', 'SupermanController@deleteMember')->name('delete.member-superman');
+
         Route::get('/', 'SupermanController@index')->name('superman.index');
         Route::get('/get', 'SupermanController@getSuperman')->name('superman.get');
         Route::post('/create', 'SupermanController@store')->name('superman.store');
@@ -200,6 +209,14 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Champion 4.0
     Route::prefix("champion")->group(function () {
+        Route::get('/member-champion', 'ChampionController@indexMember')->name('member.champion.index');
+        Route::get('/member-champion/cgJson', 'ChampionController@cgJson')->name('get.member.champion');
+        Route::post('/member-champion-post', 'ChampionController@store')->name('post.member.champion');
+        Route::get('/form-member-champion-edit', 'ChampionController@edit')->name('edit.member-champion');
+        Route::post('/member-champion-edit','ChampionController@update')->name('update.member-champion');
+        Route::get('/member-champion-detail', 'ChampionController@detail')->name('member-champion.detail');
+        Route::get('/member-champion-delete/{id}', 'ChampionController@deleteMember')->name('delete.member-champion');
+
         Route::get('/', 'ChampionController@indexMaster')->name('champion.index');
         Route::get('/get', 'ChampionController@getChampion')->name('champion.get');
         Route::post('/create', 'ChampionController@store')->name('champion.store');
