@@ -9,10 +9,10 @@
                 <div class="card-body">
                 <div class="row">
                     <p class="card-title ml-4">Kelola Superman</p>
-                    <div class="col-md mb-2">
+                    <!-- <div class="col-md mb-2">
                         <a class="btn btn-sm btn-success float-right" href="javascript:void(0)" id="createNewItem"
                             data-toggle="modal" data-target="#modal-tambah"><i class="icon-plus"></i> Enroll Superman</a>
-                    </div>
+                    </div> -->
                 </div>
                     <div class="row">
                         <div class="col-md-12">
@@ -62,7 +62,6 @@
                                     <th rowspan="2">No. Competency</th>
                                     <th rowspan="2">Skill Category</th>
                                     <th rowspan="2">Competency</th>
-                                    <th rowspan="2">Level</th>
                                     <th rowspan="2">Competency Group</th>
                                     <th colspan="4" class="text-center">Action</th>
                                     <th class="text-center" rowspan="2">Status</th>
@@ -88,24 +87,41 @@
             </div>
         </div>
     </div>
-    <!-- 
-    <div class="modal fade" id="modal-detail-user" tabindex="-1" role="dialog" aria-labelledby="modal-editLabel"
+    
+    <div class="modal fade" id="modal-detail" tabindex="-1" role="dialog" aria-labelledby="modal-editLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-md" role="document">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header p-3">
-                    <h5 class="modal-title" id="modal-editLabel">Detail User Asign</h5>
+                    <h5 class="modal-title" id="modal-editLabel">Detail Superman</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <ul id="tampil-user">
-                    </ul> 
+                    <div class="table-responsive">
+                        <table class="display expandable-table table-striped table-hover" id="table-detail">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">No</th>
+                                    <th>No Competency</th>
+                                    <th>Skill Category</th>
+                                    <th>Competency</th>
+                                    <th>Competency Group</th>
+                                    <th>Start</th>
+                                    <th>Actual</th>
+                                    <th>Target</th>
+                                    <th>Keterangan</th>
+                                    <th>Status</th>
+                                </tr> 
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
 
 @endsection
 @push('script')
@@ -172,33 +188,93 @@
             url:url,
             cache:false,
             success: function(html) {
-                console.log(html);
+                // console.log(html);
                 $("#formMapComp").show();
-                // if($.fn.DataTable.isDataTable('#table-edit-superman')){
-                //     $('#table-edit-superman').DataTable().destroy()
-                // }
+                if($.fn.DataTable.isDataTable('#table-edit-superman')){
+                    $('#table-edit-superman').DataTable().destroy()
+                }
                 $("#formMapComp").html(html);
-                // table-edit-superman = $('#table-edit-superman').DataTable({
-                //     searching: true,
-                //     retrieve: true,
-                //     paging: true,
-                //     columnDefs: [
-                //         {
-                //             orderable: false,
-                //             targets: [6, 7, 8],
-                //         },
-                //         { 
-                //             width: "200px", 
-                //             targets: 9 
-                //         }
-                //     ]
-                // });
+                $('#table-edit-superman').DataTable({
+                    searching: true,
+                    retrieve: true,
+                    paging: true,
+                    columnDefs: [
+                        {
+                            orderable: false,
+                            targets: [6, 7, 8],
+                        },
+                        { 
+                            width: "200px", 
+                            targets: 9 
+                        }
+                    ]
+                });
             },
             error: function(req, sts, err) {
                 console.log(err);
             }
 
         });
-}
+    }
+
+    function detailMapcomSuperman(id, el) {
+        const url = "{{ route('detail.kelola.superman') }}?id="+id+"&type=general";
+        var name = $(el).attr("userName");
+        $("#modal-detailLabel").html('Detail Mapping Competencies <b>('+name+')</b>')
+        $('#table-detail').DataTable().destroy();
+        var dtJson = $('#table-detail').DataTable({
+            ajax:  url,
+            autoWidth: true,
+            serverSide: true,
+            processing: true,
+            searching: true,
+            dom: '<"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+            displayLength: 10,
+            language: {
+                paginate: {
+                    // remove previous & next text from pagination
+                    previous: '&nbsp;',
+                    next: '&nbsp;'
+                }
+            },
+            columnDefs: [
+                    { "width": "150px", "targets": 9 }
+            ],
+            scrollX: true,
+            columns: [
+                {
+                    data: 'DT_RowIndex', name: 'DT_RowIndex'
+                },
+                {
+                    data: 'no_curriculum'
+                },
+                {
+                    data: 'skill_category'
+                },
+                {
+                    data: 'curriculum_superman'
+                },
+                {
+                    data: 'curriculum_group'
+                },
+                {
+                    data: 'start'
+                },
+                {
+                    data: 'actual'
+                },
+                {
+                    data: 'target'
+                },
+                {
+                    data: 'ket'
+                },
+                {
+                    data: 'tagingStatus'
+                },
+            ]
+        });
+
+    }
     </script>
 @endpush

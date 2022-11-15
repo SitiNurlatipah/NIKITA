@@ -1,63 +1,12 @@
 @extends('layouts.master')
 
-@section('title', 'Member CG')
+@section('title', 'Superman Member')
 
 @section('content')
-<style>
-    .myk-btn img{width: 50%; margin-top: 15px; margin-left: 15px;}
-    .myk-wa-icon{
-        margin: 0 auto;
-    }
-    .image_area {
-        position: relative;
-        margin: auto
-    }
-
-    img {
-        display: block;
-        max-width: 100%;
-    }
-    
-    .preview {
-        overflow: hidden;
-        width: 250px; 
-        height: 250px;
-        margin: 10px;
-        border: 1px solid red;
-    }
-
-    .modal-lg{
-        max-width: 1000px !important;
-    }
-    .overlay {
-    position: absolute;
-    bottom: 5px;
-    left: 0;
-    right: 0;
-    background-color: rgba(255, 255, 255, 0.5);
-    overflow: hidden;
-    height: 0;
-    transition: .5s ease;
-    width: 100%;
-    }
-    .image_area:hover .overlay {
-    height: 40%;
-    cursor: pointer;
-    }
-    .text {
-    color: #333;
-    font-size: 20px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    text-align: center;
-    }
-</style>
 @push('style')
-    <link href="https://unpkg.com/cropperjs/dist/cropper.css" rel="stylesheet"/>
+<style>
+
+</style>
 @endpush
 <div class="row">
     <div class="col-md-12 grid-margin stretch-card">
@@ -66,14 +15,14 @@
                 <div class="row">
                     <p class="card-title ml-4">Superman Member</p>
                     <div class="col-md mb-2">
-                        <a class="btn btn-sm btn-success float-right ml-2" href="javascript:void(0)" id="createNewItem" data-toggle="modal" data-target="#modal-tambah"><i class="icon-plus"></i> Add User</a>
+                        <a class="btn btn-sm btn-success float-right ml-2" href="javascript:void(0)" id="createNewItem" data-toggle="modal" data-target="#modal-tambah"><i class="icon-plus"></i> Enroll Superman</a>
                         <a class="btn btn-sm btn-success float-right btnRotation" href="javascript:void(0)" id="btnRotation" data-toggle="modal" data-target="#modal-rotation"><i class="icon-repeat"></i> Rotation User</a>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12">
                         <div class="table-responsive">
-                            <table class="display expandable-table table-striped table-hover" id="table-cg" style="width:100%">
+                            <table class="display expandable-table table-striped table-hover" id="tbl-superman" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -100,114 +49,38 @@
 
 {{-- Modal --}}
 <div class="modal fade" id="modal-tambah" tabindex="-1" role="dialog" aria-labelledby="modal-tambahLabel" aria-hidden="true" style="overflow: auto !important">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-md" role="document">
       <div class="modal-content">
           <div class="modal-header p-3">
-              <h5 class="modal-title" id="modal-tambahLabel">Add New User</h5>
+              <h5 class="modal-title" id="modal-tambahLabel">Enroll Superman Member</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <form action="{{ route('Member.post') }}" method="POST" enctype="multipart/form-data" id="formPost">
                 @csrf
-                <input type="hidden" id="base64" name="base64">
                 <div class="modal-body">
                     <div class="form-row">
-                        <div class="col-md-4">
-                            <div class="image_area" style="height: 250px;width:250px">
-                                <label for="upload_image" class="relative">
-                                    <img src="{{asset('assets/images/faces/face0.png' )}}" id="uploaded_image" class="rounded-circle img-thumbnail" />
-                                    <div class="overlay">
-                                        <div class="text" style="font-size: 15px">Click to Change Profile Image</div>
-                                    </div>
-                                    <input type="file" name="image" class="image" id="upload_image" style="display:none" />
-                                </label>
-                            </div>
+                        <div class="col-12">
+                        <div class="form-group">
+                                <label for="noModule">Superman Member <small>(Bisa pilih lebih dari 1)</small></label>
+                                    <select id="id_user" class="selectpicker form-control form-control-sm"
+                                        name="id_user[]" data-live-search="true" data-hide-disabled="true" multiple
+                                        data-actions-box="true">
+                                    </select>
+                                </div>
                         </div>
-                        <div class="col-md-8 row">
-                            <div class="col-md-6 mb-3">
-                                <label>NIK</label>
-                                <input type="text" id="nik" class="form-control form-control-sm" name="nik" placeholder="10119912">
-                                <div class="invalid-feedback" id="feed-back-nik"></div>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label>Password</label>
-                                <input type="password" id="password" class="form-control form-control-sm"  name="password" placeholder="Masukan Password">
-                                <div class="invalid-feedback" id="feed-back-password"></div>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label>Role</label>
-                                <select class="form-control form-control-sm" name="peran_pengguna" id="peran_pengguna">
-                                    <option value="1">Admin</option>
-                                    <option value="2">CG Leader</option>
-                                    <option value="3">Pengguna</option>
-                                    <option value="4">Atasan</option>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="id_level">Pilih Level</label>
+                                <select id="id_level" class="form-control form-control-sm" name="id_level">
+                                <option value="LV-0004">SPV</option>
+                                <option value="LV-0003">DEPT HEAD</option>
+                                <option value="LV-0002">Division Head</option>
                                 </select>
-                                <div class="invalid-feedback" id="feed-back-peran-pengguna"></div>
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <label>Join Date</label>
-                                <input type="date" id="entry" name="tgl_masuk" class="form-control form-control-sm">
-                                <div class="invalid-feedback" id="feed-back-entry"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="col-md-6 mb-3">
-                            <label>Employee Name</label>
-                            <input type="text" id="nama-pengguna" class="form-control form-control-sm" name="nama_pengguna" placeholder="Nama Karyawan">
-                            <div class="invalid-feedback" id="feed-back-nama-pengguna"></div>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label>Email</label>
-                            <input type="text" id="email" name="email" class="form-control form-control-sm" placeholder="nama@gmail.com">
-                            <div class="invalid-feedback" id="feed-back-email"></div>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="col-md-4 mb-3">
-                            <label>Divisi</label>
-                            <select id="divisi" class="form-control form-control-sm" name="divisi">
-                                <option value="">Pilih Divisi</option>
-                            </select>
-                            <div class="invalid-feedback" id="feed-back-divisi"></div>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label>Job Title</label>
-                            <select id="jabatan" class="form-control form-control-sm" name="job_title">
-                                <option value="">Pilih Jabatan</option>
-                            </select>
-                            <div class="invalid-feedback" id="feed-back-jabatan"></div>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label>Level</label>
-                            <select id="level" class="form-control form-control-sm" name="level">
-                                <option value="">Pilih Level</option>
-                            </select>
-                            <div class="invalid-feedback" id="feed-back-level"></div>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="col-md-4 mb-3">
-                            <label>Department</label>
-                            <select id="department" class="form-control form-control-sm" name="department">
-                                <option value="">Pilih Department</option>
-                            </select>
-                            <div class="invalid-feedback" id="feed-back-department"></div>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label>Sub Department</label>
-                            <select id="sub-department" class="form-control form-control-sm" name="sub_department">
-                                <option value="">Pilih Sub Dept</option>
-                            </select>
-                            <div class="invalid-feedback" id="feed-back-sub-department"></div>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label>Liga CG</label>
-                            <select id="cg" class="form-control form-control-sm" name="cg">
-                                <option value="">Pilih CG Name</option>
-                            </select>
-                            <div class="invalid-feedback" id="feed-back-cg"></div>
                         </div>
                     </div>
                 </div>
@@ -243,51 +116,22 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Crop Image Before Upload</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="img-container">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="" id="sample_image" style="height: 300px" />
-                        </div>
-                        <div class="col-md-6">
-                            <div class="preview"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="crop" class="btn btn-primary">Crop</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            </div>
-        </div>
-    </div>
-</div>			
-
 <div class="modal fade" id="modal-hapus" tabindex="-1" role="dialog" aria-labelledby="modal-delete" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <form action="">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel17">Hapus Data</h4>
+                    <h4 class="modal-title" id="myModalLabel17">Unroll Data</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    Yakin ingin menghapus data ini?
+                    Unroll data sebagai Superman?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button class="btn btn-danger" type="button" id="btnHapus" onclick="deleteMember(this)" data-id="">Hapus</a>
+                    <button class="btn btn-danger" type="button" id="btnHapus" onclick="unrollMember(this)" data-id="">Unrolls</a>
                 </div>
             </div>
         </form>
@@ -317,11 +161,11 @@
 
 <div class="modal fade" id="modal-rotation" tabindex="-1" role="dialog" aria-labelledby="modal-tambahLabel" aria-hidden="true" style="overflow: auto !important">
     <div class="modal-dialog modal-md" role="document">
-      <div class="modal-content">
-          <div class="modal-header p-3">
-              <h5 class="modal-title" id="modal-tambahLabel">User Rotation</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
+    <div class="modal-content">
+        <div class="modal-header p-3">
+            <h5 class="modal-title" id="modal-tambahLabel">User Rotation</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <form action="{{ route('Member.rotation') }}" method="POST" id="formRotation">
@@ -357,7 +201,7 @@
                 <button type="submit" class="btn btn-primary">Rotate</button>
                 </div>
             </form>
-      </div>
+    </div>
     </div>
 </div>
 @endsection
@@ -366,25 +210,13 @@
     <link rel="stylesheet" href="{{ asset('assets/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 @endpush
 @push('script')
-<script src="{{asset('assets/js/cropper-v2.js')}}"></script>
 <script src="{{ asset('assets/select2/js/select2.min.js') }}"></script>
-
 <script type="text/javascript">
-     $('#user_rotation').select2({
-            theme:'bootstrap4'
-     });
-     $('#jabatan_rotation').select2({
-            theme:'bootstrap4'
-     });
-     $('#cg_rotation').select2({
-            theme:'bootstrap4'
-     });
-     
 
     var role = '{{ Auth::user()->peran_pengguna}}';
 
     function initDatatable() {
-        var dtJson = $('#table-cg').DataTable({
+        var dtJson = $('#tbl-superman').DataTable({
             ajax: "{{ route('get.member.superman') }}",
             autoWidth: false,
             serverSide: true,
@@ -430,24 +262,25 @@
         });
     }
 
-    $('#table-cg').on('click','.member-hapus', function () {
+    $('#tbl-superman').on('click','.member-hapus', function () {
         var id = $(this).attr('data-id');
         $('#btnHapus').attr('data-id',id);
     })
     
-    function deleteMember(el) {
+    function unrollMember(el) {
         var id = $(el).attr("data-id");
         var token = $("meta[name='csrf-token']").attr("content");
         $.ajax({
-            url:"member/member-delete/"+id,
-            mehtod:"delete",
+            url:"member-superman-delete/"+id,
+            mehtod:"delete",     
             data: {
                 "id": id,
                 "_token": token,
             },
             success:function(res)
             {
-                $('#table-cg').DataTable().destroy();
+                console.log(res)
+                $('#tbl-superman').DataTable().destroy();
                 initDatatable();
                 $("#modal-hapus").modal('hide');
                 Swal.fire({
@@ -457,50 +290,20 @@
                     showConfirmButton: false,
                     timer: 1500
                 })
+            },
+            error:function(err){
+                console.log(err)
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: err.responseJson.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
             }
         })
     }
     
-    function getDivisi(){
-        $.ajax({
-            type: "GET",
-            url: "{{ route('get.divisi') }}",
-            success: function(res) {
-                var option = "";
-                for (let i = 0; i < res.data.length; i++) {
-                    option += '<option value="'+res.data[i].id_divisi+'">'+res.data[i].nama_divisi+'</option>';
-                }
-                $('#divisi').html();
-                $('#divisi').append(option);
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                console.log(xhr);
-                alert(xhr.status);
-                alert(thrownError);
-            }
-        })
-    }
-
-    function getJabatan(){
-        $.ajax({
-            type: "GET",
-            url: "{{ route('get.jabatan') }}",
-            success: function(res) {
-                var option = "";
-                for (let i = 0; i < res.data.length; i++) {
-                    option += '<option value="'+res.data[i].id_job_title+'">'+res.data[i].nama_job_title+'</option>';
-                }
-                $('#jabatan').html();
-                $('#jabatan').append(option);
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                console.log(xhr);
-                alert(xhr.status);
-                alert(thrownError);
-            }
-        })
-    }
-
     function getLevel(){
         $.ajax({
             type: "GET",
@@ -521,65 +324,28 @@
         })
     }
 
-    function getDepartment(){
-        $.ajax({
-            type: "GET",
-            url: "{{ route('get.department') }}",
-            success: function(res) {
-                var option = "";
-                for (let i = 0; i < res.data.length; i++) {
-                    option += '<option value="'+res.data[i].id_department+'">'+res.data[i].nama_department+'</option>';
+    function getSupermanMember() {
+            $.ajax({
+                type: "GET",
+                url: "{{ route('Member.getJson') }}",
+                success: function(res) {
+                    var option = "";
+                    for (let i = 0; i < res.length; i++) {
+                        option += '<option value="' + res[i].id + '">' + res[i]
+                            .nama_pengguna + '</option>';
+                    }
+                    $("#id_user").html(option).selectpicker('refresh');
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: xhr ,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
                 }
-                $('#department').html();
-                $('#department').append(option);
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                console.log(xhr);
-                alert(xhr.status);
-                alert(thrownError);
-            }
-        })
-    }
-
-    function getSubDepartment(){
-        $.ajax({
-            type: "GET",
-            url: "{{ route('get.sub.department') }}",
-            success: function(res) {
-                var option = "";
-                for (let i = 0; i < res.data.length; i++) {
-                    option += '<option value="'+res.data[i].id_subdepartment+'">'+res.data[i].nama_subdepartment+'</option>';
-                }
-                $('#sub-department').html();
-                $('#sub-department').append(option);
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                console.log(xhr);
-                alert(xhr.status);
-                alert(thrownError);
-            }
-        })
-    }
-
-    function getCG(){
-        $.ajax({
-            type: "GET",
-            url: "{{ route('get.cg') }}",
-            success: function(res) {
-                var option = "";
-                for (let i = 0; i < res.data.length; i++) {
-                    option += '<option value="'+res.data[i].id_cg+'">'+res.data[i].nama_cg+'</option>';
-                }
-                $('#cg').html();
-                $('#cg').append(option);
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                console.log(xhr);
-                alert(xhr.status);
-                alert(thrownError);
-            }
-        })
-    }
+            })
+        }
 
     function formEdit(id){
         const url = "{!! route('Member.edit') !!}?id="+id;
@@ -644,7 +410,7 @@
                 $("#formPost")[0].reset();
                 $("#uploaded_image").attr("src","{{asset('assets/images/faces/face0.png')}}")
                 $("#modal-tambah").modal('hide');
-                $('#table-cg').DataTable().destroy();
+                $('#tbl-superman').DataTable().destroy();
                 initDatatable();
                 Swal.fire({
                     position:'center',
@@ -766,7 +532,7 @@
             data:formData,
             success:function (data) {
                 $("#modal-edit").modal('hide');
-                $('#table-cg').DataTable().destroy();
+                $('#tbl-superman').DataTable().destroy();
                 initDatatable();
                 Swal.fire({
                     position:'center',
@@ -910,7 +676,7 @@
             data:formData,
             success:function (data) {
                 $("#modal-rotation").modal('hide');
-                $('#table-cg').DataTable().destroy();
+                $('#tbl-superman').DataTable().destroy();
                 initDatatable();
                 Swal.fire({
                     position:'center',
@@ -964,42 +730,9 @@
             cropper = null;
         });
 
-        $('#crop').click(function(){
-            canvas = cropper.getCroppedCanvas({
-                width:400,
-                height:400
-		    });
-
-            canvas.toBlob(function(blob){
-                url = URL.createObjectURL(blob);
-                var reader = new FileReader();
-                reader.readAsDataURL(blob);
-                reader.onloadend = function(){
-                    var base64data = reader.result;
-                    var fileInput = document.getElementById('#myInputID');
-                    $('#uploaded_image').attr('src', base64data);
-                    $('#base64').attr('value', base64data);
-                    $modal.modal('hide');
-                    // alert()
-                    // $.ajax({
-                    //     url:'upload.php',
-                    //     method:'POST',
-                    //     data:{image:base64data},
-                    //     success:function(data)
-                    //     {
-                    //     }
-                    // });
-                };
-            });
-        });
-
         initDatatable();
-        getDivisi();
-        getJabatan();
         getLevel();
-        getDepartment();
-        // getSubDepartment();
-        getCG();
+        getSupermanMember();
 
 
         $('.delete-button').on('click',function () {

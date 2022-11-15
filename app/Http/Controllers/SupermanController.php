@@ -38,6 +38,7 @@ class SupermanController extends Controller
             ->orWhere('users.id_level', 'LV-0002')
             ->orWhere('users.id_level', 'LV-0003')
             ->orWhere('users.id_level', 'LV-0004')
+            ->orderBy('nama_pengguna', 'ASC')
             ->get(['users.id', 'users.nama_pengguna', 'users.id_department', 'dp.nama_department', 'jt.id_job_title', 'jt.nama_job_title']);
 
         return response()->json($superman);
@@ -224,14 +225,14 @@ class SupermanController extends Controller
         ->Where('users.id_level', 'LV-0002')
         ->orWhere('users.id_level', 'LV-0003')
         ->orWhere('users.id_level', 'LV-0004')
-        ->orderBy('users.id_level', 'DESC')
+        ->orderBy('nama_pengguna', 'DESC')
         ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','level.nama_level']);
 
         return Datatables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
                 $btn = '<button data-id="' . $row->id . '" onclick="getCompSuperman('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="button-add btn btn-inverse-success btn-icon mr-1" data-toggle="modal" data-target="#modal-edit"><i class="icon-plus menu-icon"></i></button>';
-                $btn = $btn . '<button type="button" onclick="detail('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="btn btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail"><i class="ti-eye"></i></button>';
+                $btn = $btn . '<button type="button" onclick="detailMapcomSuperman('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="btn btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail"><i class="ti-eye"></i></button>';
                     return $btn;
                 })
             ->addIndexColumn()
@@ -241,24 +242,39 @@ class SupermanController extends Controller
 
     public function formSuperman(Request $request)
     {
-        // $validator = Validator::make($request->all(),[
-        //     "id" => "requeired|numeric",
-        //     "type" => "required|string|in:functional,general"
-        // ]);
-        // $type = $request->type;
+        $validator = Validator::make($request->all(),[
+            "id" => "requeired|numeric",
+            "type" => "required|string|in:functional,general"
+        ]);
+        $type = $request->type;
         $user = User::select("id","id_level")
                     ->where("id",$request->id)
-                    ->orWhere('users.id_level', 'LV-0002')
-                    ->orWhere('users.id_level', 'LV-0003')
-                    ->orWhere('users.id_level', 'LV-0004')
                     ->first();
+        
+        $select = [
+            "curriculum_superman.no_curriculum_superman as no_curriculum", "curriculum_superman.target as target",
+            "curriculum_superman.curriculum_superman as curriculum_superman","curriculum_superman.curriculum_group as curriculum_group",
+            "skill_category.skill_category as skill_category","white_tag.start as start", "white_tag.actual as actual","white_tag.keterangan as ket",
+            
+            DB::raw("(SELECT COUNT(*) FROM taging_reason as tr where tr.id_white_tag = white_tag.id_white_tag) as cntTagingReason"),
+            DB::raw("(CASE WHEN (white_tag.actual - curriculum_superman.target) < 0 THEN 'Open'
+                            WHEN (white_tag.actual IS NULL) THEN 'Belum diatur'
+                            WHEN white_tag.actual >= curriculum_superman.target THEN 'Close' 
+                            END) as tagingStatus"),"compGroup.name as compGroupName"
+        ];
 
-        $comps = CurriculumSupermanToUser::join("curriculum_superman",function ($join) use ($user){
+        $comps = CurriculumSupermanToUser::select($select)
+                                            ->join("curriculum_superman",function ($join) use ($user){
                                                 $join->on("curriculum_superman.id_curriculum_superman","curriculum_superman_to_user.id_curriculum_superman")
                                                     ->whereRaw("curriculum_superman_to_user.id_user = '".$user->id."'");
                                             })
-                                            ->get(['curriculum_superman.*']);
-        dd($comps);
+                                            ->join("competencie_groups as compGroup","compGroup.id","curriculum_superman.curriculum_group")
+                                            ->join("skill_category","skill_category.id_skill_category","curriculum_superman.id_skill_category")
+                                            ->leftJoin("white_tag",function ($join) use ($user){
+                                                $join->on("white_tag.id_cstu","curriculum_superman_to_user.id_cstu")
+                                                    ->where("white_tag.id_user",$user->id);
+                                            })
+                                            ->get();
 
         return view("pages.admin.superman.form",compact('comps','user','type'));
     }
@@ -308,9 +324,121 @@ class SupermanController extends Controller
         return response()->json(['code' => 200, 'message' => 'Post successfully'], 200);
     }
 
-
-    public function indexMember(){
-        return view('pages.admin.superman.index-member');
+    public function detailMapcomSuperman(Request $request)
+    {
+        $user = User::select("id","id_job_title")->where("id",$request->id)->first();
+        $skillId = [1,2];
+        $select = [
+            "curriculum_superman.no_curriculum_superman as no_curriculum","curriculum_superman.curriculum_superman as curriculum_superman","compGroup.name as curriculum_group","curriculum_superman.target as target","skill_category.skill_category as skill_category","white_tag.start as start","white_tag.actual as actual",
+            DB::raw("(CASE WHEN (white_tag.actual - curriculum_superman.target) < 0 THEN 'Open'
+                            WHEN (white_tag.actual IS NULL) THEN 'Belum diatur'
+                            WHEN white_tag.actual >= curriculum_superman.target THEN 'Close' 
+                            END) as tagingStatus"),
+                            "white_tag.keterangan as ket"
+        ];
+        $data = CurriculumSupermanToUser::select($select)
+                                ->join("curriculum_superman",function ($join) use ($user,$skillId){
+                                    $join->on("curriculum_superman.id_curriculum_superman","curriculum_superman_to_user.id_curriculum_superman")
+                                        ->whereIn("id_skill_category",$skillId);
+                                })
+                                ->join("skill_category","skill_category.id_skill_category","curriculum_superman.id_skill_category")
+                                ->leftJoin("white_tag",function ($join) use ($user){
+                                    $join->on("white_tag.id_cstu","curriculum_superman_to_user.id_cstu")
+                                        ->where("white_tag.id_user",$user->id);
+                                })
+                                ->join("competencie_groups as compGroup","compGroup.id","curriculum_superman.curriculum_group")
+                                ->groupBy("curriculum_superman.id_curriculum_superman")
+                                ->orderBy("tagingStatus", "DESC")
+                                ->get();
+        // dd($data);                        
+        return Datatables::of($data)
+        ->addIndexColumn()
+        ->editColumn('start', function ($row) {
+            switch($row->start){
+                case 0:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->start.'" class="mx-auto"><img class="img-thumbnail mx-auto tooltip-info" src="'.asset('assets/images/point/0.png').'"></div>';
+                break;
+                case 1:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->start.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/1.png').'"></div>';
+                break;
+                case 2:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->start.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/2.png').'"></div>';
+                break;
+                case 3:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->start.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/3.png').'"></div>';
+                break;
+                case 4:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->start.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/4.png').'"></div>';
+                break;
+                case 5:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->start.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/5.png').'"></div>';
+                break;
+                    
+            }
+            return $icon;
+        })
+        ->editColumn('actual', function ($row) {
+            switch($row->actual){
+                case 0:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->actual.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/0.png').'"></div>';
+                break;
+                case 1:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->actual.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/1.png').'"></div>';
+                break;
+                case 2:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->actual.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/2.png').'"></div>';
+                break;
+                case 3:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->actual.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/3.png').'"></div>';
+                break;
+                case 4:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->actual.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/4.png').'"></div>';
+                break;
+                case 5:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->actual.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/5.png').'"></div>';
+                break;
+                    
+            }
+            return $icon;
+        })
+        ->editColumn('target', function ($row) {
+            switch($row->target){
+                case 0:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->target.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/0.png').'"></div>';
+                break;
+                case 1:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->target.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/1.png').'"></div>';
+                break;
+                case 2:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->target.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/2.png').'"></div>';
+                break;
+                case 3:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->target.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/3.png').'"></div>';
+                break;
+                case 4:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->target.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/4.png').'"></div>';
+                break;
+                case 5:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->target.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/5.png').'"></div>';
+                break;
+                    
+            }
+            return $icon;
+        })
+        ->addColumn('tagingStatus', function ($row) {
+            if (isset($row->tagingStatus)) {
+                if ($row->tagingStatus == 'Close') {
+                    $label = '<span class="badge badge-success">' . $row->tagingStatus . '</span>';
+                    return $label;
+                } else {
+                    $label = '<span class="badge badge-secondary text-white">' . $row->tagingStatus . '</span>';
+                    return $label;
+                }
+            }
+        })
+        ->rawColumns(['start','actual','target','tagingStatus'])
+        ->make(true);
+        
     }
 
 
@@ -319,6 +447,15 @@ class SupermanController extends Controller
 
 
 
+
+
+
+
+
+
+    public function indexMember(){
+        return view('pages.admin.superman.index-member');
+    }
 
     public function supermanMemberJson()
     {
@@ -329,6 +466,7 @@ class SupermanController extends Controller
             ->orWhere('users.id_level', 'LV-0002')
             ->orWhere('users.id_level', 'LV-0003')
             ->orWhere('users.id_level', 'LV-0004')
+            ->orderBy('nama_pengguna', 'DESC')
             ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title']);
         return Datatables::of($data)
             ->addIndexColumn()
@@ -345,54 +483,26 @@ class SupermanController extends Controller
 
     public function supermanMemberStore(Request $request)
     {
+        dd($request->id_user);
         $request->validate([
-            'image' => 'nullable|image|mimes:jpg,png,jpeg|max:5000',
-            'base64' => 'nullable|string',
-            'nik' => 'required|numeric',
-            'password' => 'required',
-            'peran_pengguna' => 'required|in:1,2,3',
-            'tgl_masuk' => 'required',
-            'nama_pengguna' => 'required',
-            'email' => 'email|required',
-            'divisi' => 'required',
-            'job_title' => 'required',
-            'level' => 'required',
-            'department' => 'required',
-            'sub_department' => 'required',
-            'cg' => 'required'
+            'id' => 'int',
+            'id_level' => 'nullable|string',
         ]);
-
         
-        DB::beginTransaction();
         try {
-            $data = [
-                'nik' => $request->nik,
-                'password' => $request->password,
-                'peran_pengguna' => $request->peran_pengguna,
-                'tgl_masuk' => date('Y-m-d', strtotime($request->tgl_masuk)),
-                'nama_pengguna' => $request->nama_pengguna,
-                'email' => $request->email,
-                'id_divisi' => $request->divisi,
-                'id_job_title' => $request->job_title,
-                'id_level' => $request->level,
-                'id_department' => $request->department,
-                'id_sub_department' => $request->sub_department,
-                'id_cg' => $request->cg,
-            ];
-
-            if (isset($request->base64)) {
-                $filename = Str::random(15).'.png';
-                $contents = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$request->base64)); 
-                Storage::disk('public')->put($filename, $contents);
-                $data['gambar'] = $filename;
-            }
-            $data = User::insert($data);
+            DB::beginTransaction();
+                $data = [
+                    'is_superman' => 1,
+                    'id_level' => $request->id_level
+                ];
+                User::whereIn('id',$request->id_user)->update($data); 
             DB::commit();
         } catch (\Exception $e) {
-            dd($e->getMessage());
             DB::rollback();
+        return response()->json(['code' => 300, 'message' => $e], 300);
+
         }
-        return response()->json(['code' => 200, 'message' => 'Post successfully'], 200);
+        return response()->json(['code' => 200, 'message' => 'Enroll Update'], 200);
     }
 
     public function supermanMemberEdit(Request $request)
@@ -438,28 +548,17 @@ class SupermanController extends Controller
             'id_sub_department' => $request->sub_department,
             'id_cg' => $request->cg,
         ];
-        if(isset($request->base64)){
-            $url = "../storage/app/public/".$user->gambar;
-            if(file_exists($url) && (isset($user->gambar)) && $user->gambar != ""){
-                unlink($url);
-            }
-            $filename = Str::random(15).'.png';
-            $contents = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$request->base64)); 
-            Storage::disk('public')->put($filename, $contents);
-            $data['gambar'] = $filename;
-        }
         User::where('id',$request->id)->update($data);
         return response()->json(['code' => 200, 'message' => 'Post Updated successfully'], 200);
     }
     
     public function supermanMemberDelete($id)
     {
-        $user = User::find($id);
-        $url = "../storage/app/public/".$user->gambar;
-        if(file_exists($url) && isset($user->gambar)){
-            unlink($url);
-        }
-        User::where('id', $id)->delete();
+        $data = [
+            'is_superman' => 0,
+            'id_level' => 'LV-0005'
+        ];
+        User::where('id',$id)->update($data);  
         return redirect()->route('Member')->with(['success' => 'Curriculum Deleted successfully']);
     }
 }

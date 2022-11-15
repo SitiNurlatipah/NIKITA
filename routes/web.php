@@ -20,6 +20,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::prefix("member")->group(function(){
         Route::get('/', 'MemberCG@index')->name('Member');
         Route::get('/member/cgJson', 'MemberCG@cgJson')->name('Member.get');
+        Route::get('/member', 'MemberCG@getMember')->name('Member.getJson');
         Route::post('/member-post', 'MemberCG@store')->name('Member.post');
         Route::get('/form-member-edit', 'MemberCG@edit')->name('Member.edit');
         Route::post('/member-edit','MemberCG@update')->name('Member.update');
@@ -192,7 +193,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/form-member-superman-edit', 'SupermanController@edit')->name('edit.member-superman');
         Route::post('/member-superman-edit','SupermanController@update')->name('update.member-superman');
         Route::get('/member-superman-detail', 'SupermanController@detail')->name('member-superman.detail');
-        Route::get('/member-superman-delete/{id}', 'SupermanController@deleteMember')->name('delete.member-superman');
+        Route::get('/member-superman-delete/{id}', 'SupermanController@supermanMemberDelete')->name('delete.member.superman');
 
         Route::get('/', 'SupermanController@index')->name('superman.index');
         Route::get('/get', 'SupermanController@getSuperman')->name('superman.get');
@@ -205,6 +206,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/kelola/json', 'SupermanController@supermanJson')->name('superman.json');
         Route::get('/kelola/form','SupermanController@formSuperman')->name("form.superman");
         Route::post('/kelola/action','SupermanController@actionSuperman')->name("action.superman");
+        Route::get('/kelola/detail', 'SupermanController@detailMapcomSuperman')->name('detail.kelola.superman');
     });
 
     // Champion 4.0

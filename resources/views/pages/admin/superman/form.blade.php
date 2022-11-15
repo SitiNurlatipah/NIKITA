@@ -1,13 +1,11 @@
 @forelse ($comps as $key => $comp)
-<!-- {{ dd($comps) }} -->
 <tr>
     <td>{{$key+1}}</td>
-    <td>{{$comp->no_curriculum_superman}}</td>
+    <td>{{$comp->no_curriculum}}</td>
     <td>{{$comp->skill_category}}</td>
-    <td>{{$comp->curriculum_module}}</td>
-    <td>{{$comp->target}}</td>
+    <td>{{$comp->curriculum_superman}}</td>
     <td>{{$comp->compGroupName}}</td>
-    <!-- <td>
+    <td>
         @if($comp->cntTagingReason > 0)
         <input type="text" class="form-control" value="{{$comp->start}}" disabled>
         @else
@@ -22,8 +20,8 @@
                 <option value="5" {{$comp->start  == '5' ? 'selected' : ''}}>5</option>
             </select>
             @endif
-    </td>
-    <td>
+        </td>
+        <td>
             @if($comp->cntTagingReason > 0)
                 <input type="text" class="form-control" value="{{$comp->actual}}" disabled>
             @else
@@ -53,6 +51,6 @@
                 <span class="badge badge-secondary text-white">{{$comp->tagingStatus}}</span>
             @endif
         </td>
-    </tr> -->
+</tr>
 @empty
 @endforelse
