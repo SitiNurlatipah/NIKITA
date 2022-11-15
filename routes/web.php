@@ -187,7 +187,7 @@ Route::group(['middleware' => 'auth'], function () {
     //Superman
     Route::prefix("superman")->group(function () {
         Route::get('/member-superman', 'SupermanController@indexMember')->name('member.superman.index');
-        Route::get('/member-superman/cgJson', 'SupermanController@cgJson')->name('get.member.superman');
+        Route::get('/member-superman/superman-json', 'SupermanController@supermanMemberJson')->name('get.member.superman');
         Route::post('/member-superman-post', 'SupermanController@store')->name('post.member.superman');
         Route::get('/form-member-superman-edit', 'SupermanController@edit')->name('edit.member-superman');
         Route::post('/member-superman-edit','SupermanController@update')->name('update.member-superman');
@@ -210,7 +210,7 @@ Route::group(['middleware' => 'auth'], function () {
     // Champion 4.0
     Route::prefix("champion")->group(function () {
         Route::get('/member-champion', 'ChampionController@indexMember')->name('member.champion.index');
-        Route::get('/member-champion/cgJson', 'ChampionController@cgJson')->name('get.member.champion');
+        Route::get('/member-champion/superman-json', 'ChampionController@championJson')->name('get.member.champion');
         Route::post('/member-champion-post', 'ChampionController@store')->name('post.member.champion');
         Route::get('/form-member-champion-edit', 'ChampionController@edit')->name('edit.member-champion');
         Route::post('/member-champion-edit','ChampionController@update')->name('update.member-champion');

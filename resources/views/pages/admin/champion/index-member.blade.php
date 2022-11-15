@@ -64,7 +64,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    <p class="card-title ml-4">Employee Data</p>
+                    <p class="card-title ml-4">Champion Member</p>
                     <div class="col-md mb-2">
                         <a class="btn btn-sm btn-success float-right ml-2" href="javascript:void(0)" id="createNewItem" data-toggle="modal" data-target="#modal-tambah"><i class="icon-plus"></i> Add User</a>
                         <a class="btn btn-sm btn-success float-right btnRotation" href="javascript:void(0)" id="btnRotation" data-toggle="modal" data-target="#modal-rotation"><i class="icon-repeat"></i> Rotation User</a>
@@ -73,7 +73,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="table-responsive">
-                            <table class="display expandable-table table-striped table-hover" id="table-cg" style="width:100%">
+                            <table class="display expandable-table table-striped table-hover" id="tbl-member-champion" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -384,8 +384,8 @@
     var role = '{{ Auth::user()->peran_pengguna}}';
 
     function initDatatable() {
-        var dtJson = $('#table-cg').DataTable({
-            ajax: "{{ route('Member.get') }}",
+        var dtJson = $('#tbl-member-champion').DataTable({
+            ajax: "{{ route('get.member.champion') }}",
             autoWidth: false,
             serverSide: true,
             processing: true,
@@ -430,7 +430,7 @@
         });
     }
 
-    $('#table-cg').on('click','.member-hapus', function () {
+    $('#tbl-member-champion').on('click','.member-hapus', function () {
         var id = $(this).attr('data-id');
         $('#btnHapus').attr('data-id',id);
     })
@@ -447,7 +447,7 @@
             },
             success:function(res)
             {
-                $('#table-cg').DataTable().destroy();
+                $('#tbl-member-champion').DataTable().destroy();
                 initDatatable();
                 $("#modal-hapus").modal('hide');
                 Swal.fire({
@@ -644,7 +644,7 @@
                 $("#formPost")[0].reset();
                 $("#uploaded_image").attr("src","{{asset('assets/images/faces/face0.png')}}")
                 $("#modal-tambah").modal('hide');
-                $('#table-cg').DataTable().destroy();
+                $('#tbl-member-champion').DataTable().destroy();
                 initDatatable();
                 Swal.fire({
                     position:'center',
@@ -766,7 +766,7 @@
             data:formData,
             success:function (data) {
                 $("#modal-edit").modal('hide');
-                $('#table-cg').DataTable().destroy();
+                $('#tbl-member-champion').DataTable().destroy();
                 initDatatable();
                 Swal.fire({
                     position:'center',
@@ -910,7 +910,7 @@
             data:formData,
             success:function (data) {
                 $("#modal-rotation").modal('hide');
-                $('#table-cg').DataTable().destroy();
+                $('#tbl-member-champion').DataTable().destroy();
                 initDatatable();
                 Swal.fire({
                     position:'center',

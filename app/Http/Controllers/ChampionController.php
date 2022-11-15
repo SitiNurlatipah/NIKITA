@@ -58,7 +58,7 @@ class ChampionController extends Controller
             try {
                 $lastId = Champion::orderBy("created_at","desc")->first();
                 if(isset($lastId)){
-                    $number = explode("/",$lastId->no_curriculum_superman);
+                    $number = explode("/", $lastId->no_curriculum_champion);
                     $lastNumber = (int)$number[0];
                 }else{
                     $lastNumber = 0;
@@ -127,7 +127,7 @@ class ChampionController extends Controller
             'target' => ['required'],
             'id_user' => ['required'],
         ]);
-        $curriculum = Champion::where("id_curriculum_superman",$request->id_curriculum_superman)->first();
+        $curriculum = Champion::where("id_curriculum_champion", $request->id_curriculum_champion)->first();
         $update = [
             'id_skill_category' => $request->id_skill_category,
             'curriculum_champion' => $request->curriculum_champion,
@@ -136,23 +136,23 @@ class ChampionController extends Controller
             'target' => $request->target,
         ];
         if($curriculum->id_skill_category != $request->id_skill_category){
-            $noTraining = explode("/",$curriculum->no_curriculum_superman);
+            $noTraining = explode("/", $curriculum->no_curriculum_champion);
             if($request->id_skill_category == 1){
                 $noTraining[2] = "FUNC";
             }else{
                 $noTraining[2] = "GEN";
             }
-            $update['no_curriculum_superman'] = implode("/",$noTraining);
+            $update['no_curriculum_champion'] = implode("/", $noTraining);
         }
-        Champion::where("id_curriculum_superman",$request->id_curriculum_superman)->update($update);
+        Champion::where("id_curriculum_champion", $request->id_curriculum_champion)->update($update);
         $users_array = [];
         for($i = 0; $i < count($request->id_user); $i++){
             array_push($users_array,$request->id_user[$i]);
-            ChampionToUser::updateOrCreate(['id_curriculum_superman'=>$request->id_curriculum_superman,"id_user"=>$request->id_user[$i]]);
+            ChampionToUser::updateOrCreate(['id_curriculum_champion' => $request->id_curriculum_champion, "id_user" => $request->id_user[$i]]);
         }
         DB::commit();
         if(count($users_array) > 0){
-            ChampionToUser::where("id_curriculum_superman",$request->id_curriculum_superman)->whereNotIn("id_user",$users_array)->delete();
+            ChampionToUser::where("id_curriculum_champion", $request->id_curriculum_champion)->whereNotIn("id_user", $users_array)->delete();
         }
 
         return response()->json(['code' => 200, 'message' => 'Post Edited successfully'], 200);
@@ -169,8 +169,8 @@ class ChampionController extends Controller
             return response()->json($validator->errors());
         }
 
-        Champion::where('id_curriculum_superman', $id)->delete();
-        ChampionToUser::where("id_curriculum_superman",$id)->delete();
+        Champion::where('id_curriculum_champion', $id)->delete();
+        ChampionToUser::where("id_curriculum_champion", $id)->delete();
 
         $response = [
             'code' => 200,
@@ -424,7 +424,161 @@ class ChampionController extends Controller
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
     public function indexMember(){
         return view('pages.admin.champion.index-member');
+    }
+
+    public function championJson()
+    {
+        $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+        ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+        ->leftJoin('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
+        ->where('is_champion', 1)
+        ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title']);
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function ($row) {
+                $btn = '<button class="btn btn-inverse-success btn-icon mr-1" data-toggle="modal" onclick="formEdit(' . $row->id . ')" data-target="#modal-edit"><i class="icon-file menu-icon"></i></button>';
+                $btn = $btn . '<button data-id="' . $row->id . '" class="btn btn-inverse-danger btn-icon member-hapus mr-1" data-toggle="modal" data-target="#modal-hapus"><i class="icon-trash"></i></button>';
+                $btn = $btn . '<button type="button" onclick="detail(' . $row->id . ')" class="btn btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail"><i class="ti-eye"></i></button>';
+                return $btn;
+            })
+            ->addIndexColumn()
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+
+    public function championMemberStore(Request $request)
+    {
+        $request->validate([
+            'image' => 'nullable|image|mimes:jpg,png,jpeg|max:5000',
+            'base64' => 'nullable|string',
+            'nik' => 'required|numeric',
+            'password' => 'required',
+            'peran_pengguna' => 'required|in:1,2,3',
+            'tgl_masuk' => 'required',
+            'nama_pengguna' => 'required',
+            'email' => 'email|required',
+            'divisi' => 'required',
+            'job_title' => 'required',
+            'level' => 'required',
+            'department' => 'required',
+            'sub_department' => 'required',
+            'cg' => 'required'
+        ]);
+
+
+        DB::beginTransaction();
+        try {
+            $data = [
+                'nik' => $request->nik,
+                'password' => $request->password,
+                'peran_pengguna' => $request->peran_pengguna,
+                'tgl_masuk' => date('Y-m-d', strtotime($request->tgl_masuk)),
+                'nama_pengguna' => $request->nama_pengguna,
+                'email' => $request->email,
+                'id_divisi' => $request->divisi,
+                'id_job_title' => $request->job_title,
+                'id_level' => $request->level,
+                'id_department' => $request->department,
+                'id_sub_department' => $request->sub_department,
+                'id_cg' => $request->cg,
+            ];
+
+            if (isset($request->base64)) {
+                $filename = Str::random(15) . '.png';
+                $contents = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $request->base64));
+                Storage::disk('public')->put($filename, $contents);
+                $data['gambar'] = $filename;
+            }
+            $data = User::insert($data);
+            DB::commit();
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+            DB::rollback();
+        }
+        return response()->json(['code' => 200, 'message' => 'Post successfully'], 200);
+    }
+
+    public function championMemberEdit(Request $request)
+    {
+        $user = User::where("id", $request->id)->first();
+        $jabatans = Jabatan::all();
+        $levels = Level::all();
+        $departments = Department::all();
+        $subDepartments = SubDepartment::where("id_department", $user->id_department)->get();
+        return view("pages.admin.champion.form-edit", compact("user", "divisi", "jabatans", "levels", "departments", "subDepartments", "cgMaster"));
+    }
+
+    public function championMemberUpdate(Request $request)
+    {
+
+        $request->validate([
+            "id" => "required",
+            "base64" => "nullable|string",
+            "nik" => "required",
+            "peran_pengguna" => "required",
+            "tgl_masuk" => "required",
+            "nama_pengguna" => "required|string",
+            "email" => "required",
+            "divisi" => "required",
+            "job_title" => "required",
+            "level" => "required",
+            "department" => "required",
+            "sub_department" => "required",
+            "cg" => "required"
+        ]);
+        $user = User::where("id", $request->id)->first();
+
+        $data = [
+            'nik' => $request->nik,
+            'peran_pengguna' => $request->peran_pengguna,
+            'tgl_masuk' => date('Y-m-d', strtotime($request->tgl_masuk)),
+            'nama_pengguna' => $request->nama_pengguna,
+            'email' => $request->email,
+            'id_divisi' => $request->divisi,
+            'id_job_title' => $request->job_title,
+            'id_level' => $request->level,
+            'id_department' => $request->department,
+            'id_sub_department' => $request->sub_department,
+            'id_cg' => $request->cg,
+        ];
+        if (isset($request->base64)) {
+            $url = "../storage/app/public/" . $user->gambar;
+            if (file_exists($url) && (isset($user->gambar)) && $user->gambar != "") {
+                unlink($url);
+            }
+            $filename = Str::random(15) . '.png';
+            $contents = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $request->base64));
+            Storage::disk('public')->put($filename, $contents);
+            $data['gambar'] = $filename;
+        }
+        User::where('id', $request->id)->update($data);
+        return response()->json(['code' => 200, 'message' => 'Post Updated successfully'], 200);
+    }
+
+    public function championMemberDelete($id)
+    {
+        $user = User::find($id);
+        $url = "../storage/app/public/" . $user->gambar;
+        if (file_exists($url) && isset($user->gambar)) {
+            unlink($url);
+        }
+        User::where('id', $id)->delete();
+        return redirect()->route('Member')->with(['success' => 'Curriculum Deleted successfully']);
     }
 }

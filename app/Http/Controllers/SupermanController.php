@@ -325,6 +325,10 @@ class SupermanController extends Controller
         $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
             ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
             ->leftJoin('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
+            ->where('is_superman', 1)
+            ->orWhere('users.id_level', 'LV-0002')
+            ->orWhere('users.id_level', 'LV-0003')
+            ->orWhere('users.id_level', 'LV-0004')
             ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title']);
         return Datatables::of($data)
             ->addIndexColumn()
