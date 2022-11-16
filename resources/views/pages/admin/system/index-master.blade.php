@@ -37,7 +37,34 @@
                                             <tr id="row_{{ $sys->id_system }}">
                                                 <th scope="row" class="text-center">{{ $loop->iteration }}</th>
                                                 <td>{{ $sys->nama_system}}</td>
-                                                <td></td>
+                                                <td>
+                                                @php
+                                                        switch($sys->target){
+                                                        case 0:
+                                                            $target = asset('assets/images/point/0.png');
+                                                        break;
+                                                        case 1:
+                                                            $target = asset('assets/images/point/1.png');
+                                                        break;
+                                                        case 2:
+                                                            $target = asset('assets/images/point/2.png');
+                                                        break;
+                                                        case 3:
+                                                            $target = asset('assets/images/point/3.png');
+                                                        break;
+                                                        case 4:
+                                                            $target = asset('assets/images/point/4.png');
+                                                        break;
+                                                        case 5:
+                                                            $target = asset('assets/images/point/5.png');
+                                                        break;
+                                                        default:
+                                                            $target = "";
+                                                        break;
+                                                        }
+                                                    @endphp
+                                                        <img src="{{$target}}" title="{{$sys->target}}" style="width:30px;height:30px" alt="">
+                                                </td>
                                                 <td>{{ $sys->description }}</td>
                                                 <td>
                                                     <button data-id="{{ $sys->id_system }}"

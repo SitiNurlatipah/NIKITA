@@ -15,7 +15,7 @@
                         <p class="card-title ml-4">Manage Certification</p>
                         <div class="col-md mb-2">
                         <a class="btn btn-success btn-sm float-right btnAdd" href="javascript:void(0)" id="createNewItem"><i
-                                    class="icon-plus"></i> Tambah User</a>
+                                    class="icon-plus"></i> Sertifikasi User</a>
                         </div>
                     </div>
 
@@ -29,6 +29,10 @@
                                             <th>No.</th>
                                             <th>Nama Kayawan</th>
                                             <th>Certification</th>
+                                            <th>Start</th>
+                                            <th>Actual</th>
+                                            <th>Target</th>
+                                            <th>Katerangan</th>
                                             <th>Description</th>
                                             <th width="15%">Action</th>
                                         </tr>
@@ -39,6 +43,92 @@
                                                 <th scope="row" class="text-center">{{ $loop->iteration }}</th>
                                                 <td>{{ $item->nama_pengguna}}</td>
                                                 <td>{{ $item->nama_system }}</td>
+                                                <td>{{ $item->start }}
+                                                    @php
+                                                        switch($item->start){
+                                                        case 0:
+                                                            $start = asset('assets/images/point/0.png');
+                                                        break;
+                                                        case 1:
+                                                            $start = asset('assets/images/point/1.png');
+                                                        break;
+                                                        case 2:
+                                                            $start = asset('assets/images/point/2.png');
+                                                        break;
+                                                        case 3:
+                                                            $start = asset('assets/images/point/3.png');
+                                                        break;
+                                                        case 4:
+                                                            $start = asset('assets/images/point/4.png');
+                                                        break;
+                                                        case 5:
+                                                            $start = asset('assets/images/point/5.png');
+                                                        break;
+                                                        default:
+                                                            $start = "";
+                                                        break;
+                                                        }
+                                                    @endphp
+                                                        <img src="{{$start}}" title="{{$item->start}}" style="width:30px;height:30px" alt="{{ $item->start }}">
+                                                
+                                                </td>
+                                                <td>{{ $item->actual }}
+                                                @php
+                                                        switch($item->actual){
+                                                        case 0:
+                                                            $actual = asset('assets/images/point/0.png');
+                                                        break;
+                                                        case 1:
+                                                            $actual = asset('assets/images/point/1.png');
+                                                        break;
+                                                        case 2:
+                                                            $actual = asset('assets/images/point/2.png');
+                                                        break;
+                                                        case 3:
+                                                            $actual = asset('assets/images/point/3.png');
+                                                        break;
+                                                        case 4:
+                                                            $actual = asset('assets/images/point/4.png');
+                                                        break;
+                                                        case 5:
+                                                            $actual = asset('assets/images/point/5.png');
+                                                        break;
+                                                        default:
+                                                            $actual = "";
+                                                        break;
+                                                        }
+                                                    @endphp
+                                                        <img src="{{$actual}}" title="{{$item->actual}}" style="width:30px;height:30px" alt="{{ $item->actual }}">
+                                                </td>
+                                                <td style="background-color: #57B657;" class="text-center">
+                                                    @php
+                                                        switch($item->target){
+                                                        case 0:
+                                                            $target = asset('assets/images/point/0.png');
+                                                        break;
+                                                        case 1:
+                                                            $target = asset('assets/images/point/1.png');
+                                                        break;
+                                                        case 2:
+                                                            $target = asset('assets/images/point/2.png');
+                                                        break;
+                                                        case 3:
+                                                            $target = asset('assets/images/point/3.png');
+                                                        break;
+                                                        case 4:
+                                                            $target = asset('assets/images/point/4.png');
+                                                        break;
+                                                        case 5:
+                                                            $target = asset('assets/images/point/5.png');
+                                                        break;
+                                                        default:
+                                                            $target = "";
+                                                        break;
+                                                        }
+                                                    @endphp
+                                                        <img src="{{$target}}" title="{{$item->target}}" style="width:30px;height:30px" alt="{{ $item->target }}">
+                                                </td>
+                                                <td>{{ $item->keterangan }}</td>
                                                 <td>{{ $item->description }}</td>
                                                 <td>
                                                     <button data-id="{{ $item->id_mstu }}"
@@ -64,7 +154,7 @@
     {{-- Modal --}}
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modal-tambahLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-md" role="document">
+        <div class="modal-dialog modal-xl" style="max-width:750px;" role="document">
             <div class="modal-content">
                 <div class="modal-header p-3">
                     <h5 class="modal-title" id="modal-tambahLabel"></h5>
@@ -76,29 +166,76 @@
                     @csrf
                     <input type="text" name="id" id="id" hidden>
                     <div class="modal-body">
-                        <div class="form-row">
-                            <div class="col">
-                                <label>Pilih Karyawan</label>
-                                <select id="user" class="form-control form-control-sm" name="user">
-                                    <option value="">Pilih User</option>
-                                </select>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-row mb-3">
+                                    <div class="col">
+                                        <label>Pilih Karyawan</label>
+                                        <select id="user" class="form-control form-control-sm" name="user">
+                                            <option value="">Pilih User</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-row mb-3">
+                                    <div class="col">
+                                        <label>Pilih Certification Module</label>
+                                        <select id="system" class="form-control form-control-sm" name="system">
+                                            <option value="">Pilih System Module</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-row mt-3">
-                            <div class="col">
-                                <label>Pilih Certification Module</label>
-                                <select id="system" class="form-control form-control-sm" name="system">
-                                    <option value="">Pilih System Module</option>
-                                </select>
+                        <div class="row p-0">
+                            <div class="col-4 p-0">
+                                <div class="form-group">
+                                    <div class="col">
+                                        <label for="start">Start</label>
+                                        <select class="form-control form-control-sm" name="start" required>
+                                            <option value="">Pilih Target</option>
+                                            <option value="0">0</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4 p-0">
+                                <div class="form-group">
+                                    <div class="col">
+                                        <label for="actual">Actual</label>
+                                        <select class="form-control form-control-sm" name="actual" required>
+                                            <option value="">Pilih Target</option>
+                                            <option value="0">0</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4 p-0">
+                                <div class="form-group">
+                                    <div class="col">
+                                        <label for="target">Target</label>
+                                        <input type="text" class="form-control form-control-sm" name="target" id="target" value="" disabled>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <!-- <div class="form-row mt-3">
-                            <div class="col mb-3">
-                                <label>Nilai</label>
-                                <input type="text" class="form-control form-control-sm" name="value"
-                                    placeholder="Nilai" id="value">
+                        <div class="row">
+                            <div class="col-12">
+                            <label for="keterangan">Keterangan</label>
+                                <textarea class="form-control form-control-sm" name="keterangan"></textarea>
                             </div>
-                        </div> -->
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -172,7 +309,7 @@
                 }
             })
 
-            modalTitle.text('Add User');
+            modalTitle.text('Certification User');
             modal.modal('show');
         })
 
@@ -284,6 +421,25 @@
             $('#id').val('');
             $('#user').empty();
             $('#system').empty();
+        })
+
+        $(function() {
+            $('#system').on('change', function() {
+                var system = $(this).val();
+                $.ajax({
+                    url: "{{ route('system.get.target') }}",
+                    type: 'POST',
+                    dataType: 'JSON',
+                    data: {
+                        id: system
+                    },
+                    success: function(res) {
+                        $('#target').empty();
+                        var val_target = res[0].target;
+                        $('#target').val(val_target);
+                    }
+                })
+            })
         })
     </script>
 @endpush

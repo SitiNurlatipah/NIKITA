@@ -243,6 +243,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/', 'ManagementSystemController@index')->name('system.index');
         Route::post('/create', 'ManagementSystemController@store')->name('system.store');
         Route::post('/delete','ManagementSystemController@destroy')->name('system.destroy');
+
+        Route::post('/get-target','ManagementSystemController@getTarget')->name('system.get.target');
     });
     Route::prefix("master-management-system")->group(function(){
         Route::get('/', 'ManagementSystemController@indexMaster')->name('master.system.index');

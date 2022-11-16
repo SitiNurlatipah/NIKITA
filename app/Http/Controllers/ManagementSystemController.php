@@ -42,11 +42,11 @@ class ManagementSystemController extends Controller
                 'description' => request('description')
             ]);
             $response = [
-                 'code' => 200,
-                 'status' => 'success',
-                 'message' => 'Target berhasil diupdate.',
-                 'data' => $data
-             ];
+                'code' => 200,
+                'status' => 'success',
+                'message' => 'Target berhasil diupdate.',
+                'data' => $data
+            ];
 
         }else{
             $data = ManagementSystem::create([
@@ -54,12 +54,12 @@ class ManagementSystemController extends Controller
                 'description' => request('description')
             ]);
 
-             $response = [
-                 'code' => 200,
-                 'status' => 'success',
-                 'message' => 'Target berhasil ditambahkan.',
-                 'data' => $data
-             ];
+            $response = [
+                'code' => 200,
+                'status' => 'success',
+                'message' => 'Target berhasil ditambahkan.',
+                'data' => $data
+            ];
         }
 
         return response()->json($response);
@@ -94,7 +94,7 @@ class ManagementSystemController extends Controller
         $items = ManagementSystemToUser::
         leftJoin('management_system as ms', 'management_system_to_user.id_system', '=', 'ms.id_system')
         ->leftJoin('users', 'management_system_to_user.id_user', '=', 'users.id')
-        ->get(['management_system_to_user.*', 'users.nama_pengguna', 'ms.nama_system', 'ms.id_system', 'users.id', 'ms.description']);
+        ->get(['management_system_to_user.*', 'users.nama_pengguna', 'ms.nama_system', 'ms.id_system', 'management_system_to_user.start', 'management_system_to_user.actual', 'ms.target' , 'users.id', 'ms.description']);
 
         return view('pages.admin.system.index',compact('items'));
     }
@@ -104,7 +104,10 @@ class ManagementSystemController extends Controller
         // dd(request()->all());
         $validator = Validator::make(request()->all(),[
             'user' => ['required'],
-            'system' => ['required']
+            'system' => ['required'],
+            'start' => ['required'],   
+            'actual' => ['required'],   
+            'keterangan' => ['required'],   
         ]);
 
         if($validator->fails())
@@ -125,29 +128,35 @@ class ManagementSystemController extends Controller
             $data = ManagementSystemToUser::where('id_mstu',$id)->update([
                 'id_user' => request('user'),
                 'id_system' => request('system'),
+                'start' => request('start'),
+                'actual' => request('actual'),
+                'keterangan' => request('keterangan'),
             ]);
-            $response = [
-                 'code' => 200,
-                 'status' => 'success',
-                 'message' => 'Target berhasil diupdate.',
-                 'data' => $data
-             ];
+        $response = [
+                'code' => 200,
+                'status' => 'success',
+                'message' => 'Enroll system berhasil diupdate.',
+                'data' => $data
+            ];
 
         }else{
             $data = ManagementSystemToUser::create([
                 'id_user' => request('user'),
                 'id_system' => request('system'),
+                'start' => request('start'),
+                'actual' => request('actual'),
+                'keterangan' => request('keterangan'),
             ]);
             $data = User::where('id',request('user'))->update([
                 'is_system_management' => 1,
             ]);
 
-             $response = [
-                 'code' => 200,
-                 'status' => 'success',
-                 'message' => 'Target berhasil ditambahkan.',
-                 'data' => $data
-             ];
+            $response = [
+                'code' => 200,
+                'status' => 'success',
+                'message' => 'Enroll system berhasil ditambahkan.',
+                'data' => $data
+            ];
         }
 
         return response()->json($response);
@@ -186,5 +195,12 @@ class ManagementSystemController extends Controller
             'status' => 200,
             'success' => true,
         ]);
+    }
+
+    public function getTarget(Request $request)
+    {
+        $id = $request->id;
+        $items = ManagementSystem::where('id_system',$id)->get('target');
+        return response()->json($items);
     }
 }
