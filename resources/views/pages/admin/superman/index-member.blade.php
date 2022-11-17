@@ -50,14 +50,14 @@
 {{-- Modal --}}
 <div class="modal fade" id="modal-tambah" tabindex="-1" role="dialog" aria-labelledby="modal-tambahLabel" aria-hidden="true" style="overflow: auto !important">
     <div class="modal-dialog modal-md" role="document">
-      <div class="modal-content">
-          <div class="modal-header p-3">
-              <h5 class="modal-title" id="modal-tambahLabel">Enroll Superman Member</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
+    <div class="modal-content">
+        <div class="modal-header p-3">
+            <h5 class="modal-title" id="modal-tambahLabel">Enroll Superman Member</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('Member.post') }}" method="POST" enctype="multipart/form-data" id="formPost">
+            <form action="{{ route('post.member.superman') }}" method="POST" enctype="multipart/form-data" id="formPost">
                 @csrf
                 <div class="modal-body">
                     <div class="form-row">
@@ -376,31 +376,11 @@
         var form = $("#formPost")
         const url = form.attr("action");
         const formData = form.serialize();
-        $('#feed-back-nik').html('')
-        $('#feed-back-password').html('')
-        $('#feed-back-peran-pengguna').html('')
-        $('#feed-back-entry').html('')
-        $('#feed-back-nama-pengguna').html('')
-        $('#feed-back-email').html('')
-        $('#feed-back-divisi').html('')
-        $('#feed-back-jabatan').html('')
-        $('#feed-back-level').html('')
-        $('#feed-back-department').html('')
-        $('#feed-back-sub-department').html('')
-        $('#feed-back-cg').html('')
+        $('#feed-back-id_user').html('')
+        $('#feed-back-id_level').html('')
 
-        $('#nik').removeClass('is-invalid')
-        $('#password').removeClass('is-invalid')
-        $('#peran-pengguna').removeClass('is-invalid')
-        $('#entry').removeClass('is-invalid')
-        $('#nama-pengguna').removeClass('is-invalid')
-        $('#email').removeClass('is-invalid')
-        $('#divisi').removeClass('is-invalid')
-        $('#jabatan').removeClass('is-invalid')
-        $('#level').removeClass('is-invalid')
-        $('#department').removeClass('is-invalid')
-        $('#sub-department').removeClass('is-invalid')
-        $('#cg').removeClass('is-invalid')
+        $('#id_user').removeClass('is-invalid')
+        $('#id_level').removeClass('is-invalid')
         $.ajax({
             url:url,
             type:"POST",
@@ -408,7 +388,6 @@
             data:formData,
             success:function (data) {
                 $("#formPost")[0].reset();
-                $("#uploaded_image").attr("src","{{asset('assets/images/faces/face0.png')}}")
                 $("#modal-tambah").modal('hide');
                 $('#tbl-superman').DataTable().destroy();
                 initDatatable();
@@ -424,65 +403,15 @@
                 var errors = request.responseJSON.errors;
                 var message = request.responseJSON.message;
                 if(message == "The given data was invalid."){
-                    if(errors.nik){ 
-                        $( '#feed-back-nik' ).html(errors.nik[0]); 
-                        $( '#feed-back-nik' ).show();
-                        $( '#nik' ).addClass('is-invalid');
+                    if(errors.id_user){ 
+                        $( '#feed-back-id_user' ).html(errors.id_user[0]); 
+                        $( '#feed-back-id_user' ).show();
+                        $( '#id_user' ).addClass('is-invalid');
                     }
-                    if(errors.password){
-                        $( '#feed-back-password' ).html(errors.password[0]); 
-                        $( '#feed-back-password' ).show();
-                        $( '#password' ).addClass('is-invalid');
-                    }
-                    if(errors.peran_pengguna){
-                        $( '#feed-back-peran-pengguna' ).html(errors.peran_pengguna[0]); 
-                        $( '#feed-back-peran-pengguna' ).show();
-                        $( '#peran-pengguna' ).addClass('is-invalid');
-                    }
-                    if(errors.tgl_masuk){
-                        $( '#feed-back-entry' ).html(errors.tgl_masuk[0]); 
-                        $( '#feed-back-entry' ).show();
-                        $( '#entry' ).addClass('is-invalid');
-                    }
-                    if(errors.nama_pengguna){
-                        $( '#feed-back-nama-pengguna' ).html(errors.nama_pengguna[0]); 
-                        $( '#feed-back-nama-pengguna' ).show();
-                        $( '#nama-pengguna' ).addClass('is-invalid');
-                    }
-                    if(errors.email){
-                        $( '#feed-back-email' ).html(errors.email[0]); 
-                        $( '#feed-back-email' ).show();
-                        $( '#email' ).addClass('is-invalid');
-                    }
-                    if(errors.divisi){
-                        $( '#feed-back-divisi' ).html(errors.divisi[0]); 
-                        $( '#feed-back-divisi' ).show();
-                        $( '#divisi' ).addClass('is-invalid');
-                    }
-                    if(errors.job_title){
-                        $( '#feed-back-jabatan' ).html(errors.job_title[0]); 
-                        $( '#feed-back-jabatan' ).show();
-                        $( '#jabatan' ).addClass('is-invalid');
-                    }
-                    if(errors.level){
-                        $( '#feed-back-level' ).html(errors.level[0]); 
-                        $( '#feed-back-level' ).show();
-                        $( '#level' ).addClass('is-invalid');
-                    }
-                    if(errors.department){
-                        $( '#feed-back-department' ).html(errors.department[0]); 
-                        $( '#feed-back-department' ).show();
-                        $( '#department' ).addClass('is-invalid');
-                    }
-                    if(errors.sub_department){
-                        $( '#feed-back-sub-department' ).html(errors.sub_department[0]); 
-                        $( '#feed-back-sub-department' ).show();
-                        $( '#sub-department' ).addClass('is-invalid');
-                    }
-                    if(errors.cg){
-                        $( '#feed-back-cg' ).html(errors.cg[0]); 
-                        $( '#feed-back-cg' ).show();
-                        $( '#cg' ).addClass('is-invalid');
+                    if(errors.id_level){
+                        $( '#feed-back-id_level' ).html(errors.id_level[0]); 
+                        $( '#feed-back-id_level' ).show();
+                        $( '#id_level' ).addClass('is-invalid');
                     }
                 }else{
                     Swal.fire({
