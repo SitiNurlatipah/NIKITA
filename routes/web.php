@@ -213,7 +213,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/member-champion/superman-json', 'ChampionController@championJson')->name('get.member.champion');
         Route::post('/member-champion-post', 'ChampionController@championMemberStore')->name('post.member.champion');
         Route::get('/member-champion-detail', 'ChampionController@detail')->name('member-champion.detail');
-        Route::get('/member-champion-delete/{id}', 'ChampionController@championMemberDelete')->name('delete.member-champion');
+        Route::get('/member-champion-delete/{id}', 'ChampionController@championMemberDelete')->name('delete.member.champion');
 
         Route::get('/', 'ChampionController@indexMaster')->name('champion.index');
         Route::get('/get', 'ChampionController@getChampion')->name('champion.get');
