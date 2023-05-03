@@ -20,11 +20,11 @@ use Maatwebsite\Excel\Facades\Excel;
 class WhiteTag extends Controller
 {
     public function whiteTagJson(Request $request)
-    {   
+    {
         $cgAuth = Auth::user()->id_cg;
         $dp = Auth::user()->id_department;
 
-        if(Auth::user()->peran_pengguna == '4'){
+        if(Auth::user()->peran_pengguna == '4'){ //4 = Atasan
             $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
             ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
             ->leftJoin('divisi', 'users.id_divisi', '=', 'divisi.id_divisi')
@@ -102,7 +102,7 @@ class WhiteTag extends Controller
                 case 5:
                     $icon = '<div style="width:50px;heigth:50px" title="'.$row->start.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/5.png').'"></div>';
                 break;
-                    
+
             }
             return $icon;
         })
@@ -126,7 +126,7 @@ class WhiteTag extends Controller
                 case 5:
                     $icon = '<div style="width:50px;heigth:50px" title="'.$row->actual.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/5.png').'"></div>';
                 break;
-                    
+
             }
             return $icon;
         })
@@ -150,7 +150,7 @@ class WhiteTag extends Controller
                 case 5:
                     $icon = '<div style="width:50px;heigth:50px" title="'.$row->target.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/5.png').'"></div>';
                 break;
-                    
+
             }
             return $icon;
         })
@@ -168,7 +168,7 @@ class WhiteTag extends Controller
                     }
                 }
             })
-            
+
         ->addIndexColumn()
         ->rawColumns(['start','actual','target','tagingStatus'])
         ->make(true);
@@ -191,7 +191,7 @@ class WhiteTag extends Controller
                 ->where("users.id", $id)
                 ->orderBy("tagingStatus")
                 ->get();
-                
+
         return Datatables::of($data)
         ->addIndexColumn()
         ->editColumn('start', function ($row) {
@@ -214,7 +214,7 @@ class WhiteTag extends Controller
                 case 5:
                     $icon = '<div style="width:50px;heigth:50px" title="'.$row->start.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/5.png').'"></div>';
                 break;
-                    
+
             }
             return $icon;
         })
@@ -238,7 +238,7 @@ class WhiteTag extends Controller
                 case 5:
                     $icon = '<div style="width:50px;heigth:50px" title="'.$row->actual.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/5.png').'"></div>';
                 break;
-                    
+
             }
             return $icon;
         })
@@ -262,7 +262,7 @@ class WhiteTag extends Controller
                 case 5:
                     $icon = '<div style="width:50px;heigth:50px" title="'.$row->target.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/5.png').'"></div>';
                 break;
-                    
+
             }
             return $icon;
         })
@@ -293,7 +293,7 @@ class WhiteTag extends Controller
                     // }
                 }
             })
-            
+
         ->addIndexColumn()
         ->rawColumns(['start','actual','target','tagingStatus'])
         ->make(true);
@@ -301,7 +301,7 @@ class WhiteTag extends Controller
 
     public function exportWhiteTagAll()
     {
-        $dateTime = date("d-m-Y H:i");        
+        $dateTime = date("d-m-Y H:i");
         $fileName = "White Tag (".$dateTime.").xlsx";
         return Excel::download(new WhiteTagExport, $fileName);
         return redirect()->back();
@@ -357,7 +357,7 @@ class WhiteTag extends Controller
         $r = str_pad( dechex( mt_rand( 0, 255 ) ), 1, '0', STR_PAD_LEFT);
         $g = str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT);
         $b = str_pad( dechex( mt_rand( 0, 255 ) ), 3, '0', STR_PAD_LEFT);
-        
+
         return "rgb(".$r.",".$g.",".$b.")";
     }
 
@@ -390,7 +390,7 @@ class WhiteTag extends Controller
             $chartData["label"][$key] = $sc["skill_category"];
             $chartData["data"][$key] = $sc["total"];
             $chartData["identity"][$key] = $sc["id_skill_category"];
-            $chartData["backgroundColour"][$key]; 
+            $chartData["backgroundColour"][$key];
             // $chartData["backgroundColour"][$key] = '#'.substr(str_shuffle('ABCDEF0123456789'), 0, 6);
         }
         return response()->json(['data'=>$chartData,'code' => 200, 'message' => 'Post successfully'], 200);
@@ -458,7 +458,7 @@ class WhiteTag extends Controller
             // DB::raw("(IF(((white_tag.actual - competencies_directory.target) < 0),'Open','Close' )) as tagingStatus")
             DB::raw("(CASE WHEN (white_tag.actual - competencies_directory.target) < 0 THEN 'Open'
                             WHEN (white_tag.actual IS NULL) THEN 'Belum diatur'
-                            WHEN white_tag.actual >= competencies_directory.target THEN 'Close' 
+                            WHEN white_tag.actual >= competencies_directory.target THEN 'Close'
                             END) as tagingStatus"),"compGroup.name as compGroupName"
         ];
         $comps = CompetenciesDirectoryModel::select($select)
@@ -530,7 +530,7 @@ class WhiteTag extends Controller
             // DB::raw("(IF((white_tag.actual - competencies_directory.target) < 0,'Open','Close' )) as tagingStatus")
             DB::raw("(CASE WHEN (white_tag.actual - competencies_directory.target) < 0 THEN 'Open'
                             WHEN (white_tag.actual IS NULL) THEN 'Belum diatur'
-                            WHEN white_tag.actual >= competencies_directory.target THEN 'Close' 
+                            WHEN white_tag.actual >= competencies_directory.target THEN 'Close'
                             END) as tagingStatus"),
                             "white_tag.keterangan as ket"
         ];
@@ -570,7 +570,7 @@ class WhiteTag extends Controller
                 case 5:
                     $icon = '<div style="width:50px;heigth:50px" title="'.$row->start.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/5.png').'"></div>';
                 break;
-                    
+
             }
             return $icon;
         })
@@ -594,7 +594,7 @@ class WhiteTag extends Controller
                 case 5:
                     $icon = '<div style="width:50px;heigth:50px" title="'.$row->actual.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/5.png').'"></div>';
                 break;
-                    
+
             }
             return $icon;
         })
@@ -618,7 +618,7 @@ class WhiteTag extends Controller
                 case 5:
                     $icon = '<div style="width:50px;heigth:50px" title="'.$row->target.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/5.png').'"></div>';
                 break;
-                    
+
             }
             return $icon;
         })
@@ -635,7 +635,7 @@ class WhiteTag extends Controller
         })
         ->rawColumns(['start','actual','target','tagingStatus'])
         ->make(true);
-        
+
     }
 }
 

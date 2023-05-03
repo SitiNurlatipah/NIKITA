@@ -61,7 +61,7 @@
                                             <th>100% </th>
                                             <th>85% </th>
                                             <th>75% </th>
-                                            <th>81.37%</th>
+                                            <th>86.67%</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -70,14 +70,14 @@
                                             @php
                                                 $avg = round($item->totalScore($item->id),2);
                                             @endphp
-                                        <tr class="{{ $avg >= 81.37  ? 'bg-warning' : '' }}">
+                                        <tr class="{{ $avg >= 86.67  ? 'bg-warning' : '' }}">
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->nama_pengguna }}.</td>
                                             <td>{{ round($item->score($item->id,'B'),2) }}%</td>
                                             <td>{{ round($item->score($item->id,'I'),2) }}%</td>
                                             <td>{{ round($item->score($item->id,'A'),2) }}%</td>
                                             <td>
-                                                @if ($avg >= 81.37)
+                                                @if ($avg >= 86.67)
                                                     <span class="badge badge-warning">{{ $avg }}%</span>
                                                 @else
                                                     {{ $avg }}%

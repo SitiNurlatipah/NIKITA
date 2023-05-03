@@ -60,8 +60,8 @@
         $b = 0;
         $c = 0;
         $total = 0;
-        for ($i=0; $i < count($counting) ; $i++) { 
-          $total += $counting[$i]->cnt; 
+        for ($i=0; $i < count($counting) ; $i++) {
+          $total += $counting[$i]->cnt;
           if ($counting[$i]->level == "A") {
             $a = $counting[$i]->cnt;
           }elseif ($counting[$i]->level == "B") {
@@ -72,8 +72,8 @@
         }
 
         $total_open = 0;
-        for ($i=0; $i < count($data_open) ; $i++) { 
-          $total_open += $data_open[$i]->cnt; 
+        for ($i=0; $i < count($data_open) ; $i++) {
+          $total_open += $data_open[$i]->cnt;
         }
       @endphp
       <div class="container">
@@ -193,7 +193,7 @@
                     <img src="{{ asset('assets/images/superman.png')}}" style="width: 150px; padding:15px 0 0 15px" alt="Maxwell Admin">
                     @endif
                   </div>
-                </div> 
+                </div>
               </div>
             </div>
           </div>
@@ -222,14 +222,14 @@
             arc: {
                 borderWidth: 4
             }
-          },      
+          },
           legend: {
             display: false
           },
           tooltips: {
             enabled: true
           },
-          legendCallback: function(chart) { 
+          legendCallback: function(chart) {
           var text = [];
           text.push('<div class="report-chart">');
             text.push('<div class="d-flex justify-content-between mx-4 mx-xl-5 mt-3"><div class="d-flex align-items-center"><div class="mr-3" style="width:20px; height:20px; border-radius: 50%; background-color: ' + chart.data.datasets[0].backgroundColor[0] + '"></div><p class="mb-0">Total Basic</p></div>');
@@ -253,17 +253,17 @@
             var width = chart.chart.width,
                 height = chart.chart.height,
                 ctx = chart.chart.ctx;
-        
+
             ctx.restore();
             var fontSize = 3.125;
             ctx.font = "600 " + fontSize + "em sans-serif";
             ctx.textBaseline = "middle";
             ctx.fillStyle = "#000";
-        
+
             var text = "{{ $total }}",
                 textX = Math.round((width - ctx.measureText(text).width) / 2),
                 textY = height / 2;
-        
+
             ctx.fillText(text, textX, textY);
             ctx.save();
           }

@@ -17,10 +17,10 @@
         display: block;
         max-width: 100%;
     }
-    
+
     .preview {
         overflow: hidden;
-        width: 250px; 
+        width: 250px;
         height: 250px;
         margin: 10px;
         border: 1px solid red;
@@ -108,7 +108,7 @@
                   <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('Member.post') }}" method="POST" enctype="multipart/form-data" id="formPost">
+            <form action="{{ route('EmployeeMember.post') }}" method="POST" enctype="multipart/form-data" id="formPost">
                 @csrf
                 <input type="hidden" id="base64" name="base64">
                 <div class="modal-body">
@@ -229,7 +229,7 @@
                   <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('Member.update') }}" id="formEdit" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('EmployeeMember.update') }}" id="formEdit" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body" id="form-edit">
 
@@ -270,7 +270,7 @@
             </div>
         </div>
     </div>
-</div>			
+</div>
 
 <div class="modal fade" id="modal-hapus" tabindex="-1" role="dialog" aria-labelledby="modal-delete" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -304,7 +304,7 @@
                     </button>
                 </div>
                 <div class="modal-body pb-0 pt-0" id="bodyDetail">
-                    
+
                 </div>
                 <div class="modal-footer p-2">
                     <button type="button" class="btn text-white btn-secondary" data-dismiss="modal">Close</button>
@@ -324,7 +324,7 @@
                   <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('Member.rotation') }}" method="POST" id="formRotation">
+            <form action="{{ route('EmployeeMember.rotation') }}" method="POST" id="formRotation">
                 @csrf
                 <div class="modal-body">
                     <div class="form-row">
@@ -379,13 +379,13 @@
      $('#cg_rotation').select2({
             theme:'bootstrap4'
      });
-     
+
 
     var role = '{{ Auth::user()->peran_pengguna}}';
 
     function initDatatable() {
         var dtJson = $('#table-cg').DataTable({
-            ajax: "{{ route('Member.get') }}",
+            ajax: "{{ route('EmployeeMember.get') }}",
             autoWidth: false,
             serverSide: true,
             processing: true,
@@ -434,12 +434,12 @@
         var id = $(this).attr('data-id');
         $('#btnHapus').attr('data-id',id);
     })
-    
+
     function deleteMember(el) {
         var id = $(el).attr("data-id");
         var token = $("meta[name='csrf-token']").attr("content");
         $.ajax({
-            url:"member/member-delete/"+id,
+            url:"employeemember/employeemember-delete/"+id,
             mehtod:"delete",
             data: {
                 "id": id,
@@ -460,7 +460,7 @@
             }
         })
     }
-    
+
     function getDivisi(){
         $.ajax({
             type: "GET",
@@ -582,7 +582,7 @@
     }
 
     function formEdit(id){
-        const url = "{!! route('Member.edit') !!}?id="+id;
+        const url = "{!! route('EmployeeMember.edit') !!}?id="+id;
         $.ajax({
             cache:false,
             url:url,
@@ -594,7 +594,7 @@
     }
 
     function detail(id) {
-        const url = "{!! route('Member.detail') !!}?id="+id;
+        const url = "{!! route('EmployeeMember.detail') !!}?id="+id;
         $.ajax({
             type:"get",
             url:url,
@@ -658,63 +658,63 @@
                 var errors = request.responseJSON.errors;
                 var message = request.responseJSON.message;
                 if(message == "The given data was invalid."){
-                    if(errors.nik){ 
-                        $( '#feed-back-nik' ).html(errors.nik[0]); 
+                    if(errors.nik){
+                        $( '#feed-back-nik' ).html(errors.nik[0]);
                         $( '#feed-back-nik' ).show();
                         $( '#nik' ).addClass('is-invalid');
                     }
                     if(errors.password){
-                        $( '#feed-back-password' ).html(errors.password[0]); 
+                        $( '#feed-back-password' ).html(errors.password[0]);
                         $( '#feed-back-password' ).show();
                         $( '#password' ).addClass('is-invalid');
                     }
                     if(errors.peran_pengguna){
-                        $( '#feed-back-peran-pengguna' ).html(errors.peran_pengguna[0]); 
+                        $( '#feed-back-peran-pengguna' ).html(errors.peran_pengguna[0]);
                         $( '#feed-back-peran-pengguna' ).show();
                         $( '#peran-pengguna' ).addClass('is-invalid');
                     }
                     if(errors.tgl_masuk){
-                        $( '#feed-back-entry' ).html(errors.tgl_masuk[0]); 
+                        $( '#feed-back-entry' ).html(errors.tgl_masuk[0]);
                         $( '#feed-back-entry' ).show();
                         $( '#entry' ).addClass('is-invalid');
                     }
                     if(errors.nama_pengguna){
-                        $( '#feed-back-nama-pengguna' ).html(errors.nama_pengguna[0]); 
+                        $( '#feed-back-nama-pengguna' ).html(errors.nama_pengguna[0]);
                         $( '#feed-back-nama-pengguna' ).show();
                         $( '#nama-pengguna' ).addClass('is-invalid');
                     }
                     if(errors.email){
-                        $( '#feed-back-email' ).html(errors.email[0]); 
+                        $( '#feed-back-email' ).html(errors.email[0]);
                         $( '#feed-back-email' ).show();
                         $( '#email' ).addClass('is-invalid');
                     }
                     if(errors.divisi){
-                        $( '#feed-back-divisi' ).html(errors.divisi[0]); 
+                        $( '#feed-back-divisi' ).html(errors.divisi[0]);
                         $( '#feed-back-divisi' ).show();
                         $( '#divisi' ).addClass('is-invalid');
                     }
                     if(errors.job_title){
-                        $( '#feed-back-jabatan' ).html(errors.job_title[0]); 
+                        $( '#feed-back-jabatan' ).html(errors.job_title[0]);
                         $( '#feed-back-jabatan' ).show();
                         $( '#jabatan' ).addClass('is-invalid');
                     }
                     if(errors.level){
-                        $( '#feed-back-level' ).html(errors.level[0]); 
+                        $( '#feed-back-level' ).html(errors.level[0]);
                         $( '#feed-back-level' ).show();
                         $( '#level' ).addClass('is-invalid');
                     }
                     if(errors.department){
-                        $( '#feed-back-department' ).html(errors.department[0]); 
+                        $( '#feed-back-department' ).html(errors.department[0]);
                         $( '#feed-back-department' ).show();
                         $( '#department' ).addClass('is-invalid');
                     }
                     if(errors.sub_department){
-                        $( '#feed-back-sub-department' ).html(errors.sub_department[0]); 
+                        $( '#feed-back-sub-department' ).html(errors.sub_department[0]);
                         $( '#feed-back-sub-department' ).show();
                         $( '#sub-department' ).addClass('is-invalid');
                     }
                     if(errors.cg){
-                        $( '#feed-back-cg' ).html(errors.cg[0]); 
+                        $( '#feed-back-cg' ).html(errors.cg[0]);
                         $( '#feed-back-cg' ).show();
                         $( '#cg' ).addClass('is-invalid');
                     }
@@ -778,58 +778,58 @@
             },
             error:function (request,status,error) {
                 if(request.responseJSON.message == "The given data was invalid."){
-                    if(request.responseJSON.errors.nik){ 
-                        $( '#feed-back-nik-edit' ).html(request.responseJSON.errors.nik[0]); 
+                    if(request.responseJSON.errors.nik){
+                        $( '#feed-back-nik-edit' ).html(request.responseJSON.errors.nik[0]);
                         $( '#feed-back-nik-edit' ).show();
                         $( '#nik-edit' ).addClass('is-invalid');
                     }
                     if(request.responseJSON.errors.peran_pengguna){
-                        $( '#feed-back-peran-pengguna-edit' ).html(request.responseJSON.errors.peran_pengguna-edit[0]); 
+                        $( '#feed-back-peran-pengguna-edit' ).html(request.responseJSON.errors.peran_pengguna-edit[0]);
                         $( '#feed-back-peran-pengguna-edit' ).show();
                         $( '#peran-pengguna-edit' ).addClass('is-invalid');
                     }
                     if(request.responseJSON.errors.tgl_masuk){
-                        $( '#feed-back-entry-edit' ).html(request.responseJSON.errors.tgl_masuk[0]); 
+                        $( '#feed-back-entry-edit' ).html(request.responseJSON.errors.tgl_masuk[0]);
                         $( '#feed-back-entry-edit' ).show();
                         $( '#entry-edit' ).addClass('is-invalid');
                     }
                     if(request.responseJSON.errors.nama_pengguna){
-                        $( '#feed-back-nama-pengguna-edit' ).html(request.responseJSON.errors.nama_pengguna[0]); 
+                        $( '#feed-back-nama-pengguna-edit' ).html(request.responseJSON.errors.nama_pengguna[0]);
                         $( '#feed-back-nama-pengguna-edit' ).show();
                         $( '#nama-pengguna-edit' ).addClass('is-invalid');
                     }
                     if(request.responseJSON.errors.email){
-                        $( '#feed-back-email-edit' ).html(request.responseJSON.errors.email[0]); 
+                        $( '#feed-back-email-edit' ).html(request.responseJSON.errors.email[0]);
                         $( '#feed-back-email-edit' ).show();
                         $( '#email-edit' ).addClass('is-invalid');
                     }
                     if(request.responseJSON.errors.divisi){
-                        $( '#feed-back-divisi-edit' ).html(request.responseJSON.errors.divisi[0]); 
+                        $( '#feed-back-divisi-edit' ).html(request.responseJSON.errors.divisi[0]);
                         $( '#feed-back-divisi-edit' ).show();
                         $( '#divisi-edit' ).addClass('is-invalid');
                     }
                     if(request.responseJSON.errors.job_title){
-                        $( '#feed-back-jabatan-edit' ).html(request.responseJSON.errors.job_title[0]); 
+                        $( '#feed-back-jabatan-edit' ).html(request.responseJSON.errors.job_title[0]);
                         $( '#feed-back-jabatan-edit' ).show();
                         $( '#jabatan-edit' ).addClass('is-invalid');
                     }
                     if(request.responseJSON.errors.level){
-                        $( '#feed-back-level-edit' ).html(request.responseJSON.errors.level[0]); 
+                        $( '#feed-back-level-edit' ).html(request.responseJSON.errors.level[0]);
                         $( '#feed-back-level-edit' ).show();
                         $( '#level-edit' ).addClass('is-invalid');
                     }
                     if(request.responseJSON.errors.department){
-                        $( '#feed-back-department-edit' ).html(request.responseJSON.errors.department[0]); 
+                        $( '#feed-back-department-edit' ).html(request.responseJSON.errors.department[0]);
                         $( '#feed-back-department-edit' ).show();
                         $( '#department-edit' ).addClass('is-invalid');
                     }
                     if(request.responseJSON.errors.sub_department){
-                        $( '#feed-back-sub-department-edit' ).html(request.responseJSON.errors.sub_department[0]); 
+                        $( '#feed-back-sub-department-edit' ).html(request.responseJSON.errors.sub_department[0]);
                         $( '#feed-back-sub-department-edit' ).show();
                         $( '#sub-department-edit' ).addClass('is-invalid');
                     }
                     if(request.responseJSON.errors.cg){
-                        $( '#feed-back-cg-edit' ).html(request.responseJSON.errors.cg[0]); 
+                        $( '#feed-back-cg-edit' ).html(request.responseJSON.errors.cg[0]);
                         $( '#feed-back-cg-edit' ).show();
                         $( '#cg-edit' ).addClass('is-invalid');
                     }
@@ -874,7 +874,7 @@
             $('#user_rotation').val('');
             $('#jabatan_rotation').val('');
             $('#cg_rotation').val('');
-            $.get("{{ route('Member.get') }}", function( response ) {
+            $.get("{{ route('EmployeeMember.get') }}", function( response ) {
                 $('#user_rotation').empty();
                 $('#user_rotation').append('<option selected disabled>-- Pilih Karyawan --</option>');
                 response.data.forEach(el => {
@@ -1007,13 +1007,13 @@
         })
 
         $('.btn-tambah').on('click',function () {
-            $('.modal-dialog form').attr('action',"{{ route('Member.post') }}");
+            $('.modal-dialog form').attr('action',"{{ route('EmployeeMember.post') }}");
             // $('input[name="_method"]').remove();
             $('.modal-dialog form')[0].reset();
         })
 
         $('.btnRotation').on('click',function () {
-        
+
         })
     });
 

@@ -87,7 +87,7 @@
                   <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('Member.update') }}" id="formEdit" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('EmployeeMember.update') }}" id="formEdit" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body" id="form-edit">
 
@@ -128,7 +128,7 @@
             </div>
         </div>
     </div>
-</div>			
+</div>
 
 <div class="modal fade" id="modal-hapus" tabindex="-1" role="dialog" aria-labelledby="modal-delete" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -162,7 +162,7 @@
                     </button>
                 </div>
                 <div class="modal-body pb-0 pt-0" id="bodyDetail">
-                    
+
                 </div>
                 <div class="modal-footer p-2">
                     <button type="button" class="btn text-white btn-secondary" data-dismiss="modal">Close</button>
@@ -182,7 +182,7 @@
                   <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('Member.rotation') }}" method="POST" id="formRotation">
+            <form action="{{ route('EmployeeMember.rotation') }}" method="POST" id="formRotation">
                 @csrf
                 <div class="modal-body">
                     <div class="form-row">
@@ -236,7 +236,7 @@
      $('#cg_rotation').select2({
             theme:'bootstrap4'
      });
-     
+
 
     var role = '{{ Auth::user()->peran_pengguna}}';
 
@@ -291,7 +291,7 @@
         var id = $(this).attr('data-id');
         $('#btnHapus').attr('data-id',id);
     })
-    
+
     function deleteMember(el) {
         var id = $(el).attr("data-id");
         var token = $("meta[name='csrf-token']").attr("content");
@@ -317,11 +317,11 @@
             }
         })
     }
-    
+
     function getAllMember() {
             $.ajax({
                 type: "GET",
-                url: "{{ route('Member.getJson') }}",
+                url: "{{ route('EmployeeMember.getJson') }}",
                 success: function(res) {
                     var option = "";
                     for (let i = 0; i < res.length; i++) {
@@ -342,7 +342,7 @@
         }
 
     function formEdit(id){
-        const url = "{!! route('Member.edit') !!}?id="+id;
+        const url = "{!! route('EmployeeMember.edit') !!}?id="+id;
         $.ajax({
             cache:false,
             url:url,
@@ -354,7 +354,7 @@
     }
 
     function detail(id) {
-        const url = "{!! route('Member.detail') !!}?id="+id;
+        const url = "{!! route('EmployeeMember.detail') !!}?id="+id;
         $.ajax({
             type:"get",
             url:url,
@@ -395,8 +395,8 @@
                 var errors = request.responseJSON.errors;
                 var message = request.responseJSON.message;
                 if(message == "The given data was invalid."){
-                    if(errors.nik){ 
-                        $( '#feed-back-nik' ).html(errors.nik[0]); 
+                    if(errors.nik){
+                        $( '#feed-back-nik' ).html(errors.nik[0]);
                         $( '#feed-back-nik' ).show();
                         $( '#nik' ).addClass('is-invalid');
                     }
@@ -418,7 +418,7 @@
             $('#user_rotation').val('');
             $('#jabatan_rotation').val('');
             $('#cg_rotation').val('');
-            $.get("{{ route('Member.get') }}", function( response ) {
+            $.get("{{ route('EmployeeMember.get') }}", function( response ) {
                 $('#user_rotation').empty();
                 $('#user_rotation').append('<option selected disabled>-- Pilih Karyawan --</option>');
                 response.data.forEach(el => {
@@ -517,13 +517,13 @@
         })
 
         $('.btn-tambah').on('click',function () {
-            $('.modal-dialog form').attr('action',"{{ route('Member.post') }}");
+            $('.modal-dialog form').attr('action',"{{ route('EmployeeMember.post') }}");
             // $('input[name="_method"]').remove();
             $('.modal-dialog form')[0].reset();
         })
 
         $('.btnRotation').on('click',function () {
-        
+
         })
     });
 

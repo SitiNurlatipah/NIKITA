@@ -34,7 +34,7 @@
                             <div class="col-sm-6"></div>
                         </div>
                 </div>
-                @endif    
+                @endif
         </div>
         </div>
     </div>
@@ -76,7 +76,7 @@
                                                         <th>Gap</th>
                                                         <th style="width: max-content" class="text-center">Tagging Status</th>
                                                         <th style="width: max-content" class="text-center">Action</th>
-                                                    </tr> 
+                                                    </tr>
                                                 </thead>
                                                 <tbody></tbody>
                                             </table>
@@ -101,7 +101,7 @@
                                                     <th>Gap</th>
                                                     <th style="width: max-content" class="text-center">Tagging Status</th>
                                                     <th style="width: max-content" class="text-center">Action</th>
-                                                </tr> 
+                                                </tr>
                                             </thead>
                                             <tbody></tbody>
                                         </table>
@@ -126,7 +126,7 @@
                                         <th>Gap</th>
                                         <th style="width: max-content" class="text-center">Tagging Status</th>
                                         <th style="width: max-content" class="text-center">Action</th>
-                                    </tr> 
+                                    </tr>
                                 </thead>
                                 <tbody></tbody>
                             </table>
@@ -147,7 +147,7 @@
                                     <th>Gap</th>
                                     <th style="width: max-content" class="text-center">Tagging Status</th>
                                     <th style="width: max-content" class="text-center">Action</th>
-                                </tr> 
+                                </tr>
                             </thead>
                             <tbody></tbody>
                         </table>
@@ -167,7 +167,7 @@
                                         <th>Gap</th>
                                         <th style="width: max-content" class="text-center">Tagging Status</th>
                                         <th style="width: max-content" class="text-center">Action</th>
-                                    </tr> 
+                                    </tr>
                                 </thead>
                                 <tbody></tbody>
                             </table>
@@ -360,68 +360,68 @@
                   var errors = request.responseJSON.errors;
                   var message = request.responseJSON.message;
                   if(message == "The given data was invalid."){
-                      if(errors.year){ 
-                          $( '#feed-back-year' ).html(errors.year[0]); 
+                      if(errors.year){
+                          $( '#feed-back-year' ).html(errors.year[0]);
                           $( '#feed-back-year' ).show();
                           $( '#year' ).addClass('is-invalid');
                       }
                       if(errors.period){
-                          $( '#feed-back-period' ).html(errors.period[0]); 
+                          $( '#feed-back-period' ).html(errors.period[0]);
                           $( '#feed-back-period' ).show();
                           $( '#period' ).addClass('is-invalid');
                       }
                       if(errors.date_open){
-                          $( '#feed-back-date-open' ).html(errors.date_open[0]); 
+                          $( '#feed-back-date-open' ).html(errors.date_open[0]);
                           $( '#feed-back-date-open' ).show();
                           $( '#date_open' ).addClass('is-invalid');
                       }
                       if(errors.due_date){
-                          $( '#feed-back-due-date' ).html(errors.due_date[0]); 
+                          $( '#feed-back-due-date' ).html(errors.due_date[0]);
                           $( '#feed-back-due-date' ).show();
                           $( '#due_date' ).addClass('is-invalid');
                       }
                       if(errors.learning_method){
-                          $( '#feed-back-learning-method' ).html(errors.learning_method[0]); 
+                          $( '#feed-back-learning-method' ).html(errors.learning_method[0]);
                           $( '#feed-back-learning-method' ).show();
                           $( '#learning_method' ).addClass('is-invalid');
                       }
                       if(errors.trainer){
-                          $( '#feed-back-trainer' ).html(errors.trainer[0]); 
+                          $( '#feed-back-trainer' ).html(errors.trainer[0]);
                           $( '#feed-back-trainer' ).show();
                           $( '#trainer' ).addClass('is-invalid');
                       }
                       if(errors.date_plan_implementation){
-                          $( '#feed-back-date-plan-implementation' ).html(errors.date_plan_implementation[0]); 
+                          $( '#feed-back-date-plan-implementation' ).html(errors.date_plan_implementation[0]);
                           $( '#feed-back-date-plan-implementation' ).show();
                           $( '#date_plan_implementation' ).addClass('is-invalid');
                       }
                       if(errors.notes_learning_implementation){
-                          $( '#feed-back-notes-learning-implementation' ).html(errors.notes_learning_implementation[0]); 
+                          $( '#feed-back-notes-learning-implementation' ).html(errors.notes_learning_implementation[0]);
                           $( '#feed-back-notes-learning-implementation' ).show();
                           $( '#notes_learning_implementation' ).addClass('is-invalid');
                       }
                       if(errors.date_closed){
-                          $( '#feed-back-date-closed' ).html(errors.date_closed[0]); 
+                          $( '#feed-back-date-closed' ).html(errors.date_closed[0]);
                           $( '#feed-back-date-closed' ).show();
                           $( '#date_closed' ).addClass('is-invalid');
                       }
                       if(errors.start){
-                          $( '#feed-back-start' ).html(errors.start[0]); 
+                          $( '#feed-back-start' ).html(errors.start[0]);
                           $( '#feed-back-start' ).show();
                           $( '#start' ).addClass('is-invalid');
                       }
                       if(errors.finish){
-                          $( '#feed-back-finish' ).html(errors.finish[0]); 
+                          $( '#feed-back-finish' ).html(errors.finish[0]);
                           $( '#feed-back-finish' ).show();
                           $( '#finish' ).addClass('is-invalid');
                       }
                       if(errors.duration){
-                          $( '#feed-back-duration' ).html(errors.duration[0]); 
+                          $( '#feed-back-duration' ).html(errors.duration[0]);
                           $( '#feed-back-duration' ).show();
                           $( '#duration' ).addClass('is-invalid');
                       }
                       if(errors.date_verified){
-                          $( '#feed-back-date-verified' ).html(errors.date_verified[0]); 
+                          $( '#feed-back-date-verified' ).html(errors.date_verified[0]);
                           $( '#feed-back-date-verified' ).show();
                           $( '#date_verified' ).addClass('is-invalid');
                       }
@@ -436,7 +436,7 @@
                           $( '#result_score' ).addClass('is-invalid');
                       }
                       if(errors.notes_for_result){
-                          $( '#feed-back-notes-for-result' ).html(errors.notes_for_result[0]); 
+                          $( '#feed-back-notes-for-result' ).html(errors.notes_for_result[0]);
                           $( '#feed-back-notes-for-result' ).show();
                           $( '#notes_for_result' ).addClass('is-invalid');
                       }
@@ -454,7 +454,7 @@
           });
       })
   });
-    
+
   function formTaging(el) {
       var whiteTagId = $(el).attr("white-tag-id");
       var reasonTagId = $(el).attr("taging-reason-id");
@@ -491,7 +491,7 @@
         '_blank'
     );
   }
-      
+
   function iniDatatable() {
       var dtJson = $('#table-taging-list').DataTable({
           ajax: "{{ route('taggingJson') }}",

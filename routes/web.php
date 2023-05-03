@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MemberCG;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'guest'], function () {
@@ -17,17 +18,29 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     // Kelola karyawan
-    Route::prefix("member")->group(function(){
-        Route::get('/', 'MemberCG@index')->name('Member');
-        Route::get('/member/cgJson', 'MemberCG@cgJson')->name('Member.get');
-        Route::get('/member', 'MemberCG@getMember')->name('Member.getJson');
-        Route::post('/member-post', 'MemberCG@store')->name('Member.post');
-        Route::get('/form-member-edit', 'MemberCG@edit')->name('Member.edit');
-        Route::post('/member-edit','MemberCG@update')->name('Member.update');
-        Route::get('/member-detail', 'MemberCG@detail')->name('Member.detail');
-        Route::get('/member-delete/{id}', 'MemberCG@deleteMember')->name('Member.delete');
-        Route::post('/member-rotation', 'MemberCG@memberRotation')->name('Member.rotation');
+    Route::prefix("employeemember")->group(function(){
+        Route::get('/', 'MemberCG@index')->name('EmployeeMember');
+        Route::get('/employeemember/cgJson', 'MemberCG@cgJson')->name('EmployeeMember.get');
+        Route::get('/employeemember', 'MemberCG@getMember')->name('EmployeeMember.getJson');
+        Route::post('/employeemember-post', 'MemberCG@store')->name('EmployeeMember.post');
+        Route::get('/form-employeemember-edit', 'MemberCG@edit')->name('EmployeeMember.edit');
+        Route::post('/employeemember-edit','MemberCG@update')->name('EmployeeMember.update');
+        Route::get('/employeemember-detail', 'MemberCG@detail')->name('EmployeeMember.detail');
+        Route::get('/employeemember-delete/{id}', 'MemberCG@deleteMember')->name('EmployeeMember.delete');
+        Route::post('/employeemember-rotation', 'MemberCG@memberRotation')->name('EmployeeMember.rotation');
     });
+
+    // Route::get('/member', [MemberCG::class, 'index'])->name('Member');
+    // Route::get('/member', [MemberCG::class, 'index'])->name('Member');
+    // Route::get('/member', [MemberCG::class, 'index'])->name('Member');
+    // Route::get('/member', [MemberCG::class, 'index'])->name('Member');
+    // Route::get('/member', [MemberCG::class, 'index'])->name('Member');
+    // Route::get('/member', [MemberCG::class, 'index'])->name('Member');
+    // Route::get('/member', [MemberCG::class, 'index'])->name('Member');
+    // Route::get('/member', [MemberCG::class, 'index'])->name('Member');
+    // Route::get('/member', [MemberCG::class, 'index'])->name('Member');
+
+
 
     Route::get('/get-divisi', 'MemberCG@getDivisi')->name('get.divisi');
     Route::get('/get-jabatan', 'MemberCG@getJabatan')->name('get.jabatan');

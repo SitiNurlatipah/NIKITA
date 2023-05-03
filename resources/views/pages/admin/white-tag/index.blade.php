@@ -3,7 +3,7 @@
 @section('title', 'Mapping Competencies')
 @push('style')
 <style>
-     
+
 .panel-title a:after {
     font-family:Fontawesome;
     content:'\f077';
@@ -27,7 +27,7 @@
 /* #table-white-tag-all td{
     font-size: 0.75rem;
     padding: 0px;
-} 
+}
 
 table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
     padding-right: 0px;
@@ -64,7 +64,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                         </div>
                     </div>
                 </div>
-            @endif    
+            @endif
         </div>
         </div>
       </div>
@@ -92,7 +92,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                                             <th>Target</th>
                                             <th>Status</th>
                                             <th>Keterangan</th>
-                                        </tr> 
+                                        </tr>
                                     </thead>
                                     <tbody></tbody>
                                 </table>
@@ -122,7 +122,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                                             <th>Divisi</th>
                                             <th>Liga CG</th>
                                             <th class="text-center">Action</th>
-                                        </tr> 
+                                        </tr>
                                     </thead>
                                     <tbody></tbody>
                                 </table>
@@ -149,7 +149,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                                             <th>Target</th>
                                             <th>Status</th>
                                             <th>Keterangan</th>
-                                        </tr> 
+                                        </tr>
                                     </thead>
                                     <tbody></tbody>
                                 </table>
@@ -189,7 +189,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                                     <th rowspan="2">Competency Group</th>
                                     <th colspan="4" class="text-center">Action</th>
                                     <th class="text-center" rowspan="2">Status</th>
-                                </tr> 
+                                </tr>
                                 <tr>
                                     <th class="text-center" style="min-width:90px">Start</th>
                                     <th class="text-center" style="min-width:90px">Actual</th>
@@ -237,7 +237,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                                 <th class="text-center">Target</th>
                                 <th class="text-center">Keterangan</th>
                                 <th class="text-center">Status</th>
-                            </tr> 
+                            </tr>
                         </thead>
                         <tbody id="formMapComp"></tbody>
                     </table>
@@ -292,9 +292,9 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
     //     whiteTagAllDataTable();
     //     initDatatable();
     // }else if(peran_pengguna = 2){
-        
+
     // }else if(peran_pengguna = 3){
-        
+
     // }
     chartSkillCategory();
     getCg();
@@ -316,7 +316,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
         var serializeDatatable = tableEdit.$('input,select,textarea').serialize()
         var formData = formSerialize+'&'+serializeDatatable
 
-        // console.log(serializeDatatable);
+        console.log(serializeDatatable);
         // exit();
         $.ajax({
             url:url,
@@ -359,10 +359,11 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
     var idSkillCategory = null
 
   function getMapComp(id, el) {
+    //tombol add mapping competencies
     // $('#tableEdit').DataTable().destroy()
     $("#user_id").val(id);
     var nama = $(el).attr("userName")
-    console.log(nama)
+    console.log(nama);
     $("#modal-tambahLabel").html('Edit Mapping Competencies <b>('+nama+')</b>')
       const url = "{!! route('formWhiteTag') !!}?id="+id+"&type=general";
       $.ajax({
@@ -384,9 +385,9 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                         orderable: false,
                         targets: [6, 7, 8],
                     },
-                    { 
-                                width: "200px", 
-                                targets: 9 
+                    {
+                                width: "200px",
+                                targets: 9
                             }
                 ]
             });
@@ -399,6 +400,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
   }
 
   function detailWhiteTag(id, el) {
+    console.log("cek read");
       const url = "{{ route('detailWhiteTag') }}?id="+id+"&type=general";
       var name = $(el).attr("userName");
       $("#modal-detailLabel").html('Detail Mapping Competencies <b>('+name+')</b>')
@@ -665,7 +667,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
         labels: {
             boxWidth: 20,
             boxHeight : 20,
-            pointStyle : 'circle' 
+            pointStyle : 'circle'
         }
       },
         onClick:function(e){
@@ -706,7 +708,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
             pieChartSkill.update()
         },
         error: function(req, sts, err) {
-            
+
         }
     })
   }
@@ -723,7 +725,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
           }
       ]
   }
-  
+
   var option = {
       responsive: true,
       legend: {
@@ -731,7 +733,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
         labels: {
             boxWidth: 20,
             boxHeight : 20,
-            pointStyle : 'circle' 
+            pointStyle : 'circle'
         }
       },
       title: {
@@ -762,7 +764,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
             compGroupChart.update()
         },
         error: function(req, sts, err) {
-            
+
         }
     })
   }

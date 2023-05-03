@@ -85,7 +85,7 @@ h4 {
                 }
                 else if(Auth::user()->peran_pengguna == 2){
                   echo 'CG Leader';
-                } 
+                }
                 else if(Auth::user()->peran_pengguna == 3){
                   echo 'Member';
                 }
@@ -256,7 +256,7 @@ h4 {
                                         <td class="text-muted">{{ $jml_cg->nama_cg }}</td>
                                         <td class="w-50 px-0">
                                           <div class="progress progress-md mx-4">
-                                            <div class="progress-bar 
+                                            <div class="progress-bar
                                             @php
                                                 if(intval($jml_cg->cg) >= 20){
                                                   echo "bg-primary";
@@ -265,7 +265,7 @@ h4 {
                                                 } else if(intval($jml_cg->cg) >= 7){
                                                   echo "bg-warning";
                                                 }else{
-                                                  echo "bg-danger"; 
+                                                  echo "bg-danger";
                                                 }
                                             @endphp
                                             " role="progressbar" style="width: {{ $jml_cg->cg }}%" aria-valuenow="{{ $jml_cg->cg }}" aria-valuemin="0" aria-valuemax="100"></div>
@@ -409,7 +409,7 @@ function displayTime(){
   document.getElementById('date').innerText = timeNow.toLocaleString('id-ID',{
     dateStyle:'full'
   });
-  // console.log(timeNow);  
+  // console.log(timeNow);
 }
 
 displayTime();
@@ -436,14 +436,14 @@ if ($("#south-america-chart").length) {
           arc: {
               borderWidth: 4
           }
-        },      
+        },
         legend: {
           display: false
         },
         tooltips: {
           enabled: true
         },
-        legendCallback: function(chart) { 
+        legendCallback: function(chart) {
           var text = [];
           text.push('<div class="report-chart">');
             text.push('<div class="d-flex justify-content-between mx-4 mx-xl-5 mt-3"><div class="d-flex align-items-center"><div class="mr-3" style="width:20px; height:20px; border-radius: 50%; background-color: ' + chart.data.datasets[0].backgroundColor[0] + '"></div><p class="mb-0">Total Circle Group</p></div>');
@@ -464,17 +464,17 @@ if ($("#south-america-chart").length) {
           var width = chart.chart.width,
               height = chart.chart.height,
               ctx = chart.chart.ctx;
-      
+
           ctx.restore();
           var fontSize = 3.125;
           ctx.font = "600 " + fontSize + "em sans-serif";
           ctx.textBaseline = "middle";
           ctx.fillStyle = "#000";
-      
+
           var text = "{{ $total_cg[0]->cg }}",
               textX = Math.round((width - ctx.measureText(text).width) / 2),
               textY = height / 2;
-      
+
           ctx.fillText(text, textX, textY);
           ctx.save();
         }
@@ -490,7 +490,7 @@ if ($("#south-america-chart").length) {
     }
 
   function detail(id) {
-    const url = "{!! route('Member.detail') !!}?id="+id;
+    const url = "{!! route('EmployeeMember.detail') !!}?id="+id;
     $.ajax({
       type:"get",
       url:url,

@@ -145,6 +145,8 @@ class Ceme extends Controller
             ->addColumn('action', function ($row) {
                 $btn = '<button data-id="' . $row->id . '" class="button-add btn btn-inverse-success btnAddJobTitle btn-icon mr-1" data-nama="'.$row->nama_pengguna.'" data-userid="'.$row->id.'"><i class="icon-plus menu-icon"></i></button>';
                 $btn = $btn . '<button type="button" data-id="'.$row->id.'" data-name="'.$row->nama_pengguna.'" data-cg="'.$row->nama_cg.'" data-divisi="'.$row->nama_divisi.'" data-jobtitle="'.$row->nama_job_title.'" data-department="'.$row->nama_department.'" class="btn btnDetail btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail"><i class="ti-eye"></i></button>';
+                $btn = $btn . '<td class="font-weight-medium"><div class="ml-1 mt-2 badge badge-warning">Ready to Transfer</div></td>';
+                // $btn = $btn . '<button type="button" class="btn btn-warning">Warning</button>';
                 return $btn;
             })
             ->addIndexColumn()

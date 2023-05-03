@@ -10,7 +10,7 @@
             </li>
         @if(Auth::user()->peran_pengguna == 1)
             <li class="nav-item">
-                        <a class="nav-link" href="{{ route('Member') }}">
+                        <a class="nav-link" href="{{ route('EmployeeMember') }}">
                             <i class="icon-head menu-icon"></i>
                             <span class="menu-title">Employee Data</span>
                         </a>
@@ -79,7 +79,8 @@
                     <span class="menu-title">CEME</span>
                 </a>
             </li>
-            <li class="nav-item">
+            {{-- Hide Temporary --}}
+            {{-- <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#superman" aria-expanded="false" aria-controls="superman">
                     <i class="icon-command menu-icon"></i>
                     <span class="menu-title">Superman</span>
@@ -108,7 +109,7 @@
                     <li class="nav-item"> <a class="nav-link" href="#">CEME Champion</a></li>
                     </ul>
                 </div>
-            </li>  
+            </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#management-system" aria-expanded="false" aria-controls="management-system">
                     <i class="icon-paper menu-icon"></i>
@@ -121,7 +122,7 @@
                     <li class="nav-item"> <a class="nav-link" href="{{ route('system.index') }}">Kelola Certification</a></li>
                     </ul>
                 </div>
-            </li>
+            </li> --}}
         @elseif(Auth::user()->peran_pengguna == 2)
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('Curriculum') }}">

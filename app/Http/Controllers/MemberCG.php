@@ -74,7 +74,7 @@ class MemberCG extends Controller
             'cg' => 'required'
         ]);
 
-        
+
         DB::beginTransaction();
         try {
             $data = [
@@ -94,7 +94,7 @@ class MemberCG extends Controller
 
             if (isset($request->base64)) {
                 $filename = Str::random(15).'.png';
-                $contents = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$request->base64)); 
+                $contents = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$request->base64));
                 Storage::disk('public')->put($filename, $contents);
                 $data['gambar'] = $filename;
             }
@@ -158,14 +158,14 @@ class MemberCG extends Controller
                 unlink($url);
             }
             $filename = Str::random(15).'.png';
-            $contents = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$request->base64)); 
+            $contents = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$request->base64));
             Storage::disk('public')->put($filename, $contents);
             $data['gambar'] = $filename;
         }
         User::where('id',$request->id)->update($data);
         return response()->json(['code' => 200, 'message' => 'Post Updated successfully'], 200);
     }
-    
+
     public function deleteMember($id)
     {
         $user = User::find($id);
@@ -174,7 +174,7 @@ class MemberCG extends Controller
             unlink($url);
         }
         User::where('id', $id)->delete();
-        return redirect()->route('Member')->with(['success' => 'Curriculum Deleted successfully']);
+        return redirect()->route('EmployeeMember')->with(['success' => 'Curriculum Deleted successfully']);
     }
 
     public function detail(Request $request)
@@ -214,7 +214,7 @@ class MemberCG extends Controller
             $select_open = [
             "nama_pengguna","no_training_module",
             DB::raw("COUNT(*) as cnt", "(IF(actual < target,'Open','Close' )) as tagingStatus")
-        ];                        
+        ];
         $data_open = WhiteTagModel::select($select_open)
             ->join("users","users.id","white_tag.id_user")
             ->join("competencies_directory AS cd","cd.id_directory","white_tag.id_directory")
@@ -224,8 +224,8 @@ class MemberCG extends Controller
             // ->whereRaw("white_tag.actual >= cd.target AND white_tag.actual > 0 AND white_tag.start >= 0")
             ->whereRaw("white_tag.actual < cd.target")
             ->where("users.id", $request->id)
-            ->get();      
-            
+            ->get();
+
 
         return view('pages.admin.member.detail',compact('user','counting', 'data_open'));
     }
@@ -244,13 +244,13 @@ class MemberCG extends Controller
         $id_user = $request->user_rotation;
         $id_job_title = $request->jabatan_rotation;
         $id_cg = $request->cg_rotation;
-        
+
         try {
         DB::beginTransaction();
-        
+
         // id_cg old form users
         $data_user = DB::table('users')->find($id_user);
-        
+
         //insert data to history
         $data_rotate = [
             'id_user' => $id_user,
@@ -262,7 +262,7 @@ class MemberCG extends Controller
         ];
         $rotation = Rotation::create($data_rotate);
         $rotation->save();
-        
+
         //get data white tag
         $data_whitetag =  DB::table('white_tag')
                             ->leftJoin('competencies_directory', 'white_tag.id_directory', '=' ,'competencies_directory.id_directory' )
@@ -291,25 +291,25 @@ class MemberCG extends Controller
                                     ]
                                 );
                                 $history->save();
-                            }                    
+                            }
         // delete data table white tag
         $deleteWT = WhiteTagModel::where('id_user', $id_user);
-        $deleteWT->delete();                    
+        $deleteWT->delete();
         // Update data user
         $data = [
             'id_job_title' => $id_job_title,
             'id_cg' => $id_cg,
         ];
         User::where('id',$id_user)->update($data);
-            
+
 
         DB::commit();
             return response()->json(['code' => 200, 'message' => 'Rotation successfully'], 200);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['errors' => $e->getMessage(),'message'=> $messages],402);
-        
-        }    
+
+        }
     }
 
     public function getDivisi()
