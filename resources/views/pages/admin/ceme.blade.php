@@ -40,7 +40,7 @@
         <div class="col-md-12 grid-margin">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Competent Employee </h4>
+                    <h4 class="card-title">Competent Employee</h4>
                     <span style="font-size: 14px;"><div class="mr-1 mt-1 mb-0 bg-warning" style="display:inline-block; width:15px; height:15px; border-radius: 50%; "></div><i>Indicate as Competent Employee</i></span>
                     <div class="row">
                         <div class="col-12">
