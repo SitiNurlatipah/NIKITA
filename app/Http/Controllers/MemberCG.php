@@ -60,7 +60,7 @@ class MemberCG extends Controller
         $request->validate([
             'image' => 'nullable|image|mimes:jpg,png,jpeg|max:5000',
             'base64' => 'nullable|string',
-            'nik' => 'required|numeric',
+            'nik' => 'required',
             'password' => 'required',
             'peran_pengguna' => 'required|in:1,2,3',
             'tgl_masuk' => 'required',
