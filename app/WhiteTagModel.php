@@ -46,9 +46,9 @@ class WhiteTagModel extends Model
             if($counting[0]['level'] == 'B'){
                 $count = ($actual/$target_total)*100;
             }elseif($counting[0]['level'] == 'I'){
-                $count = ($actual/$target_total)*85;
+                $count = ($actual/$target_total)*100;
             }else{
-                $count = ($actual/$target_total)*75;
+                $count = ($actual/$target_total)*100;
             } 
         }else{
             $count = 0;
@@ -99,7 +99,7 @@ class WhiteTagModel extends Model
         }else{
             $data2=$data2;
         }
-        if($data2 >= 81.37)
+        if($data2 >= 86.67)
         {
             // set is competent = 1
             $user = User::find($id_user);
