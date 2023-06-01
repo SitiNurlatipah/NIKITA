@@ -26,7 +26,7 @@
                     <li class="nav-item"> <a class="nav-link" href="{{ route('CG') }}">Circle Group</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('grade.index') }}">Grade</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('SkillCategory') }}">Skill Category</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('competencie-groups.index') }}">Compentencie Group</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('competencie-groups.index') }}">Compentency Group</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('department.index') }}">Department</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('sub-department.index') }}">Sub Department</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('divisi.index') }}">Divisi</a></li>
@@ -58,13 +58,13 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('CompetenciesDirectory') }}">
                     <i class="icon-book menu-icon"></i>
-                    <span class="menu-title">Competencies Dictionary</span>
+                    <span class="menu-title">Competency Dictionary</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('WhiteTag') }}">
                     <i class="icon-flag menu-icon"></i>
-                    <span class="menu-title">Mapping Competencies</span>
+                    <span class="menu-title">Mapping Competency</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -133,13 +133,13 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('CompetenciesDirectory') }}">
                     <i class="icon-book menu-icon"></i>
-                    <span class="menu-title">Competencies Dictionary</span>
+                    <span class="menu-title">Competency Dictionary</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('WhiteTag') }}">
                     <i class="icon-flag menu-icon"></i>
-                    <span class="menu-title">Mapping Competencies</span>
+                    <span class="menu-title">Mapping Competency</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -158,7 +158,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('WhiteTag') }}">
                     <i class="icon-flag menu-icon"></i>
-                    <span class="menu-title">Mapping Competencies</span>
+                    <span class="menu-title">Mapping Competency</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -171,7 +171,7 @@
         <li class="nav-item">
                 <a class="nav-link" href="{{ route('WhiteTag') }}">
                     <i class="icon-flag menu-icon"></i>
-                    <span class="menu-title">Mapping Competencies</span>
+                    <span class="menu-title">Mapping Competency</span>
                 </a>
             </li>
             <li class="nav-item">
