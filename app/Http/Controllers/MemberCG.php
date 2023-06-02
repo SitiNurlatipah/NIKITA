@@ -79,7 +79,7 @@ class MemberCG extends Controller
         try {
             $data = [
                 'nik' => $request->nik,
-                'password' => $request->password,
+                'password' => bcrypt($request->password),
                 'peran_pengguna' => $request->peran_pengguna,
                 'tgl_masuk' => date('Y-m-d', strtotime($request->tgl_masuk)),
                 'nama_pengguna' => $request->nama_pengguna,
@@ -161,6 +161,9 @@ class MemberCG extends Controller
             $contents = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$request->base64));
             Storage::disk('public')->put($filename, $contents);
             $data['gambar'] = $filename;
+        }
+        if($request->password){
+            $data['password'] = bcrypt($request->password);
         }
         User::where('id',$request->id)->update($data);
         return response()->json(['code' => 200, 'message' => 'Post Updated successfully'], 200);
