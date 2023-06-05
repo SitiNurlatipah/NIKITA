@@ -16,7 +16,7 @@
 </div>
 <div class="row">
   <div class="table-responsive">
-      <table class="display table-striped expandable-table" style="width:100%">
+      <table class="display table-striped expandable-table cari-data" style="width:100%">
           <thead>
               <tr>
                   <th>Job Title</th>

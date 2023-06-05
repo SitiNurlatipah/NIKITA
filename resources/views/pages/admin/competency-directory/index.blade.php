@@ -127,7 +127,7 @@
             $('.delete-button').on('click',function () {
                 $('#modal-hapus').modal('show');
             });
-
+            
             $("#submitForm").click(function (e) {
                 e.preventDefault();
                 var form = $("#formCompetencyDirectory")
@@ -203,6 +203,10 @@
                 type:"get",
                 success:function(html){
                     $("#formCompetency").html(html);
+                    $(".cari-data").DataTable({
+                    searching: true,
+                    scrollX: true, 
+                    });
                 }
             })
         }
@@ -217,6 +221,9 @@
                 cache:false,
                 success:function(html){
                     $("#detailCompetencyDirectory").html(html);
+                    $(".cari-data").DataTable({
+                    searching: true // Mengaktifkan fungsi pencarian
+                    });
                 },
                 error:function(err){
                     Swal.fire({
