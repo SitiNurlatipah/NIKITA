@@ -51,7 +51,7 @@
       </div>
   </div>
   <div class="table-responsive" style="overflow-x: unset;">
-      <table class="display nowrap expandable-table table-striped table-hover" style="width:100%">
+      <table class="display nowrap expandable-table table-striped table-hover cari-data" id=""  style="width:100%">
           <thead>
               <tr>
                   <th style="min-width: 100px;" class="text-left">Job Title</th>

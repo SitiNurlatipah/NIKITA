@@ -74,6 +74,11 @@
             <div class="invalid-feedback" id="feed-back-nik-edit"></div>
         </div>
         <div class="col-md-6 mb-3">
+            <label>Password</label>
+            <input type="password" id="password-edit" class="form-control form-control-sm"  name="password" placeholder="Masukan Password">
+            <div class="invalid-feedback" id="feed-back-password"></div>
+        </div>
+        <div class="col-md-6 mb-3">
             <label>Role</label>
             <select class="form-control form-control-sm" id="peran-pengguna-edit" name="peran_pengguna">
                 <option value="1" {{($user->peran_pengguna == '1') ? 'selected' : ''}} >Admin</option>
