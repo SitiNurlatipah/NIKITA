@@ -28,15 +28,15 @@ class WhiteTagModel extends Model
                                  ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
                                  ->where('crclm.level',$level)
                                  ->get();
-        $jumlahtarget = CompetenciesDirectoryModel::select(DB::raw("sum(competencies_directory.target) as totaltarget"),"level","nama_job_title","users.id_job_title")
-                                 ->join("job_title", "job_title.id_job_title", "=", "competencies_directory.id_job_title")
-                                 ->join("users","users.id_job_title","job_title.id_job_title")
-                                 ->join("curriculum as crclm", "crclm.id_curriculum", "=", "competencies_directory.id_curriculum")
-                                 ->where("crclm.level", "=", $level)
-                                 ->groupBy("competencies_directory.id_job_title")
-                                 // ->groupBy("users.id_job_title")
-                                //  ->where("competencies_directory.id_job_title", "=","users.id_job_title")
-                                 ->get();
+        
+        $jumlahtarget = CompetenciesDirectoryModel::select(DB::raw("sum(competencies_directory.target) as totaltarget"),"level","users.id_job_title")
+                                ->join("curriculum as crclm", "crclm.id_curriculum", "=", "competencies_directory.id_curriculum")
+                                ->join("white_tag", "white_tag.id_directory", "=", "competencies_directory.id_directory")
+                                // ->join("job_title", "job_title.id_job_title", "=", "competencies_directory.id_job_title")
+                                ->join("users", "users.id_job_title", "=", "competencies_directory.id_job_title")
+                                ->where("crclm.level", "=", $level)
+                                ->groupBy("competencies_directory.id_job_title", "users.id_job_title","crclm.level")
+                                ->get();
         // dd($jumlahtarget);
         $cnt = $counting[0]["cnt"];
         $target_total = $counting[0]["totaltarget"];

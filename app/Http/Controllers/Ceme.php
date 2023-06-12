@@ -309,13 +309,15 @@ class Ceme extends Controller
             $validator = Validator::make(request()->all(),[
                 'id' => ['required'],
                 'job_title_edit' => ['required'],
-                'level_edit' => ['required','numeric']
+                'level_edit' => ['required','numeric'],
+                'transfer_period_edit' => ['required']
             ]);
         }else{
             $validator = Validator::make(request()->all(),[
                 'user_id' => ['required'],
                 'job_title' => ['required'],
-                'level' => ['required','numeric']
+                'level' => ['required','numeric'],
+                'transfer_period' => ['required','numeric']
             ]);
         }
 
@@ -338,7 +340,8 @@ class Ceme extends Controller
                 $jt = JobTitleUsers::find($id);
                 $jt2 = $jt->update([
                     'job_title_id' => request('job_title_edit'),
-                    'value' => request('level_edit')
+                    'value' => request('level_edit'),
+                    'transfer_period' => request('transfer_period_edit')
                 ]);
                 $data = [
                     'status' => 'success',
@@ -350,7 +353,8 @@ class Ceme extends Controller
                 $jt = JobTitleUsers::create([
                     'user_id' => request('user_id'),
                     'job_title_id' => request('job_title'),
-                    'value' => request('level')
+                    'value' => request('level'),
+                    'transfer_period' => request('transfer_period')
                 ]);
                 $data = [
                     'status' => 'success',
