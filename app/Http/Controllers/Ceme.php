@@ -110,7 +110,7 @@ class Ceme extends Controller
         if($ceme === 'all')
         {
             $users = DB::table('users')->where('is_competent',1)
-            ->leftJoin('job_title_users','job_title_users.user_id','users.id')
+            ->Join('job_title_users','job_title_users.user_id','users.id')
             ->groupBy('job_title_users.user_id')
             ->select('users.nama_pengguna',DB::raw('count(job_title_users.user_id) as totalSkill'))
             ->groupBy(DB::Raw('IFNULL( job_title_users.user_id , 0 )'))
@@ -118,7 +118,7 @@ class Ceme extends Controller
 
         }else{
             $users = DB::table('users')->where('is_competent',1)
-            ->leftJoin('job_title_users','job_title_users.user_id','users.id')
+            ->Join('job_title_users','job_title_users.user_id','users.id')
             ->groupBy('job_title_users.user_id')
             ->select('users.nama_pengguna',DB::raw('count(job_title_users.user_id) as totalSkill'))
             ->groupBy(DB::Raw('IFNULL( job_title_users.user_id , 0 )'))
