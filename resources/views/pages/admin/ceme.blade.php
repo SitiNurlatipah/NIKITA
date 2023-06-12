@@ -118,7 +118,9 @@
                                             <th>Department</th>
                                             {{-- <th>Level</th> --}}
                                             <th>CG Name</th>
+                                            @if(Auth::user()->id_level=='LV-0003'||Auth::user()->id_level=='LV-0004'||Auth::user()->id_level=='LV-0009')
                                             <th>Action</th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -149,7 +151,7 @@
                         @csrf
                         <input type="number" id="user_id" name="user_id" hidden>
                         <div class="row">
-                            <div class="col-md-5">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="">Job Title</label>
                                     <select name="job_title" id="job_title" class="form-control" required>
@@ -157,11 +159,20 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="">Level</label>
                                     <select name="level" id="level" class="form-control" required>
                                     </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="">Transfer Periode</label>
+                                    <select class="form-control" name="transfer_period" id="transfer_period">
+                                    <option value="1">0 - 2 Tahun</option>
+                                    <option value="2">Lebih Dari 2 Tahun</option>
+                                </select>
                                 </div>
                             </div>
                             <div class="col-md-2 align-self-center">
@@ -180,6 +191,7 @@
                                         <th style="width:10px">#</th>
                                         <th>Job Title</th>
                                         <th>Level</th>
+                                        <th>Transfer Periode</th>
                                         <th>Action</th>
                                     </thead>
                                     <tbody class="trJob">
@@ -220,6 +232,14 @@
                         <div class="form-group">
                             <label for="">Level</label>
                             <select name="level_edit" id="level_edit" class="form-control" required>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Transfer Periode</label>
+                            <select name="transfer_period_edit" id="" class="form-control" required>
+                                <option value="">-- Pilih Periode --</option>
+                                <option value="1">0 - 2 Tahun</option>
+                                <option value="2">Lebih Dari 2 Tahun</option>
                             </select>
                         </div>
                     </form>
@@ -271,6 +291,7 @@
                                             <th style="width: 10px">No.</th>
                                             <th>Job Title</th>
                                             <th>Level</th>
+                                            <th>Transfer Periode</th>
                                         </tr>
                                     </thead>
                                     <tbody class="trMs">
@@ -373,9 +394,11 @@
                     {
                         data: 'nama_cg'
                     },
+                    @if(Auth::user()->id_level=='LV-0003'||Auth::user()->id_level=='LV-0004'||Auth::user()->id_level=='LV-0009')
                     {
                         data: 'action'
                     }
+                    @endif
                 ],
             })
         }
@@ -390,6 +413,7 @@
         });
         var jobTitle;
         var level;
+        var transferPeriod;
 
         // ketika tombol tambah job title di klik
         $('body').on('click', '.btnAddJobTitle', function() {
@@ -423,12 +447,24 @@
                             default:
                                 var levelValue = 'Tidak Ada';
                         }
+                        var transferValue = '';  // Variabel untuk menampung teks nilai transfer
+                        switch (data.transfer_period) {
+                            case 1:
+                                transferValue = '0 - 2 tahun';
+                                break;
+                            case 2:
+                                transferValue = 'Lebih dari 2 tahun';
+                                break;
+                            default:
+                                transferValue = '-';
+                        }
                         var xhtml = '';
                         xhtml += '<tr>'
                         xhtml += '<td>' + i++ + '</td>'
                         xhtml += '<td>' + data.job_title
                             .nama_job_title + '</td>'
                         xhtml += '<td>' + levelValue + '</td>'
+                        xhtml += '<td>' + transferValue + '</td>'
                         xhtml +=
                             '<td><a href="javascript:void(0)" class="btn btn-info btnEditJobTitle btn-sm" data-id="' +
                             data.id +
@@ -506,12 +542,23 @@
                             default:
                                 var levelValue = 'Tidak Ada';
                         }
+                        switch (data.transfer_period) {
+                            case 1:
+                                transferValue = '0 - 2 tahun';
+                                break;
+                            case 2:
+                                transferValue = 'Lebih dari 2 tahun';
+                                break;
+                            default:
+                                transferValue = '-';
+                        }
                         var xhtml = '';
                         xhtml += '<tr>'
                         xhtml += '<td>' + i++ + '</td>'
                         xhtml += '<td>' + data.job_title
                             .nama_job_title + '</td>'
                         xhtml += '<td>' + levelValue + '</td>'
+                        xhtml += '<td>' + transferValue + '</td>'
                         xhtml += '</tr>';
                         $('.trMs').append(xhtml);
                     });
@@ -566,17 +613,30 @@
                                         default:
                                             var levelValue = 'Tidak Ada';
                                     }
+                                    var transferValue = '';  // Variabel untuk menampung teks nilai transfer
+                                    switch (data.transfer_period) {
+                                        case 1:
+                                            transferValue = '0 - 2 tahun';
+                                            break;
+                                        case 2:
+                                            transferValue = 'Lebih dari 2 tahun';
+                                            break;
+                                        default:
+                                            transferValue = '-';
+                                    }
                                     var xhtml = '';
                                     xhtml += '<tr>'
                                     xhtml += '<td>' + i++ + '</td>'
                                     xhtml += '<td>' + data.job_title
                                         .nama_job_title + '</td>'
                                     xhtml += '<td>' + levelValue + '</td>'
+                                    xhtml += '<td>' + transferValue + '</td>'
                                     xhtml +=
                                         '<td><a href="javascript:void(0)" class="btn btn-info btnEditJobTitle btn-sm" data-id="' +
                                         data.id +
                                         '" data-jobtitle="' + data.job_title_id +
                                         '" data-level="' + data.value +
+                                        '" data-level="' + data.transfer_period +
                                         '">Edit</a> <a href="javascript:void(0)" class="btn btn-danger btnHapusJobTitle btn-sm" data-id="' +
                                         data.id + '">Hapus</a> </td>'
                                     xhtml += '</tr>'
@@ -653,12 +713,25 @@
                                                 var levelValue =
                                                     'Tidak Ada';
                                         }
+                                        var transferValue = '';  // Variabel untuk menampung teks nilai transfer
+                                        switch (data.transfer_period) {
+                                            case 1:
+                                                transferValue = '0 - 2 tahun';
+                                                break;
+                                            case 2:
+                                                transferValue = 'Lebih dari 2 tahun';
+                                                break;
+                                            default:
+                                                transferValue = '-';
+                                        }
                                         var xhtml = '';
                                         xhtml += '<tr>'
                                         xhtml += '<td>' + i++ + '</td>'
                                         xhtml += '<td>' + data.job_title
                                             .nama_job_title + '</td>'
                                         xhtml += '<td>' + levelValue +
+                                            '</td>'
+                                        xhtml += '<td>' + transferValue +
                                             '</td>'
                                         xhtml +=
                                             '<td><a href="javascript:void(0)" class="btn btn-info btnEditJobTitle btn-sm" data-id="' +
@@ -709,7 +782,6 @@
                         ')' +
                         '</option>');
                 }
-
             });
             var modalEdit = $('#modalEditJobTitle');
             $('#modalEditJobTitle .modal-title').text('Edit Job Title');
@@ -766,6 +838,17 @@
                                             var levelValue =
                                                 'Tidak Ada';
                                     }
+                                    var transferValue = '';  // Variabel untuk menampung teks nilai transfer
+                                    switch (data.transfer_period) {
+                                        case 1:
+                                            transferValue = '0 - 2 tahun';
+                                            break;
+                                        case 2:
+                                            transferValue = 'Lebih dari 2 tahun';
+                                            break;
+                                        default:
+                                            transferValue = '-';
+                                    }
                                     var xhtml = '';
                                     xhtml += '<tr>'
                                     xhtml += '<td>' + i++ + '</td>'
@@ -773,12 +856,15 @@
                                         .nama_job_title + '</td>'
                                     xhtml += '<td>' + levelValue +
                                         '</td>'
+                                    xhtml += '<td>' + transferValue +
+                                        '</td>'
                                     xhtml +=
                                         '<td><a href="javascript:void(0)" class="btn btn-info btnEditJobTitle btn-sm" data-id="' +
                                         data.id +
                                         '" data-jobtitle="' + data
                                         .job_title_id +
                                         '" data-level="' + data.value +
+                                        '" data-level="' + data.transfer_period +
                                         '">Edit</a> <a href="javascript:void(0)" class="btn btn-danger btnHapusJobTitle btn-sm" data-id="' +
                                         data.id + '">Hapus</a> </td>'
                                     xhtml += '</tr>'
@@ -825,7 +911,6 @@
                 }
             })
         }
-
         function getLevel() {
             level = [
                 [
@@ -851,6 +936,18 @@
                     'Main Job',
                     'green',
                     '100% by Average Competent Employee'
+                ]
+            ];
+        }
+        function getTransferPeriode() {
+            periode = [
+                [
+                    '1',
+                    '0 - 2 Tahun',
+                ],
+                [
+                    '2',
+                    'Lebih Dari 2 Tahun',
                 ]
             ];
         }
@@ -895,9 +992,11 @@
                     {
                         data: 'nama_cg'
                     },
+                    @if(Auth::user()->id_level=='LV-0003'||Auth::user()->id_level=='LV-0004'||Auth::user()->id_level=='LV-0009')
                     {
                         data: 'action'
                     }
+                    @endif
                 ],
             })
         })
