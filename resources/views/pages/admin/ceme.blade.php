@@ -118,7 +118,7 @@
                                             <th>Department</th>
                                             {{-- <th>Level</th> --}}
                                             <th>CG Name</th>
-                                            @if(Auth::user()->id_level=='LV-0003'||Auth::user()->id_level=='LV-0004'||Auth::user()->id_level=='LV-0009')
+                                            @if(Auth::user()->id_level=='LV-0003'||Auth::user()->peran_pengguna == 1||Auth::user()->peran_pengguna == 4)
                                             <th>Action</th>
                                             @endif
                                         </tr>
@@ -394,7 +394,7 @@
                     {
                         data: 'nama_cg'
                     },
-                    @if(Auth::user()->id_level=='LV-0003'||Auth::user()->id_level=='LV-0004'||Auth::user()->id_level=='LV-0009')
+                    @if(Auth::user()->id_level=='LV-0003'||Auth::user()->peran_pengguna == 1||Auth::user()->peran_pengguna == 4)
                     {
                         data: 'action'
                     }
@@ -992,7 +992,7 @@
                     {
                         data: 'nama_cg'
                     },
-                    @if(Auth::user()->id_level=='LV-0003'||Auth::user()->id_level=='LV-0004'||Auth::user()->id_level=='LV-0009')
+                    @if(Auth::user()->id_level=='LV-0003'||Auth::user()->peran_pengguna == 1||Auth::user()->peran_pengguna == 4)
                     {
                         data: 'action'
                     }
