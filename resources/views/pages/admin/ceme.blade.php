@@ -155,7 +155,7 @@
                                 <div class="form-group">
                                     <label for="">Job Title</label>
                                     <select name="job_title" id="job_title" class="form-control" required>
-                                    <option value="#">- Pilih Job Title -</option>
+                                        <option value="#">-- Pilih Job Title --</option>
                                     </select>
                                 </div>
                             </div>
@@ -163,6 +163,7 @@
                                 <div class="form-group">
                                     <label for="">Level</label>
                                     <select name="level" id="level" class="form-control" required>
+                                        <option value="#">-- Pilih Level --</option>
                                     </select>
                                 </div>
                             </div>
@@ -170,8 +171,9 @@
                                 <div class="form-group">
                                     <label for="">Transfer Periode</label>
                                     <select class="form-control" name="transfer_period" id="transfer_period">
-                                    <option value="1">0 - 2 Tahun</option>
-                                    <option value="2">Lebih Dari 2 Tahun</option>
+                                        <option value="">-- Pilih Periode --</option>
+                                        <option value="1">0 - 2 Tahun</option>
+                                        <option value="2">Lebih Dari 2 Tahun</option>
                                 </select>
                                 </div>
                             </div>
@@ -481,8 +483,8 @@
 
             getJobTitle();
             getLevel();
-            $('#level').empty();
-            $('#job_title').empty();
+            // $('#level').empty();
+            // $('#job_title').empty();
             jobTitle.forEach(jt => {
                 $('#job_title').append('<option value=' + jt['id_job_title'] + '>' + jt['nama_job_title'] +
                     '</option>');
