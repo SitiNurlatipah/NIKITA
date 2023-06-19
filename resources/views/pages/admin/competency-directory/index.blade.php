@@ -203,9 +203,12 @@
                 type:"get",
                 success:function(html){
                     $("#formCompetency").html(html);
-                    $(".cari-data").DataTable({
+                    $(".search-data").DataTable({
                     searching: true,
                     scrollX: true, 
+                    displayLength: 100,
+                    responsive:true,
+                    // lengthMenu: [10, 15, 20,100],
                     });
                 }
             })
