@@ -90,7 +90,6 @@
                         <option {{($list->target == "2") ? "selected" : ''}} value="2">2</option>
                         <option {{($list->target == "3") ? "selected" : ''}} value="3">3</option>
                         <option {{($list->target == "4") ? "selected" : ''}} value="4">4</option>
-                        <option {{($list->target == "5") ? "selected" : ''}} value="5">5</option>
                     </select>
                   </td>
                 @endforeach
@@ -113,12 +112,11 @@ $(document).ready(function(){
   $("#id_curriculum").selectpicker('refresh');
   $(".selectEdit").selectpicker('refresh');
     $('select').on('change', function() {
-      idd = $("option:selected").attr("id") ;
+      idd = $("option:selected").attr("id_curriculum") ;
         if(idd == 5){
           $("#myView").html('<img src="{{ asset("assets/images/general.png") }}" id="img-key" class="img-accordion" style="max-height:400px;margin-left:100px">');
         }else{
-          $("#myView").html('<img src="{{ asset("assets/images/functional.png") }}" id="img-key" class="img-accordion" style="max-height:400px; margin-left:100px">');
-
+          $("#myView").html('<img src="{{ asset("assets/images/Functional.png") }}" id="img-key" class="img-accordion" style="max-height:400px; margin-left:100px">');
         }
     });
   });
@@ -135,7 +133,7 @@ $(document).ready(function(){
     }
   }
 
-  function addRow(el) {
+    function addRow(el) {
         var options = "";
         var curriculumId = $(el).attr("curriculum-id");
         const url = "{!!route('addRow')!!}?curriculumId="+curriculumId
