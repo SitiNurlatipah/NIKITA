@@ -29,7 +29,7 @@ class WhiteTag extends Controller
             ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
             ->leftJoin('divisi', 'users.id_divisi', '=', 'divisi.id_divisi')
             ->leftJoin('cg', 'users.id_cg', '=', 'cg.id_cg')
-            ->Where('users.id_department', $dp)
+            ->Where('users.id_cg', $cgAuth)
             ->orderBy('users.nama_pengguna', 'DESC')
             ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','cg.nama_cg','divisi.nama_divisi']);
         return Datatables::of($data)
@@ -541,13 +541,14 @@ class WhiteTag extends Controller
                                                     ->whereIn("id_skill_category",$skillId);
                                             })
                                             ->join("skill_category","skill_category.id_skill_category","curriculum.id_skill_category")
-                                            ->leftJoin("white_tag",function ($join) use ($user){
+                                            ->Join("white_tag",function ($join) use ($user){
                                                 $join->on("white_tag.id_directory","competencies_directory.id_directory")
                                                     ->where("white_tag.id_user",$user->id);
                                             })
                                             ->groupBy("competencies_directory.id_curriculum")
                                             ->orderBy("tagingStatus", "DESC")
                                             ->get();
+        
         return Datatables::of($data)
         ->addIndexColumn()
         ->editColumn('start', function ($row) {

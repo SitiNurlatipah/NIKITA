@@ -53,7 +53,7 @@ class Curriculum extends Controller
             'id_job_title' => 'required|array',
             'id_job_title.*' => 'required|string'
         ]);
-
+        $curriculumcg=$request->curriculum_cg;
         if($validator->fails()){
             return response()->json(['code' => 422, 'message' => 'The given data was invalid.', 'data' => $validator->errors()], 422);
         }else{
@@ -68,10 +68,18 @@ class Curriculum extends Controller
                     $lastNumber = 0;
                 }
                 $number = str_pad($lastNumber+1,3,'0',STR_PAD_LEFT); 
-                if($request->id_skill_category == 1){
-                    $noTrainingModul = $number."/KMI/FUNC";
-                }else if($request->id_skill_category == 2){
-                    $noTrainingModul = $number."/KMI/GEN";
+                if($request->cg == 1){
+                    if($request->id_skill_category == 1){
+                        $noTrainingModul = $number."/KMI/".$curriculumcg."/FUNC";
+                    }else if($request->id_skill_category == 2){
+                        $noTrainingModul = $number."/KMI/GEN";
+                    }
+                }else{
+                    if($request->id_skill_category == 1){
+                        $noTrainingModul = $number."/KMI/FUNC";
+                    }else if($request->id_skill_category == 2){
+                        $noTrainingModul = $number."/KMI/GEN";
+                    }
                 }
                 if(isset($request->id_job_title) && count($request->id_job_title) > 0){
                     $curriculum = new CurriculumModel;

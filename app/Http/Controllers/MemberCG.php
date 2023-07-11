@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -28,10 +28,20 @@ class MemberCG extends Controller
 
     public function cgJson()
     {
-        $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
-            ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
-            ->leftJoin('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
-            ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title']);
+        $role = Auth::user()->peran_pengguna;
+        if (Auth::user()->peran_pengguna === '2') {
+            $cgId = Auth::user()->id_cg;
+            $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+                ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+                ->leftJoin('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
+                ->where('users.id_cg', $cgId)
+                ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title']);
+        } else {
+            $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+                ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+                ->leftJoin('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
+                ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title']);
+        }
         return Datatables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {

@@ -61,7 +61,9 @@
                   <th style="min-width: 100px;" class="text-center">Y6-Y7</th>
                   <th style="min-width: 100px;" class="text-center">Y8-Y9</th>
                   <th style="min-width: 100px;" class="text-center">YN</th>
+                  @if(Auth::user()->peran_pengguna == 1)
                   <th style="align-content: center"></th>
+                  @endif
               </tr>
           </thead>
           <tbody id="bodyCompetencies">
@@ -93,9 +95,11 @@
                     </select>
                   </td>
                 @endforeach
-                <td style="text-align: center">
-                  <button type="button" onclick="delRow(this)" class="btn btn-inverse-danger btn-icon mr-1"><i class="icon-trash"></i></button>
-              </td>
+                @if(Auth::user()->peran_pengguna == 1)
+                  <td style="text-align: center">
+                    <button type="button" onclick="delRow(this)" class="btn btn-inverse-danger btn-icon mr-1"><i class="icon-trash"></i></button>
+                  </td>
+                @endif
               </tr>
             @empty
               <tr id="rowDefault">

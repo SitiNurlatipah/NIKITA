@@ -79,8 +79,11 @@
           
       </select>
   </td>
+  @if(Auth::user()->peran_pengguna == 1)
   <td style='text-align:center'>
       <button class='btn btn-inverse-danger btn-icon mr-1' onclick="delRow(this)">
         <i class='icon-trash'></i>
       </button>
-  </td
+  </td>
+  @endif
+
