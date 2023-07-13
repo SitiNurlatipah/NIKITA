@@ -125,6 +125,25 @@
             </li> --}}
         @elseif(Auth::user()->peran_pengguna == 2)
             <li class="nav-item">
+                <a class="nav-link" href="{{ route('EmployeeMember') }}">
+                    <i class="icon-head menu-icon"></i>
+                    <span class="menu-title">Member CG</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#rotation" aria-expanded="false" aria-controls="rotation">
+                    <i class="icon-repeat menu-icon"></i>
+                    <span class="menu-title">Rotation History</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="rotation">
+                    <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('rotation.index') }}">History Transaction</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('comp.history.index') }}">Competency History</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="{{ route('Curriculum') }}">
                     <i class="icon-grid-2 menu-icon"></i>
                     <span class="menu-title">Curriculum</span>

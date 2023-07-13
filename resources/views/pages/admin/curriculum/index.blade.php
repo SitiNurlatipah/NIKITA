@@ -97,6 +97,19 @@
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
+                                    <label for="skillCategory">Curriculum Circle Group</label>
+                                    <select id="" class="form-control form-control-sm" name="cg">
+                                        <option value="">- Pilih Option Curriculum -</option>
+                                        <option value="1">Yes</option>
+                                        <option value="2">No</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="skillCategory">Nama Circle Group</label>
+                                    <input type="text" class="form-control" name="curriculum_cg"
+                                        placeholder="Masukan Singkatan CG">
+                                </div>
+                                <div class="form-group">
                                     <label for="skillCategory">Skill Category</label>
                                     <select id="id_skill_category" class="form-control form-control-sm" name="id_skill_category">
                                         <option value="">- Pilih Skill Category -</option>

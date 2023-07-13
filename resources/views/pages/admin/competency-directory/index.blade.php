@@ -279,5 +279,20 @@
                 ]
             });
         }
+
+        function confirmDelete(element) {
+            swal({
+            title: "Konfirmasi",
+            text: "Apakah Anda yakin ingin menghapus baris ini?",
+            icon: "warning",
+            buttons: ["Batal", "Hapus"],
+            dangerMode: true,
+            })
+            .then((willDelete) => {
+            if (willDelete) {
+                delRow(element);
+            }
+            });
+        }
     </script>
 @endpush
