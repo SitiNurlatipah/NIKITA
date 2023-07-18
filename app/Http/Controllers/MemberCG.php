@@ -100,6 +100,7 @@ class MemberCG extends Controller
                 'id_department' => $request->department,
                 'id_sub_department' => $request->sub_department,
                 'id_cg' => $request->cg,
+                'id_cgtambahan' => $request->tambahancg,
             ];
 
             if (isset($request->base64)) {
@@ -161,6 +162,7 @@ class MemberCG extends Controller
             'id_department' => $request->department,
             'id_sub_department' => $request->sub_department,
             'id_cg' => $request->cg,
+            'id_cgtambahan' => $request->tambahancg,
         ];
         if(isset($request->base64)){
             $url = "../storage/app/public/".$user->gambar;

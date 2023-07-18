@@ -172,6 +172,18 @@
         <div class="invalid-feedback" id="feed-back-cg-edit"></div>
     </div>
 </div>
+<div class="form-row">
+    <div class="col-md-4 mb-3">
+        <label>CG Tambahan</label>
+        <select id="cgtambahan-edit" class="form-control form-control-sm" name="tambahancg">
+            <option value="">Pilih CG Name</option>
+            @foreach ($cgMaster as $item)
+                <option value="{{$item->id_cg}}" {{($user->id_cgtambahan == $item->id_cg) ? 'selected' : ''}} >{{$item->nama_cg}}</option>
+            @endforeach
+        </select>
+        <div class="invalid-feedback" id="feed-back-cg-edit"></div>
+    </div>
+</div>
 @endif
 @if(Auth::user()->peran_pengguna == 2)
     <div class="col-md-8 row">
