@@ -55,24 +55,39 @@ class Dashboard extends Controller
             ->get();
 
         $cg = Auth::user()->id_cg;
+        $cgtambah = Auth::user()->id_cgtambahan;
         $dp= Auth::user()->id_department;
         $id = Auth::user()->id;
-        if(Auth::user()->peran_pengguna == '3'){
-            $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
-            ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
-            ->where('id', $id)
-            // ->orderBy('nik', 'ASC')
-            ->get(['users.*', 'dp.*', 'jt.*']);
-        }else if(Auth::user()->peran_pengguna == '4'){
-            $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
-            ->where('users.id_department', $dp)
-            ->orderBy('nik', 'ASC')
-            ->get(['users.*', 'dp.*']);
-        }
-        else {
+        // $id = Auth::user()->is_superman;
+        if(Auth::user()->peran_pengguna == '2'){
             $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
             ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
             ->where('id_cg', $cg)
+            // ->orderBy('nik', 'ASC')
+            ->get(['users.*', 'dp.*', 'jt.*']);
+        }else if(Auth::user()->peran_pengguna == '1'){
+                $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+                ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+                ->where('id_cg', $cg)
+                // ->orderBy('nik', 'ASC')
+                ->get(['users.*', 'dp.*', 'jt.*']);
+        }else if(Auth::user()->id_level == 'LV-0003'){
+            $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+            ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+            ->where('users.id_department', $dp)
+            // ->orderBy('nik', 'ASC')
+            ->get(['users.*', 'dp.*', 'jt.*']);
+        }else if(Auth::user()->id_level == 'LV-0004'){
+            $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+            ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+            ->where('id', $id)
+            ->orWhere('id_cg', $cgtambah)
+            ->orderBy('id_level', 'ASC')
+            ->get(['users.*', 'dp.*', 'jt.*']);
+        }else {
+            $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+            ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+            ->where('id', $id)
             ->orderBy('nik', 'ASC')
             ->get(['users.*', 'dp.*', 'jt.*']);
         }

@@ -210,6 +210,15 @@
                             <div class="invalid-feedback" id="feed-back-cg"></div>
                         </div>
                     </div>
+                    <div class="form-row">
+                        <div class="col-md-4 mb-3">
+                            <label>CG Tambahan</label>
+                            <select id="cgtambahan" class="form-control form-control-sm" name="tambahancg">
+                                <option value="">Pilih CG Name</option>
+                            </select>
+                            <div class="invalid-feedback" id="feed-back-cg"></div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -572,6 +581,8 @@
                 }
                 $('#cg').html();
                 $('#cg').append(option);
+                $('#cgtambahan').html();
+                $('#cgtambahan').append(option);
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 console.log(xhr);

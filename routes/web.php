@@ -68,6 +68,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/', 'Tagging@index')->name('TagList');
         Route::get('/tagging-json','Tagging@tagingJson')->name('taggingJson');
         Route::get('/tagging-member','Tagging@tagingJsonMember')->name('taggingJsonMember');
+        Route::get('/tagging-atasan','Tagging@tagingAtasanJson')->name('taggingJsonAtasan');
         Route::get('/form','Tagging@formTaggingList')->name('tagingForm');
         Route::post('/action','Tagging@actionTagingList')->name('actionTagingList');
         Route::get('/detail','Tagging@detail')->name('tagingDetail');

@@ -22,14 +22,34 @@ class WhiteTag extends Controller
     public function whiteTagJson(Request $request)
     {
         $cgAuth = Auth::user()->id_cg;
+        $cgExtraAuth = Auth::user()->id_cgtambahan;
         $dp = Auth::user()->id_department;
+        $id = Auth::user()->id;
 
-        if(Auth::user()->peran_pengguna == '4'){ //4 = Atasan
+        if(Auth::user()->id_level == 'LV-0003'){ //LV-0003 = Level Dept. Head
             $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
             ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
             ->leftJoin('divisi', 'users.id_divisi', '=', 'divisi.id_divisi')
             ->leftJoin('cg', 'users.id_cg', '=', 'cg.id_cg')
-            ->Where('users.id_cg', $cgAuth)
+            ->Where('users.id_department', $dp)
+            ->orderBy('users.nama_pengguna', 'DESC')
+            ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','cg.nama_cg','divisi.nama_divisi']);
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function ($row) {
+            $btn = '<button type="button" onclick="detailWhiteTag('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="btn btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail"><i class="ti-eye"></i></button>';
+                return $btn;
+            })
+            ->addIndexColumn()
+            ->rawColumns(['action'])
+            ->make(true);
+        }else if(Auth::user()->id_level == 'LV-0004'){ //LV-0004 = Level Spv
+            $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+            ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+            ->leftJoin('divisi', 'users.id_divisi', '=', 'divisi.id_divisi')
+            ->leftJoin('cg', 'users.id_cg', '=', 'cg.id_cg')
+            ->Where('users.id', $id)
+            ->orWhere('users.id_cg', $cgExtraAuth)
             ->orderBy('users.nama_pengguna', 'DESC')
             ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','cg.nama_cg','divisi.nama_divisi']);
         return Datatables::of($data)
