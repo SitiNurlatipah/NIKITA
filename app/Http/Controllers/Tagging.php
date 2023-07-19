@@ -87,6 +87,82 @@ class Tagging extends Controller
             ->rawColumns(['action', 'tagingStatus'])
             ->make(true);
     }
+    public function tagingJsonAtasan(Request $request)
+    {
+        $where = "white_tag.actual < cd.target OR (SELECT COUNT(*) FROM taging_reason where white_tag.id_white_tag = taging_reason.id_white_tag) > 0";
+        $dept = Auth::user()->id_department;
+        $id = Auth::user()->id;
+        $cgtambah = Auth::user()->id_cgtambahan;
+
+        $select = [
+            "id_taging_reason","white_tag.id_white_tag","tr.no_taging as noTaging","nama_pengguna as employee_name",
+            "skill_category","training_module",
+            "level","training_module_group","white_tag.actual as actual",
+            "cd.target as target",DB::raw("(white_tag.actual - cd.target) as actualTarget"),DB::raw("(IF((white_tag.actual - cd.target) < 0,'Follow Up','Finished' )) as tagingStatus")
+        ];
+        $data = WhiteTagModel::select($select)
+                            ->join("competencies_directory as cd",function ($join){
+                                $join->on("cd.id_directory","white_tag.id_directory");
+                            })
+                            ->leftJoin("taging_reason as tr","tr.id_white_tag","white_tag.id_white_tag")
+                            ->join("users",function ($join) use ($request,$dept,$cgtambah,$id) {
+                                $join->on("users.id","white_tag.id_user");
+                                if (isset($request->type)) {
+                                    if ($request->type == 'depthead') {
+                                        $join->where("users.id_department", $dept);
+                                    } elseif ($request->type == 'spv') {
+                                        $join->where(function ($query) use ($id, $cgtambah) {
+                                            $query->where('users.id', $id)
+                                                  ->orWhere('users.id_cg', $cgtambah);
+                                        });
+                                    }
+                                }
+                            })
+                            ->join("curriculum","curriculum.id_curriculum","cd.id_curriculum")
+                            ->join("skill_category as sc","sc.id_skill_category","curriculum.id_skill_category")
+                            ->whereRaw($where)
+                            ->get();
+
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function ($row) {
+            if (isset($row->id_taging_reason)) {
+                $btn = '<button white-tag-id="' . $row->id_white_tag . '" taging-reason-id="' . $row->id_taging_reason . '" onclick="formTaging(this)" class="button-add btn btn-inverse-success btn-icon mr-1" data-toggle="modal" data-target="#modal-tambah"><i class="icon-plus menu-icon"></i></button>';
+                $btn = $btn . '<button type="button" onclick="detailTaging(' . $row->id_taging_reason . ')" class="btn btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail"><i class="ti-eye"></i></button>';
+                return $btn;
+            } else {
+                $btn = '<button white-tag-id="' . $row->id_white_tag . '" taging-reason-id="' . $row->id_taging_reason . '" onclick="formTaging(this)" class="button-add btn btn-inverse-success btn-icon mr-1" data-toggle="modal" data-target="#modal-tambah"><i class="icon-plus menu-icon"></i></button>';
+                return $btn;
+            }
+        })
+            ->addColumn('tagingStatus', function ($row) {
+                if (isset($row->tagingStatus)) {
+                    if ($row->tagingStatus == 'Finished') {
+                        $label = '<span class="badge badge-success">' . $row->tagingStatus . '</span>';
+                        return $label;
+                    } else {
+                        $label = '<span class="badge badge-secondary text-white">' . $row->tagingStatus . '</span>';
+                        return $label;
+                    }
+
+                    // switch ($row->tagingStatus) {
+                    //     case "Finished":
+                    //         $label = '<span class="badge badge-success">"' . $row->tagingStatus . '"</span>';
+                    //         return $label;
+                    //         break;
+                    //     case "Follow Up":
+                    //         $label = '<span class="badge badge-secondary">"' . $row->tagingStatus . '"</span>';
+                    //         return $label;
+                    //         break;
+                    //     default:
+                    //         return '';
+                    // }
+                }
+            })
+            ->addIndexColumn()
+            ->rawColumns(['action', 'tagingStatus'])
+            ->make(true);
+    }
 
     public function tagingJsonMember(Request $request)
     {
@@ -140,6 +216,7 @@ class Tagging extends Controller
             ->rawColumns(['action', 'tagingStatus'])
             ->make(true);
     }
+    
 
     public function formTaggingList(Request $request)
     {   

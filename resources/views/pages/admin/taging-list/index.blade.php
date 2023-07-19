@@ -152,26 +152,46 @@
                             <tbody></tbody>
                         </table>
                     </div>
-                @elseif(Auth::user()->peran_pengguna == '4')
+                @elseif(Auth::user()->id_level == 'LV-0003')
                     <div class="table-responsive">
-                            <table class="display expandable-table table-striped table-hover" id="tbl-tag-atasan" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th>No Taging</th>
-                                        <th>Employee Name</th>
-                                        <th>Skill Category</th>
-                                        <th>Competency</th>
-                                        <th>Level</th>
-                                        <th>Actual</th>
-                                        <th>Target</th>
-                                        <th>Gap</th>
-                                        <th style="width: max-content" class="text-center">Tagging Status</th>
-                                        <th style="width: max-content" class="text-center">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
+                        <table class="display expandable-table table-striped table-hover" id="tabel-tag-atasan" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>No Taging</th>
+                                    <th>Employee Name</th>
+                                    <th>Skill Category</th>
+                                    <th>Competency</th>
+                                    <th>Level</th>
+                                    <th>Actual</th>
+                                    <th>Target</th>
+                                    <th>Gap</th>
+                                    <th style="width: max-content" class="text-center">Tagging Status</th>
+                                    <th style="width: max-content" class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                @elseif(Auth::user()->id_level == 'LV-0004')
+                    <div class="table-responsive">
+                        <table class="display expandable-table table-striped table-hover" id="tabel-tag-spv" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>No Taging</th>
+                                    <th>Employee Name</th>
+                                    <th>Skill Category</th>
+                                    <th>Competency</th>
+                                    <th>Level</th>
+                                    <th>Actual</th>
+                                    <th>Target</th>
+                                    <th>Gap</th>
+                                    <th style="width: max-content" class="text-center">Tagging Status</th>
+                                    <th style="width: max-content" class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
                 @endif
             </div>
         </div>
@@ -302,6 +322,8 @@
       iniDatatable();
       getCg();
       tagingCgDataTable();
+      tagingDeptDataTable();
+      tagingSpvDataTable();
       tagMemberDataTable();
 
       $("#get-cg").change(function(){
@@ -550,7 +572,7 @@
           ]
       });
   }
-  function tagMemberDataTable() {
+    function tagMemberDataTable() {
         var dtJson = $('#tbl-tag-member').DataTable({
           ajax: "{{ route('taggingJsonMember') }}?type=member",
           responsive:true,
@@ -609,6 +631,122 @@
     function tagingCgDataTable() {
         var dtJson = $('#table-taging-list-cg').DataTable({
           ajax: "{{ route('taggingJson') }}?type=cg",
+          responsive:true,
+          serverSide: true,
+          processing: true,
+          aaSorting: [
+              [0, "desc"]
+          ],
+          searching: true,
+          dom: '<"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+          displayLength: 11,
+          // lengthMenu: [10, 15, 20],
+          language: {
+              paginate: {
+                  // remove previous & next text from pagination
+                  previous: '&nbsp;',
+                  next: '&nbsp;'
+              }
+          },
+          scrollX: true,
+          columns: [
+              {
+                  data: 'noTaging',
+              },
+              {
+                  data: 'employee_name'
+              },
+              {
+                  data: 'skill_category'
+              },
+              {
+                  data: 'training_module'
+              },
+              {
+                  data: 'level'
+              },
+            //   {
+            //       data: 'training_module_group'
+            //   },
+              {
+                  data: 'actual'
+              },
+              {
+                  data: 'target'
+              },
+              {
+                  data: 'actualTarget'
+              },
+              {
+                 data: 'tagingStatus'
+              },
+              {
+                 data: 'action'
+              }
+          ]
+      });
+    }
+    function tagingDeptDataTable() {
+        var dtJson = $('#tabel-tag-atasan').DataTable({
+          ajax: "{{ route('taggingJsonAtasan') }}?type=depthead",
+          responsive:true,
+          serverSide: true,
+          processing: true,
+          aaSorting: [
+              [0, "desc"]
+          ],
+          searching: true,
+          dom: '<"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+          displayLength: 11,
+          // lengthMenu: [10, 15, 20],
+          language: {
+              paginate: {
+                  // remove previous & next text from pagination
+                  previous: '&nbsp;',
+                  next: '&nbsp;'
+              }
+          },
+          scrollX: true,
+          columns: [
+              {
+                  data: 'noTaging',
+              },
+              {
+                  data: 'employee_name'
+              },
+              {
+                  data: 'skill_category'
+              },
+              {
+                  data: 'training_module'
+              },
+              {
+                  data: 'level'
+              },
+            //   {
+            //       data: 'training_module_group'
+            //   },
+              {
+                  data: 'actual'
+              },
+              {
+                  data: 'target'
+              },
+              {
+                  data: 'actualTarget'
+              },
+              {
+                 data: 'tagingStatus'
+              },
+              {
+                 data: 'action'
+              }
+          ]
+      });
+    }
+    function tagingSpvDataTable() {
+        var dtJson = $('#tabel-tag-spv').DataTable({
+          ajax: "{{ route('taggingJsonAtasan') }}?type=spv",
           responsive:true,
           serverSide: true,
           processing: true,

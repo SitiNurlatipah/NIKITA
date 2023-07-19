@@ -71,13 +71,15 @@ class Dashboard extends Controller
                 ->where('id_cg', $cg)
                 // ->orderBy('nik', 'ASC')
                 ->get(['users.*', 'dp.*', 'jt.*']);
-        }else if(Auth::user()->id_level == 'LV-0003'){
+        }else if(Auth::user()->id_level == 'LV-0003')//LV-0003=dept. head
+        {
             $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
             ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
             ->where('users.id_department', $dp)
             // ->orderBy('nik', 'ASC')
             ->get(['users.*', 'dp.*', 'jt.*']);
-        }else if(Auth::user()->id_level == 'LV-0004'){
+        }else if(Auth::user()->id_level == 'LV-0004')//LV-0004=spv
+        {
             $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
             ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
             ->where('id', $id)
