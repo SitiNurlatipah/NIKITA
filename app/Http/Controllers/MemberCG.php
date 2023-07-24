@@ -100,7 +100,11 @@ class MemberCG extends Controller
                 'id_department' => $request->department,
                 'id_sub_department' => $request->sub_department,
                 'id_cg' => $request->cg,
-                'id_cgtambahan' => $request->tambahancg,
+                'id_cgtambahan_2' => $request->tambahancg2,
+                'id_cgtambahan_3' => $request->tambahancg3,
+                'id_cgtambahan_4' => $request->tambahancg4,
+                'id_cgtambahan_5' => $request->tambahancg5,
+                
             ];
 
             if (isset($request->base64)) {
@@ -163,6 +167,10 @@ class MemberCG extends Controller
             'id_sub_department' => $request->sub_department,
             'id_cg' => $request->cg,
             'id_cgtambahan' => $request->tambahancg,
+            'id_cgtambahan_2' => $request->tambahancg2,
+            'id_cgtambahan_3' => $request->tambahancg3,
+            'id_cgtambahan_4' => $request->tambahancg4,
+            'id_cgtambahan_5' => $request->tambahancg5,
         ];
         if(isset($request->base64)){
             $url = "../storage/app/public/".$user->gambar;

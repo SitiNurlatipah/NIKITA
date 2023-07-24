@@ -56,6 +56,10 @@ class Dashboard extends Controller
 
         $cg = Auth::user()->id_cg;
         $cgtambah = Auth::user()->id_cgtambahan;
+        $cgtambah2 = Auth::user()->id_cgtambahan_2;
+        $cgtambah3 = Auth::user()->id_cgtambahan_3;
+        $cgtambah4 = Auth::user()->id_cgtambahan_4;
+        $cgtambah5 = Auth::user()->id_cgtambahan_5;
         $dp= Auth::user()->id_department;
         $id = Auth::user()->id;
         // $id = Auth::user()->is_superman;
@@ -84,7 +88,12 @@ class Dashboard extends Controller
             ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
             ->where('id', $id)
             ->orWhere('id_cg', $cgtambah)
-            ->orderBy('id_level', 'ASC')
+            ->orWhere('id_cg', $cgtambah2)
+            ->orWhere('id_cg', $cgtambah3)
+            ->orWhere('id_cg', $cgtambah4)
+            ->orWhere('id_cg', $cgtambah5)
+            // ->orderBy('id_level', 'ASC')
+            ->orderBy('nama_pengguna', 'ASC')
             ->get(['users.*', 'dp.*', 'jt.*']);
         }else {
             $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')

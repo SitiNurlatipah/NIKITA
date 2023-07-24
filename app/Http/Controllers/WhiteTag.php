@@ -23,6 +23,10 @@ class WhiteTag extends Controller
     {
         $cgAuth = Auth::user()->id_cg;
         $cgExtraAuth = Auth::user()->id_cgtambahan;
+        $cgtambah2 = Auth::user()->id_cgtambahan_2;
+        $cgtambah3 = Auth::user()->id_cgtambahan_3;
+        $cgtambah4 = Auth::user()->id_cgtambahan_4;
+        $cgtambah5 = Auth::user()->id_cgtambahan_5;
         $dp = Auth::user()->id_department;
         $id = Auth::user()->id;
 
@@ -50,6 +54,10 @@ class WhiteTag extends Controller
             ->leftJoin('cg', 'users.id_cg', '=', 'cg.id_cg')
             ->Where('users.id', $id)
             ->orWhere('users.id_cg', $cgExtraAuth)
+            ->orWhere('users.id_cg', $cgtambah2)
+            ->orWhere('users.id_cg', $cgtambah3)
+            ->orWhere('users.id_cg', $cgtambah4)
+            ->orWhere('users.id_cg', $cgtambah5)
             ->orderBy('users.nama_pengguna', 'DESC')
             ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','cg.nama_cg','divisi.nama_divisi']);
         return Datatables::of($data)
