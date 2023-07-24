@@ -174,11 +174,51 @@
 </div>
 <div class="form-row">
     <div class="col-md-4 mb-3">
-        <label>CG Tambahan</label>
+        <label>CG Tambahan 1</label>
         <select id="cgtambahan-edit" class="form-control form-control-sm" name="tambahancg">
             <option value="">Pilih CG Name</option>
             @foreach ($cgMaster as $item)
                 <option value="{{$item->id_cg}}" {{($user->id_cgtambahan == $item->id_cg) ? 'selected' : ''}} >{{$item->nama_cg}}</option>
+            @endforeach
+        </select>
+        <div class="invalid-feedback" id="feed-back-cg-edit"></div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <label>CG Tambahan 2</label>
+        <select id="cgtambahan-edit2" class="form-control form-control-sm" name="tambahancg2">
+            <option value="">Pilih CG Name</option>
+            @foreach ($cgMaster as $item)
+                <option value="{{$item->id_cg}}" {{($user->id_cgtambahan_2 == $item->id_cg) ? 'selected' : ''}} >{{$item->nama_cg}}</option>
+            @endforeach
+        </select>
+        <div class="invalid-feedback" id="feed-back-cg-edit"></div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <label>CG Tambahan 3</label>
+        <select id="cgtambahan-edit3" class="form-control form-control-sm" name="tambahancg3">
+            <option value="">Pilih CG Name</option>
+            @foreach ($cgMaster as $item)
+                <option value="{{$item->id_cg}}" {{($user->id_cgtambahan_3 == $item->id_cg) ? 'selected' : ''}} >{{$item->nama_cg}}</option>
+            @endforeach
+        </select>
+        <div class="invalid-feedback" id="feed-back-cg-edit"></div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <label>CG Tambahan 4</label>
+        <select id="cgtambahan-edit4" class="form-control form-control-sm" name="tambahancg4">
+            <option value="">Pilih CG Name</option>
+            @foreach ($cgMaster as $item)
+                <option value="{{$item->id_cg}}" {{($user->id_cgtambahan_4 == $item->id_cg) ? 'selected' : ''}} >{{$item->nama_cg}}</option>
+            @endforeach
+        </select>
+        <div class="invalid-feedback" id="feed-back-cg-edit"></div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <label>CG Tambahan 5</label>
+        <select id="cgtambahan-edit5" class="form-control form-control-sm" name="tambahancg5">
+            <option value="">Pilih CG Name</option>
+            @foreach ($cgMaster as $item)
+                <option value="{{$item->id_cg}}" {{($user->id_cgtambahan_5 == $item->id_cg) ? 'selected' : ''}} >{{$item->nama_cg}}</option>
             @endforeach
         </select>
         <div class="invalid-feedback" id="feed-back-cg-edit"></div>
@@ -298,6 +338,11 @@
 <input type="hidden" name="department" value="{{ $user->id_department }}">
 <input type="hidden" name="sub_department" value="{{ $user->id_sub_department }}">
 <input type="hidden" name="cg" value="{{ $user->id_cg }}">
+<input type="hidden" name="tambahancg" value="{{ $user->id_cgtambahan }}">
+<input type="hidden" name="tambahancg2" value="{{ $user->id_cgtambahan2 }}">
+<input type="hidden" name="tambahancg3" value="{{ $user->id_cgtambahan3 }}">
+<input type="hidden" name="tambahancg4" value="{{ $user->id_cgtambahan4 }}">
+<input type="hidden" name="tambahancg5" value="{{ $user->id_cgtambahan5 }}">
 
 @endif
 <div class="modal fade" id="modal-edit-crop" tabindex="7" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">

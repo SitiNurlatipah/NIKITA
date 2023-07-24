@@ -212,8 +212,36 @@
                     </div>
                     <div class="form-row">
                         <div class="col-md-4 mb-3">
-                            <label>CG Tambahan</label>
+                            <label>CG Tambahan 1</label>
                             <select id="cgtambahan" class="form-control form-control-sm" name="tambahancg">
+                                <option value="">Pilih CG Name</option>
+                            </select>
+                            <div class="invalid-feedback" id="feed-back-cg"></div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label>CG Tambahan 2</label>
+                            <select id="cgtambahan" class="form-control form-control-sm" name="tambahancg2">
+                                <option value="">Pilih CG Name</option>
+                            </select>
+                            <div class="invalid-feedback" id="feed-back-cg"></div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label>CG Tambahan 3</label>
+                            <select id="cgtambahan" class="form-control form-control-sm" name="tambahancg3">
+                                <option value="">Pilih CG Name</option>
+                            </select>
+                            <div class="invalid-feedback" id="feed-back-cg"></div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label>CG Tambahan 4</label>
+                            <select id="cgtambahan" class="form-control form-control-sm" name="tambahancg4">
+                                <option value="">Pilih CG Name</option>
+                            </select>
+                            <div class="invalid-feedback" id="feed-back-cg"></div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label>CG Tambahan 5</label>
+                            <select id="cgtambahan" class="form-control form-control-sm" name="tambahancg5">
                                 <option value="">Pilih CG Name</option>
                             </select>
                             <div class="invalid-feedback" id="feed-back-cg"></div>
@@ -583,6 +611,14 @@
                 $('#cg').append(option);
                 $('#cgtambahan').html();
                 $('#cgtambahan').append(option);
+                $('#cgtambahan2').html();
+                $('#cgtambahan2').append(option);
+                $('#cgtambahan3').html();
+                $('#cgtambahan3').append(option);
+                $('#cgtambahan4').html();
+                $('#cgtambahan4').append(option);
+                $('#cgtambahan5').html();
+                $('#cgtambahan5').append(option);
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 console.log(xhr);

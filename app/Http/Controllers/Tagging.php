@@ -93,7 +93,10 @@ class Tagging extends Controller
         $dept = Auth::user()->id_department;
         $id = Auth::user()->id;
         $cgtambah = Auth::user()->id_cgtambahan;
-
+        $cgtambah2 = Auth::user()->id_cgtambahan_2;
+        $cgtambah3 = Auth::user()->id_cgtambahan_3;
+        $cgtambah4 = Auth::user()->id_cgtambahan_4;
+        $cgtambah5 = Auth::user()->id_cgtambahan_5;
         $select = [
             "id_taging_reason","white_tag.id_white_tag","tr.no_taging as noTaging","nama_pengguna as employee_name",
             "skill_category","training_module",
@@ -105,15 +108,19 @@ class Tagging extends Controller
                                 $join->on("cd.id_directory","white_tag.id_directory");
                             })
                             ->leftJoin("taging_reason as tr","tr.id_white_tag","white_tag.id_white_tag")
-                            ->join("users",function ($join) use ($request,$dept,$cgtambah,$id) {
+                            ->join("users",function ($join) use ($request,$dept,$cgtambah,$id,$cgtambah2,$cgtambah3,$cgtambah4,$cgtambah5) {
                                 $join->on("users.id","white_tag.id_user");
                                 if (isset($request->type)) {
                                     if ($request->type == 'depthead') {
                                         $join->where("users.id_department", $dept);
                                     } elseif ($request->type == 'spv') {
-                                        $join->where(function ($query) use ($id, $cgtambah) {
+                                        $join->where(function ($query) use ($id, $cgtambah,$cgtambah2,$cgtambah3,$cgtambah4,$cgtambah5) {
                                             $query->where('users.id', $id)
-                                                  ->orWhere('users.id_cg', $cgtambah);
+                                                  ->orWhere('users.id_cg', $cgtambah)
+                                                  ->orWhere('users.id_cg', $cgtambah2)
+                                                  ->orWhere('users.id_cg', $cgtambah3)
+                                                  ->orWhere('users.id_cg', $cgtambah4)
+                                                  ->orWhere('users.id_cg', $cgtambah5);
                                         });
                                     }
                                 }

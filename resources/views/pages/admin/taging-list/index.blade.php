@@ -328,7 +328,7 @@
 
       $("#get-cg").change(function(){
         })
-
+ 
       $("#formSubmit").click(function (e) {
           e.preventDefault();
           var tagingForm = $("#formTaging");
