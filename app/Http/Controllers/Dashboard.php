@@ -92,7 +92,8 @@ class Dashboard extends Controller
             ->orWhere('id_cg', $cgtambah3)
             ->orWhere('id_cg', $cgtambah4)
             ->orWhere('id_cg', $cgtambah5)
-            ->orderBy('id_level', 'ASC')
+            // ->orderBy('id_level', 'ASC')
+            ->orderBy('nama_pengguna', 'ASC')
             ->get(['users.*', 'dp.*', 'jt.*']);
         }else {
             $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
