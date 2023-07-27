@@ -190,8 +190,20 @@ h4 {
     </div>
   </div>
   <div class="row">
+    <form action="{{ route('Dashboard') }}" method="GET">
+      <div class="row form-group">
+        <div class="col-sm-8">
+          <input type="text" name="search" class="form-control" placeholder="Search by name member" value="{{Request::input('search')}}">
+        </div>
+        <div class="col-sm-4">
+          <button type="submit" class="btn btn-primary">Filter</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="row">
     @foreach ($members as $member)
-    <div class="col-md-2 ms-6 stretch-card profile-card pl-0 pr-0">
+      <div class="col-md-2 ms-6 stretch-card profile-card pl-0 pr-0">
         @php
           $url = "../storage/app/public/".$member->gambar;
           if ((isset($member->gambar) && $member->gambar != "") && file_exists($url)) {
@@ -214,7 +226,7 @@ h4 {
         </div>
         </div>
       </div>
-      @endforeach
+    @endforeach
     <div class="modal fade" id="modal-detail-user" tabindex="-1" role="dialog" aria-labelledby="modal-detail-user" aria-hidden="true">
       <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">

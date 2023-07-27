@@ -28,6 +28,13 @@ class MemberCG extends Controller
 
     public function cgJson()
     {
+        $cgtambah = Auth::user()->id_cgtambahan;
+        $cgtambah2 = Auth::user()->id_cgtambahan_2;
+        $cgtambah3 = Auth::user()->id_cgtambahan_3;
+        $cgtambah4 = Auth::user()->id_cgtambahan_4;
+        $cgtambah5 = Auth::user()->id_cgtambahan_5;
+        $dp= Auth::user()->id_department;
+        $id = Auth::user()->id;
         $role = Auth::user()->peran_pengguna;
         if (Auth::user()->peran_pengguna === '2') {
             $cgId = Auth::user()->id_cg;
@@ -36,7 +43,27 @@ class MemberCG extends Controller
                 ->leftJoin('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
                 ->where('users.id_cg', $cgId)
                 ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title']);
-        } else {
+        } 
+        else if (Auth::user()->id_level == 'LV-0003') {
+            $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+                ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+                ->leftJoin('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
+                ->where('users.id_department', $dp)
+                ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title']);
+        } 
+        else if (Auth::user()->id_level == 'LV-0004') {
+            $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+                ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+                ->leftJoin('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
+                ->where('id', $id)
+                ->orWhere('users.id_cg', $cgtambah)
+                ->orWhere('users.id_cg', $cgtambah2)
+                ->orWhere('users.id_cg', $cgtambah3)
+                ->orWhere('users.id_cg', $cgtambah4)
+                ->orWhere('users.id_cg', $cgtambah5)
+                ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title']);
+        } 
+        else {
             $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
                 ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
                 ->leftJoin('cg as cg', 'users.id_cg', '=', 'cg.id_cg')

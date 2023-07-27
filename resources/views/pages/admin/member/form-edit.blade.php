@@ -224,8 +224,7 @@
         <div class="invalid-feedback" id="feed-back-cg-edit"></div>
     </div>
 </div>
-@endif
-@if(Auth::user()->peran_pengguna == 2)
+@else
     <div class="col-md-8 row">
         <div class="col-md-6 mb-3">
             <label>NIK</label>
@@ -345,6 +344,7 @@
 <input type="hidden" name="tambahancg5" value="{{ $user->id_cgtambahan5 }}">
 
 @endif
+
 <div class="modal fade" id="modal-edit-crop" tabindex="7" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">

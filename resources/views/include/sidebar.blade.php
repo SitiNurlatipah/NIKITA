@@ -188,6 +188,12 @@
             </li>
         @else
         <li class="nav-item">
+            <a class="nav-link" href="{{ route('EmployeeMember') }}">
+                <i class="icon-head menu-icon"></i>
+                <span class="menu-title">Member CG</span>
+            </a>
+        </li>
+        <li class="nav-item">
                 <a class="nav-link" href="{{ route('WhiteTag') }}">
                     <i class="icon-flag menu-icon"></i>
                     <span class="menu-title">Mapping Competency</span>
