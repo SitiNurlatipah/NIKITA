@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class Dashboard extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
 
         $total_cg = DB::table('users')
@@ -62,45 +62,93 @@ class Dashboard extends Controller
         $cgtambah5 = Auth::user()->id_cgtambahan_5;
         $dp= Auth::user()->id_department;
         $id = Auth::user()->id;
+        $name = $request->search;
         // $id = Auth::user()->is_superman;
-        if(Auth::user()->peran_pengguna == '2'){
-            $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
-            ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
-            ->where('id_cg', $cg)
-            // ->orderBy('nik', 'ASC')
-            ->get(['users.*', 'dp.*', 'jt.*']);
-        }else if(Auth::user()->peran_pengguna == '1'){
+        if($request->has('search') && !empty($request->search)){
+            if(Auth::user()->peran_pengguna == '2'){
+                $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+                ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+                ->where('nama_pengguna','like','%'.$name.'%')
+                ->where('id_cg', $cg)
+                ->orderBy('nama_pengguna', 'ASC')
+                ->get(['users.*', 'dp.*', 'jt.*']);
+            }else if(Auth::user()->peran_pengguna == '1'){
+                $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+                ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+                ->where('nama_pengguna','like','%'.$name.'%')
+                ->where('id_cg', $cg)
+                ->orderBy('nama_pengguna', 'ASC')
+                ->get(['users.*', 'dp.*', 'jt.*']);
+            }else if(Auth::user()->id_level == 'LV-0003')//LV-0003=dept. head
+            {
+                $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+                ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+                ->where('nama_pengguna','like','%'.$name.'%')
+                ->where('users.id_department', $dp)
+                ->orderBy('nama_pengguna', 'ASC')
+                ->get(['users.*', 'dp.*', 'jt.*']);
+            }else if(Auth::user()->id_level == 'LV-0004')//LV-0004=spv
+            {
+                $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+                ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+                // ->where('id', $id)
+                ->orwhere(function ($query) use ($cgtambah, $cgtambah2, $cgtambah3, $cgtambah4, $cgtambah5, $id) {
+                    $query->orwhere('id_cg', $cgtambah)
+                        ->orWhere('id_cg', $cgtambah2)
+                        ->orWhere('id_cg', $cgtambah3)
+                        ->orWhere('id_cg', $cgtambah4)
+                        ->orWhere('id_cg', $cgtambah5)
+                        ->orWhere('id', $id);
+                })
+                ->where('nama_pengguna', 'like', '%' . $name . '%')
+                ->orderBy('nama_pengguna', 'ASC')
+                ->get(['users.*', 'dp.*', 'jt.*']);
+            }else {
+                $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+                ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+                ->where('id', $id)
+                ->orderBy('nik', 'ASC')
+                ->get(['users.*', 'dp.*', 'jt.*']);
+            }
+        }else{
+            if(Auth::user()->peran_pengguna == '2'){
                 $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
                 ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
                 ->where('id_cg', $cg)
-                // ->orderBy('nik', 'ASC')
+                ->orderBy('nama_pengguna', 'ASC')
                 ->get(['users.*', 'dp.*', 'jt.*']);
-        }else if(Auth::user()->id_level == 'LV-0003')//LV-0003=dept. head
-        {
-            $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
-            ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
-            ->where('users.id_department', $dp)
-            // ->orderBy('nik', 'ASC')
-            ->get(['users.*', 'dp.*', 'jt.*']);
-        }else if(Auth::user()->id_level == 'LV-0004')//LV-0004=spv
-        {
-            $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
-            ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
-            ->where('id', $id)
-            ->orWhere('id_cg', $cgtambah)
-            ->orWhere('id_cg', $cgtambah2)
-            ->orWhere('id_cg', $cgtambah3)
-            ->orWhere('id_cg', $cgtambah4)
-            ->orWhere('id_cg', $cgtambah5)
-            // ->orderBy('id_level', 'ASC')
-            ->orderBy('nama_pengguna', 'ASC')
-            ->get(['users.*', 'dp.*', 'jt.*']);
-        }else {
-            $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
-            ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
-            ->where('id', $id)
-            ->orderBy('nik', 'ASC')
-            ->get(['users.*', 'dp.*', 'jt.*']);
+            }else if(Auth::user()->peran_pengguna == '1'){
+                    $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+                    ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+                    ->where('id_cg', $cg)
+                    ->orderBy('nama_pengguna', 'ASC')
+                    ->get(['users.*', 'dp.*', 'jt.*']);
+            }else if(Auth::user()->id_level == 'LV-0003')//LV-0003=dept. head
+            {
+                $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+                ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+                ->where('users.id_department', $dp)
+                ->orderBy('nama_pengguna', 'ASC')
+                ->get(['users.*', 'dp.*', 'jt.*']);
+            }else if(Auth::user()->id_level == 'LV-0004')//LV-0004=spv
+            {
+                $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+                ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+                ->where('id', $id)
+                ->orWhere('id_cg', $cgtambah)
+                ->orWhere('id_cg', $cgtambah2)
+                ->orWhere('id_cg', $cgtambah3)
+                ->orWhere('id_cg', $cgtambah4)
+                ->orWhere('id_cg', $cgtambah5)
+                ->orderBy('nama_pengguna', 'ASC')
+                ->get(['users.*', 'dp.*', 'jt.*']);
+            }else {
+                $members = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+                ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+                ->where('id', $id)
+                ->orderBy('nik', 'ASC')
+                ->get(['users.*', 'dp.*', 'jt.*']);
+            }
         }
 
         return view('pages.admin.dashboard', compact(
