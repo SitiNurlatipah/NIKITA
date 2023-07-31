@@ -16,6 +16,14 @@ class Ceme extends Controller
 {
     public function index(Request $request)
     {
+        $cg = Auth::user()->id_cg;
+        $cgtambah = Auth::user()->id_cgtambahan;
+        $cgtambah2 = Auth::user()->id_cgtambahan_2;
+        $cgtambah3 = Auth::user()->id_cgtambahan_3;
+        $cgtambah4 = Auth::user()->id_cgtambahan_4;
+        $cgtambah5 = Auth::user()->id_cgtambahan_5;
+        $dp= Auth::user()->id_department;
+        $id = Auth::user()->id;
         $q= request('q');
         if($q === 'all')
         {
@@ -28,8 +36,10 @@ class Ceme extends Controller
                 })
                 ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
                 ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
-                ->groupBy('id_user')->get();
+                ->groupBy('id_user')
+                ->get();
         }else{
+            if(Auth::user()->id_level == 'LV-0003'){
             $wt = WhiteTagModel::select('users.*')
                 ->join("users",function ($join) use ($request){
                     $join->on("users.id","white_tag.id_user")
@@ -39,8 +49,42 @@ class Ceme extends Controller
                 })
                 ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
                 ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
-                ->where('id_cg',auth()->user()->id_cg)
-                ->groupBy('id_user')->get();
+                ->where('users.id_department', $dp)
+                ->groupBy('id_user')
+                ->get();
+            } else if(Auth::user()->id_level == 'LV-0004'){
+            $wt = WhiteTagModel::select('users.*')
+                ->join("users",function ($join) use ($request){
+                    $join->on("users.id","white_tag.id_user")
+                    ->where([
+                        ["white_tag.actual",">=","cd.target"]
+                    ]);
+                })
+                ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
+                ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->where('users.id', $id)
+                ->orWhere('users.id_cg', $cgtambah)
+                ->orWhere('users.id_cg', $cgtambah2)
+                ->orWhere('users.id_cg', $cgtambah3)
+                ->orWhere('users.id_cg', $cgtambah4)
+                ->orWhere('users.id_cg', $cgtambah5)
+                ->groupBy('id_user')
+                ->get();
+            } else {
+            $wt = WhiteTagModel::select('users.*')
+                ->join("users",function ($join) use ($request){
+                    $join->on("users.id","white_tag.id_user")
+                    ->where([
+                        ["white_tag.actual",">=","cd.target"]
+                    ]);
+                })
+                ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
+                ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->where('id_cg', $cg)
+                ->groupBy('id_user')
+                ->get();
+            }
+            
         }
         $pie = [
             'label' => [],
@@ -130,17 +174,52 @@ class Ceme extends Controller
 
     public function cgJson(Request $request)
     {
+        $cgtambah = Auth::user()->id_cgtambahan;
+        $cgtambah2 = Auth::user()->id_cgtambahan_2;
+        $cgtambah3 = Auth::user()->id_cgtambahan_3;
+        $cgtambah4 = Auth::user()->id_cgtambahan_4;
+        $cgtambah5 = Auth::user()->id_cgtambahan_5;
         $cgAuth = Auth::user()->id_cg;
+        $dp= Auth::user()->id_department;
+        $id = Auth::user()->id;
+        if(Auth::user()->id_level == 'LV-0004'){
         $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
-        ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
-        ->join('cg', function ($join) use ($cgAuth) {
-            $join->on('users.id_cg', 'cg.id_cg')
-            ->where('users.id_cg', $cgAuth);
-        })
-            ->leftJoin('divisi', 'users.id_divisi', '=', 'divisi.id_divisi')
+            ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+            ->leftJoin('cg', 'users.id_cg', '=', 'cg.id_cg')
             ->where('is_competent',1)
+            ->where(function ($query) use ($cgtambah, $cgtambah2, $cgtambah3, $cgtambah4, $cgtambah5, $id) {
+                $query->where('users.id', $id)
+                    ->orWhere('users.id_cg', $cgtambah)
+                    ->orWhere('users.id_cg', $cgtambah2)
+                    ->orWhere('users.id_cg', $cgtambah3)
+                    ->orWhere('users.id_cg', $cgtambah4)
+                    ->orWhere('users.id_cg', $cgtambah5);
+            })
+            ->leftJoin('divisi', 'users.id_divisi', '=', 'divisi.id_divisi')
             ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title', 'cg.nama_cg', 'divisi.nama_divisi']);
-        return DataTables::of($data)
+
+        } else if(Auth::user()->id_level == 'LV-0003'){
+            $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+                ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+                ->leftJoin('cg', 'users.id_cg', '=', 'cg.id_cg')
+                ->leftJoin('divisi', 'users.id_divisi', '=', 'divisi.id_divisi')
+                ->where('is_competent',1)
+                ->where('users.id_department', $dp)
+                ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title', 'cg.nama_cg', 'divisi.nama_divisi']);
+    
+        }else{
+            $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+            ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+            ->join('cg', function ($join) use ($cgAuth) {
+                $join->on('users.id_cg', 'cg.id_cg')
+                ->where('users.id_cg', $cgAuth);
+            })
+                ->leftJoin('divisi', 'users.id_divisi', '=', 'divisi.id_divisi')
+                ->where('is_competent',1)
+                ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title', 'cg.nama_cg', 'divisi.nama_divisi']);
+    
+        }
+                return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
                 $btn = '<button data-id="' . $row->id . '" class="button-add btn btn-inverse-success btnAddJobTitle btn-icon mr-1" data-nama="'.$row->nama_pengguna.'" data-userid="'.$row->id.'"><i class="icon-plus menu-icon"></i></button>';

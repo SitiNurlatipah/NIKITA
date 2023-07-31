@@ -118,7 +118,7 @@
                                             <th>Department</th>
                                             {{-- <th>Level</th> --}}
                                             <th>CG Name</th>
-                                            @if(Auth::user()->id_level=='LV-0003'||Auth::user()->peran_pengguna == 1||Auth::user()->peran_pengguna == 4)
+                                            @if(Auth::user()->peran_pengguna == 1||Auth::user()->peran_pengguna == 4)
                                             <th>Action</th>
                                             @endif
                                         </tr>
