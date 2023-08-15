@@ -116,11 +116,54 @@ class WhiteTag extends Controller
     public function whiteTagAll(Request $request)
     {
         $cgAuth = Auth::user()->id_cg;
+        $cgExtraAuth = Auth::user()->id_cgtambahan;
+        $cgtambah2 = Auth::user()->id_cgtambahan_2;
+        $cgtambah3 = Auth::user()->id_cgtambahan_3;
+        $cgtambah4 = Auth::user()->id_cgtambahan_4;
+        $cgtambah5 = Auth::user()->id_cgtambahan_5;
+        $dp = Auth::user()->id_department;
+        $id = Auth::user()->id;
         $select = [
             "nama_pengguna","no_training_module","skill_category","training_module","level","training_module_group","start","actual","target","compGroup.name as compGroupName", "white_tag.keterangan as ket",
             DB::raw("(IF(actual < target,'Open','Close' )) as tagingStatus")
         ];
-        $data = WhiteTagModel::select($select)
+        if(Auth::user()->id_level == 'LV-0003'){ //LV-0003 = Level Dept. Head
+            $data = WhiteTagModel::select($select)
+                ->join("users","users.id","white_tag.id_user")
+                ->join("competencies_directory AS cd","cd.id_directory","white_tag.id_directory")
+                ->join("curriculum AS crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->join("competencie_groups as compGroup","compGroup.id","crclm.training_module_group")
+                ->join("skill_category AS sc","sc.id_skill_category","crclm.id_skill_category")
+                // ->whereRaw("white_tag.actual >= cd.target AND white_tag.actual > 0 AND white_tag.start >= 0")
+                ->Where('users.id_department', $dp)
+                ->get();
+        }else if(Auth::user()->id_level == 'LV-0004'){ //LV-0004 = Level Spv
+            $data = WhiteTagModel::select($select)
+                ->join("users","users.id","white_tag.id_user")
+                ->join("competencies_directory AS cd","cd.id_directory","white_tag.id_directory")
+                ->join("curriculum AS crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->join("competencie_groups as compGroup","compGroup.id","crclm.training_module_group")
+                ->join("skill_category AS sc","sc.id_skill_category","crclm.id_skill_category")
+                // ->whereRaw("white_tag.actual >= cd.target AND white_tag.actual > 0 AND white_tag.start >= 0")
+                ->Where('users.id', $id)
+                ->orWhere('users.id_cg', $cgExtraAuth)
+                ->orWhere('users.id_cg', $cgtambah2)
+                ->orWhere('users.id_cg', $cgtambah3)
+                ->orWhere('users.id_cg', $cgtambah4)
+                ->orWhere('users.id_cg', $cgtambah5)
+                ->get();
+        }else if (Auth::user()->peran_pengguna == '1'){
+            $data = WhiteTagModel::select($select)
+                ->join("users","users.id","white_tag.id_user")
+                ->join("competencies_directory AS cd","cd.id_directory","white_tag.id_directory")
+                ->join("curriculum AS crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->join("competencie_groups as compGroup","compGroup.id","crclm.training_module_group")
+                ->join("skill_category AS sc","sc.id_skill_category","crclm.id_skill_category")
+                // ->whereRaw("white_tag.actual >= cd.target AND white_tag.actual > 0 AND white_tag.start >= 0")
+                // ->where("users.id_cg", $cgAuth)
+                ->get();
+        }else{
+            $data = WhiteTagModel::select($select)
                 ->join("users","users.id","white_tag.id_user")
                 ->join("competencies_directory AS cd","cd.id_directory","white_tag.id_directory")
                 ->join("curriculum AS crclm","crclm.id_curriculum","cd.id_curriculum")
@@ -129,6 +172,8 @@ class WhiteTag extends Controller
                 // ->whereRaw("white_tag.actual >= cd.target AND white_tag.actual > 0 AND white_tag.start >= 0")
                 ->where("users.id_cg", $cgAuth)
                 ->get();
+        }
+        
         return Datatables::of($data)
         ->addIndexColumn()
         ->editColumn('start', function ($row) {
