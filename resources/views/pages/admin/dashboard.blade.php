@@ -77,7 +77,7 @@ h4 {
       <div class="row">
         <div class="col-12 col-xl-8 mb-4 mb-xl-0">
           <h3 class="font-weight-bold">Welcome {{ Auth::user()->nama_pengguna }} 😁</h3>
-          <h6 class="font-weight-normal mb-0">Hy you are in mapping competencies aplication, login as
+          <h6 class="font-weight-normal mb-0">Hi! You are in mapping competencies application, login as
           <span class="text-primary">
             @php
                 if(Auth::user()->peran_pengguna == 1){
