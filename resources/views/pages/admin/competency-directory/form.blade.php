@@ -152,7 +152,7 @@ $(document).ready(function(){
             }
             tr = document.createElement("tr");
             tr.innerHTML = html;
-            $("#bodyCompetencies").append(tr);
+            $("#bodyCompetencies").prepend(tr);
             $(".selectNew").selectpicker('refresh');
           }
         })
