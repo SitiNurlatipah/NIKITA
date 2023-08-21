@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\CompetenciesDirectoryModel;
+
 
 class WhiteTagModel extends Model
 {
@@ -16,19 +18,39 @@ class WhiteTagModel extends Model
 
     public function score($id_user,$level)
     {
-        $counting = WhiteTagModel::select(DB::raw("sum(actual) as cnt"),DB::raw("sum(cd.target) as totaltarget"),"level","actual","target")
-                                 ->join("users",function ($join) use ($id_user){
-                                     $join->on("users.id","white_tag.id_user")
-                                        ->where([
-                                            ["white_tag.id_user",$id_user],
-                                            ["white_tag.actual",">=","cd.target"]
-                                        ]);
-                                 })
-                                 ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
-                                 ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
-                                 ->where('crclm.level',$level)
-                                 ->get();
-        
+        $totalactual = WhiteTagModel::select(DB::raw("sum(actual) as cnt"),DB::raw("sum(cd.target) as totaltarget"),"level","actual","target")
+                    ->join("users",function ($join) use ($id_user){
+                        $join->on("users.id","white_tag.id_user")
+                        ->where([
+                            ["white_tag.id_user",$id_user],
+                            ["white_tag.actual",">=","cd.target"]
+                        ]);
+                    })
+                    ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
+                    ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                    ->where('crclm.level',$level)
+                    ->get();
+        $user = User::select("id", "id_job_title", DB::raw("(YEAR(NOW()) - YEAR(tgl_masuk)) AS tahun"))
+        ->where("id", $id_user) // Ganti $user_id dengan nilai yang sesuai
+        ->first();
+    
+        $between = ($user->tahun > 5) ? 5 : $user->tahun;
+        $totaltarget = CompetenciesDirectoryModel::select(
+                        DB::raw("SUM(IFNULL(white_tag.actual, 0)) as cnt"),
+                        DB::raw("SUM(competencies_directory.target) as totaltarget")
+                    )
+                    ->join("curriculum",function ($join) use ($user,$between){
+                        $join->on("curriculum.id_curriculum","competencies_directory.id_curriculum")
+                            ->whereRaw("competencies_directory.id_job_title = '".$user->id_job_title."' AND competencies_directory.between_year = '".$between."'");
+                    })
+                    ->leftJoin("white_tag", function ($join) use ($id_user) {
+                        $join->on("white_tag.id_directory", "=", "competencies_directory.id_directory")
+                            ->where("white_tag.id_user", $id_user);
+                    })
+                    ->where('curriculum.level',$level)
+
+                    // ->groupBy('competencies_directory.id_directory')
+                    ->get();
         $jumlahtarget = CompetenciesDirectoryModel::select(DB::raw("sum(competencies_directory.target) as totaltarget"),"level","users.id_job_title")
                                 ->join("curriculum as crclm", "crclm.id_curriculum", "=", "competencies_directory.id_curriculum")
                                 ->join("white_tag", "white_tag.id_directory", "=", "competencies_directory.id_directory")
@@ -38,14 +60,14 @@ class WhiteTagModel extends Model
                                 ->groupBy("competencies_directory.id_job_title", "users.id_job_title","crclm.level")
                                 ->get();
         // dd($jumlahtarget);
-        $cnt = $counting[0]["cnt"];
-        $target_total = $counting[0]["totaltarget"];
-        $actual = $counting[0]["cnt"];
-        // dd($counting);
+        $cnt = $totaltarget[0]["cnt"];
+        $target_total = $totaltarget[0]["totaltarget"];
+        $actual = $totalactual[0]["cnt"];
+        // dd($totaltarget);
         if ($target_total != 0) {
-            if($counting[0]['level'] == 'B'){
+            if($totaltarget[0]['level'] == 'B'){
                 $count = ($actual/$target_total)*100;
-            }elseif($counting[0]['level'] == 'I'){
+            }elseif($totaltarget[0]['level'] == 'I'){
                 $count = ($actual/$target_total)*100;
             }else{
                 $count = ($actual/$target_total)*100;
@@ -71,7 +93,27 @@ class WhiteTagModel extends Model
         $data = array();
         foreach($levels as $lv => $key)
         {
-           $wt = WhiteTagModel::select(DB::raw("sum(actual) as cnt"),DB::raw("sum(cd.target) as totaltarget"),"level","actual","target")
+            $user = User::select("id", "id_job_title", DB::raw("(YEAR(NOW()) - YEAR(tgl_masuk)) AS tahun"))
+                    ->where("id", $id_user) // Ganti $user_id dengan nilai yang sesuai
+                    ->first();
+            $between = ($user->tahun > 5) ? 5 : $user->tahun;
+            $wt = CompetenciesDirectoryModel::select(
+                DB::raw("SUM(IFNULL(white_tag.actual, 0)) as total_actual"),
+                DB::raw("SUM(competencies_directory.target) as total_target")
+            )
+            ->join("curriculum",function ($join) use ($user,$between){
+                $join->on("curriculum.id_curriculum","competencies_directory.id_curriculum")
+                    ->whereRaw("competencies_directory.id_job_title = '".$user->id_job_title."' AND competencies_directory.between_year = '".$between."'");
+            })
+            ->leftJoin("white_tag", function ($join) use ($id_user) {
+                $join->on("white_tag.id_directory", "=", "competencies_directory.id_directory")
+                    ->where("white_tag.id_user", $id_user);
+            })
+            // ->groupBy('competencies_directory.id_directory')
+            ->where('curriculum.level',$key)
+            ->get();
+// dd($wt);
+           $totalactual = WhiteTagModel::select(DB::raw("sum(actual) as cnt"),DB::raw("sum(cd.target) as totaltarget"),"level","actual","target")
                                  ->join("users",function ($join) use ($id_user){
                                     $join->on("users.id","white_tag.id_user")
                                         ->where([
@@ -83,8 +125,8 @@ class WhiteTagModel extends Model
                                  ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
                                  ->where('crclm.level',$key)
                                  ->get();
-            $target = $wt[0]["totaltarget"];
-            $actual = $wt[0]["cnt"];
+            $target = $wt[0]["total_target"];
+            $actual = $totalactual[0]["cnt"];
             if ($target != 0) {
                 $item = ($actual/$target)*100;
             }else{
