@@ -67,18 +67,18 @@ class Curriculum extends Controller
                 }else{
                     $lastNumber = 0;
                 }
-                $number = str_pad($lastNumber+1,3,'0',STR_PAD_LEFT); 
+                $number = str_pad($lastNumber+1,4,'0',STR_PAD_LEFT); 
                 if($request->cg == 1){
                     if($request->id_skill_category == 1){
                         $noTrainingModul = $number."/KMI/".$curriculumcg."/FUNC";
                     }else if($request->id_skill_category == 2){
-                        $noTrainingModul = $number."/KMI/GEN";
+                        $noTrainingModul = $number."/GEN/KMI";
                     }
                 }else{
                     if($request->id_skill_category == 1){
-                        $noTrainingModul = $number."/KMI/FUNC";
+                        $noTrainingModul = $number."/FUNC/KMI";
                     }else if($request->id_skill_category == 2){
-                        $noTrainingModul = $number."/KMI/GEN";
+                        $noTrainingModul = $number."/GEN/KMI";
                     }
                 }
                 if(isset($request->id_job_title) && count($request->id_job_title) > 0){
