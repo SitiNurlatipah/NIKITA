@@ -67,18 +67,19 @@ class Curriculum extends Controller
                 }else{
                     $lastNumber = 0;
                 }
+                DB::raw('LOCK TABLES curriculum WRITE');
                 $number = str_pad($lastNumber+1,4,'0',STR_PAD_LEFT); 
                 if($request->cg == 1){
                     if($request->id_skill_category == 1){
                         $noTrainingModul = $number."/KMI/".$curriculumcg."/FUNC";
                     }else if($request->id_skill_category == 2){
-                        $noTrainingModul = $number."/GEN/KMI";
+                        $noTrainingModul = $number."/KMI/GEN";
                     }
                 }else{
                     if($request->id_skill_category == 1){
-                        $noTrainingModul = $number."/FUNC/KMI";
+                        $noTrainingModul = $number."/KMI/GEN";
                     }else if($request->id_skill_category == 2){
-                        $noTrainingModul = $number."/GEN/KMI";
+                        $noTrainingModul = $number."/KMI/GEN";
                     }
                 }
                 if(isset($request->id_job_title) && count($request->id_job_title) > 0){
@@ -102,6 +103,7 @@ class Curriculum extends Controller
                     }
 
                 }
+                DB::raw('UNLOCK TABLES');
                 DB::commit();
                 return response()->json(['code' => 200, 'message' => 'Post Created successfully'], 200);
             } catch (\Exception $e) {
