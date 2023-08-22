@@ -36,8 +36,8 @@ class MemberCG extends Controller
         $dp= Auth::user()->id_department;
         $id = Auth::user()->id;
         $role = Auth::user()->peran_pengguna;
-        if (Auth::user()->peran_pengguna === '2') {
-            $cgId = Auth::user()->id_cg;
+        $cgId = Auth::user()->id_cg;
+        if (Auth::user()->peran_pengguna == '2') {
             $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
                 ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
                 ->leftJoin('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
