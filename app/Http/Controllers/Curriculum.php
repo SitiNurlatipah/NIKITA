@@ -60,6 +60,7 @@ class Curriculum extends Controller
             $data = $this->validate_input_v2($request);
             DB::beginTransaction();
             try {
+<<<<<<< HEAD
                 $lastId = CurriculumModel::orderBy("created_at","desc")->first();
                 if(isset($lastId)){
                     $number = explode("/",$lastId->no_training_module);
@@ -69,6 +70,17 @@ class Curriculum extends Controller
                 }
                 DB::raw('LOCK TABLES curriculum WRITE');
                 $number = str_pad($lastNumber+1,4,'0',STR_PAD_LEFT); 
+=======
+                // $lastId = CurriculumModel::orderBy("created_at","desc")->first();
+                // if(isset($lastId)){
+                //     $numbermodule = explode("/",$lastId->no_training_module);
+                //     $lastNumber = (int)$numbermodule[0];
+                // }else{
+                //     $lastNumber = 0;
+                // }
+                // $number = str_pad($lastNumber+1,4,'0',STR_PAD_LEFT);
+                $number = str_pad(rand(10, 9999), 4, '0', STR_PAD_LEFT);
+>>>>>>> 129cb2c903b07e02ed3e0cc3fddfbbf3aab82873
                 if($request->cg == 1){
                     if($request->id_skill_category == 1){
                         $noTrainingModul = $number."/KMI/".$curriculumcg."/FUNC";
