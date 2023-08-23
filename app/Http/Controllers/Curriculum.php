@@ -60,14 +60,15 @@ class Curriculum extends Controller
             $data = $this->validate_input_v2($request);
             DB::beginTransaction();
             try {
-                $lastId = CurriculumModel::orderBy("created_at","desc")->first();
-                if(isset($lastId)){
-                    $numbermodule = explode("/",$lastId->no_training_module);
-                    $lastNumber = (int)$numbermodule[0];
-                }else{
-                    $lastNumber = 0;
-                }
-                $number = str_pad($lastNumber+1,4,'0',STR_PAD_LEFT); 
+                // $lastId = CurriculumModel::orderBy("created_at","desc")->first();
+                // if(isset($lastId)){
+                //     $numbermodule = explode("/",$lastId->no_training_module);
+                //     $lastNumber = (int)$numbermodule[0];
+                // }else{
+                //     $lastNumber = 0;
+                // }
+                // $number = str_pad($lastNumber+1,4,'0',STR_PAD_LEFT);
+                $number = str_pad(rand(10, 9999), 4, '0', STR_PAD_LEFT);
                 if($request->cg == 1){
                     if($request->id_skill_category == 1){
                         $noTrainingModul = $number."/KMI/".$curriculumcg."/FUNC";
