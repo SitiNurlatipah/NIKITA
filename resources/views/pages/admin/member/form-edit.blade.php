@@ -261,11 +261,10 @@
         <div class="invalid-feedback" id="feed-back-email-edit"></div>
     </div>
 </div>
-{{--
 <div class="form-row">
     <div class="col-md-4 mb-3">
         <label>Divisi</label>
-        <select id="divisi-edit" class="form-control form-control-sm" disabled>
+        <select id="divisi-edit" class="form-control form-control-sm" name="divisi">
             <option value=""> Divisi</option>
             @foreach ($divisi as $item)
                 <option {{($user->id_divisi == $item->id_divisi) ? 'selected' : ''}} value="{{$item->id_divisi}}">{{$item->nama_divisi}}</option>
@@ -275,7 +274,7 @@
     </div>
     <div class="col-md-4 mb-3">
         <label>Job Title</label>
-        <select id="jabatan-edit" class="form-control form-control-sm" disabled>
+        <select id="jabatan-edit" class="form-control form-control-sm" name="job_title">
             <option value="">Job Title</option>
             @foreach ($jabatans as $item)
                 <option {{($user->id_job_title == $item->id_job_title) ? 'selected' : ''}} value="{{$item->id_job_title}}">{{$item->nama_job_title}}</option>
@@ -285,7 +284,7 @@
     </div>
     <div class="col-md-4 mb-3">
         <label>Level</label>
-        <select id="level-edit" class="form-control form-control-sm" disabled>
+        <select id="level-edit" class="form-control form-control-sm" name="level" disabled>
             <option value="">Level</option>
             @foreach ($levels as $item)
                 <option value="{{$item->id_level}}" {{($user->id_level == $item->id_level) ? 'selected' : ''}}>{{$item->nama_level}}</option>
@@ -297,7 +296,7 @@
 <div class="form-row">
     <div class="col-md-4 mb-3">
         <label>Department</label>
-        <select id="department-edit" class="form-control form-control-sm" disabled>
+        <select id="department-edit" class="form-control form-control-sm" name="department">
             <option value="">Department</option>
             @foreach ($departments as $item)
                 <option value="{{$item->id_department}}" {{($user->id_department == $item->id_department) ? 'selected' : ''}} >{{$item->nama_department}}</option>
@@ -307,7 +306,7 @@
     </div>
     <div class="col-md-4 mb-3">
         <label>Sub Department</label>
-        <select id="sub-department-edit" class="form-control form-control-sm" disabled>
+        <select id="sub-department-edit" class="form-control form-control-sm" name="sub_department">
             <option value="">Pilih Sub Dept</option>
             @foreach ($subDepartments as $item)
                 <option value="{{$item->id_subdepartment}}" {{($user->id_sub_department == $item->id_subdepartment) ? 'selected' : ''}} >{{$item->nama_subdepartment}}</option>
@@ -317,7 +316,7 @@
     </div>
     <div class="col-md-4 mb-3">
         <label>Liga CG</label>
-        <select id="cg-edit" class="form-control form-control-sm" disabled>
+        <select id="cg-edit" class="form-control form-control-sm" name="cg">
             <option value="">Pilih CG Name</option>
             @foreach ($cgMaster as $item)
                 <option value="{{$item->id_cg}}" {{($user->id_cg == $item->id_cg) ? 'selected' : ''}} >{{$item->nama_cg}}</option>
@@ -326,23 +325,21 @@
         <div class="invalid-feedback" id="feed-back-cg-edit"></div>
     </div>
 </div>
---}}
 <input type="hidden" name="nik" value="{{ $user->nik }}">
 <input type="hidden" name="nama_pengguna" value="{{ $user->nama_pengguna }}">
 <input type="hidden" name="tgl_masuk" value="{{ $user->tgl_masuk }}">
 <input type="hidden" name="email" value="{{ $user->email }}">
-<input type="hidden" name="divisi" value="{{ $user->id_divisi }}">
-<input type="hidden" name="job_title" value="{{ $user->id_job_title }}">
+<!-- <input type="hidden" name="divisi" value="{{ $user->id_divisi }}"> -->
+<!-- <input type="hidden" name="job_title" value="{{ $user->id_job_title }}"> -->
 <input type="hidden" name="level" value="{{ $user->id_level }}">
-<input type="hidden" name="department" value="{{ $user->id_department }}">
-<input type="hidden" name="sub_department" value="{{ $user->id_sub_department }}">
-<input type="hidden" name="cg" value="{{ $user->id_cg }}">
+<!-- <input type="hidden" name="department" value="{{ $user->id_department }}"> -->
+<!-- <input type="hidden" name="sub_department" value="{{ $user->id_sub_department }}"> -->
+<!-- <input type="hidden" name="cg" value="{{ $user->id_cg }}"> -->
 <input type="hidden" name="tambahancg" value="{{ $user->id_cgtambahan }}">
 <input type="hidden" name="tambahancg2" value="{{ $user->id_cgtambahan2 }}">
 <input type="hidden" name="tambahancg3" value="{{ $user->id_cgtambahan3 }}">
 <input type="hidden" name="tambahancg4" value="{{ $user->id_cgtambahan4 }}">
 <input type="hidden" name="tambahancg5" value="{{ $user->id_cgtambahan5 }}">
-
 @endif
 
 <div class="modal fade" id="modal-edit-crop" tabindex="7" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
