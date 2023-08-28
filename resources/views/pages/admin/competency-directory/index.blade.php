@@ -206,9 +206,9 @@
                     $(".search-data").DataTable({
                     searching: true,
                     scrollX: true, 
-                    displayLength: 100,
+                    displayLength: -1,
                     responsive:true,
-                    // lengthMenu: [10, 15, 20,100],
+                    lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
                     });
                 }
             })

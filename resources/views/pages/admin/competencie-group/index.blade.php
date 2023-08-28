@@ -17,7 +17,7 @@
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <p class="card-title">Competencie Group</p>
+                    <p class="card-title">Competency Group</p>
                     <div class="row">
                         <div class="col-md mb-2">
                             <a class="btn btn-success float-right btnAdd" href="javascript:void(0)" id="createNewItem"><i
@@ -32,8 +32,8 @@
                                     style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th width="10">No.#</th>
-                                            <th>skill_category</th>
+                                            <th width="10">No</th>
+                                            <th>Skill Category</th>
                                             <th>Nama Competencie Group</th>
                                             <th width="15%">Action</th>
                                         </tr>

@@ -32,7 +32,7 @@
                                     style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th width="10">No.#</th>
+                                            <th width="10">No</th>
                                             <th>Nama Department</th>
                                             <th>Nama Sub Department</th>
                                             <th width="15%">Action</th>
