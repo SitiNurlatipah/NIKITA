@@ -194,6 +194,18 @@
             </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link" href="{{ route('Curriculum') }}">
+                <i class="icon-grid-2 menu-icon"></i>
+                <span class="menu-title">Curriculum</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('CompetenciesDirectory') }}">
+                <i class="icon-book menu-icon"></i>
+                <span class="menu-title">Competency Dictionary</span>
+            </a>
+        </li>
+        <li class="nav-item">
                 <a class="nav-link" href="{{ route('WhiteTag') }}">
                     <i class="icon-flag menu-icon"></i>
                     <span class="menu-title">Mapping Competency</span>
