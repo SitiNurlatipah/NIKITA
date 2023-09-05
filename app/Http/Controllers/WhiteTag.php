@@ -535,7 +535,12 @@ class WhiteTag extends Controller
             "type" => "required|string|in:functional,general"
         ]);
         $type = $request->type;
-        $user = User::select("id","id_job_title",DB::raw("(YEAR(NOW()) - YEAR(tgl_masuk)) AS tahun"))->where("id",$request->id)->first();
+        // $user = User::select("id","id_job_title",DB::raw("(YEAR(NOW()) - YEAR(tgl_masuk)) AS tahun"))->where("id",$request->id)->first();
+        $user = User::select("id", "id_job_title", DB::raw("(YEAR(NOW()) - YEAR(IFNULL(tgl_rotasi, tgl_masuk))) AS tahun"))
+                ->where("id", $request->id)
+                ->first();
+        
+        
         $between = 0;
         if($user->tahun > 5){
             $between = 5;

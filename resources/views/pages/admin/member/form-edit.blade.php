@@ -94,6 +94,11 @@
             <input type="date" id="entry-edit" name="tgl_masuk" class="form-control form-control-sm" value="{{$user->tgl_masuk}}">
             <div class="invalid-feedback" id="feed-back-entry-edit"></div>
         </div>
+        <div class="col-md-6 mb-3">
+            <label>Rotation Date</label>
+            <input type="date" id="entry-edit" class="form-control form-control-sm" name="tgl_rotasi" value="{{$user->tgl_rotasi}}">
+            <!-- <div class="invalid-feedback" id="feed-back-entry-edit"></div> -->
+        </div>
     </div>
 </div>
 <div class="form-row">
@@ -246,6 +251,11 @@
             <label>Join Date</label>
             <input type="date" id="entry-edit" class="form-control form-control-sm" value="{{$user->tgl_masuk}}" disabled>
             <div class="invalid-feedback" id="feed-back-entry-edit"></div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label>Rotation Date</label>
+            <input type="date" id="entry-edit" class="form-control form-control-sm" name="tgl_rotasi" value="{{$user->tgl_rotasi}}">
+            <!-- <div class="invalid-feedback" id="feed-back-entry-edit"></div> -->
         </div>
     </div>
 </div>

@@ -30,9 +30,12 @@ class WhiteTagModel extends Model
                     ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
                     ->where('crclm.level',$level)
                     ->get();
-        $user = User::select("id", "id_job_title", DB::raw("(YEAR(NOW()) - YEAR(tgl_masuk)) AS tahun"))
-        ->where("id", $id_user) // Ganti $user_id dengan nilai yang sesuai
-        ->first();
+        // $user = User::select("id", "id_job_title", DB::raw("(YEAR(NOW()) - YEAR(tgl_masuk)) AS tahun"))
+        // ->where("id", $id_user) // Ganti $user_id dengan nilai yang sesuai
+        // ->first();
+        $user = User::select("id", "id_job_title", DB::raw("(YEAR(NOW()) - YEAR(IFNULL(tgl_rotasi, tgl_masuk))) AS tahun"))
+                ->where("id", $id_user)
+                ->first();
     
         $between = ($user->tahun > 5) ? 5 : $user->tahun;
         $totaltarget = CompetenciesDirectoryModel::select(
@@ -93,9 +96,12 @@ class WhiteTagModel extends Model
         $data = array();
         foreach($levels as $lv => $key)
         {
-            $user = User::select("id", "id_job_title", DB::raw("(YEAR(NOW()) - YEAR(tgl_masuk)) AS tahun"))
-                    ->where("id", $id_user) // Ganti $user_id dengan nilai yang sesuai
-                    ->first();
+            // $user = User::select("id", "id_job_title", DB::raw("(YEAR(NOW()) - YEAR(tgl_masuk)) AS tahun"))
+            //         ->where("id", $id_user) // Ganti $user_id dengan nilai yang sesuai
+            //         ->first();
+            $user = User::select("id", "id_job_title", DB::raw("(YEAR(NOW()) - YEAR(IFNULL(tgl_rotasi, tgl_masuk))) AS tahun"))
+                    ->where("id", $id_user)
+                    ->first();     
             $between = ($user->tahun > 5) ? 5 : $user->tahun;
             $wt = CompetenciesDirectoryModel::select(
                 DB::raw("SUM(IFNULL(white_tag.actual, 0)) as total_actual"),

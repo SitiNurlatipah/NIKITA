@@ -203,13 +203,7 @@
                 type:"get",
                 success:function(html){
                     $("#formCompetency").html(html);
-                    $(".search-data").DataTable({
-                    searching: true,
-                    scrollX: true, 
-                    displayLength: -1,
-                    responsive:true,
-                    lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
-                    });
+                    
                 }
             })
         }
