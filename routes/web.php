@@ -16,7 +16,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::prefix("profile")->group(function(){
         Route::get('/', 'ProfileController@profile')->name('profile');
     });
-
+    
     // Kelola karyawan
     Route::prefix("employeemember")->group(function(){
         Route::get('/', 'MemberCG@index')->name('EmployeeMember');

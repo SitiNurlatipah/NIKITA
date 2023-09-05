@@ -56,10 +56,10 @@
               <tr>
                   <th style="min-width: 100px;" class="text-left">Job Title</th>
                   <th style="min-width: 100px;" class="text-center">Y0-Y1</th>
+                  <th style="min-width: 100px;" class="text-center">Y1-Y2</th>
                   <th style="min-width: 100px;" class="text-center">Y2-Y3</th>
+                  <th style="min-width: 100px;" class="text-center">Y3-Y4</th>
                   <th style="min-width: 100px;" class="text-center">Y4-Y5</th>
-                  <th style="min-width: 100px;" class="text-center">Y6-Y7</th>
-                  <th style="min-width: 100px;" class="text-center">Y8-Y9</th>
                   <th style="min-width: 100px;" class="text-center">YN</th>
                   @if(Auth::user()->peran_pengguna == 1)
                   <th style="align-content: center"></th>
