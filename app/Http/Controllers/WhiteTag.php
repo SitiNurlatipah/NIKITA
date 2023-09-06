@@ -535,7 +535,7 @@ class WhiteTag extends Controller
             "type" => "required|string|in:functional,general"
         ]);
         $type = $request->type;
-        // $user = User::select("id","id_job_title",DB::raw("(YEAR(NOW()) - YEAR(tgl_masuk)) AS tahun"))->where("id",$request->id)->first();
+        $target = User::select("id","id_job_title",DB::raw("(YEAR(NOW()) - YEAR(tgl_masuk)) AS tahun"))->where("id",$request->id)->first();
         $user = User::select("id", "id_job_title", DB::raw("(YEAR(NOW()) - YEAR(IFNULL(tgl_rotasi, tgl_masuk))) AS tahun"))
                 ->where("id", $request->id)
                 ->first();
@@ -547,6 +547,13 @@ class WhiteTag extends Controller
         }else{
             $between = $user->tahun;
         }
+        $between2 = 0;
+        if($target->tahun > 5){
+            $between2 = 5;
+        }else{
+            $between2 = $target->tahun;
+        }
+
         $select = [
             "competencies_directory.id_directory as id_directory","curriculum.no_training_module as no_training",
             "curriculum.training_module as training_module","curriculum.training_module_group as training_module_group",
@@ -561,10 +568,22 @@ class WhiteTag extends Controller
                             END) as tagingStatus"),"compGroup.name as compGroupName"
         ];
         $comps = CompetenciesDirectoryModel::select($select)
-                                            ->join("curriculum",function ($join) use ($user,$between){
-                                                $join->on("curriculum.id_curriculum","competencies_directory.id_curriculum")
-                                                    ->whereRaw("competencies_directory.id_job_title = '".$user->id_job_title."' AND competencies_directory.between_year = '".$between."'");
-                                            })
+        ->join("curriculum", function ($join) use ($user, $between, $between2) {
+            $join->on("curriculum.id_curriculum", "competencies_directory.id_curriculum")
+                 ->whereRaw("competencies_directory.id_job_title = '".$user->id_job_title."'");
+        })
+        ->joinSub(function ($query) use ($user, $between, $between2) {
+            $query->select('id_curriculum', 'id_skill_category')
+                  ->from('curriculum');
+        }, 'sub', function ($join) use ($user, $between, $between2) {
+            $join->on('competencies_directory.id_curriculum', '=', 'sub.id_curriculum');
+        })
+        ->where(function ($query) use ($between, $between2) {
+            $query->where('sub.id_skill_category', '=', 1)
+                  ->whereRaw("competencies_directory.between_year = '".$between."'")
+                  ->orWhere('sub.id_skill_category', '<>', 1)
+                  ->whereRaw("competencies_directory.between_year = '".$between2."'");
+        })
                                             ->join("competencie_groups as compGroup","compGroup.id","curriculum.training_module_group")
                                             ->join("skill_category","skill_category.id_skill_category","curriculum.id_skill_category")
                                             ->leftJoin("white_tag",function ($join) use ($user){

@@ -186,7 +186,7 @@ class MemberCG extends Controller
             'nik' => $request->nik,
             'peran_pengguna' => $request->peran_pengguna,
             'tgl_masuk' => date('Y-m-d', strtotime($request->tgl_masuk)),
-            'tgl_rotasi' => date('Y-m-d', strtotime($request->tgl_rotasi)),
+            'tgl_rotasi' => $request->tgl_rotasi,
             'nama_pengguna' => $request->nama_pengguna,
             'email' => $request->email,
             'id_divisi' => $request->divisi,
