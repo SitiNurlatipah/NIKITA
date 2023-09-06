@@ -119,7 +119,6 @@ class MemberCG extends Controller
                 'password' => bcrypt($request->password),
                 'peran_pengguna' => $request->peran_pengguna,
                 'tgl_masuk' => date('Y-m-d', strtotime($request->tgl_masuk)),
-                'tgl_rotasi' => date('Y-m-d', strtotime($request->tgl_rotasi)),
                 'nama_pengguna' => $request->nama_pengguna,
                 'email' => $request->email,
                 'id_divisi' => $request->divisi,
