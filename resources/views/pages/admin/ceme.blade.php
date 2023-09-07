@@ -46,7 +46,7 @@
                         <div class="col-12">
                             <div class="table-responsive">
                                 <table class="display expandable-table table table-sm table-striped table-hover mt-1"
-                                    id="table-ce" style="width:100%">
+                                    id="tblceme" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>No.</th>
@@ -348,6 +348,10 @@
                 trigger: "hover focus"
             });
         });
+        $('#tblceme').dataTable( {
+            paging: true,
+            searching: true
+        } );
 
 
         function initDatatable() {
