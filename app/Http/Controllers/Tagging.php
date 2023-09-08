@@ -27,7 +27,7 @@ class Tagging extends Controller
         $cgAuth = Auth::user()->id_cg;
         $select = [
             "id_taging_reason","white_tag.id_white_tag","tr.no_taging as noTaging","nama_pengguna as employee_name",
-            "skill_category","training_module",
+            "skill_category","training_module","nama_cg",
             "level","training_module_group","white_tag.actual as actual",
             "cd.target as target",DB::raw("(white_tag.actual - cd.target) as actualTarget"),DB::raw("(IF((white_tag.actual - cd.target) < 0,'Follow Up','Finished' )) as tagingStatus")
         ];
@@ -42,11 +42,13 @@ class Tagging extends Controller
                                     $join->where("users.id_cg",$cgAuth);
                                 }
                             })
+                            // ->join("users as member","member.id","white_tag.id_user")
                             ->join("curriculum","curriculum.id_curriculum","cd.id_curriculum")
                             ->join("skill_category as sc","sc.id_skill_category","curriculum.id_skill_category")
+                            ->leftJoin('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
                             ->whereRaw($where)
                             ->get();
-
+// dd($data);
         return Datatables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {

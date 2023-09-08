@@ -67,6 +67,7 @@
                                                     <tr>
                                                         <th>No Taging</th>
                                                         <th>Employee Name</th>
+                                                        <th>Circle Group</th>
                                                         <th>Skill Category</th>
                                                         <th>Competency</th>
                                                         <th>Level</th>
@@ -541,6 +542,9 @@
               },
               {
                   data: 'employee_name'
+              },
+              {
+                  data: 'nama_cg'
               },
               {
                   data: 'skill_category'
