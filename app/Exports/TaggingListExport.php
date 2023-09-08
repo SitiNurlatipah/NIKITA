@@ -29,7 +29,7 @@ class TaggingListExport implements FromCollection, WithStyles, WithHeadings, Wit
     public function collection()
     {
         $select = [
-            "tr.no_taging as noTaging","nama_pengguna as employee_name",
+            "tr.no_taging as noTaging","nama_pengguna as employee_name","nama_cg",
             "skill_category","training_module","level","training_module_group","white_tag.actual as actual",
             "cd.target as target",DB::raw("(white_tag.actual - cd.target) as actualTarget"),DB::raw("(IF((white_tag.actual - cd.target) < 0,'Follow Up','Finished' )) as tagingStatus")
         ];
@@ -56,6 +56,7 @@ class TaggingListExport implements FromCollection, WithStyles, WithHeadings, Wit
                             ->join("users","users.id","white_tag.id_user")
                             ->join("curriculum","curriculum.id_curriculum","cd.id_curriculum")
                             ->join("skill_category as sc","sc.id_skill_category","curriculum.id_skill_category")
+                            ->join("cg","cg.id_cg","users.id_cg")
                             ->whereRaw($whereRaw)
                             ->get();
         return $data;
@@ -73,6 +74,7 @@ class TaggingListExport implements FromCollection, WithStyles, WithHeadings, Wit
         return [
             'No Tagging',
             'Employee Name',
+            'Circle Group',
             'Skill Category',
             'Competency',
             'Level',
@@ -88,6 +90,7 @@ class TaggingListExport implements FromCollection, WithStyles, WithHeadings, Wit
         return [
             $softreserve->noTaging,
             $softreserve->employee_name,
+            $softreserve->nama_cg,
             $softreserve->skill_category,
             $softreserve->training_module,
             $softreserve->level,
