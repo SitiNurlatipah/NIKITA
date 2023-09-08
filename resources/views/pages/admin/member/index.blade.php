@@ -84,6 +84,7 @@
                                         </th>
                                         <th>Department</th>
                                         <th>Job Title</th>
+                                        <th>Circle Group</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -459,6 +460,9 @@
                 },
                 {
                     data: 'nama_job_title'
+                },
+                {
+                    data: 'nama_cg'
                 },
                 {
                     data: 'action'

@@ -32,17 +32,67 @@ class Dashboard extends Controller
 
         $email = Auth::user()->email;
         $cg = Auth::user()->id_cg;
-
+        $cgtambah = Auth::user()->id_cgtambahan;
+        $cgtambah2 = Auth::user()->id_cgtambahan_2;
+        $cgtambah3 = Auth::user()->id_cgtambahan_3;
+        $cgtambah4 = Auth::user()->id_cgtambahan_4;
+        $cgtambah5 = Auth::user()->id_cgtambahan_5;
+        $dp= Auth::user()->id_department;
+        $id = Auth::user()->id;
         $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
             ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
             ->leftJoin('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
             ->whereEmail($email)->first(['users.*', 'dp.nama_department', 'jt.nama_job_title', 'cg.nama_cg']);
-
-        $jumlah = DB::table('users')
+        
+        if (Auth::user()->id_level == 'LV-0003') {
+            $jumlah = DB::table('users')
+            ->select(array('users.*', DB::raw('COUNT(users.nik) as cg')))
+                    ->where('users.id_department', '=', $dp)
+                    ->groupBy('id_department')
+                    ->get();
+        }
+        else if (Auth::user()->id_level == 'LV-0004') {
+            $jumlah = DB::table('users')
+                ->select(array('users.*', DB::raw('COUNT(users.nik) as cg')))
+                ->where(function ($query) use ($id) {
+                    $query->where('id', $id)
+                        ->groupBy('users.id_cg');
+                })
+                ->orWhere(function ($query) use ($cgtambah) {
+                    $query->where('users.id_cg', $cgtambah)
+                        ->groupBy('users.id_cg');
+                })
+                ->orWhere(function ($query) use ($cgtambah2) {
+                    $query->where('users.id_cg', $cgtambah2)
+                        ->groupBy('users.id_cg');
+                })
+                ->orWhere(function ($query) use ($cgtambah3) {
+                    $query->where('users.id_cg', $cgtambah3)
+                        ->groupBy('users.id_cg');
+                })
+                ->orWhere(function ($query) use ($cgtambah4) {
+                    $query->where('users.id_cg', $cgtambah4)
+                        ->groupBy('users.id_cg');
+                })
+                ->orWhere(function ($query) use ($cgtambah5) {
+                    $query->where('users.id_cg', $cgtambah5)
+                        ->groupBy('users.id_cg');
+                })
+                // Lanjutkan untuk kondisi lainnya
+                ->get();            
+        } else{
+            $jumlah = DB::table('users')
             ->select(array('users.*', DB::raw('COUNT(id_cg) as cg')))
             ->where('id_cg', '=', $cg)
             ->groupBy('id_cg')
             ->get();
+        }
+        // dd($jumlah);
+        // $jumlah = DB::table('users')
+        //     ->select(array('users.*', DB::raw('COUNT(id_cg) as cg')))
+        //     ->where('id_cg', '=', $cg)
+        //     ->groupBy('id_cg')
+        //     ->get();
 
         $rotate_out = DB::table('rotation_history')
             ->select(array(DB::raw('COUNT(cg_old) as cg_out')))
@@ -54,14 +104,7 @@ class Dashboard extends Controller
             ->where('cg_new', $cg)
             ->get();
 
-        $cg = Auth::user()->id_cg;
-        $cgtambah = Auth::user()->id_cgtambahan;
-        $cgtambah2 = Auth::user()->id_cgtambahan_2;
-        $cgtambah3 = Auth::user()->id_cgtambahan_3;
-        $cgtambah4 = Auth::user()->id_cgtambahan_4;
-        $cgtambah5 = Auth::user()->id_cgtambahan_5;
-        $dp= Auth::user()->id_department;
-        $id = Auth::user()->id;
+        
         $name = $request->search;
         // $id = Auth::user()->is_superman;
         if($request->has('search') && !empty($request->search)){

@@ -43,7 +43,7 @@ class MemberCG extends Controller
                 ->leftJoin('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
                 ->where('users.id_cg', $cgId)
                 ->orderBy('nama_pengguna', 'desc')
-                ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title']);
+                ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','cg.nama_cg']);
         } 
         else if (Auth::user()->id_level == 'LV-0003') {
             $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
@@ -51,7 +51,7 @@ class MemberCG extends Controller
                 ->leftJoin('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
                 ->where('users.id_department', $dp)
                 ->orderBy('nama_pengguna', 'desc')
-                ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title']);
+                ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','cg.nama_cg']);
         } 
         else if (Auth::user()->id_level == 'LV-0004') {
             $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
@@ -64,14 +64,14 @@ class MemberCG extends Controller
                 ->orWhere('users.id_cg', $cgtambah4)
                 ->orWhere('users.id_cg', $cgtambah5)
                 ->orderBy('nama_pengguna', 'desc')
-                ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title']);
+                ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','cg.nama_cg']);
         } 
         else {
             $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
                 ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
                 ->leftJoin('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
-                ->orderBy('nama_pengguna', 'asc')
-                ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title']);
+                ->orderBy('nama_pengguna', 'desc')
+                ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','cg.nama_cg']);
         }
         return Datatables::of($data)
             ->addIndexColumn()

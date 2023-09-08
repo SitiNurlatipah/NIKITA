@@ -147,7 +147,6 @@ h4 {
             <div class="card-body">
               <p class="mb-4">CG Name</p>
               <p class="fs-30 mb-2">{{ $data['nama_cg'] }}</p>
-              {{-- <p>10.00% (30 days)</p> --}}
             </div>
           </div>
         </div>
@@ -156,7 +155,6 @@ h4 {
             <div class="card-body">
               <p class="mb-4">Member Count</p>
               <p class="fs-30 mb-2">{{ $jumlah[0]->cg }}</p>
-              {{-- <p>22.00% (30 days)</p> --}}
             </div>
           </div>
         </div>
