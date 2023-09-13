@@ -581,13 +581,13 @@ class WhiteTag extends Controller
         ->where(function ($query) use ($between, $between2) {
             $query->where(function ($query) {
                 $query->where('sub.curriculum_year', '!=', null)
-                        ->whereRaw("competencies_directory.between_year = " . DB::raw("(YEAR(NOW()) - YEAR(sub.curriculum_year))"));
-            // })->orWhere(function ($query) use ($between, $between2) {
-            //     $query->where('sub.id_skill_category', '=', 1)
-            //         ->whereRaw("competencies_directory.between_year = '".$between."'");
-            // })->orWhere(function ($query) use ($between, $between2) {
-            //     $query->where('sub.id_skill_category', '<>', 1)
-            //         ->whereRaw("competencies_directory.between_year = '".$between2."'");
+                        ->whereRaw("competencies_directory.between_year = " .DB::raw("(YEAR(NOW()) - YEAR(sub.curriculum_year))"));
+            })->orWhere(function ($query) use ($between, $between2) {
+                $query->where('sub.id_skill_category', '=', 1)
+                    ->whereRaw("competencies_directory.between_year = '".$between."'");
+            })->orWhere(function ($query) use ($between, $between2) {
+                $query->where('sub.id_skill_category', '<>', 1)
+                    ->whereRaw("competencies_directory.between_year = '".$between2."'");
             });
         })
                                             ->join("competencie_groups as compGroup","compGroup.id","curriculum.training_module_group")
