@@ -74,6 +74,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/detail','Tagging@detail')->name('tagingDetail');
         Route::get('/export-tagging','Tagging@exportTaggingList')->middleware(['isAdmin'])->name('exportTaggingList');
         Route::get('/tagging-print','Tagging@taggingPrint')->middleware(['isAdmin'])->name('taggingPrint');
+        // Route::delete('/tagging-delete/{id_taging_reason}', 'Tagging@deleteTagging');   
+        Route::post('/delete','Tagging@deleteTagging')->name('tagging.destroy');
+ 
+
     });
 
     // Competency Directory

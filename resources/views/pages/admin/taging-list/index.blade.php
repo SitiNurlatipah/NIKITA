@@ -306,6 +306,11 @@
 
 @push('script')
 <script type="text/javascript">
+    $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
   $(document).ready(function () {
     $(".nav-pills a").click(function(){
         $(this).tab('show');
@@ -514,7 +519,38 @@
         '_blank'
     );
   }
-
+    $(document).on('click', '.tagging-hapus', function() {
+        var id = $(this).attr('data-id');
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '{{ route('tagging.destroy') }}',
+                    type: 'POST',
+                    dataType: 'JSON',
+                    data: {
+                        id
+                    },
+                    success: function(response) {
+                        Swal.fire({
+                            icon: response.status,
+                            text: response.message
+                        })
+                        setTimeout(function() {
+                            location.reload();
+                        }, 1000);
+                    }
+                })
+            }
+        })
+    })
   function iniDatatable() {
       var dtJson = $('#table-taging-list').DataTable({
           ajax: "{{ route('taggingJson') }}",

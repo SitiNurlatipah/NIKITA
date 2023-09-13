@@ -55,6 +55,7 @@ class Tagging extends Controller
             if (isset($row->id_taging_reason)) {
                 $btn = '<button white-tag-id="' . $row->id_white_tag . '" taging-reason-id="' . $row->id_taging_reason . '" onclick="formTaging(this)" class="button-add btn btn-inverse-success btn-icon mr-1" data-toggle="modal" data-target="#modal-tambah"><i class="icon-plus menu-icon"></i></button>';
                 $btn = $btn . '<button type="button" onclick="detailTaging(' . $row->id_taging_reason . ')" class="btn btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail"><i class="ti-eye"></i></button>';
+                $btn = $btn . '<button data-id="' . $row->id_taging_reason . '" class="btn btn-inverse-danger btn-icon tagging-hapus mr-1" data-toggle="modal" data-target="#modal-hapus"><i class="icon-trash"></i></button>';
                 return $btn;
             } else {
                 $btn = '<button white-tag-id="' . $row->id_white_tag . '" taging-reason-id="' . $row->id_taging_reason . '" onclick="formTaging(this)" class="button-add btn btn-inverse-success btn-icon mr-1" data-toggle="modal" data-target="#modal-tambah"><i class="icon-plus menu-icon"></i></button>';
@@ -453,5 +454,29 @@ class Tagging extends Controller
                             ->join("curriculum","curriculum.id_curriculum","cd.id_curriculum")
                             ->first();
         return view("pages.admin.taging-list.print-competency-tag",compact("data"));
+    }
+    public function deleteTagging()
+    {
+        $validator = Validator::make(request()->all(),[
+            'id' => ['required']
+        ]);
+
+        if($validator->fails())
+        {
+            return response()->json($validator->errors());
+        }
+
+        $id = request('id');
+        TagingReason::where('id_taging_reason',$id)->delete();
+
+        $response = [
+            'code' => 200,
+            'status' => 'success',
+            'message' => 'Tagging berhasil dihapus.',
+            'data' => NULL
+        ];
+
+        return response()->json($response);
+
     }
 }

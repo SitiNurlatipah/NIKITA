@@ -128,7 +128,8 @@ class Curriculum extends Controller
             'training_module' => $request->training_module,
             'level' => $request->level,
             'training_module_group' => $request->training_module_group,
-            'training_module_desc' => $request->training_module_desc
+            'training_module_desc' => $request->training_module_desc,
+            'curriculum_year' => $request->curriculum_year
         ];
         if($curriculum->id_skill_category != $request->id_skill_category){
             $noTraining = explode("/",$curriculum->no_training_module);
