@@ -398,14 +398,26 @@
       </div>
     </div>
 </div>
+
 @endsection
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+    <link rel="stylesheet"  href="{{asset('assets/css/datatables/jquery.dataTables.min.css') }}" type="text/css"/>
+    <link href="{{asset('assets/css/datatables/buttons.dataTables.min.css') }}" rel="stylesheet" type="text/css"/>
+
 @endpush
 @push('script')
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
 <script src="{{asset('assets/js/cropper-v2.js')}}"></script>
 <script src="{{ asset('assets/select2/js/select2.min.js') }}"></script>
+<script src="{{ asset('assets/vendors/datatables.net/jquery.dataTables.js') }}"></script>
+<script src="{{ asset('assets/vendors/datatables.net/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('assets/vendors/datatables.net/buttons.print.min.js') }}"></script>
+<script src="{{ asset('assets/vendors/datatables.net/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('assets/vendors/datatables.net-bs4/dataTables.bootstrap4.js') }}"></script>
+<script src="{{asset('assets/vendors/datatables.net/export-table-data.js')}}"></script>
+<script src="{{ asset('assets/vendors/datatables.net/jszip.min.js') }}" type="text/javascript"></script>
 
 <script type="text/javascript">
      $('#user_rotation').select2({
@@ -422,6 +434,13 @@
     var role = '{{ Auth::user()->peran_pengguna}}';
 
     function initDatatable() {
+        @if(Auth::user()->peran_pengguna == '1')
+        var buttons = [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ];
+        @else
+        var buttons = [];
+        @endif
         var dtJson = $('#table-cg').DataTable({
             ajax: "{{ route('EmployeeMember.get') }}",
             autoWidth: false,
@@ -431,9 +450,10 @@
                 [0, "desc"]
             ],
             searching: true,
-            dom: '<"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+            dom: 'lBfrtip',
+            buttons: buttons,
             displayLength: 10,
-            lengthMenu: [10, 15, 20],
+            lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
             language: {
                 paginate: {
                     // remove previous & next text from pagination
