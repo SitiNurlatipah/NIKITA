@@ -27,7 +27,7 @@ class Tagging extends Controller
         $cgAuth = Auth::user()->id_cg;
         $select = [
             "id_taging_reason","white_tag.id_white_tag","tr.no_taging as noTaging","nama_pengguna as employee_name",
-            "skill_category","training_module","nama_cg",
+            "skill_category","training_module","nama_cg","nik",
             "level","training_module_group","white_tag.actual as actual",
             "cd.target as target",DB::raw("(white_tag.actual - cd.target) as actualTarget"),DB::raw("(IF((white_tag.actual - cd.target) < 0,'Follow Up','Finished' )) as tagingStatus")
         ];
@@ -102,7 +102,7 @@ class Tagging extends Controller
         $cgtambah5 = Auth::user()->id_cgtambahan_5;
         $select = [
             "id_taging_reason","white_tag.id_white_tag","tr.no_taging as noTaging","nama_pengguna as employee_name",
-            "skill_category","training_module",
+            "skill_category","training_module","nik",
             "level","training_module_group","white_tag.actual as actual",
             "cd.target as target",DB::raw("(white_tag.actual - cd.target) as actualTarget"),DB::raw("(IF((white_tag.actual - cd.target) < 0,'Follow Up','Finished' )) as tagingStatus")
         ];
@@ -180,7 +180,7 @@ class Tagging extends Controller
         $id_user = Auth::user()->id;
         $select = [
             "id_taging_reason","white_tag.id_white_tag","tr.no_taging as noTaging","nama_pengguna as employee_name",
-            "skill_category","training_module",
+            "skill_category","training_module","nik",
             "level","training_module_group","white_tag.actual as actual",
             "cd.target as target",DB::raw("(white_tag.actual - cd.target) as actualTarget"),DB::raw("(IF((white_tag.actual - cd.target) < 0,'Follow Up','Finished' )) as tagingStatus")
         ];

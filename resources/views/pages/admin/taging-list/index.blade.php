@@ -66,6 +66,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th>No Taging</th>
+                                                        <th>NIK</th>
                                                         <th>Employee Name</th>
                                                         <th>Circle Group</th>
                                                         <th>Skill Category</th>
@@ -92,6 +93,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>No Taging</th>
+                                                    <th>NIK</th>
                                                     <th>Employee Name</th>
                                                     <th>Skill Category</th>
                                                     <th>Competency</th>
@@ -117,6 +119,7 @@
                                 <thead>
                                     <tr>
                                         <th>No Taging</th>
+                                        <th>NIK</th>
                                         <th>Employee Name</th>
                                         <th>Skill Category</th>
                                         <th width="100px">Competency</th>
@@ -139,6 +142,7 @@
                             <thead>
                                 <tr>
                                     <th>No Taging</th>
+                                    <th>NIK</th>
                                     <th>Employee Name</th>
                                     <th>Skill Category</th>
                                     <th>Competency</th>
@@ -159,6 +163,7 @@
                             <thead>
                                 <tr>
                                     <th>No Taging</th>
+                                    <th>NIK</th>
                                     <th>Employee Name</th>
                                     <th>Skill Category</th>
                                     <th>Competency</th>
@@ -179,6 +184,7 @@
                             <thead>
                                 <tr>
                                     <th>No Taging</th>
+                                    <th>NIK</th>
                                     <th>Employee Name</th>
                                     <th>Skill Category</th>
                                     <th>Competency</th>
@@ -577,6 +583,9 @@
                   data: 'noTaging',
               },
               {
+                  data: 'nik',
+              },
+              {
                   data: 'employee_name'
               },
               {
@@ -637,6 +646,9 @@
                   data: 'noTaging',
               },
               {
+                  data: 'nik',
+              },
+              {
                   data: 'employee_name'
               },
               {
@@ -692,6 +704,9 @@
           columns: [
               {
                   data: 'noTaging',
+              },
+              {
+                  data: 'nik',
               },
               {
                   data: 'employee_name'
@@ -752,6 +767,9 @@
                   data: 'noTaging',
               },
               {
+                  data: 'nik',
+              },
+              {
                   data: 'employee_name'
               },
               {
@@ -808,6 +826,9 @@
           columns: [
               {
                   data: 'noTaging',
+              },
+              {
+                  data: 'nik',
               },
               {
                   data: 'employee_name'
