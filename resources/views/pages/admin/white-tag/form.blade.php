@@ -7,7 +7,10 @@
     <td>{{$comp->level}}</td>
     <td>{{$comp->compGroupName}}</td>
     <td>
-        
+        @if($comp->cntTagingReason > 0)
+        <!-- <input type="hidden" name="data[{{$key.time()}}][id]" value="{{$comp->id_directory}}"> -->
+        <input type="text" class="form-control" value="{{$comp->start}}" disabled>
+        @else
             <input type="hidden" name="data[{{$key.time()}}][id]" value="{{$comp->id_directory}}">
             <select class="form-control" name="data[{{$key.time()}}][start]" id="selectStart{{$key.time()}}">
                 <option value=""  {{($comp->start == null || $comp->tagingStatus == 'Belum diatur') ? 'selected' : ''}}>Pilih Level</option>
@@ -17,9 +20,12 @@
                 <option value="3" {{$comp->start  == '3' ? 'selected' : ''}}>3</option>
                 <option value="4" {{$comp->start  == '4' ? 'selected' : ''}}>4</option>
             </select>
+        @endif
         </td>
         <td>
-            
+            @if($comp->cntTagingReason > 0)
+                <input type="text" class="form-control" value="{{$comp->actual}}" disabled>
+            @else
                 <select class="form-control" name="data[{{$key.time()}}][actual]" id="selectActual{{$key.time()}}">
                     <option value=""  {{($comp->start == null || $comp->tagingStatus == 'Belum diatur') ? 'selected' : ''}}>Pilih Level</option>
                     <option value="0" {{$comp->actual  == '0' ? 'selected' : ''}}>0</option>
@@ -28,12 +34,17 @@
                     <option value="3" {{$comp->actual  == '3' ? 'selected' : ''}}>3</option>
                     <option value="4" {{$comp->actual  == '4' ? 'selected' : ''}}>4</option>
                 </select>
+            @endif
         </td>
         <td>
             <input class="form-control pr-0" style="width: 50px;" type="text" value="{{$comp->target}}" disabled>
         </td>
         <td>
+            @if($comp->cntTagingReason > 0)
+            <input type="text" class="form-control" value="{{$comp->ket}}" disabled>
+            @else
             <input class="form-control" name="data[{{$key.time()}}][ket]" type="text" value="{{$comp->ket}}" placeholder="keterangan">
+            @endif
         </td>
         <!-- <td>
             @if($comp->cntTagingReason > 0)
