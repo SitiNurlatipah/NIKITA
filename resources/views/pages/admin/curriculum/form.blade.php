@@ -38,10 +38,10 @@
         </div>
     </div>
     <div class="col-6">
-        {{-- <div class="form-group">
+        <div class="form-group">
             <label for="noModule">Tahun Berlaku Curriculum</label>
             <input type="date" class="form-control" id="curriculum_year" name="curriculum_year" value="{{ $curriculum->curriculum_year }}">
-        </div> --}} 
+        </div> 
         <div class="form-group">
             <label for="noModule">Job Title</label>
             <select class="form-control selectpicker form-control-sm" id="id_job_titles" name="id_job_title[]"
