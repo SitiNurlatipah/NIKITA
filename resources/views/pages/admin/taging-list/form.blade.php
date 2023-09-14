@@ -135,7 +135,8 @@
         <select class="form-control form-control-sm" name="result_score" id="result_score" required>
             <option value="">Pilih Score</option>
             @php
-                $min = $white_tag->actual;
+                $man = $white_tag->actual;
+                $min = 1;
                 $max = 5;
             @endphp
             @while ($min <= $max)

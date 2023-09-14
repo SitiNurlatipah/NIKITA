@@ -320,7 +320,11 @@ class Tagging extends Controller
                 TagingReason::insert($tempData);
                 $messages = "Success! Data berhasil di Follow Up";
             }
-            WhiteTagModel::where("id_white_tag",$data["id_white_tag"])->update(["actual"=>$data["result_score"]]);
+            WhiteTagModel::where("id_white_tag",$data["id_white_tag"])
+                            ->update([
+                                "actual" => $data["result_score"],
+                                "keterangan" => $data["notes_for_result"] // Tambahkan kolom "keterangan" ke sini
+                            ]);
             DB::commit();
             return Response::json(['success' => $messages]);
         } catch (\Exception $e) {
