@@ -137,7 +137,7 @@
             @php
                 $man = $white_tag->actual;
                 $min = 1;
-                $max = 5;
+                $max = 4;
             @endphp
             @while ($min <= $max)
                 <option {{(($taging->result_score ?? 0) == $min) ? 'selected' : ''}} value="{{$min}}">{{$min}}</option>
