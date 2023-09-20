@@ -121,6 +121,13 @@ class Ceme extends Controller
             'totalScore' => []
         ];
         $cgAuth = Auth::user()->id_cg;
+        $cgtambah = Auth::user()->id_cgtambahan;
+        $cgtambah2 = Auth::user()->id_cgtambahan_2;
+        $cgtambah3 = Auth::user()->id_cgtambahan_3;
+        $cgtambah4 = Auth::user()->id_cgtambahan_4;
+        $cgtambah5 = Auth::user()->id_cgtambahan_5;
+        $dp= Auth::user()->id_department;
+        $id = Auth::user()->id;
         if($ceme === 'all')
         {
             $wt = WhiteTagModel::select('users.*')
@@ -134,6 +141,42 @@ class Ceme extends Controller
                 ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
                 ->groupBy('id_user')->get();
         }else{
+            if (Auth::user()->id_level == 'LV-0003') {
+                $wt = WhiteTagModel::select('users.*')
+                ->join("users",function ($join) use ($request){
+                    $join->on("users.id","white_tag.id_user")
+                    ->where([
+                        ["white_tag.actual",">=","cd.target"]
+                    ]);
+                })
+                ->join('department', function ($join) use ($dp) {
+                    $join->on('users.id_department', 'department.id_department')
+                    ->where('users.id_department', $dp);
+                })
+                ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
+                ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->groupBy('id_user')->get();
+            }else if (Auth::user()->id_level == 'LV-0004') {
+                $wt = WhiteTagModel::select('users.*')
+                ->join("users",function ($join) use ($request){
+                    $join->on("users.id","white_tag.id_user")
+                    ->where([
+                        ["white_tag.actual",">=","cd.target"]
+                    ]);
+                })
+                ->join('cg', function ($join) use ($id,$cgAuth, $cgtambah,$cgtambah2,$cgtambah3,$cgtambah4,$cgtambah5) {
+                    $join->on('users.id_cg', 'cg.id_cg')
+                    ->Where('users.id', $id)
+                    ->orWhere('users.id_cg', $cgtambah)
+                    ->orWhere('users.id_cg', $cgtambah2)
+                    ->orWhere('users.id_cg', $cgtambah3)
+                    ->orWhere('users.id_cg', $cgtambah4)
+                    ->orWhere('users.id_cg', $cgtambah5);
+                })
+                ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
+                ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->groupBy('id_user')->get();
+            }else{
             $wt = WhiteTagModel::select('users.*')
                 ->join("users",function ($join) use ($request){
                     $join->on("users.id","white_tag.id_user")
@@ -148,6 +191,8 @@ class Ceme extends Controller
                 ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
                 ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
                 ->groupBy('id_user')->get();
+            }
+            
         }
         foreach($wt as $data)
         {
