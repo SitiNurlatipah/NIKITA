@@ -63,9 +63,10 @@ class WhiteTag extends Controller
         return Datatables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
-            $btn = '<button type="button" onclick="detailWhiteTag('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="btn btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail"><i class="ti-eye"></i></button>';
-                return $btn;
-            })
+                $btn = '<button data-id="' . $row->id . '" onclick="getMapComp('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="button-add btn btn-inverse-success btn-icon mr-1" data-toggle="modal" data-target="#modal-tambah"><i class="icon-plus menu-icon"></i></button>';
+                $btn = $btn . '<button type="button" onclick="detailWhiteTag('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="btn btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail"><i class="ti-eye"></i></button>';
+                    return $btn;
+                })
             ->addIndexColumn()
             ->rawColumns(['action'])
             ->make(true);
