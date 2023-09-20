@@ -408,7 +408,6 @@
 
 @endpush
 @push('script')
-<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
 <script src="{{asset('assets/js/cropper-v2.js')}}"></script>
 <script src="{{ asset('assets/select2/js/select2.min.js') }}"></script>
 <script src="{{ asset('assets/vendors/datatables.net/jquery.dataTables.js') }}"></script>
