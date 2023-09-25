@@ -58,10 +58,10 @@
                                         </tr>
                                         <tr>
                                             <th colspan="2">Target</th>
-                                            <th>100% </th>
-                                            <th>85% </th>
-                                            <th>75% </th>
-                                            <th>86.67%</th>
+                                            <th style="text-align:center">100% </th>
+                                            <th style="text-align:center">85% </th>
+                                            <th style="text-align:center">75% </th>
+                                            <th style="text-align:center">86.67%</th>
                                         </tr>
                                     </thead>
                                     <tbody>

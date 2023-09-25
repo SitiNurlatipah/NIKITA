@@ -7,6 +7,7 @@ use App\CurriculumModel;
 use App\SkillCategoryModel;
 use App\Jabatan;
 use App\CurriculumToJob;
+use App\CurriculumActivityLog;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -92,6 +93,8 @@ class Curriculum extends Controller
                     $curriculum->training_module_group = $request->training_module_group;
                     $curriculum->training_module_desc = $request->training_module_desc;
                     $curriculum->save();
+                    $trainingModule = $curriculum->training_module;
+                    $this->addLogActivity($curriculum, 'Penambahan kompetensi: ' .$trainingModule);
                     $insert = [];
                     for($i = 0;$i < count($request->id_job_title);$i++){
                         $insert[$i] = [
@@ -123,6 +126,8 @@ class Curriculum extends Controller
             'id_job_title' => 'required|array',
         ]);
         $curriculum = CurriculumModel::where("id_curriculum",$request->id_curriculum)->first();
+        $trainingModule = $curriculum->training_module;
+        $this->logActivity($curriculum, 'Pengubahan pada kompetensi: ' .$trainingModule);
         $update = [
             'id_skill_category' => $request->id_skill_category,
             'training_module' => $request->training_module,
@@ -161,6 +166,9 @@ class Curriculum extends Controller
     }
     public function delete($id)
     {
+        $curriculum = CurriculumModel::where('id_curriculum', $id)->first();
+        $deletedTrainingModule = $curriculum->training_module;
+        $this->logActivity($curriculum, 'Penghapusan kompetensi: '.$deletedTrainingModule);
         CurriculumModel::where('id_curriculum', $id)->delete();
         CurriculumToJob::where("id_curriculum",$id)->delete();
         return redirect()->route('Curriculum')->with(['success' => 'Curriculum Deleted successfully']);
@@ -176,4 +184,20 @@ class Curriculum extends Controller
         ]);
     }
 
+    private function logActivity($curriculum, $action)
+    {
+        $activityLog = new CurriculumActivityLog();
+        $activityLog->user_id = auth()->user()->id;
+        $activityLog->curriculum_id = $curriculum->id_curriculum;
+        $activityLog->action = $action;
+        $activityLog->save();
+    }
+    private function addLogActivity($curriculum, $action)
+    {
+        $activityLog = new CurriculumActivityLog();
+        $activityLog->user_id = auth()->user()->id;
+        $activityLog->curriculum_id = $curriculum->id;
+        $activityLog->action = $action;
+        $activityLog->save();
+    }
 }

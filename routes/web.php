@@ -62,6 +62,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/curriculum-edit', 'Curriculum@editCurriculum')->name('editCurriculum');
         Route::get('/curriculum-delete/{id}', 'Curriculum@delete')->name('Curriculum.delete');
     });
+    Route::prefix("loghistory")->group(function () {
+        Route::get('/', 'CurriculumActivityLogController@index')->name('LogHistory');
+        Route::get('/json', 'CurriculumActivityLogController@json')->name('curriculumActivityLog.get');
+    });
 
     // Taging
     Route::prefix("tagging-list")->group(function () {

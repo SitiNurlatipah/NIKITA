@@ -56,6 +56,12 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="{{ route('LogHistory') }}">
+                    <i class="icon-watch menu-icon"></i>
+                    <span class="menu-title">Log History Curriculum</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="{{ route('CompetenciesDirectory') }}">
                     <i class="icon-book menu-icon"></i>
                     <span class="menu-title">Competency Dictionary</span>

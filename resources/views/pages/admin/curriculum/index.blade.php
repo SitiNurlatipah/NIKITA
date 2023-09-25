@@ -19,7 +19,7 @@
             <div class="card">
                 <div class="card-body">
                 <div class="row">
-                    <p class="card-title ml-4">Curriculumn</p>
+                    <p class="card-title ml-4">Curriculum</p>
                     <div class="col-md mb-2">
                             <a class="btn btn-sm btn-success float-right" href="javascript:void(0)" id="createNewItem"
                                 data-toggle="modal" data-target="#modal-tambah"><i class="icon-plus"></i> Add
