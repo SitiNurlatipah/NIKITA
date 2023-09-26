@@ -112,6 +112,107 @@ class Ceme extends Controller
             'pie' => $pie
         ]);
     }
+    public function competentEmployeeJson(Request $request)
+    {
+        $cg = Auth::user()->id_cg;
+        $cgtambah = Auth::user()->id_cgtambahan;
+        $cgtambah2 = Auth::user()->id_cgtambahan_2;
+        $cgtambah3 = Auth::user()->id_cgtambahan_3;
+        $cgtambah4 = Auth::user()->id_cgtambahan_4;
+        $cgtambah5 = Auth::user()->id_cgtambahan_5;
+        $dp= Auth::user()->id_department;
+        $id = Auth::user()->id;
+        $q= request('q');
+        if($q === 'all')
+        {
+            $wt = WhiteTagModel::select('users.*')
+                ->join("users",function ($join) use ($request){
+                    $join->on("users.id","white_tag.id_user")
+                    ->where([
+                        ["white_tag.actual",">=","cd.target"]
+                    ]);
+                })
+                ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
+                ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->groupBy('id_user')
+                ->get();
+        }else{
+            if(Auth::user()->id_level == 'LV-0003'){
+            $wt = WhiteTagModel::select('users.*')
+                ->join("users",function ($join) use ($request){
+                    $join->on("users.id","white_tag.id_user")
+                    ->where([
+                        ["white_tag.actual",">=","cd.target"]
+                    ]);
+                })
+                ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
+                ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->where('users.id_department', $dp)
+                ->groupBy('id_user')
+                ->get();
+            } else if(Auth::user()->id_level == 'LV-0004'){
+            $wt = WhiteTagModel::select('users.*')
+                ->join("users",function ($join) use ($request){
+                    $join->on("users.id","white_tag.id_user")
+                    ->where([
+                        ["white_tag.actual",">=","cd.target"]
+                    ]);
+                })
+                ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
+                ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->where('users.id', $id)
+                ->orWhere('users.id_cg', $cgtambah)
+                ->orWhere('users.id_cg', $cgtambah2)
+                ->orWhere('users.id_cg', $cgtambah3)
+                ->orWhere('users.id_cg', $cgtambah4)
+                ->orWhere('users.id_cg', $cgtambah5)
+                ->groupBy('id_user')
+                ->get();
+            } else if(Auth::user()->peran_pengguna == 1){
+            $wt = WhiteTagModel::select('users.*')
+                ->join("users",function ($join) use ($request){
+                    $join->on("users.id","white_tag.id_user")
+                    ->where([
+                        ["white_tag.actual",">=","cd.target"]
+                    ]);
+                })
+                ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
+                ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->groupBy('id_user')
+                ->get();
+            } else {
+            $wt = WhiteTagModel::select('users.*')
+                ->join("users",function ($join) use ($request){
+                    $join->on("users.id","white_tag.id_user")
+                    ->where([
+                        ["white_tag.actual",">=","cd.target"]
+                    ]);
+                })
+                ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
+                ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->where('id_cg', $cg)
+                ->groupBy('id_user')
+                ->get();
+            }
+        }
+        return Datatables::of($wt)
+        ->addIndexColumn()
+        ->addColumn('score_b', function ($item) {
+            return round($item->score($item->id, 'B'), 2) . '%';
+        })
+        ->addColumn('score_i', function ($item) {
+            return round($item->score($item->id, 'I'), 2) . '%';
+        })
+        ->addColumn('score_a', function ($item) {
+            return round($item->score($item->id, 'A'), 2) . '%';
+        })
+        ->addColumn('rata_rata', function ($item) {
+            $avg = round($item->totalScore($item->id), 2);
+            return $avg >= 86.67 ? '<span class="badge badge-warning">' . $avg . '%</span>' : $avg . '%';
+        })
+        ->rawColumns(['rata_rata']) // Ini penting untuk merender elemen HTML
+        ->make(true);      
+    }
 
     public function chartCeme(Request $request)
     {

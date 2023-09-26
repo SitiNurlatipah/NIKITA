@@ -108,7 +108,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/detail', 'WhiteTag@detailWhiteTag')->name('detailWhiteTag');
 
         Route::get('/chart-skill-category','WhiteTag@chartSkillCategory')->name("chartSkillCategory");
-        Route::get('/chart-comp-grour','WhiteTag@chartCompGroup')->name("chartCompGroup");
+        Route::get('/chart-comp-group','WhiteTag@chartCompGroup')->name("chartCompGroup");
     });
 
     //CEME
@@ -122,6 +122,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('ceme/delete-job-title','Ceme@deleteJobTitle')->name('ceme.deleteJobTitle');
     Route::post('ceme/chartCeme','Ceme@chartCeme')->name('ceme.chartCeme');
     Route::post('ceme/chartMe','Ceme@chartMe')->name('ceme.chartMe');
+    Route::get('/competent/json', 'Ceme@competentEmployeeJson')->name('competent.json');
 
 
     Route::prefix("grade")->group(function () {

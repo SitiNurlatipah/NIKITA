@@ -65,26 +65,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-
-                                        @foreach ($wt as $item)
-                                            @php
-                                                $avg = round($item->totalScore($item->id),2);
-                                            @endphp
-                                        <tr class="{{ $avg >= 86.67  ? 'bg-warning' : '' }}">
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->nama_pengguna }}.</td>
-                                            <td>{{ round($item->score($item->id,'B'),2) }}%</td>
-                                            <td>{{ round($item->score($item->id,'I'),2) }}%</td>
-                                            <td>{{ round($item->score($item->id,'A'),2) }}%</td>
-                                            <td>
-                                                @if ($avg >= 86.67)
-                                                    <span class="badge badge-warning">{{ $avg }}%</span>
-                                                @else
-                                                    {{ $avg }}%
-                                                @endif
-                                            </td>
-                                        </tr>
-                                        @endforeach
+                                        
                                     </tbody>
                                 </table>
                             </div>
@@ -342,16 +323,50 @@
         });
         $(document).ready(function() {
             initDatatable();
+            cemeTable();
             $('[data-toggle="tooltip"]').tooltip({
                 animation: true,
                 placement: "top",
                 trigger: "hover focus"
             });
         });
-        $('#tblceme').dataTable( {
-            paging: true,
-            searching: true
-        } );
+        function cemeTable() {
+            var dtJson = $('#tblceme').DataTable({
+                ajax: "{{ route('competent.json') }}",
+                autoWidth: false,
+                serverSide: true,
+                processing: true,
+                aaSorting: [
+                    [0, "desc"]
+                ],
+                searching: true,
+                dom: '<"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+                displayLength: 10,
+                lengthMenu: [10, 15, 20],
+                language: {
+                    paginate: {
+                        // remove previous & next text from pagination
+                        previous: '&nbsp;',
+                        next: '&nbsp;'
+                    }
+                },
+                scrollX: true,
+                columns: [
+                    { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                    { data: 'nama_pengguna', name: 'nama_pengguna' },
+                    { data: 'score_b', name: 'score_b' },
+                    { data: 'score_i', name: 'score_i' },
+                    { data: 'score_a', name: 'score_a' },
+                    { data: 'rata_rata', name: 'rata_rata' },
+                ],
+                createdRow: function (row, data, dataIndex) {
+                if (data.rata_rata.indexOf('badge-warning') !== -1) {
+                    $(row).addClass('bg-warning');
+                }
+            },
+            })
+        }
+        
 
 
         function initDatatable() {
