@@ -123,20 +123,7 @@ class Ceme extends Controller
         $dp= Auth::user()->id_department;
         $id = Auth::user()->id;
         $q= request('q');
-        if($q === 'all')
-        {
-            $wt = WhiteTagModel::select('users.*')
-                ->join("users",function ($join) use ($request){
-                    $join->on("users.id","white_tag.id_user")
-                    ->where([
-                        ["white_tag.actual",">=","cd.target"]
-                    ]);
-                })
-                ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
-                ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
-                ->groupBy('id_user')
-                ->get();
-        }else{
+        
             if(Auth::user()->id_level == 'LV-0003'){
             $wt = WhiteTagModel::select('users.*')
                 ->join("users",function ($join) use ($request){
@@ -194,7 +181,7 @@ class Ceme extends Controller
                 ->groupBy('id_user')
                 ->get();
             }
-        }
+        
         return Datatables::of($wt)
         ->addIndexColumn()
         ->addColumn('score_b', function ($item) {

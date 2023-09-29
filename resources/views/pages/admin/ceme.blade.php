@@ -331,7 +331,7 @@
             });
         });
         function cemeTable() {
-            var dtJson = $('#tblceme').DataTable({
+            var competenJson = $('#tblceme').DataTable({
                 ajax: "{{ route('competent.json') }}",
                 autoWidth: false,
                 serverSide: true,
