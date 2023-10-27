@@ -348,7 +348,10 @@
                         // remove previous & next text from pagination
                         previous: '&nbsp;',
                         next: '&nbsp;'
-                    }
+                    },
+                    loadingRecords: "Please wait - loading..."
+                    // processing: "DataTables is currently busy"
+  
                 },
                 scrollX: true,
                 columns: [

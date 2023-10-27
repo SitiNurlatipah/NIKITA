@@ -125,7 +125,7 @@ class Ceme extends Controller
         $q= request('q');
         
             if(Auth::user()->id_level == 'LV-0003'){
-            $wt = WhiteTagModel::select('users.*')
+            $competent = WhiteTagModel::select('users.*')
                 ->join("users",function ($join) use ($request){
                     $join->on("users.id","white_tag.id_user")
                     ->where([
@@ -138,7 +138,7 @@ class Ceme extends Controller
                 ->groupBy('id_user')
                 ->get();
             } else if(Auth::user()->id_level == 'LV-0004'){
-            $wt = WhiteTagModel::select('users.*')
+            $competent = WhiteTagModel::select('users.*')
                 ->join("users",function ($join) use ($request){
                     $join->on("users.id","white_tag.id_user")
                     ->where([
@@ -156,7 +156,7 @@ class Ceme extends Controller
                 ->groupBy('id_user')
                 ->get();
             } else if(Auth::user()->peran_pengguna == 1){
-            $wt = WhiteTagModel::select('users.*')
+            $competent = WhiteTagModel::select('users.*')
                 ->join("users",function ($join) use ($request){
                     $join->on("users.id","white_tag.id_user")
                     ->where([
@@ -168,7 +168,7 @@ class Ceme extends Controller
                 ->groupBy('id_user')
                 ->get();
             } else {
-            $wt = WhiteTagModel::select('users.*')
+            $competent = WhiteTagModel::select('users.*')
                 ->join("users",function ($join) use ($request){
                     $join->on("users.id","white_tag.id_user")
                     ->where([
@@ -182,7 +182,7 @@ class Ceme extends Controller
                 ->get();
             }
         
-        return Datatables::of($wt)
+        return Datatables::of($competent)
         ->addIndexColumn()
         ->addColumn('score_b', function ($item) {
             return round($item->score($item->id, 'B'), 2) . '%';
