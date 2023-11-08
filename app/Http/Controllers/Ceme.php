@@ -264,6 +264,17 @@ class Ceme extends Controller
                 ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
                 ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
                 ->groupBy('id_user')->get();
+            }else if (Auth::user()->peran_pengguna == 1) {
+                $wt = WhiteTagModel::select('users.*')
+                ->join("users",function ($join) use ($request){
+                    $join->on("users.id","white_tag.id_user")
+                    ->where([
+                        ["white_tag.actual",">=","cd.target"]
+                    ]);
+                })
+                ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
+                ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->groupBy('id_user')->get();
             }else{
             $wt = WhiteTagModel::select('users.*')
                 ->join("users",function ($join) use ($request){
@@ -294,7 +305,14 @@ class Ceme extends Controller
     public function chartMe()
     {
         $ceme = request('ceme');
-
+        $cgAuth = Auth::user()->id_cg;
+        $cgtambah = Auth::user()->id_cgtambahan;
+        $cgtambah2 = Auth::user()->id_cgtambahan_2;
+        $cgtambah3 = Auth::user()->id_cgtambahan_3;
+        $cgtambah4 = Auth::user()->id_cgtambahan_4;
+        $cgtambah5 = Auth::user()->id_cgtambahan_5;
+        $dp= Auth::user()->id_department;
+        $id = Auth::user()->id;
         if($ceme === 'all')
         {
             $users = DB::table('users')->where('is_competent',1)
@@ -305,13 +323,43 @@ class Ceme extends Controller
             ->get();
 
         }else{
+            if (Auth::user()->id_level == 'LV-0003') {
             $users = DB::table('users')->where('is_competent',1)
-            ->Join('job_title_users','job_title_users.user_id','users.id')
-            ->groupBy('job_title_users.user_id')
-            ->select('users.nama_pengguna',DB::raw('count(job_title_users.user_id) as totalSkill'))
-            ->groupBy(DB::Raw('IFNULL( job_title_users.user_id , 0 )'))
-            ->where('id_cg',auth()->user()->id_cg)
-            ->get();
+                ->Join('job_title_users','job_title_users.user_id','users.id')
+                ->groupBy('job_title_users.user_id')
+                ->select('users.nama_pengguna',DB::raw('count(job_title_users.user_id) as totalSkill'))
+                ->groupBy(DB::Raw('IFNULL( job_title_users.user_id , 0 )'))
+                ->where('users.id_department', $dp)
+                ->get();
+            }else if (Auth::user()->id_level == 'LV-0004') {
+            $users = DB::table('users')->where('is_competent',1)
+                ->Join('job_title_users','job_title_users.user_id','users.id')
+                ->groupBy('job_title_users.user_id')
+                ->select('users.nama_pengguna',DB::raw('count(job_title_users.user_id) as totalSkill'))
+                ->groupBy(DB::Raw('IFNULL( job_title_users.user_id , 0 )'))
+                ->where('users.id', $id)
+                ->orWhere('users.id_cg', $cgtambah)
+                ->orWhere('users.id_cg', $cgtambah2)
+                ->orWhere('users.id_cg', $cgtambah3)
+                ->orWhere('users.id_cg', $cgtambah4)
+                ->orWhere('users.id_cg', $cgtambah5)
+                ->get();
+            }else if(Auth::user()->peran_pengguna == 1){
+            $users = DB::table('users')->where('is_competent',1)
+                ->Join('job_title_users','job_title_users.user_id','users.id')
+                ->groupBy('job_title_users.user_id')
+                ->select('users.nama_pengguna',DB::raw('count(job_title_users.user_id) as totalSkill'))
+                ->groupBy(DB::Raw('IFNULL( job_title_users.user_id , 0 )'))
+                ->get();
+            }else{
+            $users = DB::table('users')->where('is_competent',1)
+                ->Join('job_title_users','job_title_users.user_id','users.id')
+                ->groupBy('job_title_users.user_id')
+                ->select('users.nama_pengguna',DB::raw('count(job_title_users.user_id) as totalSkill'))
+                ->groupBy(DB::Raw('IFNULL( job_title_users.user_id , 0 )'))
+                ->where('id_cg',auth()->user()->id_cg)
+                ->get();
+            }
         }
         return response()->json($users);
     }

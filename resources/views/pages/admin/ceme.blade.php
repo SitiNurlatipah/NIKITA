@@ -51,13 +51,14 @@
                                         <tr>
                                             <th>No.</th>
                                             <th style="width:10%">Name</th>
+                                            <th style="width:10%">NIK</th>
                                             <th style="text-align:center">B </th>
                                             <th style="text-align:center">I </th>
                                             <th style="text-align:center">A </th>
                                             <th>Avr</th>
                                         </tr>
                                         <tr>
-                                            <th colspan="2">Target</th>
+                                            <th colspan="3">Target</th>
                                             <th style="text-align:center">100% </th>
                                             <th style="text-align:center">85% </th>
                                             <th style="text-align:center">75% </th>
@@ -95,6 +96,7 @@
                                         <tr>
                                             <th>No.</th>
                                             <th>Name</th>
+                                            <th>NIK</th>
                                             <th>Job Title</th>
                                             <th>Department</th>
                                             {{-- <th>Level</th> --}}
@@ -357,6 +359,7 @@
                 columns: [
                     { data: 'DT_RowIndex', name: 'DT_RowIndex' },
                     { data: 'nama_pengguna', name: 'nama_pengguna' },
+                    { data: 'nik', name: 'nik' },
                     { data: 'score_b', name: 'score_b' },
                     { data: 'score_i', name: 'score_i' },
                     { data: 'score_a', name: 'score_a' },
@@ -405,6 +408,9 @@
                     },
                     {
                         data: 'nama_pengguna'
+                    },
+                    {
+                        data: 'nik'
                     },
                     {
                         data: 'nama_job_title'
