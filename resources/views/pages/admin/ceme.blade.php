@@ -351,7 +351,28 @@
         function cemeTable() {
             @if(Auth::user()->peran_pengguna == '1')
             var buttons = [
-                'copy', 'csv', 'excel', 'pdf', 'print',
+                'copy', 'csv',
+                {
+                    extend: 'excelHtml5',
+                    text: 'Excel',
+                    customize: function(xlsx) {
+                        var sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                        var count = 0;
+                        var skippedHeader = false;
+                        $('row c[r^="B"]', sheet).each(function() {
+                            if (skippedHeader) {
+                                var isWarning = $('tbody tr:eq(' + parseInt(count) + ')').hasClass('bg-warning');
+                                if (isWarning) {
+                                    $(this).attr('s', '35'); // Ganti dengan indeks gaya yang sesuai dengan warna yang Anda inginkan
+                                }
+                                count++;
+                            } else {
+                                skippedHeader = true;
+                            }
+                        });
+                    }
+                },'pdf', 'print',
             ];
             @else
             var buttons = [];
@@ -1170,15 +1191,6 @@
             options: doughnutPieOptions
             });
         }
-        var chart1Height = pieChart1.chartArea.bottom - pieChart1.chartArea.top;
-
-    // Mengukur tinggi pie chart 2
-    var chart2Height = pieChart2.chartArea.bottom - pieChart2.chartArea.top;
-
-    // Menentukan tinggi maksimum dari kedua chart
-    var maxHeight = Math.max(chart1Height, chart2Height);
-
-    // Mengatur tinggi card sesuai dengan tinggi maksimum chart
-    $(".height-card").css("height", maxHeight + "px");
+        
     </script>
 @endpush
