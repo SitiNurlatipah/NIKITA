@@ -19,7 +19,7 @@
     </div>
     <div class="row">
         <div class="col-md-12 mb-4">
-            <div class="card">
+            <div class="card height-card" >
                 <div class="card-body">
                     <h4 class="card-title">CEME</h4>
                     <div class="row">
@@ -52,6 +52,8 @@
                                             <th>No.</th>
                                             <th style="width:10%">Name</th>
                                             <th style="width:10%">NIK</th>
+                                            <th style="width:10%">CG</th>
+                                            <th style="width:10%">Department</th>
                                             <th style="text-align:center">B </th>
                                             <th style="text-align:center">I </th>
                                             <th style="text-align:center">A </th>
@@ -349,7 +351,7 @@
         function cemeTable() {
             @if(Auth::user()->peran_pengguna == '1')
             var buttons = [
-                'copy', 'csv', 'excel', 'pdf', 'print'
+                'copy', 'csv', 'excel', 'pdf', 'print',
             ];
             @else
             var buttons = [];
@@ -382,6 +384,8 @@
                     { data: 'DT_RowIndex', name: 'DT_RowIndex' },
                     { data: 'nama_pengguna', name: 'nama_pengguna' },
                     { data: 'nik', name: 'nik' },
+                    { data: 'nama_cg', name: 'nama_cg' },
+                    { data: 'nama_department', name: 'nama_department' },
                     { data: 'score_b', name: 'score_b' },
                     { data: 'score_i', name: 'score_i' },
                     { data: 'score_a', name: 'score_a' },
@@ -404,6 +408,13 @@
             } else {
                 var ajaxRoute = '{{ route('ceme.json') }}';
             }
+            @if(Auth::user()->peran_pengguna == '1')
+            var buttons = [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ];
+            @else
+            var buttons = [];
+            @endif
             var dtJson = $('#table-ceme').DataTable({
                 ajax: ajaxRoute,
                 autoWidth: false,
@@ -413,9 +424,10 @@
                     [0, "desc"]
                 ],
                 searching: true,
-                dom: '<"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+                dom: 'lBfrtip',
+                buttons: buttons,
                 displayLength: 10,
-                lengthMenu: [10, 15, 20],
+                lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
                 language: {
                     paginate: {
                         // remove previous & next text from pagination
@@ -1158,5 +1170,15 @@
             options: doughnutPieOptions
             });
         }
+        var chart1Height = pieChart1.chartArea.bottom - pieChart1.chartArea.top;
+
+    // Mengukur tinggi pie chart 2
+    var chart2Height = pieChart2.chartArea.bottom - pieChart2.chartArea.top;
+
+    // Menentukan tinggi maksimum dari kedua chart
+    var maxHeight = Math.max(chart1Height, chart2Height);
+
+    // Mengatur tinggi card sesuai dengan tinggi maksimum chart
+    $(".height-card").css("height", maxHeight + "px");
     </script>
 @endpush

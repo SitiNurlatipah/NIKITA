@@ -203,4 +203,13 @@ class ManagementSystemController extends Controller
         $items = ManagementSystem::where('id_system',$id)->get('target');
         return response()->json($items);
     }
+    public function getMember()
+    {
+        $users = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')->get(['nama_pengguna','nama_department']);
+        return response()->json([
+            'data' => $users,
+            'status' => 200,
+            'success' => true,
+        ]);
+    }
 }

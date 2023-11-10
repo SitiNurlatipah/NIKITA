@@ -125,7 +125,7 @@ class Ceme extends Controller
         $q= request('q');
         
             if(Auth::user()->id_level == 'LV-0003'){
-            $competent = WhiteTagModel::select('users.*')
+            $competent = WhiteTagModel::select('users.*', 'dp.nama_department', 'cg.nama_cg')
                 ->join("users",function ($join) use ($request){
                     $join->on("users.id","white_tag.id_user")
                     ->where([
@@ -134,11 +134,13 @@ class Ceme extends Controller
                 })
                 ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
                 ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->join('department as dp', 'users.id_department', '=', 'dp.id_department')
+                ->join('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
                 ->where('users.id_department', $dp)
                 ->groupBy('id_user')
                 ->get();
             } else if(Auth::user()->id_level == 'LV-0004'){
-            $competent = WhiteTagModel::select('users.*')
+            $competent = WhiteTagModel::select('users.*', 'dp.nama_department', 'cg.nama_cg')
                 ->join("users",function ($join) use ($request){
                     $join->on("users.id","white_tag.id_user")
                     ->where([
@@ -147,6 +149,8 @@ class Ceme extends Controller
                 })
                 ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
                 ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->join('department as dp', 'users.id_department', '=', 'dp.id_department')
+                ->join('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
                 ->where('users.id', $id)
                 ->orWhere('users.id_cg', $cgtambah)
                 ->orWhere('users.id_cg', $cgtambah2)
@@ -156,7 +160,7 @@ class Ceme extends Controller
                 ->groupBy('id_user')
                 ->get();
             } else if(Auth::user()->peran_pengguna == 1){
-            $competent = WhiteTagModel::select('users.*')
+            $competent = WhiteTagModel::select('users.*', 'dp.nama_department', 'cg.nama_cg')
                 ->join("users",function ($join) use ($request){
                     $join->on("users.id","white_tag.id_user")
                     ->where([
@@ -165,10 +169,12 @@ class Ceme extends Controller
                 })
                 ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
                 ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->join('department as dp', 'users.id_department', '=', 'dp.id_department')
+                ->join('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
                 ->groupBy('id_user')
                 ->get();
             } else {
-            $competent = WhiteTagModel::select('users.*')
+            $competent = WhiteTagModel::select('users.*', 'dp.nama_department','cg.nama_cg')
                 ->join("users",function ($join) use ($request){
                     $join->on("users.id","white_tag.id_user")
                     ->where([
@@ -177,6 +183,8 @@ class Ceme extends Controller
                 })
                 ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
                 ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->join('department as dp', 'users.id_department', '=', 'dp.id_department')
+                ->join('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
                 ->where('id_cg', $cg)
                 ->groupBy('id_user')
                 ->get();
