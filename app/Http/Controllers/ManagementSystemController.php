@@ -39,7 +39,8 @@ class ManagementSystemController extends Controller
         {
             $data = ManagementSystem::where('id_system',$id)->update([
                 'nama_system' => request('nama_system'),
-                'description' => request('description')
+                'description' => request('description'),
+                'target' => request('target')
             ]);
             $response = [
                 'code' => 200,
@@ -51,7 +52,8 @@ class ManagementSystemController extends Controller
         }else{
             $data = ManagementSystem::create([
                 'nama_system' => request('nama_system'),
-                'description' => request('description')
+                'description' => request('description'),
+                'target' => request('target')
             ]);
 
             $response = [
@@ -95,8 +97,9 @@ class ManagementSystemController extends Controller
         leftJoin('management_system as ms', 'management_system_to_user.id_system', '=', 'ms.id_system')
         ->leftJoin('users', 'management_system_to_user.id_user', '=', 'users.id')
         ->get(['management_system_to_user.*', 'users.nama_pengguna', 'ms.nama_system', 'ms.id_system', 'management_system_to_user.start', 'management_system_to_user.actual', 'ms.target' , 'users.id', 'ms.description']);
-
-        return view('pages.admin.system.index',compact('items'));
+        $user=User::get(['id','nama_pengguna']);
+        $module=ManagementSystem::get(['id_system','nama_system']);
+        return view('pages.admin.system.index',compact('items','user','module'));
     }
 
     public function store()

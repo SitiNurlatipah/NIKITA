@@ -209,7 +209,7 @@ class Ceme extends Controller
         ->make(true);      
     }
 
-    public function chartCeme(Request $request)
+    public function chart(Request $request)
     {
         $ceme = request('q');
         $pie = [
@@ -305,6 +305,27 @@ class Ceme extends Controller
         {
             array_push($pie['label'],$data->nama_pengguna);
             array_push($pie['totalScore'],round($data->totalScore($data->id),2));
+        };
+
+        return response()->json($pie);
+    }
+    public function chartCeme(Request $request)
+    {
+        $ceme = request('q');
+        $pie = [
+            'label' => [],
+            'totalScore' => []
+        ];
+         
+        $wt=User::select(DB::raw("count(id) as total"),DB::raw("CASE WHEN is_competent = '1' THEN 'Competent' ELSE 'Non-Competent' END as competency_status"))->groupBy('is_competent')->get();
+        $totalUsers = $wt->sum('total');
+        foreach($wt as $data)
+        {
+            $percentage = ($data->total / $totalUsers) * 100; // Calculate the percentage
+            $labelWithPercentage = $data->competency_status . ' (' . round($percentage, 2) . '%)';
+
+            $pie['label'][] = $labelWithPercentage; // Use [] to append to the array
+            $pie['totalScore'][] = $data->total;
         };
 
         return response()->json($pie);

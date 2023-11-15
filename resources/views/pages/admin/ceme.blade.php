@@ -27,10 +27,10 @@
                             <h5>Competent Employee</h4>
                             <canvas id="pieChart"></canvas>
                         </div>
-                        <div class="col-6">
+                        <!-- <div class="col-6">
                             <h5>Multiskill Employee</h4>
                             <canvas id="pieChart2"></canvas>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

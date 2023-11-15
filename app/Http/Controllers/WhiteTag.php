@@ -585,13 +585,13 @@ class WhiteTag extends Controller
                   ->orWhere('sub.id_skill_category', '<>', 1)
                   ->whereRaw("competencies_directory.between_year = '".$between2."'");
         })
-                                            ->join("competencie_groups as compGroup","compGroup.id","curriculum.training_module_group")
-                                            ->join("skill_category","skill_category.id_skill_category","curriculum.id_skill_category")
-                                            ->leftJoin("white_tag",function ($join) use ($user){
-                                                $join->on("white_tag.id_directory","competencies_directory.id_directory")
-                                                    ->where("white_tag.id_user",$user->id);
-                                            })
-                                            ->get();
+        ->join("competencie_groups as compGroup","compGroup.id","curriculum.training_module_group")
+        ->join("skill_category","skill_category.id_skill_category","curriculum.id_skill_category")
+        ->leftJoin("white_tag",function ($join) use ($user){
+            $join->on("white_tag.id_directory","competencies_directory.id_directory")
+                ->where("white_tag.id_user",$user->id);
+        })
+        ->get();
         return view("pages.admin.white-tag.form",compact('comps','user','type'));
     }
 
