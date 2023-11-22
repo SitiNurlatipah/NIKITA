@@ -134,7 +134,47 @@
         $(document).ready(function() {
             initDatatable();
         });
+    $("#submitSuperman").click(function (e) {
+        var tableEdit = $('#table-edit-superman').DataTable();
+        e.preventDefault()
+        var form = $("#formSuperman")
+        const url = form.attr("action");
+        var formSerialize = $("#formSuperman > input[name=user_id], input[name=_token]").serialize()
+        var serializeDatatable = tableEdit.$('input,select,textarea').serialize()
+        var formData = formSerialize+'&'+serializeDatatable
 
+        console.log(serializeDatatable);
+        // exit();
+        $.ajax({
+            url:url,
+            type:"post",
+            cache:false,
+            data:formData,
+            success:function(data){
+                console.log(data);
+                $("#modal-edit").modal('hide');
+                $('#table-kelola-superman').DataTable().destroy();
+                initDatatable();
+                Swal.fire({
+                    position:'center',
+                    icon:'success',
+                    title:data.message,
+                    showConfirmButton:false,
+                    timer:1500
+                });
+            },
+            error:function(err){
+                console.log(err)
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: err.statusText,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            }
+        })
+    })
     function initDatatable() {
         var dtJson = $('#table-kelola-superman').DataTable({
             ajax: "{{ route('superman.json') }}",

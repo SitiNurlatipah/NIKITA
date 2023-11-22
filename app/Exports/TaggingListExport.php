@@ -29,7 +29,7 @@ class TaggingListExport implements FromCollection, WithStyles, WithHeadings, Wit
     public function collection()
     {
         $select = [
-            "tr.no_taging as noTaging","nama_pengguna as employee_name","nama_cg","nik",
+            "tr.no_taging as noTaging","nama_pengguna as employee_name","nama_cg","nik","tr.date_verified",
             "skill_category","training_module","level","training_module_group","white_tag.actual as actual",
             "cd.target as target",DB::raw("(white_tag.actual - cd.target) as actualTarget"),DB::raw("(IF((white_tag.actual - cd.target) < 0,'Follow Up','Finished' )) as tagingStatus")
         ];
@@ -72,6 +72,7 @@ class TaggingListExport implements FromCollection, WithStyles, WithHeadings, Wit
     public function headings(): array
     {
         return [
+            'Date Verified',
             'No Tagging',
             'NIK',
             'Employee Name',
@@ -82,13 +83,15 @@ class TaggingListExport implements FromCollection, WithStyles, WithHeadings, Wit
             'Competency Group',
             'Actual',
             'Target',
-            'Status'
+            'Status',
+            
         ];
     }
 
     public function map($softreserve): array
     {
         return [
+            $softreserve->date_verified,
             $softreserve->noTaging,
             $softreserve->nik,
             $softreserve->employee_name,
@@ -99,7 +102,8 @@ class TaggingListExport implements FromCollection, WithStyles, WithHeadings, Wit
             $softreserve->training_module_group,
             $softreserve->actual,
             $softreserve->target,
-            $softreserve->tagingStatus
+            $softreserve->tagingStatus,
+            
         ];
     }
 }

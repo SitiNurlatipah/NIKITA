@@ -16,7 +16,6 @@ class AddStartactualFromManagementSystemToUser extends Migration
         Schema::table('management_system_to_user', function (Blueprint $table) {
             $table->integer('start')->default(null)->after('id_system')->nullable();
             $table->integer('actual')->default(null)->after('start')->nullable();
-
         });
     }
 
