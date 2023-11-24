@@ -86,7 +86,7 @@
                 </a>
             </li>
             {{-- Hide Temporary --}}
-            {{-- <li class="nav-item">
+            <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#superman" aria-expanded="false" aria-controls="superman">
                     <i class="icon-command menu-icon"></i>
                     <span class="menu-title">Superman</span>
@@ -96,12 +96,13 @@
                     <ul class="nav flex-column sub-menu">
                     <li class="nav-item"> <a class="nav-link" href="{{ route('member.superman.index') }}">Member Superman</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('superman.index') }}">Curriculum Superman</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('DictionarySuperman') }}">Dictionary</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('kelola.superman.index') }}">Kelola Superman</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="#">CEME Superman</a></li>
+                    <!-- <li class="nav-item"> <a class="nav-link" href="#">CEME Superman</a></li> -->
                     </ul>
                 </div>
             </li>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#champion" aria-expanded="false" aria-controls="champion">
                     <i class="icon-cloud menu-icon"></i>
                     <span class="menu-title">Competencies 4.0</span>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\CurriculumSuperman;
 use App\CurriculumSupermanToUser;
+use App\CompDictionarySupermanModel;
 use App\Department;
 use App\Jabatan;
 use App\Level;
@@ -51,7 +52,7 @@ class SupermanController extends Controller
             'curriculum_superman' => ['required'],
             'curriculum_group' => ['required'],
             'curriculum_desc' => ['required'],
-            'target' => ['required'],
+            // 'target' => ['required'],
         ]);
 
         if($validator->fails())
@@ -87,7 +88,7 @@ class SupermanController extends Controller
                     $curriculum->curriculum_superman = $request->curriculum_superman;
                     $curriculum->curriculum_group = $request->curriculum_group;
                     $curriculum->curriculum_desc = $request->curriculum_desc;
-                    $curriculum->target = $request->target;
+                    // $curriculum->target = $request->target;
                     $curriculum->save();
 
                     $insert = [];
@@ -252,30 +253,54 @@ class SupermanController extends Controller
                     ->first();
         
         $select = [
-            "curriculum_superman.no_curriculum_superman as no_curriculum", "curriculum_superman.target as target",
+            "curriculum_superman.no_curriculum_superman as no_curriculum", "competencies_dictionary_superman.target as target",
             "curriculum_superman.curriculum_superman as curriculum_superman","curriculum_superman.curriculum_group as curriculum_group",
-            "skill_category.skill_category as skill_category","white_tag.start as start", "white_tag.actual as actual","white_tag.keterangan as ket",
-            
-            DB::raw("(SELECT COUNT(*) FROM taging_reason as tr where tr.id_white_tag = white_tag.id_white_tag) as cntTagingReason"),
-            DB::raw("(CASE WHEN (white_tag.actual - curriculum_superman.target) < 0 THEN 'Open'
-                            WHEN (white_tag.actual IS NULL) THEN 'Belum diatur'
-                            WHEN white_tag.actual >= curriculum_superman.target THEN 'Close' 
+            "skill_category.skill_category as skill_category","competencies_superman.start as start", "competencies_superman.actual as actual","competencies_superman.keterangan as ket",
+            "competencies_dictionary_superman.id_dictionary_superman",
+            // DB::raw("(SELECT COUNT(*) FROM taging_reason as tr where tr.id_competencies_superman = competencies_superman.id_competencies_superman) as cntTagingReason"),
+            DB::raw("(CASE WHEN (competencies_superman.actual - competencies_dictionary_superman.target) < 0 THEN 'Open'
+                            WHEN (competencies_superman.actual IS NULL) THEN 'Belum diatur'
+                            WHEN competencies_superman.actual >= competencies_dictionary_superman.target THEN 'Close' 
                             END) as tagingStatus"),"compGroup.name as compGroupName"
         ];
 
-        $comps = CurriculumSupermanToUser::select($select)
-                                            ->join("curriculum_superman",function ($join) use ($user){
-                                                $join->on("curriculum_superman.id_curriculum_superman","curriculum_superman_to_user.id_curriculum_superman")
-                                                    ->whereRaw("curriculum_superman_to_user.id_user = '".$user->id."'");
-                                            })
-                                            ->join("competencie_groups as compGroup","compGroup.id","curriculum_superman.curriculum_group")
-                                            ->join("skill_category","skill_category.id_skill_category","curriculum_superman.id_skill_category")
-                                            ->leftJoin("white_tag",function ($join) use ($user){
-                                                $join->on("white_tag.id_cstu","curriculum_superman_to_user.id_cstu")
-                                                    ->where("white_tag.id_user",$user->id);
-                                            })
-                                            ->get();
-
+        $comps = CompDictionarySupermanModel::select($select)
+                ->join("curriculum_superman",function ($join) use ($user){
+                    $join->on("curriculum_superman.id_curriculum_superman","competencies_dictionary_superman.id_curriculum_superman")
+                        ->whereRaw("competencies_dictionary_superman.id_user = '".$user->id."'");
+                })
+                ->join("competencie_groups as compGroup","compGroup.id","curriculum_superman.curriculum_group")
+                ->join("skill_category","skill_category.id_skill_category","curriculum_superman.id_skill_category")
+                ->leftJoin("competencies_superman",function ($join) use ($user){
+                    $join->on("competencies_superman.id_cstu","competencies_dictionary_superman.id_dictionary_superman")
+                        ->where("competencies_superman.id_user",$user->id);
+                })
+                ->get();
+                // dd($comps);
+        // $comprs = CompDictionarySupermanModel::select($select)
+        //         ->join("curriculum_superman", function ($join) use ($user, $between, $between2) {
+        //             $join->on("curriculum_superman.id_curriculum", "competencies_directory.id_curriculum")
+        //                  ->whereRaw("competencies_directory.id_job_title = '".$user->id_job_title."'");
+        //         })
+        //         ->joinSub(function ($query) use ($user, $between, $between2) {
+        //             $query->select('id_curriculum', 'id_skill_category')
+        //                   ->from('curriculum');
+        //         }, 'sub', function ($join) use ($user, $between, $between2) {
+        //             $join->on('competencies_directory.id_curriculum', '=', 'sub.id_curriculum');
+        //         })
+        //         ->where(function ($query) use ($between, $between2) {
+        //             $query->where('sub.id_skill_category', '=', 1)
+        //                   ->whereRaw("competencies_directory.between_year = '".$between."'")
+        //                   ->orWhere('sub.id_skill_category', '<>', 1)
+        //                   ->whereRaw("competencies_directory.between_year = '".$between2."'");
+        //         })
+        //         ->join("competencie_groups as compGroup","compGroup.id","curriculum.training_module_group")
+        //         ->join("skill_category","skill_category.id_skill_category","curriculum.id_skill_category")
+        //         ->leftJoin("white_tag",function ($join) use ($user){
+        //             $join->on("white_tag.id_directory","competencies_directory.id_directory")
+        //                 ->where("white_tag.id_user",$user->id);
+        //         })
+        //         ->get();
         return view("pages.admin.superman.form",compact('comps','user','type'));
     }
 
@@ -293,13 +318,14 @@ class SupermanController extends Controller
         try{
             $data = $this->validate_input_v2($request);
             $skillId = [1,2];
-            $cek = Superman::whereRaw("id_user = '".$request->user_id."' AND (select count(*) from taging_reason where taging_reason.id_white_tag = white_tag.id_white_tag) <= 0 ")
-                        ->join("competencies_directory",function ($join) use ($skillId){
-                            $join->on('competencies_directory.id_directory','white_tag.id_directory')
-                                ->join('curriculum','curriculum.id_curriculum','competencies_directory.id_curriculum')
-                                ->whereIn('curriculum.id_skill_category',$skillId);
-                        })
-                        ->delete();
+            Superman::where('id_user', $request->user_id)->where(function ($query) use ($skillId) {
+                $query->whereIn('id_cstu', function ($subquery) use ($skillId) {
+                    $subquery->select('id_dictionary_superman')
+                        ->from('competencies_dictionary_superman')
+                        ->join('curriculum_superman', 'curriculum_superman.id_curriculum_superman', '=', 'competencies_dictionary_superman.id_curriculum_superman')
+                        ->whereIn('curriculum_superman.id_skill_category', $skillId);
+                });
+            })->delete();
             if(isset($data["data"]) && count($data["data"]) > 0){
                 $insert = [];
                 for($i=0; $i < count($data["data"]); $i++){
@@ -311,7 +337,6 @@ class SupermanController extends Controller
                             "start" => $data["data"][$i]["start"],
                             "actual" => $data["data"][$i]["actual"],
                             "keterangan" => $data["data"][$i]["ket"],
-
                         ];
                     }
                 }
@@ -441,18 +466,7 @@ class SupermanController extends Controller
         
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
+    //halaman member superman
     public function indexMember(){
         return view('pages.admin.superman.index-member');
     }
@@ -514,4 +528,157 @@ class SupermanController extends Controller
         User::where('id',$id)->update($data);  
         return redirect()->route('Member')->with(['success' => 'Curriculum Deleted successfully']);
     }
+
+    //halaman dictionary superman
+    public function jsonDataTable(Request $request)
+    {
+        $select = [
+            "id_dictionary_superman", "cr.id_curriculum_superman", "cr.no_curriculum_superman as no_training_module", "sc.skill_category as skill_category", "cr.curriculum_superman as training_module","compGroup.name as compGroupName"
+        ];
+        $data = CompDictionarySupermanModel::select($select)
+                                            ->join("curriculum_superman as cr",function ($join){
+                                                $join->on("cr.id_curriculum_superman","competencies_dictionary_superman.id_curriculum_superman");
+                                            })
+                                            ->join("competencie_groups as compGroup","compGroup.id","cr.curriculum_group")
+                                            ->join('skill_category as sc', 'cr.id_skill_category', '=', 'sc.id_skill_category')
+                                            ->groupBy("competencies_dictionary_superman.id_curriculum_superman")
+                                            ->get();
+                                            // dd($data);
+        return DataTables::of($data)
+            ->addColumn('action', function ($row) {
+            $btn = '<button class="btn btn-inverse-success btn-icon edit-directory mr-1" data-toggle="modal" data-target="#modal-tambah" data-id="' . $row->id_curriculum_superman . '" onclick="formCompetencyDirectory(this)" data-placement="top" title="Atur Target"><i class="icon-file menu-icon"></i></button>
+            <button class="btn btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail" onclick="detailCompetencyDirectory(this)" data-id="' . $row->id_curriculum . '" data-placement="top" title="Lihat Target"><i class="icon-eye"></i></button>';
+            
+            return $btn;
+                        })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+    public function dataTableGrouping(Request $request)
+    {
+        $users = CompDictionarySupermanModel::select("id_curriculum_superman","id_dictionary_superman","nama_pengguna",
+        DB::raw("CONCAT('{\"list\":[',GROUP_CONCAT(CONCAT('{','\"target\":\"',target,'\"','}') ORDER BY target ASC SEPARATOR ','),']}') as list"))
+                                            ->join("users","users.id","competencies_dictionary_superman.id_user")
+                                            ->groupBy("competencies_dictionary_superman.id_user","competencies_dictionary_superman.id_curriculum_superman")
+                                            ->get();
+                                            // dd($users);
+        $select = [
+            "no_curriculum_superman","curriculum_superman"
+        ];
+        $directories = CompDictionarySupermanModel::select($select)
+                                                ->join("curriculum_superman as cr",function ($join) use ($request){
+                                                    $join->on("cr.id_curriculum_superman","competencies_dictionary_superman.id_curriculum_superman")
+                                                        ->groupBy("competencies_dictionary_superman.id_curriculum_superman","competencies_dictionary_superman.id_curriculum_superman");
+                                                })
+                                                ->groupBy("competencies_dictionary_superman.id_curriculum_superman")
+                                                ->get();
+
+                                // dd($directories);
+    }
+    public function indexDictionary()
+    {
+        return view('pages.admin.superman.index-dictionary');
+    }
+    
+    public function formDictionary(Request $request)
+    {
+        $type = $request->type;
+        $select = [
+            "id_curriculum_superman", "curriculum_superman", "no_curriculum_superman", "curriculum_group"
+        ];
+        $competencies = CurriculumSuperman::select($select)->whereRaw("id_curriculum_superman NOT IN (select cd.id_curriculum_superman from competencies_dictionary_superman as cd group by cd.id_curriculum_superman)")->get();
+        if($request->type == 'add'){
+            $curriculum = null;
+            $directories = [];
+            $users = [];
+        }else{
+            $curriculum = CurriculumSuperman::where("id_curriculum_superman",$request->id)->first();
+            $users = CurriculumSupermanToUser::select("curriculum_superman_to_user.id_user","users.nama_pengguna")
+                                    ->join("users","users.id","curriculum_superman_to_user.id_user")
+                                    ->join("curriculum_superman","curriculum_superman.id_curriculum_superman","curriculum_superman_to_user.id_curriculum_superman")
+                                    ->where("curriculum_superman_to_user.id_curriculum_superman",$request->id)
+                                    ->get();
+            $select = [
+                "competencies_dictionary_superman.id_curriculum_superman","competencies_dictionary_superman.id_user",
+                DB::raw("CONCAT('{\"list\":[',GROUP_CONCAT(CONCAT('{','\"id\":\"',id_dictionary_superman,'\",','\"target\":\"',target,'\"','}') ORDER BY target ASC SEPARATOR ','),']}') AS list")
+
+            ];
+            $directories = CompDictionarySupermanModel::select($select)
+                                                    ->join("curriculum_superman as cr",function ($join) use ($request){
+                                                        $join->on("cr.id_curriculum_superman","competencies_dictionary_superman.id_curriculum_superman")
+                                                            ->where("competencies_dictionary_superman.id_curriculum_superman",$request->id);
+                                                    })
+                                                    ->groupBy("competencies_dictionary_superman.id_curriculum_superman","competencies_dictionary_superman.id_user")
+                                                    ->get();
+        }
+        return view("pages.admin.superman.form-dictionary",compact("competencies","type","users","curriculum","directories"));
+    }
+
+    public function addRow(Request $request)
+    {
+        $users = CurriculumSupermanToUser::select("curriculum_superman_to_user.id_user","users.nama_pengguna")
+                                    ->join("users","users.id","curriculum_superman_to_user.id_user")
+                                    ->join("curriculum_superman","curriculum_superman.id_curriculum_superman","curriculum_superman_to_user.id_curriculum_superman")
+                                    ->where("curriculum_superman_to_user.id_curriculum_superman",$request->curriculumId)
+                                    ->get();
+        $time = rand(time(),2);
+        return view("pages.admin.superman.tr-dictionary",compact("users","time"));
+    }
+
+    public function storeDictionarySuperman(Request $request)
+    {
+        $request->validate([
+            "id_curriculum_superman" => "required|numeric",
+            "datas" => "array",
+            "datas.*.id_user" => "required|string",
+            "datas.*.data" => "array",
+            // "datas.*.data.*.between" => "required|numeric",
+            "datas.*.data.*.target" => "required|numeric|min:0|max:5"
+        ]);
+        try {
+            $data = $this->validate_input_v2($request);
+            $directoryId = [];
+            $insert = [];
+            if(isset($data["datas"])){
+                for ($i=0; $i < count($data["datas"]); $i++) { 
+                    for ($j=0; $j < count($data["datas"][$i]["data"]); $j++) { 
+                        $tempData = [
+                            "id_curriculum_superman" => $data["id_curriculum_superman"],
+                            "id_user" => $data["datas"][$i]["id_user"],
+                            // "between_year" => $data["datas"][$i]["data"][$j]["between"],
+                            "target" => $data["datas"][$i]["data"][$j]["target"]
+                        ];
+                        if(isset($data["datas"][$i]["data"][$j]["id_dictionary_superman"])){
+                            array_push($directoryId,$data["datas"][$i]["data"][$j]["id_dictionary_superman"]);
+                            CompDictionarySupermanModel::where("id_dictionary_superman",$data["datas"][$i]["data"][$j]["id_dictionary_superman"])
+                                ->update($tempData);
+                        }else{
+                            $cek = CompDictionarySupermanModel::where([
+                                ["id_curriculum_superman",$data["id_curriculum_superman"]],
+                                ["id_user",$data["datas"][$i]["id_user"]]
+                                ])->count();
+                            if($cek == 0){
+                                array_push($insert,$tempData);
+                            }
+                        }
+                    }
+                }
+                if(count($directoryId) > 0){
+                    CompDictionarySupermanModel::where("id_curriculum_superman",$data["id_curriculum_superman"])->whereNotIn("id_dictionary_superman",$directoryId)->delete();
+                }
+            }else{
+                CompDictionarySupermanModel::where("id_curriculum_superman",$data["id_curriculum_superman"])->delete();
+            }
+            
+            if(count($insert) > 0){
+                CompDictionarySupermanModel::insert($insert);
+            }
+            DB::commit();
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+            DB::rollback();
+        }
+        return response()->json(['code' => 200, 'message' => 'Post successfully'], 200);
+    }
+
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCompetenciesSupermanTable extends Migration
+class CreateCompetenciesDictionarySupermanTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateCompetenciesSupermanTable extends Migration
      */
     public function up()
     {
-        Schema::create('competencies_superman', function (Blueprint $table) {
-            $table->increments('id_competencies_superman');
-            $table->integer('id_cstu');
+        Schema::create('competencies_dictionary_superman', function (Blueprint $table) {
+            $table->increments('id_dictionary_superman');
+            $table->integer('id_curriculum_superman');
             $table->integer('id_user');
-            $table->integer('start');
-            $table->integer('actual');
-            $table->string('keterangan');
+            $table->integer('target');
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class CreateCompetenciesSupermanTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('competencies_superman');
+        Schema::dropIfExists('competencies_dictionary_superman');
     }
 }

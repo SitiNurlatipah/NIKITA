@@ -228,6 +228,15 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/kelola/form','SupermanController@formSuperman')->name("form.superman");
         Route::post('/kelola/action','SupermanController@actionSuperman')->name("action.superman");
         Route::get('/kelola/detail', 'SupermanController@detailMapcomSuperman')->name('detail.kelola.superman');
+        Route::get('/kelola/superman', 'SupermanController@indexKelola')->name('kelola.superman.index');
+
+        Route::get('/dictionary/superman', 'SupermanController@indexDictionary')->name('DictionarySuperman');
+        Route::get('/dictionary/json', 'SupermanController@jsonDataTable')->name("jsonDictionarySuperman");
+        Route::get('/dictionary/form','SupermanController@formDictionary')->name('formDictionarySuperman');
+        Route::get('/dictionary/add-row','SupermanController@addRow')->name('addRowSuperman');
+        Route::post('/dictionary/action','SupermanController@storeDictionarySuperman')->name('storeDictionarySuperman');
+        Route::get('/cek','SupermanController@dataTableGrouping');
+
     });
 
     // Champion 4.0
