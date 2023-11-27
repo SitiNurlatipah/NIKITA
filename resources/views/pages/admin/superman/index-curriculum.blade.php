@@ -131,7 +131,7 @@
                                         <option value="#">Pilih Competencie Group</option>
                                     </select>
                                 </div>
-                                <div class="form-group">
+                                {{--<div class="form-group">
                                     <label for="noModule">Target</label>
                                     <select class="form-control form-control-sm" name="target" required>
                                     <option value="">Pilih Target</option>
@@ -142,7 +142,7 @@
                                     <option value="4">4</option>
                                     <option value="5">5</option>
                                 </select>
-                                </div>
+                                </div>--}}
                             </div>
                             <div class="col-4">
                                 <div class="form-group">
