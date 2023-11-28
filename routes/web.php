@@ -237,6 +237,29 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/dictionary/action','SupermanController@storeDictionarySuperman')->name('storeDictionarySuperman');
         Route::get('/cek','SupermanController@dataTableGrouping');
 
+        //ceme
+        Route::get('/ceme/superman', 'SupermanController@indexCemeSuperman')->name('superman.ceme');
+        Route::get('/ceme/json','SupermanController@cgJsonSuperman')->name('superman.ceme.json');
+        // Route::post('/ceme-post', 'SupermanController@actionCeme')->name('actionCeme.ss');
+        // Route::post('ceme/add-job-title','SupermanController@addJobTitle')->name('ceme.addJobTitle.ss');
+        // Route::post('ceme/get-job-title','SupermanController@getJobTitle')->name('ceme.getJobTitle.ss');
+        // Route::post('ceme/delete-job-title','SupermanController@deleteJobTitle')->name('ceme.deleteJobTitle.ss');
+        Route::post('ceme/chartCeme','SupermanController@chartCemeSuperman')->name('superman.ceme.chartCeme');
+        Route::post('ceme/chartMe','SupermanController@chartMeSuperman')->name('superman.ceme.chartMe');
+        Route::get('/competent/json', 'SupermanController@competentEmployeeSupermanJson')->name('superman.competent.json');
+
+        //taging
+        Route::get('/tagging/superman', 'TagingSupermanController@index')->name('superman.tagging');
+        Route::get('/tagging-json','TagingSupermanController@tagingSupermanJson')->name('superman.taggingJson');
+        Route::get('/tagging-member','TagingSupermanController@tagingSupermanJsonMember')->name('superman.taggingJsonMember');
+        Route::get('/tagging-atasan','TagingSupermanController@tagingSupermanJsonAtasan')->name('superman.taggingJsonAtasan');
+        Route::get('/form','TagingSupermanController@supermanFormTaggingList')->name('superman.tagingForm');
+        Route::post('/action','TagingSupermanController@supermanActionTagingList')->name('superman.actionTagingList');
+        Route::get('/detail','TagingSupermanController@detail')->name('superman.tagingDetail');
+        Route::get('/export-tagging','TagingSupermanController@exportTaggingList')->middleware(['isAdmin'])->name('superman.exportTaggingList');
+        Route::get('/tagging-print','TagingSupermanController@taggingPrint')->middleware(['isAdmin'])->name('superman.taggingPrint');
+        // Route::delete('/tagging-delete/{id_taging_reason}', 'TagingSupermanController@deleteTagging');   
+        Route::post('/delete','TagingSupermanController@deleteSupermanTagging')->name('superman.tagging.destroy');
     });
 
     // Champion 4.0

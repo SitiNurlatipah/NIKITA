@@ -12,6 +12,8 @@ use App\SkillCategoryModel;
 use App\SubDepartment;
 use App\Superman;
 use App\User;
+use App\CompetencySupermanModel;
+use App\JobTitleUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -141,7 +143,6 @@ class SupermanController extends Controller
             'curriculum_superman' => ['required'],
             'curriculum_group' => ['required'],
             'curriculum_desc' => ['required'],
-            'target' => ['required'],
             'id_user' => ['required'],
         ]);
         $curriculum = CurriculumSuperman::where("id_curriculum_superman",$request->id_curriculum_superman)->first();
@@ -150,7 +151,6 @@ class SupermanController extends Controller
             'curriculum_superman' => $request->curriculum_superman,
             'curriculum_group' => $request->curriculum_group,
             'curriculum_desc' => $request->curriculum_desc,
-            'target' => $request->target,
         ];
         if($curriculum->id_skill_category != $request->id_skill_category){
             $noTraining = explode("/",$curriculum->no_curriculum_superman);
@@ -199,15 +199,6 @@ class SupermanController extends Controller
         return response()->json($response);
 
     }
-
-
-
-
-
-
-
-
-
 
     // Kelola User
     
@@ -277,30 +268,6 @@ class SupermanController extends Controller
                 })
                 ->get();
                 // dd($comps);
-        // $comprs = CompDictionarySupermanModel::select($select)
-        //         ->join("curriculum_superman", function ($join) use ($user, $between, $between2) {
-        //             $join->on("curriculum_superman.id_curriculum", "competencies_directory.id_curriculum")
-        //                  ->whereRaw("competencies_directory.id_job_title = '".$user->id_job_title."'");
-        //         })
-        //         ->joinSub(function ($query) use ($user, $between, $between2) {
-        //             $query->select('id_curriculum', 'id_skill_category')
-        //                   ->from('curriculum');
-        //         }, 'sub', function ($join) use ($user, $between, $between2) {
-        //             $join->on('competencies_directory.id_curriculum', '=', 'sub.id_curriculum');
-        //         })
-        //         ->where(function ($query) use ($between, $between2) {
-        //             $query->where('sub.id_skill_category', '=', 1)
-        //                   ->whereRaw("competencies_directory.between_year = '".$between."'")
-        //                   ->orWhere('sub.id_skill_category', '<>', 1)
-        //                   ->whereRaw("competencies_directory.between_year = '".$between2."'");
-        //         })
-        //         ->join("competencie_groups as compGroup","compGroup.id","curriculum.training_module_group")
-        //         ->join("skill_category","skill_category.id_skill_category","curriculum.id_skill_category")
-        //         ->leftJoin("white_tag",function ($join) use ($user){
-        //             $join->on("white_tag.id_directory","competencies_directory.id_directory")
-        //                 ->where("white_tag.id_user",$user->id);
-        //         })
-        //         ->get();
         return view("pages.admin.superman.form",compact('comps','user','type'));
     }
 
@@ -354,27 +321,27 @@ class SupermanController extends Controller
         $user = User::select("id","id_job_title")->where("id",$request->id)->first();
         $skillId = [1,2];
         $select = [
-            "curriculum_superman.no_curriculum_superman as no_curriculum","curriculum_superman.curriculum_superman as curriculum_superman","compGroup.name as curriculum_group","curriculum_superman.target as target","skill_category.skill_category as skill_category","white_tag.start as start","white_tag.actual as actual",
-            DB::raw("(CASE WHEN (white_tag.actual - curriculum_superman.target) < 0 THEN 'Open'
-                            WHEN (white_tag.actual IS NULL) THEN 'Belum diatur'
-                            WHEN white_tag.actual >= curriculum_superman.target THEN 'Close' 
+            "curriculum_superman.no_curriculum_superman as no_curriculum","curriculum_superman.curriculum_superman as curriculum_superman","compGroup.name as curriculum_group","competencies_dictionary_superman.target as target","skill_category.skill_category as skill_category","competencies_superman.start as start","competencies_superman.actual as actual",
+            DB::raw("(CASE WHEN (competencies_superman.actual - competencies_dictionary_superman.target) < 0 THEN 'Open'
+                            WHEN (competencies_superman.actual IS NULL) THEN 'Belum diatur'
+                            WHEN competencies_superman.actual >= competencies_dictionary_superman.target THEN 'Close' 
                             END) as tagingStatus"),
-                            "white_tag.keterangan as ket"
+                            "competencies_superman.keterangan as ket"
         ];
-        $data = CurriculumSupermanToUser::select($select)
-                                ->join("curriculum_superman",function ($join) use ($user,$skillId){
-                                    $join->on("curriculum_superman.id_curriculum_superman","curriculum_superman_to_user.id_curriculum_superman")
-                                        ->whereIn("id_skill_category",$skillId);
-                                })
-                                ->join("skill_category","skill_category.id_skill_category","curriculum_superman.id_skill_category")
-                                ->leftJoin("white_tag",function ($join) use ($user){
-                                    $join->on("white_tag.id_cstu","curriculum_superman_to_user.id_cstu")
-                                        ->where("white_tag.id_user",$user->id);
-                                })
-                                ->join("competencie_groups as compGroup","compGroup.id","curriculum_superman.curriculum_group")
-                                ->groupBy("curriculum_superman.id_curriculum_superman")
-                                ->orderBy("tagingStatus", "DESC")
-                                ->get();
+        $data = CompDictionarySupermanModel::select($select)
+                ->join("curriculum_superman",function ($join) use ($user){
+                    $join->on("curriculum_superman.id_curriculum_superman","competencies_dictionary_superman.id_curriculum_superman")
+                        ->whereRaw("competencies_dictionary_superman.id_user = '".$user->id."'");
+                })
+                ->join("competencie_groups as compGroup","compGroup.id","curriculum_superman.curriculum_group")
+                ->join("skill_category","skill_category.id_skill_category","curriculum_superman.id_skill_category")
+                ->leftJoin("competencies_superman",function ($join) use ($user){
+                    $join->on("competencies_superman.id_cstu","competencies_dictionary_superman.id_dictionary_superman")
+                        ->where("competencies_superman.id_user",$user->id);
+                })
+                ->groupBy("curriculum_superman.id_curriculum_superman")
+                ->orderBy("tagingStatus", "DESC")
+                ->get();
         // dd($data);                        
         return Datatables::of($data)
         ->addIndexColumn()
@@ -681,4 +648,119 @@ class SupermanController extends Controller
         return response()->json(['code' => 200, 'message' => 'Post successfully'], 200);
     }
 
+    public function indexCemeSuperman(Request $request)
+    {
+        return view('pages.admin.superman.ceme-superman');
+    }
+    public function competentEmployeeSupermanJson(Request $request)
+    { 
+            $competent = Superman::select('users.*', 'dp.nama_department','jt.nama_job_title')
+                ->join("users",function ($join) use ($request){
+                    $join->on("users.id","competencies_superman.id_user")
+                    ->where([
+                        ["competencies_superman.actual",">=","cd.target"]
+                    ]);
+                })
+                ->join("competencies_dictionary_superman as cd","cd.id_dictionary_superman","competencies_superman.id_cstu")
+                ->join("curriculum_superman as crclm","crclm.id_curriculum_superman","cd.id_curriculum_superman")
+                ->join('department as dp', 'users.id_department', '=', 'dp.id_department')
+                ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+                ->groupBy('competencies_superman.id_user')
+                ->get();
+            
+        return Datatables::of($competent)
+        ->addIndexColumn()
+        ->addColumn('rata_rata', function ($item) {
+            $avg = round($item->totalScore($item->id), 2);
+            return $avg >= 86.67 ? '<span class="badge badge-warning">' . $avg . '%</span>' : $avg . '%';
+        })
+        ->rawColumns(['rata_rata']) // Ini penting untuk merender elemen HTML
+        ->make(true);      
+    }
+
+    public function chartCemeSuperman(Request $request)
+    {
+        $ceme = request('q');
+        $pie = [
+            'label' => [],
+            'totalScore' => []
+        ];
+         
+        $wt=User::select(DB::raw("count(id) as total"),DB::raw("CASE WHEN is_competent = '1' THEN 'Competent' ELSE 'Non-Competent' END as competency_status"))
+                ->where('is_superman', 1)
+                ->orWhere('users.id_level', 'LV-0002')
+                ->orWhere('users.id_level', 'LV-0003')
+                ->orWhere('users.id_level', 'LV-0004')
+                ->groupBy('is_competent')
+                ->get();
+        $totalUsers = $wt->sum('total');
+        foreach($wt as $data)
+        {
+            $percentage = ($data->total / $totalUsers) * 100; // Calculate the percentage
+            $labelWithPercentage = $data->competency_status . ' (' . round($percentage, 2) . '%)';
+
+            $pie['label'][] = $labelWithPercentage; // Use [] to append to the array
+            $pie['totalScore'][] = $data->total;
+        };
+
+        return response()->json($pie);
+    }
+
+    public function chartMeSuperman()
+    {
+        $ceme = request('q');
+        $users = DB::table('users')
+            ->where('is_superman', 1)
+            ->orWhere('users.id_level', 'LV-0002')
+            ->orWhere('users.id_level', 'LV-0003')
+            ->orWhere('users.id_level', 'LV-0004')
+            ->Join('job_title_users','job_title_users.user_id','users.id')
+            ->groupBy('job_title_users.user_id')
+            ->select('users.nama_pengguna',DB::raw('count(job_title_users.user_id) as totalSkill'))
+            ->groupBy(DB::Raw('IFNULL( job_title_users.user_id , 0 )'))
+            ->get();
+        return response()->json($users);
+    }
+
+    public function cgJsonSuperman(Request $request)
+    {
+            $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+            ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+            ->leftJoin('cg', 'users.id_cg', '=', 'cg.id_cg')
+            ->leftJoin('divisi', 'users.id_divisi', '=', 'divisi.id_divisi')
+            ->where('is_competent',1)
+            ->where(function ($query) {
+                $query->where('is_superman', 1)
+                    ->orWhere('users.id_level', 'LV-0002')
+                    ->orWhere('users.id_level', 'LV-0003')
+                    ->orWhere('users.id_level', 'LV-0004');
+            })
+            ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title', 'cg.nama_cg', 'divisi.nama_divisi']);
+
+            return DataTables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function ($row) {
+
+                $datajobmultiskill = JobTitleUsers::where('user_id', $row->id)->count();
+
+                $datajobmultiskilltglupdate = JobTitleUsers::where('user_id', $row->id)->latest('updated_at')->first();
+
+                // var_dump($datajobmultiskilltglupdate); die;
+
+                $btn = '<button data-id="' . $row->id . '" class="button-add btn btn-inverse-success btnAddJobTitle btn-icon mr-1" data-nama="'.$row->nama_pengguna.'" data-userid="'.$row->id.'"><i class="icon-plus menu-icon"></i></button>';
+                $btn = $btn . '<button type="button" data-id="'.$row->id.'" data-name="'.$row->nama_pengguna.'" data-cg="'.$row->nama_cg.'" data-divisi="'.$row->nama_divisi.'" data-jobtitle="'.$row->nama_job_title.'" data-department="'.$row->nama_department.'" class="btn btnDetail btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail"><i class="ti-eye"></i></button>';
+
+                if($datajobmultiskill >= 1){
+                    $btn = $btn . '<td class="font-weight-medium"><div class="ml-1 mt-2 badge badge-success">Transfered at '.$datajobmultiskilltglupdate->updated_at.'</div></td>';
+                }else{
+                    $btn = $btn . '<td class="font-weight-medium"><div class="ml-1 mt-2 badge badge-warning">Ready to Transfer</div></td>';
+                }
+
+                // $btn = $btn . '<button type="button" class="btn btn-warning">Warning</button>';
+                return $btn;
+            })
+            ->addIndexColumn()
+            ->rawColumns(['action'])
+            ->make(true);
+    }
 }

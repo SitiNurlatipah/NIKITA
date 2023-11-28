@@ -98,7 +98,8 @@
                     <li class="nav-item"> <a class="nav-link" href="{{ route('superman.index') }}">Curriculum Superman</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('DictionarySuperman') }}">Dictionary</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('kelola.superman.index') }}">Kelola Superman</a></li>
-                    <!-- <li class="nav-item"> <a class="nav-link" href="#">CEME Superman</a></li> -->
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('superman.tagging') }}">Tagging</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('superman.ceme') }}">CEME Superman</a></li>
                     </ul>
                 </div>
             </li>

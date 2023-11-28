@@ -48,7 +48,6 @@ class Tagging extends Controller
                             ->leftJoin('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
                             ->whereRaw($where)
                             ->get();
-// dd($data);
         return Datatables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {

@@ -26,7 +26,6 @@
                                             <th>Skill Category</th>
                                             <th>Competency Superman</th>
                                             <th>Competency Group</th>
-                                            <th>Target</th>
                                             <th>Competency Description</th>
                                             <th width="15%">Detail</th>
                                             <th width="15%">Action</th>
@@ -40,34 +39,7 @@
                                                 <td>{{ $data->skill_category }}</td>
                                                 <td>{{ $data->curriculum_superman }}</td>
                                                 <td>{{ $data->compGroupName }}</td>
-                                                <td>
-                                                    @php
-                                                        switch($data->target){
-                                                        case 0:
-                                                            $target = asset('assets/images/point/0.png');
-                                                        break;
-                                                        case 1:
-                                                            $target = asset('assets/images/point/1.png');
-                                                        break;
-                                                        case 2:
-                                                            $target = asset('assets/images/point/2.png');
-                                                        break;
-                                                        case 3:
-                                                            $target = asset('assets/images/point/3.png');
-                                                        break;
-                                                        case 4:
-                                                            $target = asset('assets/images/point/4.png');
-                                                        break;
-                                                        case 5:
-                                                            $target = asset('assets/images/point/5.png');
-                                                        break;
-                                                        default:
-                                                            $target = "";
-                                                        break;
-                                                        }
-                                                    @endphp
-                                                        <img src="{{$target}}" title="{{$data->target}}" style="width:30px;height:30px" alt="">
-                                                </td>
+                                                
                                                 <td>{{ $data->curriculum_desc }}</td>
                                                 <td>
                                                     <button class="btn btn-inverse-info btn-icon btn-detail-user" data-users="{{ $data->users }}" data-toggle="modal" data-target="#modal-detail-user"><i class="icon-eye"></i> </button>
@@ -128,21 +100,10 @@
                                     <label for="curriculum_group">Competency Group</label>
                                     <select id="curriculum_group" class="form-control form-control-sm"
                                         name="curriculum_group">
-                                        <option value="#">Pilih Competencie Group</option>
+                                        <option value="#">Pilih Competencies Group</option>
                                     </select>
                                 </div>
-                                {{--<div class="form-group">
-                                    <label for="noModule">Target</label>
-                                    <select class="form-control form-control-sm" name="target" required>
-                                    <option value="">Pilih Target</option>
-                                    <option value="0">0</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
-                                </div>--}}
+                                
                             </div>
                             <div class="col-4">
                                 <div class="form-group">
@@ -279,7 +240,6 @@
                     $('#curriculum_superman').val(''),
                     $('#curriculum_group').val(''),
                     $('#curriculum_desc').val(''),
-                    $('#target').val(''),
                     $('#modal-tambah').modal('hide');
                     location.reload();
                 },
