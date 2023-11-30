@@ -298,7 +298,7 @@ class SupermanController extends Controller
                 for($i=0; $i < count($data["data"]); $i++){
                     if($data["data"][$i]["start"] != "" && $data["data"][$i]["actual"] != ""){
                         $insert[$i] = [
-                            "id_competencies_superman"=> $this->random_string(5,5,false).time(),
+                            "id_competencies_superman"=> uniqid('RKCto', true),
                             "id_cstu" => $data["data"][$i]["id"],
                             "id_user" => $data["user_id"],
                             "start" => $data["data"][$i]["start"],
