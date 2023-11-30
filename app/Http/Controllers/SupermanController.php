@@ -279,7 +279,7 @@ class SupermanController extends Controller
             "data.*.id" => "nullable|numeric",
             "data.*.start" => "nullable|numeric",
             "data.*.actual" => "nullable|numeric",
-            "data.*.ket" => "nullable|string",
+            // "data.*.ket" => "nullable|string",
         ]);
         DB::beginTransaction();
         try{
