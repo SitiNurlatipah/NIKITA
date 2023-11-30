@@ -222,6 +222,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/get-form','SupermanController@getFormEdit')->name('superman.get.form');
         Route::post('/edit', 'SupermanController@edit')->name('superman.update');
         Route::get('/delete/{id}','SupermanController@destroy')->name('superman.destroy');
+        Route::post('/import','SupermanController@importCurriculum')->name('superman.import');
 
         Route::get('/kelola/superman', 'SupermanController@indexKelola')->name('kelola.superman.index');
         Route::get('/kelola/json', 'SupermanController@supermanJson')->name('superman.json');

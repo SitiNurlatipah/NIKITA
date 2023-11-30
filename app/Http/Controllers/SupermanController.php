@@ -18,6 +18,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use App\Imports\curriculumSupermanImport;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
 class SupermanController extends Controller
@@ -199,9 +201,11 @@ class SupermanController extends Controller
         return response()->json($response);
 
     }
-
+    public function importCurriculum(Request $request){
+        Excel::import(new curriculumSupermanImport, $request->file('file'));
+        return redirect()->route('superman.index')->with('message', 'Data berhasil di-import.');
+    }
     // Kelola User
-    
     public function indexKelola(){
         return view('pages.admin.superman.index');
 

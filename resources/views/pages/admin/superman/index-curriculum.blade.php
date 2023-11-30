@@ -2,7 +2,6 @@
 
 @section('title', 'Curriculum')
 @section('content')
-
     <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
@@ -10,10 +9,13 @@
                 <div class="row">
                     <p class="card-title ml-4">Curriculum Superman</p>
                     <div class="col-md mb-2">
-                            <a class="btn btn-sm btn-success float-right" href="javascript:void(0)" id="createNewItem"
+                            <a class="btn btn-sm btn-success float-right ms-5" href="javascript:void(0)" id="createNewItem"
                                 data-toggle="modal" data-target="#modal-tambah"><i class="icon-plus"></i> Add
                                 Curriculum</a>
-                        </div>
+                            <a class="btn btn-sm btn-success float-right " href="javascript:void(0)" id="createNewItem"
+                                data-toggle="modal" data-target="#modal-import"><i class="icon-plus"></i> Import
+                                Curriculum</a>
+                    </div>
                 </div>
                     <div class="row">
                         <div class="col-12">
@@ -127,6 +129,29 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" onclick="createPost()">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-import" tabindex="-1" role="dialog" aria-labelledby="modal-tambahLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-small" style="max-width: 1000px;" role="document">
+            <div class="modal-content">
+                <div class="modal-header p-3">
+                    <h5 class="modal-title" id="modal-tambahLabel">Import New Curriculum</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{ route('superman.import') }}" id="" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body pt-3 pb-3">
+                        <input type="file" name="file" class="">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
                     </div>
                 </form>
             </div>
