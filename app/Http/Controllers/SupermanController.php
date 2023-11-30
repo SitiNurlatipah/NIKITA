@@ -285,15 +285,15 @@ class SupermanController extends Controller
         try{
             $data = $this->validate_input_v2($request);
             $skillId = [1,2];
-            Superman::where('id_user', $request->user_id)->where(function ($query) use ($skillId) {
-                $query->whereIn('id_cstu', function ($subquery) use ($skillId) {
+            Superman::where('id_user', $request->user_id)->where(function ($query){
+                $query->whereIn('id_cstu', function ($subquery) {
                     $subquery->select('id_dictionary_superman')
                         ->from('competencies_dictionary_superman')
-                        ->join('curriculum_superman', 'curriculum_superman.id_curriculum_superman', '=', 'competencies_dictionary_superman.id_curriculum_superman')
-                        ->whereIn('curriculum_superman.id_skill_category', $skillId);
+                        ->join('curriculum_superman', 'curriculum_superman.id_curriculum_superman', '=', 'competencies_dictionary_superman.id_curriculum_superman');
+                        // ->whereIn('curriculum_superman.id_skill_category', $skillId);
                 });
             })->delete();
-            if(isset($data["data"]) && count($data["data"]) > 0){
+           if(isset($data["data"]) && count($data["data"]) > 0){
                 $insert = [];
                 for($i=0; $i < count($data["data"]); $i++){
                     if($data["data"][$i]["start"] != "" && $data["data"][$i]["actual"] != ""){
@@ -312,6 +312,7 @@ class SupermanController extends Controller
             DB::commit();
         }catch(\Exception $e){
             DB::rollback();
+            return response()->json(['code' => 500, 'message' => 'Error saving data: ' . $e->getMessage()], 500);
         }
         return response()->json(['code' => 200, 'message' => 'Post successfully'], 200);
     }
