@@ -9,10 +9,10 @@
                 <div class="row">
                     <p class="card-title ml-4">Curriculum Superman</p>
                     <div class="col-md mb-2">
-                            <a class="btn btn-sm btn-success float-right ms-5" href="javascript:void(0)" id="createNewItem"
+                            <a class="btn btn-sm btn-success float-right ml-2" href="javascript:void(0)" id="createNewItem"
                                 data-toggle="modal" data-target="#modal-tambah"><i class="icon-plus"></i> Add
                                 Curriculum</a>
-                            <a class="btn btn-sm btn-success float-right " href="javascript:void(0)" id="createNewItem"
+                            <a class="btn btn-sm btn-success float-right" href="javascript:void(0)" id="createNewItem"
                                 data-toggle="modal" data-target="#modal-import"><i class="icon-plus"></i> Import
                                 Curriculum</a>
                     </div>
