@@ -175,7 +175,7 @@
                 <div class="row gutters">
                 <div class="col-md-3">
                     @if($user->is_competent == 1)
-                    <img src="{{ asset('assets/images/system.png')}}" style="width: 150px; padding:15px 0 0 15px" alt="Maxwell Admin">
+                    <img src="{{ asset('assets/images/competen.png')}}" style="width: 150px; padding:15px 0 0 15px" alt="Maxwell Admin">
                     @endif
                   </div>
                   <div class="col-md-3">
