@@ -221,28 +221,28 @@
                         </div>
                         <div class="col-md-4 mb-3">
                             <label>CG Tambahan 2</label>
-                            <select id="cgtambahan" class="form-control form-control-sm" name="tambahancg2">
+                            <select id="cgtambahan2" class="form-control form-control-sm" name="tambahancg2">
                                 <option value="">Pilih CG Name</option>
                             </select>
                             <!-- <div class="invalid-feedback" id="feed-back-cg"></div> -->
                         </div>
                         <div class="col-md-4 mb-3">
                             <label>CG Tambahan 3</label>
-                            <select id="cgtambahan" class="form-control form-control-sm" name="tambahancg3">
+                            <select id="cgtambahan3" class="form-control form-control-sm" name="tambahancg3">
                                 <option value="">Pilih CG Name</option>
                             </select>
                             <!-- <div class="invalid-feedback" id="feed-back-cg"></div> -->
                         </div>
                         <div class="col-md-4 mb-3">
                             <label>CG Tambahan 4</label>
-                            <select id="cgtambahan" class="form-control form-control-sm" name="tambahancg4">
+                            <select id="cgtambahan4" class="form-control form-control-sm" name="tambahancg4">
                                 <option value="">Pilih CG Name</option>
                             </select>
                             <!-- <div class="invalid-feedback" id="feed-back-cg"></div> -->
                         </div>
                         <div class="col-md-4 mb-3">
                             <label>CG Tambahan 5</label>
-                            <select id="cgtambahan" class="form-control form-control-sm" name="tambahancg5">
+                            <select id="cgtambahan5" class="form-control form-control-sm" name="tambahancg5">
                                 <option value="">Pilih CG Name</option>
                             </select>
                             <!-- <div class="invalid-feedback" id="feed-back-cg"></div> -->
@@ -425,7 +425,40 @@
      $('#jabatan_rotation').select2({
             theme:'bootstrap4'
      });
+     $('#jabatan').select2({
+            theme:'bootstrap4'
+     });
      $('#cg_rotation').select2({
+            theme:'bootstrap4'
+     });
+     $('#divisi').select2({
+            theme:'bootstrap4'
+     });
+     $('#level').select2({
+            theme:'bootstrap4'
+     });
+     $('#department').select2({
+            theme:'bootstrap4'
+     });
+     $('#sub-department').select2({
+            theme:'bootstrap4'
+     });
+     $('#cg').select2({
+            theme:'bootstrap4'
+     });
+     $('#cgtambahan').select2({
+            theme:'bootstrap4'
+     });
+     $('#cgtambahan2').select2({
+            theme:'bootstrap4'
+     });
+     $('#cgtambahan3').select2({
+            theme:'bootstrap4'
+     });
+     $('#cgtambahan4').select2({
+            theme:'bootstrap4'
+     });
+     $('#cgtambahan5').select2({
             theme:'bootstrap4'
      });
 

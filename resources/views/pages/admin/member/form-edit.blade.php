@@ -126,7 +126,8 @@
     </div>
     <div class="col-md-4 mb-3">
         <label>Job Title</label>
-        <select id="jabatan-edit" class="form-control form-control-sm" name="job_title">
+        <select id="jabatan-edit" class=" form-control form-control-sm" name="job_title" data-live-search="true" data-hide-disabled="true"
+        data-actions-box="true">
             <option value="">Job Title</option>
             @foreach ($jabatans as $item)
                 <option {{($user->id_job_title == $item->id_job_title) ? 'selected' : ''}} value="{{$item->id_job_title}}">{{$item->nama_job_title}}</option>
@@ -148,7 +149,7 @@
 <div class="form-row">
     <div class="col-md-4 mb-3">
         <label>Department</label>
-        <select id="department-edit" class="form-control form-control-sm" name="department">
+        <select id="department-new" class="form-control form-control-sm" name="department">
             <option value="">Department</option>
             @foreach ($departments as $item)
                 <option value="{{$item->id_department}}" {{($user->id_department == $item->id_department) ? 'selected' : ''}} >{{$item->nama_department}}</option>
@@ -306,7 +307,7 @@
 <div class="form-row">
     <div class="col-md-4 mb-3">
         <label>Department</label>
-        <select id="department-edit" class="form-control form-control-sm" name="department">
+        <select id="department-new" class="form-control form-control-sm" name="department">
             <option value="">Department</option>
             @foreach ($departments as $item)
                 <option value="{{$item->id_department}}" {{($user->id_department == $item->id_department) ? 'selected' : ''}} >{{$item->nama_department}}</option>
@@ -382,6 +383,27 @@
 </div>
 
 <script>
+    $('#jabatan-edit').select2({
+            theme:'bootstrap4'
+    });
+    $('#divisi-edit').select2({
+            theme:'bootstrap4'
+    });
+    $('#level-edit').select2({
+            theme:'bootstrap4'
+    });
+    $('#department-new').select2({
+            theme:'bootstrap4'
+    });
+    $('#sub-department-edit').select2({
+            theme:'bootstrap4'
+    });
+    $('#cg-edit').select2({
+            theme:'bootstrap4'
+    });
+    $('#cgtambahan-edit').select2({
+            theme:'bootstrap4'
+    });
     $("#department-edit").change(function () {
         var value = $(this).val();
         $('#sub-department-edit').html();
