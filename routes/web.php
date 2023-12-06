@@ -289,7 +289,11 @@ Route::group(['middleware' => 'auth'], function () {
     // Management System
     Route::prefix("management-system")->group(function () {
         Route::get('/master', 'ManagementSystemController@indexMaster')->name('master.system.index');
+        Route::get('/master/json', 'ManagementSystemController@systemUserJson')->name('master.system.json');
+        Route::get('/system/member/json', 'ManagementSystemController@systemJson')->name('member.system.json');
         Route::post('/master-create', 'ManagementSystemController@storeMaster')->name('master.system.store');
+        Route::post('/master/import', 'ManagementSystemController@importSertifikasi')->name('master.system.import');
+        Route::post('/master/member/import', 'ManagementSystemController@importSertifikasiMember')->name('member.system.import');
         Route::post('/master-delete','ManagementSystemController@destroyMaster')->name('master.system.destroy');
         Route::get('/master/get-member', 'ManagementSystemController@getMember')->name('Member.get');
         Route::get('/', 'ManagementSystemController@index')->name('system.index');

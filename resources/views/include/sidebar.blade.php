@@ -103,7 +103,8 @@
                     </ul>
                 </div>
             </li>
-            {{-- <li class="nav-item">
+            {{-- 
+            <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#champion" aria-expanded="false" aria-controls="champion">
                     <i class="icon-cloud menu-icon"></i>
                     <span class="menu-title">Competencies 4.0</span>
@@ -118,6 +119,7 @@
                     </ul>
                 </div>
             </li>
+            --}}
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#management-system" aria-expanded="false" aria-controls="management-system">
                     <i class="icon-paper menu-icon"></i>
@@ -130,7 +132,7 @@
                     <li class="nav-item"> <a class="nav-link" href="{{ route('system.index') }}">Kelola Certification</a></li>
                     </ul>
                 </div>
-            </li> --}}
+            </li> 
         @elseif(Auth::user()->peran_pengguna == 2)
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('EmployeeMember') }}">

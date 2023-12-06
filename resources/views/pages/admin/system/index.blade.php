@@ -14,8 +14,10 @@
                 <div class="row">
                         <p class="card-title ml-4">Manage Certification</p>
                         <div class="col-md mb-2">
-                        <a class="btn btn-success btn-sm float-right btnAdd" href="javascript:void(0)" id="createNewItem"><i
+                        <a class="btn btn-success btn-sm float-right btnAdd ml-2" href="javascript:void(0)" id="createNewItem"><i
                                     class="icon-plus"></i> Sertifikasi User</a>
+                        <a class="btn btn-success btn-sm float-right" data-toggle="modal" data-target="#modal_import" data-whatever="@mdo"><i
+                                    class="icon-plus"></i> Import User</a>
                         </div>
                     </div>
 
@@ -29,118 +31,19 @@
                                             <th>No.</th>
                                             <th>Nama Kayawan</th>
                                             <th>Certification</th>
+                                            <th>Nomor Sertifikat</th>
+                                            <th>Nomor Surat Lisensi</th>
+                                            <th>Akhir Masa Berlaku Lisensi</th>
                                             <th>Start</th>
                                             <th>Actual</th>
                                             <th>Target</th>
                                             <th>Katerangan</th>
-                                            <th>Description</th>
+                                            <!-- <th>Description</th> -->
                                             <th width="15%">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($items as $item)
-                                            <tr id="row_{{ $item->id }}">
-                                                <th scope="row" class="text-center">{{ $loop->iteration }}</th>
-                                                <td>{{ $item->nama_pengguna}}</td>
-                                                <td>{{ $item->nama_system }}</td>
-                                                <td>{{ $item->start }}
-                                                    @php
-                                                        switch($item->start){
-                                                        case 0:
-                                                            $start = asset('assets/images/point/0.png');
-                                                        break;
-                                                        case 1:
-                                                            $start = asset('assets/images/point/1.png');
-                                                        break;
-                                                        case 2:
-                                                            $start = asset('assets/images/point/2.png');
-                                                        break;
-                                                        case 3:
-                                                            $start = asset('assets/images/point/3.png');
-                                                        break;
-                                                        case 4:
-                                                            $start = asset('assets/images/point/4.png');
-                                                        break;
-                                                        case 5:
-                                                            $start = asset('assets/images/point/5.png');
-                                                        break;
-                                                        default:
-                                                            $start = "";
-                                                        break;
-                                                        }
-                                                    @endphp
-                                                        <img src="{{$start}}" title="{{$item->start}}" style="width:30px;height:30px" alt="{{ $item->start }}">
-                                                
-                                                </td>
-                                                <td>{{ $item->actual }}
-                                                @php
-                                                        switch($item->actual){
-                                                        case 0:
-                                                            $actual = asset('assets/images/point/0.png');
-                                                        break;
-                                                        case 1:
-                                                            $actual = asset('assets/images/point/1.png');
-                                                        break;
-                                                        case 2:
-                                                            $actual = asset('assets/images/point/2.png');
-                                                        break;
-                                                        case 3:
-                                                            $actual = asset('assets/images/point/3.png');
-                                                        break;
-                                                        case 4:
-                                                            $actual = asset('assets/images/point/4.png');
-                                                        break;
-                                                        case 5:
-                                                            $actual = asset('assets/images/point/5.png');
-                                                        break;
-                                                        default:
-                                                            $actual = "";
-                                                        break;
-                                                        }
-                                                    @endphp
-                                                        <img src="{{$actual}}" title="{{$item->actual}}" style="width:30px;height:30px" alt="{{ $item->actual }}">
-                                                </td>
-                                                <td style="background-color: #57B657;" class="text-center">
-                                                    @php
-                                                        switch($item->target){
-                                                        case 0:
-                                                            $target = asset('assets/images/point/0.png');
-                                                        break;
-                                                        case 1:
-                                                            $target = asset('assets/images/point/1.png');
-                                                        break;
-                                                        case 2:
-                                                            $target = asset('assets/images/point/2.png');
-                                                        break;
-                                                        case 3:
-                                                            $target = asset('assets/images/point/3.png');
-                                                        break;
-                                                        case 4:
-                                                            $target = asset('assets/images/point/4.png');
-                                                        break;
-                                                        case 5:
-                                                            $target = asset('assets/images/point/5.png');
-                                                        break;
-                                                        default:
-                                                            $target = "";
-                                                        break;
-                                                        }
-                                                    @endphp
-                                                        <img src="{{$target}}" title="{{$item->target}}" style="width:30px;height:30px" alt="{{ $item->target }}">
-                                                </td>
-                                                <td>{{ $item->keterangan }}</td>
-                                                <td>{{ $item->description }}</td>
-                                                <td>
-                                                    <button data-id="{{ $item->id_mstu }}"
-                                                        data-nama="{{ $item->id }}"
-                                                        data-system="{{ $item->id_system }}" data-value="{{ $item->value }}"
-                                                        class="btn btn-inverse-success btn-icon delete-button mr-1 mr-1 btnEdit"><i
-                                                            class="icon-file menu-icon"></i></button>
-                                                    <button data-id="{{ $item->id_mstu }}" class="btn btn-inverse-danger btn-icon mr-1 btnHapus">
-                                                        <i class="icon-trash"></i></button>
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                        
                                     </tbody>
                                 </table>
                             </div>
@@ -193,14 +96,13 @@
                                 <div class="form-group">
                                     <div class="col">
                                         <label for="start">Start</label>
-                                        <select class="form-control form-control-sm" name="start" required>
-                                            <option value="">Pilih Target</option>
+                                        <select class="form-control form-control-sm" name="start" id="start" required>
+                                            <option value="">Pilih Start</option>
                                             <option value="0">0</option>
                                             <option value="1">1</option>
                                             <option value="2">2</option>
                                             <option value="3">3</option>
                                             <option value="4">4</option>
-                                            <option value="5">5</option>
                                         </select>
                                     </div>
                                 </div>
@@ -209,14 +111,13 @@
                                 <div class="form-group">
                                     <div class="col">
                                         <label for="actual">Actual</label>
-                                        <select class="form-control form-control-sm" name="actual" required>
-                                            <option value="">Pilih Target</option>
+                                        <select class="form-control form-control-sm" name="actual" id="actual" required>
+                                            <option value="">Pilih Actual</option>
                                             <option value="0">0</option>
                                             <option value="1">1</option>
                                             <option value="2">2</option>
                                             <option value="3">3</option>
                                             <option value="4">4</option>
-                                            <option value="5">5</option>
                                         </select>
                                     </div>
                                 </div>
@@ -230,12 +131,61 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row p-0">
+                            <div class="col-4 p-0">
+                                <div class="form-group">
+                                    <div class="col">
+                                        <label for="start">Nomor Sertifikat</label>
+                                        <input type="text" class="form-control form-control-sm" name="no_sertifikat" id="no_sertifikat" >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4 p-0">
+                                <div class="form-group">
+                                    <div class="col">
+                                        <label for="start">Nomor Surat Lisensi</label>
+                                        <input type="text" class="form-control form-control-sm" name="no_surat_lisensi" id="no_surat_lisensi">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4 p-0">
+                                <div class="form-group">
+                                    <div class="col">
+                                        <label for="start">Akhir Masa Berlaku</label>
+                                        <input type="date" class="form-control form-control-sm" name="masa_berlaku" id="masa_berlaku">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
                         <div class="row">
                             <div class="col-12">
                             <label for="keterangan">Keterangan</label>
-                                <textarea class="form-control form-control-sm" name="keterangan"></textarea>
+                                <textarea class="form-control form-control-sm" name="keterangan" id="keterangan"></textarea>
                             </div>
                         </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal_import" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-medium">
+            <div class="modal-content">
+                <div class="modal-header p-3">
+                    <h5 class="modal-title" id="">Import User Management System</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="form-import-member" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <input type="file" name="file" class="">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -253,7 +203,7 @@
 @push('script')
 <script src="{{ asset('assets/select2/js/select2.min.js') }}"></script>
     <script>
-        $('#table-skill').DataTable();
+        // $('#table-skill').DataTable();
         $('#user').select2({
             theme:'bootstrap4'
         });
@@ -272,7 +222,7 @@
                 plaGradent: "top",
                 trigger: "hover focus"
             });
-
+            initDatatable();
         });
 
         var modal = $('#myModal');
@@ -317,6 +267,14 @@
             var id = $(this).data('id');
             var user = $(this).data('nama');
             var system = $(this).data('system');
+            var target = $(this).data('value');
+            var actual = $(this).data('actual');
+            var no_sertifikat = $(this).data('sertif');
+            var keterangan = $(this).data('keterangan');
+            var actual = $(this).data('actual');
+            var no_surat_lisensi = $(this).data('surat');
+            var masa_berlaku = $(this).data('berlaku');
+            var start = $(this).data('start');
             modalTitle.text('Edit target');
             $.ajax({
                 url: "{{ route('Member.get') }}",
@@ -352,6 +310,14 @@
             $('#id').val(id);
             $('#user').val(user);
             $('#system').val(system);
+            $('#target').val(target);
+            $('#actual').val(actual);
+            $('#no_sertifikat').val(no_sertifikat);
+            $('#keterangan').val(keterangan);
+            $('#target').val(target);
+            $('#masa_berlaku').val(masa_berlaku);
+            $('#no_surat_lisensi').val(no_surat_lisensi);
+            $('#start').val(start);
             modal.modal('show');
         })
 
@@ -416,6 +382,36 @@
                 }
             });
         })
+        $('#form-import-member').on('submit', function(e) {
+            e.preventDefault();
+            var form = new FormData($('#form-import-member')[0]);
+            $.ajax({
+                url: "{{ route('member.system.import') }}",
+                type: "POST",
+                data: form,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    Swal.fire({
+                        icon: response.status,
+                        text: response.message
+                    })
+                    modal.modal('hide');
+                    setTimeout(function() {
+                        location.reload();
+                    }, 1000);
+                },
+                error: function(err) {
+                    console.log(err)
+                    Swal.fire({
+                        icon: 'error',
+                        text: err.responseJSON.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+            });
+        })
 
         $('#myModal').on('hidden.bs.modal', function() {
             $('#id').val('');
@@ -441,5 +437,71 @@
                 })
             })
         })
+        function initDatatable() {
+            @if(Auth::user()->peran_pengguna == '1')
+            var buttons = [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ];
+            @else
+            var buttons = [];
+            @endif
+            var dtJson = $('#table-skill').DataTable({
+            ajax: "{{ route('master.system.json') }}",
+            autoWidth: false,
+            serverSide: true,
+            processing: true,
+            aaSorting: [
+                [0, "desc"]
+            ],
+            searching: true,
+            dom: 'lBfrtip',
+            buttons: buttons,
+            displayLength: 10,
+            lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
+            language: {
+                paginate: {
+                    // remove previous & next text from pagination
+                    previous: '&nbsp;',
+                    next: '&nbsp;'
+                }
+            },
+            scrollX: true,
+            columns: [
+                {
+                data: 'DT_RowIndex', name: 'DT_RowIndex'
+                },
+                {
+                    data: 'nama_pengguna'
+                },
+                {
+                    data: 'nama_system'
+                },
+                {
+                    data: 'no_sertifikat'
+                },
+                {
+                    data: 'no_surat_lisensi'
+                },
+                {
+                    data: 'masa_berlaku'
+                },
+                {
+                    data: 'start'
+                },
+                {
+                    data: 'actual'
+                },
+                {
+                    data: 'target'
+                },
+                {
+                    data: 'keterangan'
+                },
+                {
+                    data: 'action'
+                }
+            ],
+        });
+    }
     </script>
 @endpush

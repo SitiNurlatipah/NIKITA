@@ -14,14 +14,16 @@
                     <div class="row">
                         <p class="card-title ml-4">Data Certification</p>
                         <div class="col-md mb-2">
-                        <a class="btn btn-success btn-sm float-right btnAdd" href="javascript:void(0)" id="createNewItem"><i
+                            <a class="btn btn-success btn-sm float-right btnAdd ml-2" href="javascript:void(0)" id="createNewItem"><i
                                     class="icon-plus"></i> Add Data Certification</a>
+                            <a class="btn btn-success btn-sm float-right" data-toggle="modal" data-target="#modal_import" data-whatever="@mdo"><i
+                                    class="icon-plus"></i> Import Certification</a>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12">
                             <div class="table-responsive">
-                                <table class="display expandable-table table-striped table-hover" id="table-skill"
+                                <table class="display expandable-table table-striped table-hover" id="table-system"
                                     style="width:100%">
                                     <thead>
                                         <tr>
@@ -33,52 +35,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($system as $sys)
-                                            <tr id="row_{{ $sys->id_system }}">
-                                                <th scope="row" class="text-center">{{ $loop->iteration }}</th>
-                                                <td>{{ $sys->nama_system}}</td>
-                                                <td>
-                                                @php
-                                                        switch($sys->target){
-                                                        case 0:
-                                                            $target = asset('assets/images/point/0.png');
-                                                        break;
-                                                        case 1:
-                                                            $target = asset('assets/images/point/1.png');
-                                                        break;
-                                                        case 2:
-                                                            $target = asset('assets/images/point/2.png');
-                                                        break;
-                                                        case 3:
-                                                            $target = asset('assets/images/point/3.png');
-                                                        break;
-                                                        case 4:
-                                                            $target = asset('assets/images/point/4.png');
-                                                        break;
-                                                        case 5:
-                                                            $target = asset('assets/images/point/5.png');
-                                                        break;
-                                                        default:
-                                                            $target = "";
-                                                        break;
-                                                        }
-                                                    @endphp
-                                                        <img src="{{$target}}" title="{{$sys->target}}" style="width:30px;height:30px" alt="">
-                                                </td>
-                                                <td>{{ $sys->description }}</td>
-                                                <td>
-                                                    <button data-id="{{ $sys->id_system }}"
-                                                        data-nama_system="{{ $sys->nama_system }}"
-                                                        data-description="{{ $sys->description }}"
-                                                        class="btn btn-inverse-success btn-icon delete-button mr-1 mr-1 btnEdit"><i
-                                                            class="icon-file menu-icon"></i></button>
-                                                    <button data-id="{{ $sys->id_system }}"
-                                                        class="btn btn-inverse-danger btn-icon mr-1 cr-hapus btnHapus">
-                                                        <i class="icon-trash">
-                                                        </i></button>
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                        
                                     </tbody>
                                 </table>
                             </div>
@@ -114,14 +71,13 @@
                         <div class="form-row mt-2">
                             <div class="col">
                                 <label for="target">Target</label>
-                                <select class="form-control form-control-sm" name="target" required>
+                                <select class="form-control form-control-sm" name="target" id="target" required>
                                     <option value="">Pilih Target</option>
                                     <option value="0">0</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
                                     <option value="4">4</option>
-                                    <option value="5">5</option>
                                 </select>
                             </div>
                         </div>
@@ -140,6 +96,28 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modal_import" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-medium">
+            <div class="modal-content">
+                <div class="modal-header p-3">
+                    <h5 class="modal-title" id="">Import Management System</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="form-import" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <input type="file" name="file" class="">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/select2/css/select2.min.css') }}">
@@ -148,7 +126,7 @@
 @push('script')
 <script src="{{ asset('assets/select2/js/select2.min.js') }}"></script>
 <script>
-        $('#table-skill').DataTable();
+        // $('#table-skill').DataTable();
         $('#job_title').select2({
             theme:'bootstrap4'
         });
@@ -164,7 +142,7 @@
                 plaGradent: "top",
                 trigger: "hover focus"
             });
-
+            initDatatable();
         });
 
         var modal = $('#myModal');
@@ -182,10 +160,12 @@
             var id = $(this).data('id');
             var nama_system = $(this).data('nama_system');
             var description = $(this).data('description');
+            var target = $(this).data('target');
             modalTitle.text('Edit Data Certification');
             $('#id').val(id);
             $('#nama_system').val(nama_system);
             $('#description').val(description);
+            $('#target').val(target);
             modal.modal('show');
         })
 
@@ -253,11 +233,88 @@
                 }
             });
         })
-
+        $('#form-import').on('submit', function(e) {
+            e.preventDefault();
+            var form = new FormData($('#form-import')[0]);
+            $.ajax({
+                url: "{{ route('master.system.import') }}",
+                type: "POST",
+                data: form,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    Swal.fire({
+                        icon: response.status,
+                        text: response.message
+                    })
+                    modal.modal('hide');
+                    setTimeout(function() {
+                        location.reload();
+                    }, 1000);
+                },
+                error: function(err) {
+                    console.log(err)
+                    Swal.fire({
+                        icon: 'error',
+                        text: err.responseJSON.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+            });
+        })
         $('#myModal').on('hidden.bs.modal', function() {
             $('#id').val('');
             $('#nama_system').val('');
             $('#description').val('');
         })
+        function initDatatable() {
+            @if(Auth::user()->peran_pengguna == '1')
+            var buttons = [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ];
+            @else
+            var buttons = [];
+            @endif
+            var dtJson = $('#table-system').DataTable({
+            ajax: "{{ route('member.system.json') }}",
+            autoWidth: false,
+            serverSide: true,
+            processing: true,
+            aaSorting: [
+                [0, "desc"]
+            ],
+            searching: true,
+            dom: 'lBfrtip',
+            buttons: buttons,
+            displayLength: 10,
+            lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
+            language: {
+                paginate: {
+                    // remove previous & next text from pagination
+                    previous: '&nbsp;',
+                    next: '&nbsp;'
+                }
+            },
+            scrollX: true,
+            columns: [
+                {
+                data: 'DT_RowIndex', name: 'DT_RowIndex'
+                },
+                {
+                    data: 'nama_system'
+                },
+                {
+                    data: 'target'
+                },
+                {
+                    data: 'description'
+                },
+                {
+                    data: 'action'
+                }
+            ],
+            });
+        }
     </script>
 @endpush

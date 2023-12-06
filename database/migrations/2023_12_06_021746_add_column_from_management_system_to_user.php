@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddStartactualFromManagementSystemToUser extends Migration
+class AddColumnFromManagementSystemToUser extends Migration
 {
     /**
      * Run the migrations.
@@ -14,9 +14,9 @@ class AddStartactualFromManagementSystemToUser extends Migration
     public function up()
     {
         Schema::table('management_system_to_user', function (Blueprint $table) {
-            $table->integer('start')->after('id_system');
-            $table->integer('actual')->after('start');
-            $table->text('keterangan')->after('actual');
+            $table->string('no_sertifikat')->after('keterangan');
+            $table->string('no_surat_lisensi')->after('keterangan');
+            $table->date('masa_berlaku')->after('keterangan');
         });
     }
 
