@@ -20,9 +20,10 @@ class ManagementSystemToUserImport implements ToModel
             'start' => $row[3],
             'actual' => $row[4],
             'no_sertifikat' => $row[5],
-            'no_surat_lisensi' => $row[6],
-            'masa_berlaku' => $row[7],
-            'keterangan' => $row[8],
+            'masa_berlaku_sertif' => $row[6],
+            'no_surat_lisensi' => $row[7],
+            'masa_berlaku_lisensi' => $row[8],
+            'keterangan' => $row[9],
         ]);
     }
 }

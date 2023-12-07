@@ -166,7 +166,7 @@ class ManagementSystemController extends Controller
         return Datatables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($item) {
-                $buttons = '<button data-id="' . $item->id_mstu . '" data-nama="' . $item->id . '" data-system="' . $item->id_system . '" data-target="' . $item->target . '" data-sertif="' . $item->no_sertifikat . '" data-start="' . $item->start . '" data-actual="' . $item->actual . '" data-surat="' . $item->no_surat_lisensi . '" data-berlaku="' . $item->masa_berlaku . '" data-keterangan="' . $item->keterangan . '" 
+                $buttons = '<button data-id="' . $item->id_mstu . '" data-nama="' . $item->id . '" data-system="' . $item->id_system . '" data-target="' . $item->target . '" data-sertif="' . $item->no_sertifikat . '" data-start="' . $item->start . '" data-actual="' . $item->actual . '" data-surat="' . $item->no_surat_lisensi . '" data-masa-sertif="' . $item->masa_berlaku_sertif . '" data-masa-lisensi="' . $item->masa_berlaku_lisensi . '" data-keterangan="' . $item->keterangan . '" 
                 class="btn btn-inverse-success btn-icon delete-button mr-1 mr-1 btnEdit"><i
                 class="icon-file menu-icon"></i></button>';
                 $buttons .= '<button data-id="' . $item->id_mstu . '" class="btn btn-inverse-danger btn-icon mr-1 btnHapus"><i class="icon-trash"></i></button>';
@@ -255,7 +255,9 @@ class ManagementSystemController extends Controller
             'system' => ['required'],
             'start' => ['required'],   
             'actual' => ['required'],   
-            'keterangan' => ['required'],   
+            'keterangan' => ['nullable'],   
+            'masa_berlaku_sertif' => ['nullable'],   
+            'masa_berlaku_lisensi' => ['nullable'],   
         ]);
 
         if($validator->fails())
@@ -279,7 +281,8 @@ class ManagementSystemController extends Controller
                 'start' => request('start'),
                 'actual' => request('actual'),
                 'keterangan' => request('keterangan'),
-                'masa_berlaku' => request('masa_berlaku'),
+                'masa_berlaku_sertif' => request('masa_berlaku_sertif'),
+                'masa_berlaku_lisensi' => request('masa_berlaku_lisensi'),
                 'no_surat_lisensi' => request('no_surat_lisensi'),
                 'no_sertifikat' => request('no_sertifikat'),
             ]);
@@ -297,7 +300,8 @@ class ManagementSystemController extends Controller
                 'start' => request('start'),
                 'actual' => request('actual'),
                 'keterangan' => request('keterangan'),
-                'masa_berlaku' => request('masa_berlaku'),
+                'masa_berlaku_sertif' => request('masa_berlaku_sertif'),
+                'masa_berlaku_lisensi' => request('masa_berlaku_lisensi'),
                 'no_surat_lisensi' => request('no_surat_lisensi'),
                 'no_sertifikat' => request('no_sertifikat'),
             ]);

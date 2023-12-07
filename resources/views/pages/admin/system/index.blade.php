@@ -32,6 +32,7 @@
                                             <th>Nama Kayawan</th>
                                             <th>Certification</th>
                                             <th>Nomor Sertifikat</th>
+                                            <th>Akhir Masa Berlaku Sertifikat</th>
                                             <th>Nomor Surat Lisensi</th>
                                             <th>Akhir Masa Berlaku Lisensi</th>
                                             <th>Start</th>
@@ -132,7 +133,7 @@
                             </div>
                         </div>
                         <div class="row p-0">
-                            <div class="col-4 p-0">
+                            <div class="col-6 p-0">
                                 <div class="form-group">
                                     <div class="col">
                                         <label for="start">Nomor Sertifikat</label>
@@ -140,7 +141,15 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-4 p-0">
+                            <div class="col-6 p-0">
+                                <div class="form-group">
+                                    <div class="col">
+                                        <label for="start">Akhir Masa Berlaku Sertifikat</label>
+                                        <input type="date" class="form-control form-control-sm" name="masa_berlaku_sertif" id="masa_berlaku_sertif">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 p-0">
                                 <div class="form-group">
                                     <div class="col">
                                         <label for="start">Nomor Surat Lisensi</label>
@@ -148,14 +157,15 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-4 p-0">
+                            <div class="col-6 p-0">
                                 <div class="form-group">
                                     <div class="col">
-                                        <label for="start">Akhir Masa Berlaku</label>
-                                        <input type="date" class="form-control form-control-sm" name="masa_berlaku" id="masa_berlaku">
+                                        <label for="start">Akhir Masa Berlaku Lisensi</label>
+                                        <input type="date" class="form-control form-control-sm" name="masa_berlaku_lisensi" id="masa_berlaku_lisensi">
                                     </div>
                                 </div>
                             </div>
+                            
                             
                         </div>
                         <div class="row">
@@ -273,7 +283,8 @@
             var keterangan = $(this).data('keterangan');
             var actual = $(this).data('actual');
             var no_surat_lisensi = $(this).data('surat');
-            var masa_berlaku = $(this).data('berlaku');
+            var masa_lisensi = $(this).data('masa-lisensi');
+            var masa_sertif = $(this).data('masa-sertif');
             var start = $(this).data('start');
             modalTitle.text('Edit target');
             $.ajax({
@@ -315,7 +326,8 @@
             $('#no_sertifikat').val(no_sertifikat);
             $('#keterangan').val(keterangan);
             $('#target').val(target);
-            $('#masa_berlaku').val(masa_berlaku);
+            $('#masa_berlaku_lisensi').val(masa_lisensi);
+            $('#masa_berlaku_sertif').val(masa_sertif);
             $('#no_surat_lisensi').val(no_surat_lisensi);
             $('#start').val(start);
             modal.modal('show');
@@ -480,10 +492,27 @@
                     data: 'no_sertifikat'
                 },
                 {
+                    data: 'masa_berlaku_sertif', 
+                    render: function(data) {
+                        if (data) {
+                            return new Date(data).toLocaleDateString('en-GB');
+                        } else {
+                            return '';
+                        }
+                    }
+                },
+                {
                     data: 'no_surat_lisensi'
                 },
                 {
-                    data: 'masa_berlaku'
+                    data: 'masa_berlaku_lisensi', 
+                    render: function(data) {
+                        if (data) {
+                            return new Date(data).toLocaleDateString('en-GB');
+                        } else {
+                            return '';
+                        }
+                    }
                 },
                 {
                     data: 'start'
