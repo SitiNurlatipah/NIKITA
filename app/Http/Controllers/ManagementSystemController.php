@@ -292,7 +292,6 @@ class ManagementSystemController extends Controller
                 'message' => 'Enroll system berhasil diupdate.',
                 'data' => $data
             ];
-
         }else{
             $data = ManagementSystemToUser::create([
                 'id_user' => request('user'),

@@ -119,7 +119,7 @@
                     </ul>
                 </div>
             </li>
-            --}}
+            
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#management-system" aria-expanded="false" aria-controls="management-system">
                     <i class="icon-paper menu-icon"></i>
@@ -133,6 +133,7 @@
                     </ul>
                 </div>
             </li> 
+            --}}
         @elseif(Auth::user()->peran_pengguna == 2)
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('EmployeeMember') }}">
@@ -197,25 +198,25 @@
                 </a>
             </li>
         @else
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('EmployeeMember') }}">
-                <i class="icon-head menu-icon"></i>
-                <span class="menu-title">Member CG</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('Curriculum') }}">
-                <i class="icon-grid-2 menu-icon"></i>
-                <span class="menu-title">Curriculum</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('CompetenciesDirectory') }}">
-                <i class="icon-book menu-icon"></i>
-                <span class="menu-title">Competency Dictionary</span>
-            </a>
-        </li>
-        <li class="nav-item">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('EmployeeMember') }}">
+                    <i class="icon-head menu-icon"></i>
+                    <span class="menu-title">Member CG</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('Curriculum') }}">
+                    <i class="icon-grid-2 menu-icon"></i>
+                    <span class="menu-title">Curriculum</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('CompetenciesDirectory') }}">
+                    <i class="icon-book menu-icon"></i>
+                    <span class="menu-title">Competency Dictionary</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="{{ route('WhiteTag') }}">
                     <i class="icon-flag menu-icon"></i>
                     <span class="menu-title">Mapping Competency</span>
@@ -233,6 +234,21 @@
                     <span class="menu-title">CEME</span>
                 </a>
             </li>
+        @endif
+        @if(Auth::user()->peran_pengguna == 1 || Auth::user()->id_job_title == "JT-0102" || Auth::user()->id_job_title == "JT-0049")
+            <li class="nav-item"> 
+                <a class="nav-link" data-toggle="collapse" href="#management-system" aria-expanded="false" aria-controls="management-system">
+                    <i class="icon-paper menu-icon"></i>
+                    <span class="menu-title">Certification</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="management-system">
+                    <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('master.system.index') }}">Data Certification</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('system.index') }}">Kelola Certification</a></li>
+                    </ul>
+                </div>
+            </li> 
         @endif
       </ul>
   </nav>
