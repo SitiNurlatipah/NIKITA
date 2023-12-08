@@ -30,7 +30,7 @@
                                             <th width="10">No.#</th>
                                             <th>Certification</th>
                                             <th>Target</th>
-                                            <th>Description</th>
+                                            <th>Dasar Hukum</th>
                                             <th width="15%">Action</th>
                                         </tr>
                                     </thead>
