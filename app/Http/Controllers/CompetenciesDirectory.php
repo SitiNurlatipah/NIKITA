@@ -8,6 +8,8 @@ use App\CurriculumModel;
 use App\CurriculumToJob;
 use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
+use App\Imports\CompetenciesDirectoryImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CompetenciesDirectory extends Controller
 {   
@@ -181,5 +183,19 @@ class CompetenciesDirectory extends Controller
                                                 ->groupBy("competencies_directory.id_job_title")
                                                 ->get();
         return view("pages.admin.competency-directory.detail",compact("curriculum","directories"));
+    }
+    public function importDirectory(Request $request){
+        try {
+            Excel::import(new CompetenciesDirectoryImport, $request->file('file'));
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Sukses import data'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Gagal import data: ' . $e->getMessage()
+            ]);
+        }
     }
 }

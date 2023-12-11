@@ -32,6 +32,7 @@
                     <p class="card-title ml-4">Competency Dictionary</p>
                     <div class="col-md mb-2">
                         <button class="btn btn-sm btn-success float-right add-directory" data-toggle="modal" data-id="" onclick="formCompetencyDirectory(this)" data-target="#modal-tambah" data-placement="top" title="Tambah Data"><i class="icon-plus"></i> Add Competency Dictionary</button>
+                        <button class="btn btn-sm btn-success float-right add-directory" data-toggle="modal" data-target="#modal-import" data-whatever="@mdo" title="Tambah Data"><i class="icon-plus"></i> Import Competency Dictionary</button>
                     </div> 
                 </div>
                 <div class="row">
@@ -75,6 +76,28 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" id="submitForm" class="btn btn-primary">Save changes</button>
             </div>
+        </form>
+      </div>
+    </div>
+</div>
+<div class="modal fade" id="modal-import" tabindex="-1" role="dialog" aria-labelledby="modal-tambahLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header p-3">
+              <h5 class="modal-title" id="">Import Competencies Dictionary </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('importCompetencyDirectory') }}" id="formImport" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <input type="file" name="file" class="">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" id="" class="btn btn-primary">Save changes</button>
+                </div>
         </form>
       </div>
     </div>
@@ -162,8 +185,76 @@
                     }
                 })
             })
+            // $("#submitImport").click(function (e) {
+            //     e.preventDefault();
+            //     var form = $("#formImport")
+            //     const url = form.attr("action");
+            //     var formData = new FormData($('#formImport')[0]);
+            //     $.ajax({
+            //         url:url,
+            //         type:"post",
+            //         cache:false,
+            //         data:formData,
+            //         success:function (data) {
+            //             $("#modal-import").modal('hide');
+            //             $('#table-cd').DataTable().destroy();
+            //             initDatatable();
+            //             Swal.fire({
+            //                 position:'center',
+            //                 icon:'success',
+            //                 title:data.message,
+            //                 showConfirmButton:false,
+            //                 timer:1500
+            //             });
+            //         },
+            //         error:function (err) {
+            //             console.log(err);
+            //             Swal.fire({
+            //                 position: 'center',
+            //                 icon: 'error',
+            //                 title: err.statusText,
+            //                 showConfirmButton: false,
+            //                 timer: 1500
+            //             })
+            //         }
+            //     })
+            // })
         });
-
+        $('#formImport').on('submit', function(e) {
+            e.preventDefault();
+            var data = $("#formImport")
+            var form = new FormData($('#formImport')[0]);
+            const url = data.attr("action");
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: form,
+                contentType: false,
+                processData: false,
+                success:function (data) {
+                    $("#modal-import").modal('hide');
+                    $('#table-cd').DataTable().destroy();
+                    initDatatable();
+                    Swal.fire({
+                        position:'center',
+                        icon:'success',
+                        title:data.message,
+                        showConfirmButton:false,
+                        timer:1500
+                    });
+                },
+                error:function (err) {
+                    console.log(err);
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: err.statusText,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+            });
+        })
         function getJabatan(){
             $.ajax({
                 type: "GET",

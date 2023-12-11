@@ -92,7 +92,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/add-row','CompetenciesDirectory@addRow')->name('addRow');
         Route::post('/action','CompetenciesDirectory@storeCompetencyDirectory')->name('storeCompetencyDirectory');
         Route::get('/detail','CompetenciesDirectory@detail')->name("detailCompetencyDirectory");
-
+        Route::post('/action/import','CompetenciesDirectory@importDirectory')->name('importCompetencyDirectory');
         Route::get('/cek','CompetenciesDirectory@dataTableGrouping');
     });
 
