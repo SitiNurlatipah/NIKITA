@@ -32,7 +32,7 @@
                     <p class="card-title ml-4">Competency Dictionary</p>
                     <div class="col-md mb-2">
                         <button class="btn btn-sm btn-success float-right add-directory" data-toggle="modal" data-id="" onclick="formCompetencyDirectory(this)" data-target="#modal-tambah" data-placement="top" title="Tambah Data"><i class="icon-plus"></i> Add Competency Dictionary</button>
-                        <button class="btn btn-sm btn-success float-right add-directory" data-toggle="modal" data-target="#modal-import" data-whatever="@mdo" title="Tambah Data"><i class="icon-plus"></i> Import Competency Dictionary</button>
+                        <!-- <button class="btn btn-sm btn-success float-right add-directory" data-toggle="modal" data-target="#modal-import" data-whatever="@mdo" title="Tambah Data"><i class="icon-plus"></i> Import Competency Dictionary</button> -->
                     </div> 
                 </div>
                 <div class="row">

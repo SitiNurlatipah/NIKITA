@@ -227,7 +227,7 @@
             data:formData,
             success:function(data){
                 console.log(data);
-                $("#modal-tambah").modal('hide');
+                $("#modal-edit").modal('hide');
                 $('#table-kelola-champion').DataTable().destroy();
                 initDatatable();
                 Swal.fire({

@@ -115,6 +115,7 @@
                     <li class="nav-item"> <a class="nav-link" href="{{ route('member.champion.index') }}">Member Champion</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('champion.index') }}">Curriculum 4.0</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('kelola.champion.index') }}">Kelola Champion 4.0</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('champion.taging') }}">Taging</a></li>
                     <li class="nav-item"> <a class="nav-link" href="#">CEME Champion</a></li>
                     </ul>
                 </div>

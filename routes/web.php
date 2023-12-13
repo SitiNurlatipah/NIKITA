@@ -77,7 +77,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/action','Tagging@actionTagingList')->name('actionTagingList');
         Route::get('/detail','Tagging@detail')->name('tagingDetail');
         Route::get('/export-tagging','Tagging@exportTaggingList')->middleware(['isAdmin'])->name('exportTaggingList');
-        Route::get('/tagging-print','Tagging@taggingPrint')->middleware(['isAdmin'])->name('taggingPrint');
+        Route::get('/tagging-print','Tagging@taggingPrint')->name('taggingPrint');
         // Route::delete('/tagging-delete/{id_taging_reason}', 'Tagging@deleteTagging');   
         Route::post('/delete','Tagging@deleteTagging')->name('tagging.destroy');
  
@@ -284,6 +284,17 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/kelola/action','ChampionController@actionChampion')->name("action.champion");
         Route::get('/kelola/detail', 'ChampionController@detailMapcomChampion')->name('detail.kelola.champion');
 
+        Route::get('/taging', 'ChampionController@indexTangging')->name('champion.taging');
+        Route::get('/tagging-json','ChampionController@tagingChampionJson')->name('champion.tagging.json');
+        Route::get('/tagging-member','ChampionController@tagingJsonMember')->name('taggingJsonMember');
+        Route::get('/tagging-atasan','ChampionController@tagingJsonAtasan')->name('taggingJsonAtasan');
+        Route::get('/taging/form','ChampionController@championFormTagging')->name('champion.tagingForm');
+        Route::post('/action','ChampionController@championActionTaging')->name('champion.actionTagingList');
+        Route::get('/detail','ChampionController@tagingDetail')->name('champion.tagingDetail');
+        Route::get('/export-tagging','ChampionController@exportTaggingList')->middleware(['isAdmin'])->name('champion.exportTaggingList');
+        Route::get('/tagging-print','ChampionController@championTaggingPrint')->middleware(['isAdmin'])->name('champion.taggingPrint');
+        // Route::delete('/tagging-delete/{id_taging_reason}', 'ChampionController@deleteTagging');   
+        Route::post('/delete','ChampionController@deleteTagging')->name('tagging.destroy');
     });
 
     // Management System
