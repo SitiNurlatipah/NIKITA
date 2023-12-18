@@ -295,6 +295,18 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/tagging-print','ChampionController@championTaggingPrint')->middleware(['isAdmin'])->name('champion.taggingPrint');
         // Route::delete('/tagging-delete/{id_taging_reason}', 'ChampionController@deleteTagging');   
         Route::post('/delete','ChampionController@deleteTagging')->name('tagging.destroy');
+
+        //CEME
+        Route::get('/ceme-champion', 'ChampionController@indexCemeChampion')->name('champion.ceme');
+        Route::get('/champion/ceme/json','ChampionController@cgJsonChampion')->name('champion.ceme.json');
+        // Route::post('/ceme-post', 'ChampionController@actionCeme')->name('actionCeme.ss');
+        // Route::post('ceme/add-job-title','ChampionController@addJobTitle')->name('ceme.addJobTitle.ss');
+        // Route::post('ceme/get-job-title','ChampionController@getJobTitle')->name('ceme.getJobTitle.ss');
+        // Route::post('ceme/delete-job-title','ChampionController@deleteJobTitle')->name('ceme.deleteJobTitle.ss');
+        Route::post('/ceme-champion/chartCeme','ChampionController@chartCemeChampion')->name('champion.ceme.chartCeme');
+        Route::post('/ceme-champion/chartMe','ChampionController@chartMeChampion')->name('champion.ceme.chartMe');
+        Route::get('/champion-competent/json', 'ChampionController@competentChampionJson')->name('champion.competent.json');
+
     });
 
     // Management System

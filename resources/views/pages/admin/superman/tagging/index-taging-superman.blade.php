@@ -148,7 +148,7 @@
                   <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{!!route("exportTaggingList")!!}" method="get">
+            <form action="{!!route("superman.exportTaggingList")!!}" method="get">
                 <input type="hidden" name="all" value="1">
                 <div class="modal-body">
                     <div class="form-row">

@@ -13,9 +13,13 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Auth;
+use App\Exports\TaggingChampionExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class ChampionController extends Controller
 {
+    //Curriculum Champion
     public function indexMaster()
     {
         $users_data = DB::raw("(SELECT GROUP_CONCAT(nama_pengguna) FROM curriculum_champion_to_user AS cctu JOIN users ON users.id = cctu.id_user WHERE cctu.id_curriculum_champion = curriculum_champion.id_curriculum_champion GROUP BY cctu.id_curriculum_champion ) AS users");
@@ -186,7 +190,7 @@ class ChampionController extends Controller
     }
 
 
-    // Index
+    // Mapping Competency Champion Index
     public function index()
     {
         return view('pages.admin.champion.index');
@@ -679,7 +683,6 @@ class ChampionController extends Controller
             ->rawColumns(['action', 'tagingStatus'])
             ->make(true);
     }
-    
 
     public function championFormTagging(Request $request)
     {   
@@ -862,7 +865,7 @@ class ChampionController extends Controller
                 $fileName = "Tagging List ".$type." Finish (".$dateTime.").xlsx";
             break;
         }
-        return Excel::download(new TaggingListExport($request->category,$request->all), $fileName);
+        return Excel::download(new TaggingChampionExport($request->category,$request->all), $fileName);
         return redirect()->back();
     }
 
@@ -935,5 +938,120 @@ class ChampionController extends Controller
 
         return response()->json($response);
 
+    }
+
+    //Ceme Champion
+    public function indexCemeChampion(Request $request)
+    {
+        return view('pages.admin.champion.ceme-champion');
+    }
+    public function competentChampionJson(Request $request)
+    {       
+        $competent = WhiteTagModel::select('users.*', 'dp.nama_department', 'cg.nama_cg','jt.nama_job_title')
+                    ->join("users",function ($join) use ($request){
+                        $join->on("users.id","white_tag.id_user")
+                        ->where([
+                            ["white_tag.actual",">=","cc.target"]
+                        ]);
+                    })
+                    ->join("curriculum_champion_to_user as cctu","cctu.id_cctu","white_tag.id_cctu")
+                    ->join("curriculum_champion as cc","cc.id_curriculum_champion","cctu.id_curriculum_champion")
+                    ->join('department as dp', 'users.id_department', '=', 'dp.id_department')
+                    ->join('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
+                    ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+                    ->groupBy('white_tag.id_user')
+                    ->get();
+            
+        return Datatables::of($competent)
+        ->addIndexColumn()
+        ->addColumn('rata_nilai', function ($item) {
+            $avg = round($item->championScore($item->id), 2);
+            return $avg >= 86.67 ? '<span class="badge badge-warning">' . $avg . '%</span>' : $avg . '%';
+        })
+        ->rawColumns(['rata_nilai']) // Ini penting untuk merender elemen HTML
+        ->make(true);      
+    }
+
+    public function chartCemeChampion(Request $request)
+    {
+        $ceme = request('q');
+        $pie = [
+            'label' => [],
+            'totalScore' => []
+        ];
+         
+        $wt=User::select(DB::raw("count(id) as total"),DB::raw("CASE WHEN is_competent_champion = '1' THEN 'Competent' ELSE 'Non-Competent' END as competency_status"))
+                ->where('is_champion', 1)
+                ->groupBy('is_competent_champion')
+                ->get();
+        $totalUsers = $wt->sum('total');
+        foreach($wt as $data)
+        {
+            $percentage = ($data->total / $totalUsers) * 100; // Calculate the percentage
+            $labelWithPercentage = $data->competency_status . ' (' . round($percentage, 2) . '%)';
+
+            $pie['label'][] = $labelWithPercentage; // Use [] to append to the array
+            $pie['totalScore'][] = $data->total;
+        };
+
+        return response()->json($pie);
+    }
+
+    public function chartMeChampion()
+    {
+        $ceme = request('q');
+        $users = DB::table('users')
+            ->where('is_superman', 1)
+            ->orWhere('users.id_level', 'LV-0002')
+            ->orWhere('users.id_level', 'LV-0003')
+            ->orWhere('users.id_level', 'LV-0004')
+            ->Join('job_title_users','job_title_users.user_id','users.id')
+            ->groupBy('job_title_users.user_id')
+            ->select('users.nama_pengguna',DB::raw('count(job_title_users.user_id) as totalSkill'))
+            ->groupBy(DB::Raw('IFNULL( job_title_users.user_id , 0 )'))
+            ->get();
+        return response()->json($users);
+    }
+
+    public function cgJsonChampion(Request $request)
+    {
+        $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+        ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+        ->leftJoin('cg', 'users.id_cg', '=', 'cg.id_cg')
+        ->leftJoin('divisi', 'users.id_divisi', '=', 'divisi.id_divisi')
+        ->where('is_competent',1)
+        ->where(function ($query) {
+            $query->where('is_superman', 1)
+                ->orWhere('users.id_level', 'LV-0002')
+                ->orWhere('users.id_level', 'LV-0003')
+                ->orWhere('users.id_level', 'LV-0004');
+        })
+        ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title', 'cg.nama_cg', 'divisi.nama_divisi']);
+
+        return DataTables::of($data)
+        ->addIndexColumn()
+        ->addColumn('action', function ($row) {
+
+            $datajobmultiskill = JobTitleUsers::where('user_id', $row->id)->count();
+
+            $datajobmultiskilltglupdate = JobTitleUsers::where('user_id', $row->id)->latest('updated_at')->first();
+
+            // var_dump($datajobmultiskilltglupdate); die;
+
+            $btn = '<button data-id="' . $row->id . '" class="button-add btn btn-inverse-success btnAddJobTitle btn-icon mr-1" data-nama="'.$row->nama_pengguna.'" data-userid="'.$row->id.'"><i class="icon-plus menu-icon"></i></button>';
+            $btn = $btn . '<button type="button" data-id="'.$row->id.'" data-name="'.$row->nama_pengguna.'" data-cg="'.$row->nama_cg.'" data-divisi="'.$row->nama_divisi.'" data-jobtitle="'.$row->nama_job_title.'" data-department="'.$row->nama_department.'" class="btn btnDetail btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail"><i class="ti-eye"></i></button>';
+
+            if($datajobmultiskill >= 1){
+                $btn = $btn . '<td class="font-weight-medium"><div class="ml-1 mt-2 badge badge-success">Transfered at '.$datajobmultiskilltglupdate->updated_at.'</div></td>';
+            }else{
+                $btn = $btn . '<td class="font-weight-medium"><div class="ml-1 mt-2 badge badge-warning">Ready to Transfer</div></td>';
+            }
+
+            // $btn = $btn . '<button type="button" class="btn btn-warning">Warning</button>';
+            return $btn;
+        })
+        ->addIndexColumn()
+        ->rawColumns(['action'])
+        ->make(true);
     }
 }

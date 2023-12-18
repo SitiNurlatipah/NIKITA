@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use App\Exports\TaggingListExport;
+use App\Exports\TaggingSupermanExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\Datatables\Datatables;
 
@@ -357,7 +357,7 @@ class TagingSupermanController extends Controller
                 $fileName = "Tagging List ".$type." Finish (".$dateTime.").xlsx";
             break;
         }
-        return Excel::download(new TaggingListExport($request->category,$request->all), $fileName);
+        return Excel::download(new TaggingSupermanExport($request->category,$request->all), $fileName);
         return redirect()->back();
     }
 

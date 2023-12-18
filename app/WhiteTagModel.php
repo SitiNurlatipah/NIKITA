@@ -167,6 +167,68 @@ class WhiteTagModel extends Model
         
         return $data2;
     }
+    public function championScore($id_user)
+    {
+        $user = User::select("id")
+                ->where("id", $id_user)
+                ->first();
+        
+            $wt = ChampionToUser::select(
+                    DB::raw("SUM(IFNULL(white_tag.actual, 0)) as total_actual"),
+                    DB::raw("SUM(curriculum_champion.target) as total_target")
+                )
+                ->join("curriculum_champion",function ($join) use ($user){
+                    $join->on("curriculum_champion.id_curriculum_champion","curriculum_champion_to_user.id_curriculum_champion")
+                        ->whereRaw("curriculum_champion_to_user.id_user = '".$user->id."'");
+                })
+                ->leftJoin("white_tag",function ($join) use ($user){
+                    $join->on("white_tag.id_cctu","curriculum_champion_to_user.id_cctu")
+                        ->where("white_tag.id_user",$user->id);
+                })
+                // ->where('curriculum_superman.id_skill_category',$key)
+                ->get();
+           $jmlactual = WhiteTagModel::select(DB::raw("sum(actual) as cnt"),DB::raw("sum(cc.target) as totaltarget"),"actual","target")
+                                 ->join("users",function ($join) use ($id_user){
+                                    $join->on("users.id","white_tag.id_user")
+                                        ->where([
+                                            ["white_tag.id_user",$id_user],
+                                            ["white_tag.actual",">=","cc.target"]
+                                        ]);
+                                    })
+                                    ->join("curriculum_champion_to_user as cctu","cctu.id_cctu","white_tag.id_cctu")
+                                    ->join("curriculum_champion as cc","cc.id_curriculum_champion","cctu.id_curriculum_champion")
+                                    ->get();
+            $target = $wt[0]["total_target"];
+            $actual = $jmlactual[0]["cnt"];
+            if ($target != 0) {
+                $item = ($actual/$target)*100;
+            }else{
+                $item = 0;
+            }
+            // array_push($data,$item);
+        
+        
+        // $data2 = array_sum($data)/2;
+        if($item >= 100){
+            $item=100;
+        }else{
+            $item=$item;
+        }
+        if($item >= 86.67)
+        {
+            // set is competent champion = 1
+            $user = User::find($id_user);
+            $user->is_competent_champion = 1;
+            $user->save();
+        }else{
+            // set is competent champion = 0
+            $user = User::find($id_user);
+            $user->is_competent_champion = 0;
+            $user->save();
+        }
+        
+        return $item;
+    }
 
 
 }

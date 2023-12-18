@@ -103,7 +103,7 @@
                     </ul>
                 </div>
             </li>
-            {{-- 
+            
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#champion" aria-expanded="false" aria-controls="champion">
                     <i class="icon-cloud menu-icon"></i>
@@ -116,11 +116,11 @@
                     <li class="nav-item"> <a class="nav-link" href="{{ route('champion.index') }}">Curriculum 4.0</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('kelola.champion.index') }}">Kelola Champion 4.0</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('champion.taging') }}">Taging</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="#">CEME Champion</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('champion.ceme') }}">CEME Champion</a></li>
                     </ul>
                 </div>
             </li>
-            
+            {{-- 
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#management-system" aria-expanded="false" aria-controls="management-system">
                     <i class="icon-paper menu-icon"></i>
