@@ -30,7 +30,7 @@ class TaggingListExport implements FromCollection, WithStyles, WithHeadings, Wit
     {
         $select = [
             "tr.no_taging as noTaging","nama_pengguna as employee_name","nama_cg","nik","tr.date_verified",
-            "skill_category","training_module","level","training_module_group","white_tag.actual as actual",
+            "skill_category","training_module","level","training_module_group","white_tag.actual as actual","compGroup.name as compgroup",
             "cd.target as target",DB::raw("(white_tag.actual - cd.target) as actualTarget"),DB::raw("(IF((white_tag.actual - cd.target) < 0,'Follow Up','Finished' )) as tagingStatus")
         ];
         switch ($this->category) {
@@ -49,16 +49,17 @@ class TaggingListExport implements FromCollection, WithStyles, WithHeadings, Wit
             $whereRaw .= " AND users.id_cg = '".Auth::user()->id_cg."'";
         }
         $data = WhiteTagModel::select($select)
-        ->join("competencies_directory as cd",function ($join){
-                                $join->on("cd.id_directory","white_tag.id_directory");
-                            })
-                            ->leftJoin("taging_reason as tr","tr.id_white_tag","white_tag.id_white_tag")
-                            ->join("users","users.id","white_tag.id_user")
-                            ->join("curriculum","curriculum.id_curriculum","cd.id_curriculum")
-                            ->join("skill_category as sc","sc.id_skill_category","curriculum.id_skill_category")
-                            ->join("cg","cg.id_cg","users.id_cg")
-                            ->whereRaw($whereRaw)
-                            ->get();
+                ->join("competencies_directory as cd",function ($join){
+                    $join->on("cd.id_directory","white_tag.id_directory");
+                })
+                ->leftJoin("taging_reason as tr","tr.id_white_tag","white_tag.id_white_tag")
+                ->join("users","users.id","white_tag.id_user")
+                ->join("curriculum","curriculum.id_curriculum","cd.id_curriculum")
+                ->join("competencie_groups as compGroup","compGroup.id","curriculum.training_module_group")
+                ->join("skill_category as sc","sc.id_skill_category","curriculum.id_skill_category")
+                ->join("cg","cg.id_cg","users.id_cg")
+                ->whereRaw($whereRaw)
+                ->get();
         return $data;
     }
 
@@ -99,7 +100,7 @@ class TaggingListExport implements FromCollection, WithStyles, WithHeadings, Wit
             $softreserve->skill_category,
             $softreserve->training_module,
             $softreserve->level,
-            $softreserve->training_module_group,
+            $softreserve->compgroup,
             $softreserve->actual,
             $softreserve->target,
             $softreserve->tagingStatus,

@@ -17,6 +17,7 @@ use App\Department;
 use App\Rotation;
 use App\WhiteTagHistory;
 use App\WhiteTagModel;
+use App\Superman;
 use Carbon\Carbon;
 
 class MemberCG extends Controller
@@ -252,17 +253,13 @@ class MemberCG extends Controller
                     ->where("id",$request->id)
                     ->first();
 
+        //Non Superman
         $counting = WhiteTagModel::select(DB::raw("COUNT(*) as cnt"),"level")
                                 ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
                                 ->join("users",function ($join) use ($request){
                                     $join->on("users.id","white_tag.id_user")
                                 ->whereRaw("white_tag.id_user = '".$request->id."' AND white_tag.actual >= cd.target AND white_tag.actual > 0 AND white_tag.start >= 0");
-                                    // ->where([
-                                    //     ["white_tag.id_user",$request->id],
-                                    //     ["white_tag.actual",">=","cd.target"],
-
-                                    // ]);
-                                })
+                                    })
                                 ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
                                 ->groupBy("level")
                                 ->get();
@@ -276,13 +273,35 @@ class MemberCG extends Controller
             ->join("curriculum AS crclm","crclm.id_curriculum","cd.id_curriculum")
             ->join("competencie_groups as compGroup","compGroup.id","crclm.training_module_group")
             ->join("skill_category AS sc","sc.id_skill_category","crclm.id_skill_category")
-            // ->whereRaw("white_tag.actual >= cd.target AND white_tag.actual > 0 AND white_tag.start >= 0")
             ->whereRaw("white_tag.actual < cd.target")
+            ->where("users.id", $request->id)
+            ->get();
+        
+        //Superman
+        $countingSuperman = Superman::select(DB::raw("COUNT(*) as cnt"))
+                            ->join("competencies_dictionary_superman as cd","cd.id_dictionary_superman","competencies_superman.id_cstu")
+                                ->join("users",function ($join) use ($request){
+                                    $join->on("users.id","competencies_superman.id_user")
+                                ->whereRaw("competencies_superman.id_user = '".$request->id."' AND competencies_superman.actual >= cd.target AND competencies_superman.actual > 0 AND competencies_superman.start >= 0");
+                                    })
+                                ->join("curriculum_superman as crclm","crclm.id_curriculum_superman","cd.id_curriculum_superman")
+                                ->get();
+            $select_curriculum = [
+            "nama_pengguna","no_curriculum_superman",
+            DB::raw("COUNT(*) as cnt", "(IF(actual < target,'Open','Close' )) as tagingStatus")
+        ];
+        $data_openSuperman = Superman::select($select_curriculum)
+            ->join("users","users.id","competencies_superman.id_user")
+            ->join("competencies_dictionary_superman as cd","cd.id_dictionary_superman","competencies_superman.id_cstu")
+            ->join("curriculum_superman as crclm","crclm.id_curriculum_superman","cd.id_curriculum_superman")
+            ->join("competencie_groups as compGroup","compGroup.id","crclm.curriculum_group")
+            ->join("skill_category AS sc","sc.id_skill_category","crclm.id_skill_category")
+            ->whereRaw("competencies_superman.actual < cd.target")
             ->where("users.id", $request->id)
             ->get();
 
 
-        return view('pages.admin.member.detail',compact('user','counting', 'data_open'));
+        return view('pages.admin.member.detail',compact('user','counting', 'data_open','countingSuperman','data_openSuperman'));
     }
 
     public function memberRotation(Request $request){

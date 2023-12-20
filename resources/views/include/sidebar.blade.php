@@ -96,9 +96,9 @@
                     <ul class="nav flex-column sub-menu">
                     <li class="nav-item"> <a class="nav-link" href="{{ route('member.superman.index') }}">Member Superman</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('superman.index') }}">Curriculum Superman</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('DictionarySuperman') }}">Dictionary</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('kelola.superman.index') }}">Kelola Superman</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('superman.tagging') }}">Tagging</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('DictionarySuperman') }}">Competency Dictionary</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('kelola.superman.index') }}">Mapping Competency</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('superman.tagging') }}">Tagging Superman</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('superman.ceme') }}">CEME Superman</a></li>
                     </ul>
                 </div>
@@ -114,8 +114,8 @@
                     <ul class="nav flex-column sub-menu">
                     <li class="nav-item"> <a class="nav-link" href="{{ route('member.champion.index') }}">Member Champion</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('champion.index') }}">Curriculum 4.0</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('kelola.champion.index') }}">Kelola Champion 4.0</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('champion.taging') }}">Taging</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('kelola.champion.index') }}">Mapping Competency</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('champion.taging') }}">Taging Champion</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('champion.ceme') }}">CEME Champion</a></li>
                     </ul>
                 </div>

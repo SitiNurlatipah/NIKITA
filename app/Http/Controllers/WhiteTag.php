@@ -36,6 +36,7 @@ class WhiteTag extends Controller
             ->leftJoin('divisi', 'users.id_divisi', '=', 'divisi.id_divisi')
             ->leftJoin('cg', 'users.id_cg', '=', 'cg.id_cg')
             ->Where('users.id_department', $dp)
+            ->Where('users.is_superman','!=', 1)
             ->orderBy('users.nama_pengguna', 'DESC')
             ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','cg.nama_cg','divisi.nama_divisi']);
         return Datatables::of($data)
@@ -52,8 +53,8 @@ class WhiteTag extends Controller
             ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
             ->leftJoin('divisi', 'users.id_divisi', '=', 'divisi.id_divisi')
             ->leftJoin('cg', 'users.id_cg', '=', 'cg.id_cg')
-            ->Where('users.id', $id)
-            ->orWhere('users.id_cg', $cgExtraAuth)
+            ->Where('users.is_superman','!=', 1)
+            ->Where('users.id_cg', $cgExtraAuth)
             ->orWhere('users.id_cg', $cgtambah2)
             ->orWhere('users.id_cg', $cgtambah3)
             ->orWhere('users.id_cg', $cgtambah4)
@@ -79,6 +80,7 @@ class WhiteTag extends Controller
             // })
             ->leftJoin('cg', 'users.id_cg', '=', 'cg.id_cg')
             ->leftJoin('divisi', 'users.id_divisi', '=', 'divisi.id_divisi')
+            ->Where('users.is_superman','!=', 1)
             ->orderBy('users.nama_pengguna', 'DESC')
             ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','cg.nama_cg','divisi.nama_divisi']);
         return Datatables::of($data)
@@ -98,6 +100,7 @@ class WhiteTag extends Controller
                 $join->on('users.id_cg','cg.id_cg')
                     ->where('users.id_cg',$cgAuth);
             })
+            ->Where('users.is_superman','!=', 1)
             ->leftJoin('divisi', 'users.id_divisi', '=', 'divisi.id_divisi')
             ->orderBy('users.nama_pengguna', 'DESC')
             ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','cg.nama_cg','divisi.nama_divisi']);
