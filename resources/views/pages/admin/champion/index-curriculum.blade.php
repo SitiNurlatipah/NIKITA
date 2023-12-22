@@ -2,7 +2,6 @@
 
 @section('title', 'Curriculum')
 @section('content')
-
     <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
@@ -79,8 +78,8 @@
                                                             class="icon-file menu-icon"></i></button>
 
                                                     <button data-id="{{ $data->id_curriculum_champion }}"
-                                                        class="btn btn-inverse-danger btn-icon mr-1 cr-hapus"
-                                                        data-toggle="modal" data-target="#modal-hapus" data-toggle="tooltip" data-placement="top" title="Delete Data">
+                                                        class="btn btn-inverse-danger btn-icon mr-1 btnHapus"
+                                                        >
                                                         <i class="icon-trash">
                                                         </i></button>
                                                 </td>
@@ -197,7 +196,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modal-hapus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel17"
+    <!-- <div class="modal fade" id="modal-hapus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel17"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -212,12 +211,12 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button id="btnHapus" onclick="deleteCurriculum(this)" data-id="" class="btn btn-danger">Hapus</button>
+                    <button id="btnHapus" onclick="deleteCurriculum(this)" data-id="" class="btn btn-danger btnHapus">Hapus</button>
                 </div>
             </div>
             </form>
         </div>
-    </div>
+    </div> -->
 
     <div class="modal fade" id="modal-detail-user" tabindex="-1" role="dialog" aria-labelledby="modal-editLabel"
         aria-hidden="true">
@@ -341,43 +340,76 @@
             })
         }
 
-        $('#table-cr-champion').on('click', '.cr-hapus', function() {
-            var id = $(this).data('id');
-            $('#btnHapus').attr('data-id', id);
-        })
-
-        function deleteCurriculum(el) {
-            var id = $(el).attr("data-id");
-            
-            var token = $("meta[name='csrf-token']").attr("content");
-            $.ajax({
-                url: "champion/delete/" + id,
-                mehtod: "delete",
-                data: {
-                    "id": id,
-                    "_token": token,
-                },
-                success: function(res) {
-                    console.log(res)
-                    $("#modal-hapus").modal('hide');
-                    window.location.reload();
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Data berhasil di hapus',
-                        showConfirmButton: true,
-                        timer: 1500
-                    })
-                }, error: function(err) {
-                    console.log(err)
-                    Swal.fire({
-                        icon: 'error',
-                        title: err.responseJSON.errors,
-                        showConfirmButton: false,
-                        timer: 1500
+        $('body').on('click', '.btnHapus', function() {
+            var id = $(this).attr('data-id');
+            console.log("ID:", id);
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ route('champion.curriculum.destroy') }}",
+                        type: 'POST',
+                        dataType: 'JSON',
+                        data: {
+                            id
+                        },
+                        success: function(response) {
+                            Swal.fire({
+                                icon: response.status,
+                                text: response.message
+                            });
+                            setTimeout(function() {
+                                location.reload();
+                            }, 1000);
+                        },
                     })
                 }
             })
-        }
+        })
+        // $('#table-cr-champion').on('click', '.cr-hapus', function() {
+        //     var id = $(this).data('id');
+        //     $('#btnHapus').attr('data-id', id);
+        // })
+
+        // function deleteCurriculum(el) {
+        //     var id = $(el).attr("data-id");
+            
+        //     var token = $("meta[name='csrf-token']").attr("content");
+        //     $.ajax({
+        //         url: "champion/delete/" + id,
+        //         mehtod: "delete",
+        //         data: {
+        //             "id": id,
+        //             "_token": token,
+        //         },
+        //         success: function(res) {
+        //             console.log(res)
+        //             $("#modal-hapus").modal('hide');
+        //             window.location.reload();
+        //             Swal.fire({
+        //                 icon: 'success',
+        //                 title: 'Data berhasil di hapus',
+        //                 showConfirmButton: true,
+        //                 timer: 1500
+        //             })
+        //         }, error: function(err) {
+        //             console.log(err)
+        //             Swal.fire({
+        //                 icon: 'error',
+        //                 title: err.responseJSON.errors,
+        //                 showConfirmButton: false,
+        //                 timer: 1500
+        //             })
+        //         }
+        //     })
+        // }
 
         function getSkill() {
             $.ajax({

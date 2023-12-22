@@ -276,7 +276,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/create', 'ChampionController@store')->name('champion.store');
         Route::get('/get-form','ChampionController@getFormEdit')->name('champion.get.form');
         Route::post('/edit', 'ChampionController@edit')->name('champion.update');
-        Route::post('/delete','ChampionController@destroy')->name('champion.destroy');
+        Route::post('/curriculum-champion-delete','ChampionController@destroyCurriculum')->name('champion.curriculum.destroy');
 
         Route::get('/kelola/champion', 'ChampionController@index')->name('kelola.champion.index');
         Route::get('/kelola/json', 'ChampionController@getJson')->name('champion.json');
@@ -294,7 +294,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/export-tagging','ChampionController@exportTaggingList')->middleware(['isAdmin'])->name('champion.exportTaggingList');
         Route::get('/tagging-print','ChampionController@championTaggingPrint')->middleware(['isAdmin'])->name('champion.taggingPrint');
         // Route::delete('/tagging-delete/{id_taging_reason}', 'ChampionController@deleteTagging');   
-        Route::post('/delete','ChampionController@deleteTagging')->name('tagging.destroy');
+        // Route::post('/delete','ChampionController@deleteTagging')->name('tagging.destroy');
 
         //CEME
         Route::get('/ceme-champion', 'ChampionController@indexCemeChampion')->name('champion.ceme');

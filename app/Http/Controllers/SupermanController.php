@@ -498,7 +498,7 @@ class SupermanController extends Controller
             'id_level' => 'LV-0005'
         ];
         User::where('id',$id)->update($data);  
-        return redirect()->route('Member')->with(['success' => 'Curriculum Deleted successfully']);
+        return redirect()->route('member.superman.index')->with(['success' => 'Member Superman Deleted successfully']);
     }
 
     //halaman dictionary superman

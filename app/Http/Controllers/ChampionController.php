@@ -164,17 +164,17 @@ class ChampionController extends Controller
         return response()->json(['code' => 200, 'message' => 'Post Edited successfully'], 200);
     }
 
-    public function destroy($id)
+    public function destroyCurriculum()
     {
         $validator = Validator::make(request()->all(),[
             'id' => ['required']
         ]);
-        // dd($id);
         if($validator->fails())
         {
             return response()->json($validator->errors());
         }
-
+        $id = request('id');
+        // dd($id);
         Champion::where('id_curriculum_champion', $id)->delete();
         ChampionToUser::where("id_curriculum_champion", $id)->delete();
 
@@ -184,9 +184,7 @@ class ChampionController extends Controller
             'message' => 'Curriculum Deleted successfully',
             'data' => NULL
         ];
-
         return response()->json($response);
-
     }
 
 
@@ -474,7 +472,7 @@ class ChampionController extends Controller
             'is_champion' => 0,
         ];
         User::where('id',$id)->update($data);  
-        return redirect()->route('Member')->with(['success' => 'Champion Deleted successfully']);
+        return redirect()->route('member.champion.index')->with(['success' => 'Champion Deleted successfully']);
     
     }
 
