@@ -716,7 +716,7 @@
     }
     function tagingDeptDataTable() {
         var dtJson = $('#tabel-tag-atasan').DataTable({
-          ajax: "{{ route('taggingJsonAtasan') }}?type=depthead",
+          ajax: "{{ route('champion.taggingJsonAtasan') }}?type=depthead",
           responsive:true,
           serverSide: true,
           processing: true,
@@ -777,7 +777,7 @@
     }
     function tagingSpvDataTable() {
         var dtJson = $('#tabel-tag-spv').DataTable({
-          ajax: "{{ route('taggingJsonAtasan') }}?type=spv",
+          ajax: "{{ route('champion.taggingJsonAtasan') }}?type=spv",
           responsive:true,
           serverSide: true,
           processing: true,
@@ -807,10 +807,10 @@
                   data: 'employee_name'
               },
               {
-                  data: 'skill_category'
+                  data: 'nama_group_champion'
               },
               {
-                  data: 'training_module'
+                  data: 'curriculum_champion'
               },
               {
                   data: 'level'

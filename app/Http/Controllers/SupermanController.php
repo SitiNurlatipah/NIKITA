@@ -240,7 +240,6 @@ class SupermanController extends Controller
                     ->orderBy('nama_pengguna', 'DESC')
                     ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','level.nama_level']);
         }
-        
         return Datatables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
@@ -676,19 +675,55 @@ class SupermanController extends Controller
     }
     public function competentEmployeeSupermanJson(Request $request)
     { 
+        $dp = Auth::user()->id_department;
+        $id = Auth::user()->id;
+
+        if(Auth::user()->id_level == 'LV-0003'){
             $competent = Superman::select('users.*', 'dp.nama_department','jt.nama_job_title')
-                ->join("users",function ($join) use ($request){
-                    $join->on("users.id","competencies_superman.id_user")
-                    ->where([
-                        ["competencies_superman.actual",">=","cd.target"]
-                    ]);
-                })
-                ->join("competencies_dictionary_superman as cd","cd.id_dictionary_superman","competencies_superman.id_cstu")
-                ->join("curriculum_superman as crclm","crclm.id_curriculum_superman","cd.id_curriculum_superman")
-                ->join('department as dp', 'users.id_department', '=', 'dp.id_department')
-                ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
-                ->groupBy('competencies_superman.id_user')
-                ->get();
+            ->join("users",function ($join) use ($request){
+                $join->on("users.id","competencies_superman.id_user")
+                ->where([
+                    ["competencies_superman.actual",">=","cd.target"]
+                ]);
+            })
+            ->join("competencies_dictionary_superman as cd","cd.id_dictionary_superman","competencies_superman.id_cstu")
+            ->join("curriculum_superman as crclm","crclm.id_curriculum_superman","cd.id_curriculum_superman")
+            ->join('department as dp', 'users.id_department', '=', 'dp.id_department')
+            ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+            ->groupBy('competencies_superman.id_user')
+            ->where('users.id_department',$dp)
+            ->get();
+        }else if(Auth::user()->id_level == 'LV-0004'){
+            $competent = Superman::select('users.*', 'dp.nama_department','jt.nama_job_title')
+            ->join("users",function ($join) use ($request){
+                $join->on("users.id","competencies_superman.id_user")
+                ->where([
+                    ["competencies_superman.actual",">=","cd.target"]
+                ]);
+            })
+            ->join("competencies_dictionary_superman as cd","cd.id_dictionary_superman","competencies_superman.id_cstu")
+            ->join("curriculum_superman as crclm","crclm.id_curriculum_superman","cd.id_curriculum_superman")
+            ->join('department as dp', 'users.id_department', '=', 'dp.id_department')
+            ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+            ->where('users.id',$id)
+            ->groupBy('competencies_superman.id_user')
+            ->get();
+        }else{
+            $competent = Superman::select('users.*', 'dp.nama_department','jt.nama_job_title')
+            ->join("users",function ($join) use ($request){
+                $join->on("users.id","competencies_superman.id_user")
+                ->where([
+                    ["competencies_superman.actual",">=","cd.target"]
+                ]);
+            })
+            ->join("competencies_dictionary_superman as cd","cd.id_dictionary_superman","competencies_superman.id_cstu")
+            ->join("curriculum_superman as crclm","crclm.id_curriculum_superman","cd.id_curriculum_superman")
+            ->join('department as dp', 'users.id_department', '=', 'dp.id_department')
+            ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+            ->groupBy('competencies_superman.id_user')
+            ->get();
+        }
+            
             
         return Datatables::of($competent)
         ->addIndexColumn()

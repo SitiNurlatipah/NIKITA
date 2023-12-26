@@ -287,7 +287,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/taging', 'ChampionController@indexTangging')->name('champion.taging');
         Route::get('/tagging-json','ChampionController@tagingChampionJson')->name('champion.tagging.json');
         Route::get('/tagging-member','ChampionController@tagingJsonMember')->name('taggingJsonMember');
-        Route::get('/tagging-atasan','ChampionController@tagingJsonAtasan')->name('taggingJsonAtasan');
+        Route::get('/tagging-atasan','ChampionController@tagingJsonAtasan')->name('champion.taggingJsonAtasan');
         Route::get('/taging/form','ChampionController@championFormTagging')->name('champion.tagingForm');
         Route::post('/action','ChampionController@championActionTaging')->name('champion.actionTagingList');
         Route::get('/detail','ChampionController@tagingDetail')->name('champion.tagingDetail');

@@ -71,7 +71,7 @@
                                 </div>
                         </div>
                     </div>
-                @elseif(Auth::user()->peran_pengguna == '3')
+                @elseif(Auth::user()->id_level == 'LV-0004')
                     <div class="table-responsive">
                         <table class="display expandable-table table-striped table-hover" id="tbl-tag-member" style="width:100%">
                             <thead>
@@ -527,7 +527,7 @@
   }
     function tagMemberDataTable() {
         var dtJson = $('#tbl-tag-member').DataTable({
-          ajax: "{{ route('taggingJsonMember') }}?type=member",
+          ajax: "{{ route('superman.taggingJsonMember') }}?type=member",
           responsive:true,
           serverSide: true,
           processing: true,
@@ -584,7 +584,7 @@
     
     function tagingDeptDataTable() {
         var dtJson = $('#tabel-tag-atasan').DataTable({
-          ajax: "{{ route('taggingJsonAtasan') }}",
+          ajax: "{{ route('superman.taggingJsonAtasan') }}",
           responsive:true,
           serverSide: true,
           processing: true,
@@ -617,7 +617,7 @@
                   data: 'skill_category'
               },
               {
-                  data: 'curriculum_superman'
+                  data: 'curriculum_name'
               },
               {
                   data: 'actual'

@@ -591,7 +591,7 @@ class ChampionController extends Controller
     }
     public function tagingJsonAtasan(Request $request)
     {
-        $where = "white_tag.actual < cd.target OR (SELECT COUNT(*) FROM taging_reason where white_tag.id_white_tag = taging_reason.id_white_tag) > 0";
+        $where = "white_tag.actual < cc.target OR (SELECT COUNT(*) FROM taging_reason where white_tag.id_white_tag = taging_reason.id_white_tag) > 0";
         $dept = Auth::user()->id_department;
         $id = Auth::user()->id;
         $cgtambah = Auth::user()->id_cgtambahan;
@@ -601,13 +601,16 @@ class ChampionController extends Controller
         $cgtambah5 = Auth::user()->id_cgtambahan_5;
         $select = [
             "id_taging_reason","white_tag.id_white_tag","tr.no_taging as noTaging","nama_pengguna as employee_name",
-            "group_champion","training_module","nik",
-            "level","training_module_group","white_tag.actual as actual",
-            "cd.target as target",DB::raw("(white_tag.actual - cd.target) as actualTarget"),DB::raw("(IF((white_tag.actual - cd.target) < 0,'Follow Up','Finished' )) as tagingStatus")
+            "nama_group_champion","curriculum_champion","nama_cg","nik",
+            "id_sub_group_champion","white_tag.actual as actual","cc.level",
+            "cc.target as target",DB::raw("(white_tag.actual - cc.target) as actualTarget"),DB::raw("(IF((white_tag.actual - cc.target) < 0,'Follow Up','Finished' )) as tagingStatus")
         ];
         $data = WhiteTagModel::select($select)
-                            ->join("competencies_directory as cd",function ($join){
-                                $join->on("cd.id_directory","white_tag.id_directory");
+                            ->join("curriculum_champion_to_user as cctu",function ($join){
+                                $join->on("cctu.id_cctu","white_tag.id_cctu");
+                            })
+                            ->join("curriculum_champion as cc",function ($join){
+                                $join->on("cc.id_curriculum_champion","cctu.id_curriculum_champion");
                             })
                             ->leftJoin("taging_reason as tr","tr.id_white_tag","white_tag.id_white_tag")
                             ->join("users",function ($join) use ($request,$dept,$cgtambah,$id,$cgtambah2,$cgtambah3,$cgtambah4,$cgtambah5) {
@@ -627,8 +630,8 @@ class ChampionController extends Controller
                                     }
                                 }
                             })
-                            ->join("curriculum","curriculum.id_curriculum","cd.id_curriculum")
-                            ->join("group_champion as sc","sc.id_group_champion","curriculum.id_group_champion")
+                            ->join("group_champion as sc","sc.id_group_champion","cc.id_group_champion")
+                            ->leftJoin('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
                             ->whereRaw($where)
                             ->get();
 
@@ -653,19 +656,6 @@ class ChampionController extends Controller
                         $label = '<span class="badge badge-secondary text-white">' . $row->tagingStatus . '</span>';
                         return $label;
                     }
-
-                    // switch ($row->tagingStatus) {
-                    //     case "Finished":
-                    //         $label = '<span class="badge badge-success">"' . $row->tagingStatus . '"</span>';
-                    //         return $label;
-                    //         break;
-                    //     case "Follow Up":
-                    //         $label = '<span class="badge badge-secondary">"' . $row->tagingStatus . '"</span>';
-                    //         return $label;
-                    //         break;
-                    //     default:
-                    //         return '';
-                    // }
                 }
             })
             ->addIndexColumn()
@@ -974,21 +964,73 @@ class ChampionController extends Controller
         return view('pages.admin.champion.ceme-champion');
     }
     public function competentChampionJson(Request $request)
-    {       
-        $competent = WhiteTagModel::select('users.*', 'dp.nama_department', 'cg.nama_cg','jt.nama_job_title')
-                    ->join("users",function ($join) use ($request){
-                        $join->on("users.id","white_tag.id_user")
-                        ->where([
-                            ["white_tag.actual",">=","cc.target"]
-                        ]);
-                    })
-                    ->join("curriculum_champion_to_user as cctu","cctu.id_cctu","white_tag.id_cctu")
-                    ->join("curriculum_champion as cc","cc.id_curriculum_champion","cctu.id_curriculum_champion")
-                    ->join('department as dp', 'users.id_department', '=', 'dp.id_department')
-                    ->join('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
-                    ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
-                    ->groupBy('white_tag.id_user')
-                    ->get();
+    {    
+        $id = Auth::user()->id;
+        $dp = Auth::user()->id_department;
+        $cgExtraAuth = Auth::user()->id_cgtambahan;
+        $cgtambah2 = Auth::user()->id_cgtambahan_2;
+        $cgtambah3 = Auth::user()->id_cgtambahan_3;
+        $cgtambah4 = Auth::user()->id_cgtambahan_4;
+        $cgtambah5 = Auth::user()->id_cgtambahan_5; 
+        if(Auth::user()->id_level == 'LV-0003'){
+            $competent = WhiteTagModel::select('users.*', 'dp.nama_department', 'cg.nama_cg','jt.nama_job_title')
+            ->join("users",function ($join) use ($request){
+                $join->on("users.id","white_tag.id_user")
+                ->where([
+                    ["white_tag.actual",">=","cc.target"]
+                ]);
+            })
+            ->join("curriculum_champion_to_user as cctu","cctu.id_cctu","white_tag.id_cctu")
+            ->join("curriculum_champion as cc","cc.id_curriculum_champion","cctu.id_curriculum_champion")
+            ->join('department as dp', 'users.id_department', '=', 'dp.id_department')
+            ->join('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
+            ->where('users.is_champion', 1)
+            ->where('users.id_department', $dp)
+            ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+            ->groupBy('white_tag.id_user')
+            ->get();
+        }else if(Auth::user()->id_level == 'LV-0004'){
+            $competent = WhiteTagModel::select('users.*', 'dp.nama_department', 'cg.nama_cg','jt.nama_job_title')
+            ->join("users",function ($join) use ($request){
+                $join->on("users.id","white_tag.id_user")
+                ->where([
+                    ["white_tag.actual",">=","cc.target"]
+                ]);
+            })
+            ->join("curriculum_champion_to_user as cctu","cctu.id_cctu","white_tag.id_cctu")
+            ->join("curriculum_champion as cc","cc.id_curriculum_champion","cctu.id_curriculum_champion")
+            ->join('department as dp', 'users.id_department', '=', 'dp.id_department')
+            ->join('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
+            ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+            ->where('users.is_champion', 1)
+            ->where(function ($query) use ($cgExtraAuth, $cgtambah2, $cgtambah3, $cgtambah4, $cgtambah5, $id) {
+                $query->Where('users.id', $id)
+                ->orWhere('users.id_cg', $cgExtraAuth)
+                ->orWhere('users.id_cg', $cgtambah2)
+                ->orWhere('users.id_cg', $cgtambah3)
+                ->orWhere('users.id_cg', $cgtambah4)
+                ->orWhere('users.id_cg', $cgtambah5);
+            })
+            ->groupBy('white_tag.id_user')
+            ->get();
+        }else{
+            $competent = WhiteTagModel::select('users.*', 'dp.nama_department', 'cg.nama_cg','jt.nama_job_title')
+            ->join("users",function ($join) use ($request){
+                $join->on("users.id","white_tag.id_user")
+                ->where([
+                    ["white_tag.actual",">=","cc.target"]
+                ]);
+            })
+            ->join("curriculum_champion_to_user as cctu","cctu.id_cctu","white_tag.id_cctu")
+            ->join("curriculum_champion as cc","cc.id_curriculum_champion","cctu.id_curriculum_champion")
+            ->join('department as dp', 'users.id_department', '=', 'dp.id_department')
+            ->join('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
+            ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+            ->groupBy('white_tag.id_user')
+            ->get();
+        }
+
+        
             
         return Datatables::of($competent)
         ->addIndexColumn()

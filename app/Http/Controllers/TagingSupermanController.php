@@ -71,29 +71,26 @@ class TagingSupermanController extends Controller
     public function tagingSupermanJsonAtasan(Request $request)
     {
         $where = "competencies_superman.actual < cd.target OR (SELECT COUNT(*) FROM tagging_superman where competencies_superman.id_competencies_superman = tagging_superman.id_competency_superman) > 0";
-        $dept = Auth::user()->id_department;
         $select = [
             "id_taging_superman","competencies_superman.id_competencies_superman","tr.no_taging as noTaging","nama_pengguna as employee_name",
-            "skill_category","training_module","nik",
-            "level","curriculum_group","competencies_superman.actual as actual",
+            "skill_category","curriculum_superman.curriculum_superman as curriculum_name","nama_cg","nik",
+            "curriculum_group","competencies_superman.actual as actual",
             "cd.target as target",DB::raw("(competencies_superman.actual - cd.target) as actualTarget"),DB::raw("(IF((competencies_superman.actual - cd.target) < 0,'Follow Up','Finished' )) as tagingStatus")
         ];
+        $dept = Auth::user()->id_department;
         $data = Superman::select($select)
                             ->join("competencies_dictionary_superman as cd",function ($join){
                                 $join->on("cd.id_dictionary_superman","competencies_superman.id_cstu");
                             })
                             ->leftJoin("tagging_superman as tr","tr.id_competency_superman","competencies_superman.id_competencies_superman")
-                            ->join("users",function ($join) use ($request,$dept) {
-                                $join->on("users.id","competencies_superman.id_user");
-                                if (isset($request->type)) {
-                                    $join->where("users.id_department", $dept);
-                                }
-                            })
+                            ->join("users","users.id","competencies_superman.id_user")
+                            ->where("users.id_department", $dept)
                             ->join("curriculum_superman","curriculum_superman.id_curriculum_superman","cd.id_curriculum_superman")
                             ->join("skill_category as sc","sc.id_skill_category","curriculum_superman.id_skill_category")
+                            ->leftJoin('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
                             ->whereRaw($where)
                             ->get();
-
+        
         return Datatables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
@@ -137,27 +134,24 @@ class TagingSupermanController extends Controller
 
     public function tagingSupermanJsonMember(Request $request)
     {
-        $where = "competencies_superman.actual < cd.target OR (SELECT COUNT(*) FROM tagging_superman where competencies_superman.id_competencies_superman = tagging_superman.id_competencies_superman) > 0";
-        $id_user = Auth::user()->id;
+        $where = "competencies_superman.actual < cd.target OR (SELECT COUNT(*) FROM tagging_superman where competencies_superman.id_competencies_superman = tagging_superman.id_competency_superman) > 0";
         $select = [
             "id_taging_superman","competencies_superman.id_competencies_superman","tr.no_taging as noTaging","nama_pengguna as employee_name",
-            "skill_category","training_module","nik",
-            "level","curriculum_group","competencies_superman.actual as actual",
+            "skill_category","curriculum_superman.curriculum_superman as curriculum_name","nama_cg","nik",
+            "curriculum_group","competencies_superman.actual as actual",
             "cd.target as target",DB::raw("(competencies_superman.actual - cd.target) as actualTarget"),DB::raw("(IF((competencies_superman.actual - cd.target) < 0,'Follow Up','Finished' )) as tagingStatus")
         ];
+        $id = Auth::user()->id;
         $data = Superman::select($select)
                             ->join("competencies_dictionary_superman as cd",function ($join){
                                 $join->on("cd.id_dictionary_superman","competencies_superman.id_cstu");
                             })
                             ->leftJoin("tagging_superman as tr","tr.id_competency_superman","competencies_superman.id_competencies_superman")
-                            ->join("users",function ($join) use ($request,$id_user) {
-                                $join->on("users.id","competencies_superman.id_user");
-                                if(isset($request->type) && $request->type == 'member'){
-                                    $join->where("users.id",$id_user);
-                                }
-                            })
+                            ->join("users","users.id","competencies_superman.id_user")
+                            ->where("users.id", $id)
                             ->join("curriculum_superman","curriculum_superman.id_curriculum_superman","cd.id_curriculum_superman")
                             ->join("skill_category as sc","sc.id_skill_category","curriculum_superman.id_skill_category")
+                            ->leftJoin('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
                             ->whereRaw($where)
                             ->get();
 
