@@ -746,10 +746,10 @@
                   data: 'employee_name'
               },
               {
-                  data: 'skill_category'
+                  data: 'nama_group_champion'
               },
               {
-                  data: 'training_module'
+                  data: 'curriculum_champion'
               },
               {
                   data: 'level'

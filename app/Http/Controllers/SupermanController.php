@@ -208,8 +208,8 @@ class SupermanController extends Controller
     // Kelola User
     public function indexKelola(){
         return view('pages.admin.superman.index');
-
     }
+    
     public function supermanJson(Request $request)
     {   
         $id = Auth::user()->id;
