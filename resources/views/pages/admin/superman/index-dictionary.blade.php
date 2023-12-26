@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Dictionary Superman')
+@section('title', 'Competency Dictionary Superman')
 
 @push('style')
 <style>

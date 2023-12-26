@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Tagging Superman')
+@section('title', 'White Tag Superman')
 @push('style')
 <style>
     .accordion {

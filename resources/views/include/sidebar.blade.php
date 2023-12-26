@@ -98,7 +98,7 @@
                     <li class="nav-item"> <a class="nav-link" href="{{ route('superman.index') }}">Curriculum Superman</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('DictionarySuperman') }}">Competency Dictionary</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('kelola.superman.index') }}">Mapping Competency</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('superman.tagging') }}">Tagging Superman</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('superman.tagging') }}">White Tag Superman</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('superman.ceme') }}">CEME Superman</a></li>
                     </ul>
                 </div>
@@ -115,7 +115,7 @@
                     <li class="nav-item"> <a class="nav-link" href="{{ route('member.champion.index') }}">Member Champion</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('champion.index') }}">Curriculum 4.0</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('kelola.champion.index') }}">Mapping Competency</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('champion.taging') }}">Taging Champion</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('champion.taging') }}">White Tag Champion</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('champion.ceme') }}">CEME Champion</a></li>
                     </ul>
                 </div>
@@ -234,6 +234,40 @@
                     <i class="icon-bar-graph menu-icon"></i>
                     <span class="menu-title">CEME</span>
                 </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#superman" aria-expanded="false" aria-controls="superman">
+                    <i class="icon-command menu-icon"></i>
+                    <span class="menu-title">Superman</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="superman">
+                    <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('member.superman.index') }}">Member Superman</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('superman.index') }}">Curriculum Superman</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('DictionarySuperman') }}">Competency Dictionary</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('kelola.superman.index') }}">Mapping Competency</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('superman.tagging') }}">White Tag Superman</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('superman.ceme') }}">CEME Superman</a></li>
+                    </ul>
+                </div>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#champion" aria-expanded="false" aria-controls="champion">
+                    <i class="icon-cloud menu-icon"></i>
+                    <span class="menu-title">Competencies 4.0</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="champion">
+                    <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('member.champion.index') }}">Member Champion</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('champion.index') }}">Curriculum 4.0</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('kelola.champion.index') }}">Mapping Competency</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('champion.taging') }}">White Tag Champion</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('champion.ceme') }}">CEME Champion</a></li>
+                    </ul>
+                </div>
             </li>
         @endif
         @if(Auth::user()->peran_pengguna == 1 || Auth::user()->id_job_title == "JT-0102" || Auth::user()->id_job_title == "JT-0049")

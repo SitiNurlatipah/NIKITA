@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Tagging List')
+@section('title', 'White Tag Champion')
 @push('style')
 <style>
     .accordion {
@@ -69,7 +69,7 @@
                                                         <th>NIK</th>
                                                         <th>Employee Name</th>
                                                         <th>Circle Group</th>
-                                                        <th>Skill Category</th>
+                                                        <th>Champion Group</th>
                                                         <th>Competency</th>
                                                         <!-- <th>Level</th> -->
                                                         <!-- <th>Competenc Group</th> -->
@@ -96,7 +96,7 @@
                                         <th>No Taging</th>
                                         <th>NIK</th>
                                         <th>Employee Name</th>
-                                        <th>Skill Category</th>
+                                        <th>Champion Group</th>
                                         <th width="100px">Competency</th>
                                         <!-- <th>Level</th> -->
                                         <!-- <th>Competenc Group</th> -->
@@ -119,7 +119,7 @@
                                     <th>No Taging</th>
                                     <th>NIK</th>
                                     <th>Employee Name</th>
-                                    <th>Skill Category</th>
+                                    <th>Champion Group</th>
                                     <th>Competency</th>
                                     <th>Level</th>
                                     <th>Actual</th>
@@ -140,7 +140,7 @@
                                     <th>No Taging</th>
                                     <th>NIK</th>
                                     <th>Employee Name</th>
-                                    <th>Skill Category</th>
+                                    <th>Champion Group</th>
                                     <th>Competency</th>
                                     <th>Level</th>
                                     <th>Actual</th>
@@ -161,7 +161,7 @@
                                     <th>No Taging</th>
                                     <th>NIK</th>
                                     <th>Employee Name</th>
-                                    <th>Skill Category</th>
+                                    <th>Champion Group</th>
                                     <th>Competency</th>
                                     <th>Level</th>
                                     <th>Actual</th>
@@ -567,7 +567,7 @@
                   data: 'nama_cg'
               },
               {
-                  data: 'skill_category'
+                  data: 'nama_group_champion'
               },
               {
                   data: 'curriculum_champion'

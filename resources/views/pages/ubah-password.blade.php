@@ -5,7 +5,6 @@
 @section('content')
 <!-- BEGIN: Content-->
 <div class="content-wrapper">
-
     <!-- <div class="content-header row">
           <div class="content-header-left col-md-9 col-12 mb-2 mt-1">
             <div class="row breadcrumbs-top">
@@ -21,9 +20,7 @@
             </div>
           </div>
         </div> -->
-
     <main class="content-body">
-
         <!-- Statistik -->
         <section class="row">
             <div class="col-6">

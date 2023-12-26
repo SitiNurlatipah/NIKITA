@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Curriculum')
+@section('title', 'Curriculum Superman')
 @section('content')
     <div class="row">
         <div class="col-md-12 grid-margin stretch-card">

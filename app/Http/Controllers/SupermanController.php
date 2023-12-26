@@ -214,16 +214,33 @@ class SupermanController extends Controller
     {   
         $id = Auth::user()->id;
         $dp = Auth::user()->id_department;
-
-        $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
-        ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
-        ->leftJoin('level', 'users.id_level', '=', 'level.id_level')
-        ->Where('users.id_level', 'LV-0002')
-        ->orWhere('users.id_level', 'LV-0003')
-        ->orWhere('users.id_level', 'LV-0004')
-        ->orderBy('nama_pengguna', 'DESC')
-        ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','level.nama_level']);
-
+        if(Auth::user()->id_level == 'LV-0003'){
+            $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+                    ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+                    ->leftJoin('level', 'users.id_level', '=', 'level.id_level')
+                    ->Where('users.is_superman', 1)
+                    ->Where('users.id_department', $dp)
+                    ->orderBy('nama_pengguna', 'DESC')
+                    ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','level.nama_level']);
+        }else if(Auth::user()->id_level == 'LV-0004'){
+            $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+                    ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+                    ->leftJoin('level', 'users.id_level', '=', 'level.id_level')
+                    ->Where('users.is_superman', 1)
+                    ->Where('users.id', $id)
+                    ->orderBy('nama_pengguna', 'DESC')
+                    ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','level.nama_level']);
+        }else{
+            $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+                    ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+                    ->leftJoin('level', 'users.id_level', '=', 'level.id_level')
+                    ->Where('users.id_level', 'LV-0002')
+                    ->orWhere('users.id_level', 'LV-0003')
+                    ->orWhere('users.id_level', 'LV-0004')
+                    ->orderBy('nama_pengguna', 'DESC')
+                    ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','level.nama_level']);
+        }
+        
         return Datatables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {

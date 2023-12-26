@@ -2,27 +2,31 @@
 <div class="row">
     <div class="col-4">
         <div class="form-group">
-            <label for="skillCategory">Skill Category</label>
-            <select id="id_skill_categorys" class="form-control form-control-sm" name="id_skill_category">
+            <label for="skillCategory">Group Champion</label>
+            <select id="id_skill_categorys" class="form-control form-control-sm" name="id_group_champion">
                 <option value="">-Pilih Skill Category </option>
                 @foreach ($skills as $skill)
-                <option {{ $skill->id_skill_category == $curriculum->id_skill_category ? 'selected' : '' }}
-                    value="{{ $skill->id_skill_category }}">{{ $skill->skill_category }}</option>
+                <option {{ $skill->id_group_champion == $curriculum->id_group_champion ? 'selected' : '' }}
+                    value="{{ $skill->id_group_champion }}">{{ $skill->nama_group_champion }}</option>
                 @endforeach
             </select>
         </div>
         <div class="form-group">
-            <label for="curriculum_champion">Competency Superman</label>
-            <input type="text" class="form-control" id="curriculum_champion" name="curriculum_champion"
-                placeholder="Masukan Competency Name" value="{{ $curriculum->curriculum_champion }}">
+            <label for="noModule">Level</label>
+            <select class="form-control form-control-sm" id="level" name="level">
+                <option value="">Pilih Level</option>
+                <option {{ $curriculum->level == 'B' ? 'selected' : '' }} value="B">B (Basic)</option>
+                <option {{ $curriculum->level == 'I' ? 'selected' : '' }} value="I">I (Intermediate)</option>
+                <option {{ $curriculum->level == 'A' ? 'selected' : '' }} value="A">A (Advance)</option>
+            </select>
         </div>
     </div>
     <div class="col-4">
         <div class="form-group">
-            <label for="curriculum_groups">Competency Group</label>
+            <label for="curriculum_groups">Sub Group Champion</label>
             <select id="curriculum_groups" class="form-control form-control-sm"
-                name="curriculum_group">
-                <option value="#">Pilih Competencie Group</option>
+                name="id_sub_group_champion">
+                <option value="#">Pilih Sub Group</option>
             </select>
         </div>
         <div class="form-group">
@@ -40,7 +44,7 @@
     </div>
     <div class="col-4">
         <div class="form-group">
-        <label for="id_users">Superman Member <small>(Bisa pilih lebih dari 1)</small></label>
+        <label for="id_users">Champion Member <small>(Bisa pilih lebih dari 1)</small></label>
             <select id="id_users" class="selectpicker form-control form-control-sm"
                 name="id_user[]" data-live-search="true" data-hide-disabled="true" multiple
                 data-actions-box="true">
@@ -49,6 +53,20 @@
                         {{ $user->nama_pengguna }}</option>
                 @endforeach
             </select>
+        </div>
+        <div class="form-group">
+            <label for="curriculum_champion">Trainer</label>
+            <input type="text" class="form-control" id="trainer" name="trainer"
+                placeholder="Masukan Plot Trainer" value="{{ $curriculum->trainer }}">
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+    <div class="form-group">
+            <label for="curriculum_champion">Competency Champion</label>
+            <input type="text" class="form-control" id="curriculum_champion" name="curriculum_champion"
+                placeholder="Masukan Competency Name" value="{{ $curriculum->curriculum_champion }}">
         </div>
     </div>
 </div>
@@ -61,42 +79,43 @@
     </div>
 </div>
 
+
 <script>
     $(function() {
-        var id_skill_category = '{{ $curriculum->id_skill_category }}';
-        var group = '{{ $curriculum->curriculum_group }}';
+        var id_group_champion = '{{ $curriculum->id_group_champion }}';
+        var group = '{{ $curriculum->id_sub_group_champion }}';
         $.ajax({
-            url: "{{ route('competencie-groups.getBySkillCategory') }}",
-            type: 'POST',
+            url: "{{ route('champion.group.sub') }}",
+            type: 'GET',
             dataType: 'JSON',
             data: {
-                id: id_skill_category
+                id: id_group_champion
             },
             success: function(response) {
                 $('#curriculum_groups').empty();
                 response.forEach(el => {
                     if (el.group == group) {
-                        $('#curriculum_groups').append('<option selected value="' + el.id + '">' + el.name + '</option>');
+                        $('#curriculum_groups').append('<option selected value="' + el.id_sub_group_champion + '">' + el.name + '</option>');
                     } else {
-                        $('#curriculum_groups').append('<option value="' + el.id + '">' + el.name + '</option>');
+                        $('#curriculum_groups').append('<option value="' + el.id_sub_group_champion + '">' + el.name + '</option>');
                     }
                 });
             }
         })
         $('#id_skill_categorys').on('change', function() {
-            var id_skill_category = $(this).val();
+            var id_group_champion = $(this).val();
             $.ajax({
-                url: "{{ route('competencie-groups.getBySkillCategory') }}",
-                type: 'POST',
+                url: "{{ route('champion.group.sub') }}",
+                type: 'GET',
                 dataType: 'JSON',
                 data: {
-                    id: id_skill_category
+                    id: id_group_champion
                 },
                 success: function(response) {
                     $('#curriculum_groups').empty();
                     var option = "";
                     for (let i = 0; i < response.length; i++) {
-                        option += '<option value="' + response[i].id + '">' +
+                        option += '<option value="' + response[i].id_sub_group_champion + '">' +
                             response[i].name + '</option>';
                     }
                     $('#curriculum_groups').html();

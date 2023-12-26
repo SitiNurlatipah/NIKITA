@@ -2,7 +2,7 @@
 <tr>
     <td>{{$key+1}}</td>
     <td>{{$comp->no_curriculum}}</td>
-    <td>{{$comp->skill_category}}</td>
+    <td>{{$comp->group_champion}}</td>
     <td>{{$comp->curriculum_champion}}</td>
     <td>{{$comp->compGroupName}}</td>
     <td>

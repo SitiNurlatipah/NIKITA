@@ -306,6 +306,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/ceme-champion/chartCeme','ChampionController@chartCemeChampion')->name('champion.ceme.chartCeme');
         Route::post('/ceme-champion/chartMe','ChampionController@chartMeChampion')->name('champion.ceme.chartMe');
         Route::get('/champion-competent/json', 'ChampionController@competentChampionJson')->name('champion.competent.json');
+        
+        Route::get('/group-champion', 'ChampionController@getGroupChampion')->name('champion.group');
+        Route::get('/sub-group-champion', 'ChampionController@getSubGroupChampion')->name('champion.group.sub');
 
     });
 

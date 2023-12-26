@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Curriculum')
+@section('title', 'Curriculum Champion')
 @section('content')
     <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
@@ -22,9 +22,10 @@
                                         <tr>
                                             <th>No</th>
                                             <th>ID Competency</th>
-                                            <th>Skill Category</th>
+                                            <th>Group Champion</th>
                                             <th>Competency Champion</th>
-                                            <th>Competency Group</th>
+                                            <th>Level</th>
+                                            <th>Sub Group Champion</th>
                                             <th>Target</th>
                                             <th>Competency Description</th>
                                             <th width="15%">Detail</th>
@@ -36,8 +37,9 @@
                                             <tr id="row_{{ $data->id_curriculum_superman }}">
                                                 <th scope="row" class="text-center">{{ $loop->iteration }}</th>
                                                 <td>{{ $data->no_curriculum_champion }}</td>
-                                                <td>{{ $data->skill_category }}</td>
+                                                <td>{{ $data->nama_group_champion }}</td>
                                                 <td>{{ $data->curriculum_champion }}</td>
+                                                <td>{{ $data->level }}</td>
                                                 <td>{{ $data->compGroupName }}</td>
                                                 <td>
                                                     @php
@@ -113,21 +115,25 @@
                             <div class="col-4">
                                 <div class="form-group">
                                     <label for="skillCategory">Skill Category</label>
-                                    <select id="id_skill_category" class="form-control form-control-sm" name="id_skill_category">
+                                    <select id="id_skill_category" class="form-control form-control-sm" name="id_group_champion">
                                         <option value="">- Pilih Skill Category -</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="curriculum_champion">Competency</label>
-                                    <input type="text" class="form-control" id="curriculum_champion" name="curriculum_champion"
-                                        placeholder="Masukan Competency Name">
+                                    <label for="noModule">Level</label>
+                                    <select class="form-control form-control-sm" id="level" name="level">
+                                        <option value="">Pilih Level</option>
+                                        <option value="B">B (Basic)</option>
+                                        <option value="I">I (Intermediate)</option>
+                                        <option value="A">A (Advance)</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="form-group">
                                     <label for="curriculum_group">Competency Group</label>
                                     <select id="curriculum_group" class="form-control form-control-sm"
-                                        name="curriculum_group">
+                                        name="id_sub_group_champion">
                                         <option value="#">Pilih Competencie Group</option>
                                     </select>
                                 </div>
@@ -152,6 +158,20 @@
                                         data-actions-box="true">
                                     </select>
                                 </div>
+                                <div class="form-group">
+                                    <label for="curriculum_champion">Trainer</label>
+                                    <input type="text" class="form-control" id="trainer" name="trainer"
+                                        placeholder="Masukan Plot Trainer">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                            <div class="form-group">
+                                <label for="curriculum_champion">Competency</label>
+                                <input type="text" class="form-control" id="curriculum_champion" name="curriculum_champion"
+                                    placeholder="Masukan Competency Name">
+                            </div>
                             </div>
                         </div>
                         <div class="row">
@@ -414,12 +434,12 @@
         function getSkill() {
             $.ajax({
                 type: "GET",
-                url: "{{ route('get.skill') }}",
+                url: "{{ route('champion.group') }}",
                 success: function(res) {
                     var option = "";
                     for (let i = 0; i < res.data.length; i++) {
-                        option += '<option value="' + res.data[i].id_skill_category + '">' +
-                            res.data[i].skill_category + '</option>';
+                        option += '<option value="' + res.data[i].id_group_champion + '">' +
+                            res.data[i].nama_group_champion + '</option>';
                     }
                     $('#id_skill_category').html();
                     $('#id_skill_category').append(option);
@@ -461,19 +481,19 @@
 
         $(function() {
             $('#id_skill_category').on('change', function() {
-                var id_skill_category = $(this).val();
+                var id_group_champion = $(this).val();
                 $.ajax({
-                    url: "{{ route('competencie-groups.getBySkillCategory') }}",
-                    type: 'POST',
+                    url: "{{ route('champion.group.sub') }}",
+                    type: 'GET',
                     dataType: 'JSON',
                     data: {
-                        id: id_skill_category
+                        id: id_group_champion
                     },
                     success: function(response) {
                         $('#curriculum_group').empty();
                         var option = "";
                         for (let i = 0; i < response.length; i++) {
-                            option += '<option value="' + response[i].id + '">' +
+                            option += '<option value="' + response[i].id_sub_group_champion + '">' +
                                 response[i].name + '</option>';
                         }
                         $('#curriculum_group').html();
