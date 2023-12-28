@@ -34,7 +34,6 @@
             <option {{ $curriculum->target == '2' ? 'selected' : '' }} value="2">2</option>
             <option {{ $curriculum->target == '3' ? 'selected' : '' }} value="3">3</option>
             <option {{ $curriculum->target == '4' ? 'selected' : '' }} value="4">4</option>
-            <option {{ $curriculum->target == '5' ? 'selected' : '' }} value="5">5</option>
         </select>
         </div>--}}
     </div>

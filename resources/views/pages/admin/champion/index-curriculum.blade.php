@@ -24,6 +24,7 @@
                                             <th>ID Competency</th>
                                             <th>Group Champion</th>
                                             <th>Competency Champion</th>
+                                            <th>Trainer</th>
                                             <th>Level</th>
                                             <th>Sub Group Champion</th>
                                             <th>Target</th>
@@ -39,6 +40,7 @@
                                                 <td>{{ $data->no_curriculum_champion }}</td>
                                                 <td>{{ $data->nama_group_champion }}</td>
                                                 <td>{{ $data->curriculum_champion }}</td>
+                                                <td>{{ $data->trainer }}</td>
                                                 <td>{{ $data->level }}</td>
                                                 <td>{{ $data->compGroupName }}</td>
                                                 <td>
@@ -146,7 +148,6 @@
                                     <option value="2">2</option>
                                     <option value="3">3</option>
                                     <option value="4">4</option>
-                                    <option value="5">5</option>
                                 </select>
                                 </div>
                             </div>

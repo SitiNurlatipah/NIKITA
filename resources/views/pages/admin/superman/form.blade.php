@@ -17,7 +17,6 @@
                 <option value="2" {{$comp->start  == '2' ? 'selected' : ''}}>2</option>
                 <option value="3" {{$comp->start  == '3' ? 'selected' : ''}}>3</option>
                 <option value="4" {{$comp->start  == '4' ? 'selected' : ''}}>4</option>
-                <option value="5" {{$comp->start  == '5' ? 'selected' : ''}}>5</option>
             </select>
             @endif
         </td>
@@ -32,7 +31,6 @@
                     <option value="2" {{$comp->actual  == '2' ? 'selected' : ''}}>2</option>
                     <option value="3" {{$comp->actual  == '3' ? 'selected' : ''}}>3</option>
                     <option value="4" {{$comp->actual  == '4' ? 'selected' : ''}}>4</option>
-                    <option value="5" {{$comp->actual  == '5' ? 'selected' : ''}}>5</option>
                 </select>
             @endif
         </td>
