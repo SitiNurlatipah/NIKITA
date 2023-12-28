@@ -30,7 +30,7 @@ class TaggingChampionExport implements FromCollection, WithStyles, WithHeadings,
     {
         $select = [
             "tr.no_taging as noTaging","nama_pengguna as employee_name","nama_cg","nik","tr.date_verified",
-            "skill_category","cc.curriculum_champion","white_tag.actual as actual", "compGroup.name as compgroup",
+            "nama_group_champion","cc.curriculum_champion","white_tag.actual as actual", "compGroup.name as compgroup",
             "cc.target as target",DB::raw("(white_tag.actual - cc.target) as actualTarget"),DB::raw("(IF((white_tag.actual - cc.target) < 0,'Follow Up','Finished' )) as tagingStatus")
         ];
         switch ($this->category) {
@@ -55,10 +55,10 @@ class TaggingChampionExport implements FromCollection, WithStyles, WithHeadings,
                 ->join("curriculum_champion as cc",function ($join){
                     $join->on("cc.id_curriculum_champion","cctu.id_curriculum_champion");
                 })
-                ->join("competencie_groups as compGroup","compGroup.id","cc.curriculum_group")
+                ->join("sub_group_champion as compGroup","compGroup.id_sub_group_champion","cc.id_sub_group_champion")
                 ->leftJoin("taging_reason as tr","tr.id_white_tag","white_tag.id_white_tag")
                 ->join("users","users.id","white_tag.id_user")
-                ->join("skill_category as sc","sc.id_skill_category","cc.id_skill_category")
+                ->join("group_champion as gc","gc.id_group_champion","cc.id_group_champion")
                 ->leftJoin('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
                 ->whereRaw($whereRaw)
                 ->get();
@@ -98,7 +98,7 @@ class TaggingChampionExport implements FromCollection, WithStyles, WithHeadings,
             $softreserve->nik,
             $softreserve->employee_name,
             $softreserve->nama_cg,
-            $softreserve->skill_category,
+            $softreserve->nama_group_champion,
             $softreserve->curriculum_champion,
             $softreserve->compgroup,
             $softreserve->actual,

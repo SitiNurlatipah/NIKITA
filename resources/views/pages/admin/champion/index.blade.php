@@ -283,7 +283,7 @@
                     data: 'no_curriculum'
                 },
                 {
-                    data: 'skill_category'
+                    data: 'group_champion'
                 },
                 {
                     data: 'curriculum_champion'

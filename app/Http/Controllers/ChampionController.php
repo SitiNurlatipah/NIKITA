@@ -350,9 +350,9 @@ class ChampionController extends Controller
     public function detailMapcomChampion(Request $request)
     {
         $user = User::select("id","id_job_title")->where("id",$request->id)->first();
-        $skillId = [1,2];
+        $skillId = [1,2,3,4];
         $select = [
-            "curriculum_champion.no_curriculum_champion as no_curriculum","curriculum_champion.curriculum_champion as curriculum_champion","compGroup.name as curriculum_group","curriculum_champion.target as target","group_champion.group_champion as group_champion","white_tag.start as start","white_tag.actual as actual",
+            "curriculum_champion.no_curriculum_champion as no_curriculum","curriculum_champion.curriculum_champion as curriculum_champion","compGroup.name as curriculum_group","curriculum_champion.target as target","group_champion.nama_group_champion as group_champion","white_tag.start as start","white_tag.actual as actual",
             DB::raw("(CASE WHEN (white_tag.actual - curriculum_champion.target) < 0 THEN 'Open'
                             WHEN (white_tag.actual IS NULL) THEN 'Belum diatur'
                             WHEN white_tag.actual >= curriculum_champion.target THEN 'Close' 
@@ -360,15 +360,15 @@ class ChampionController extends Controller
                             "white_tag.keterangan as ket"
         ];
         $data = ChampionToUser::select($select)
-                                ->join("curriculum_champion",function ($join) use ($user,$skillId){
+                                ->join("curriculum_champion",function ($join) use ($user){
                                     $join->on("curriculum_champion.id_curriculum_champion","curriculum_champion_to_user.id_curriculum_champion")
-                                        ->whereIn("id_group_champion",$skillId);
+                                        ->whereRaw("curriculum_champion_to_user.id_user = '".$user->id."'");
                                 })
-                                ->join("group_champion","group_champion.id_group_champion","curriculum_champion.id_group_champion")
                                 ->leftJoin("white_tag",function ($join) use ($user){
                                     $join->on("white_tag.id_cctu","curriculum_champion_to_user.id_cctu")
-                                        ->where("white_tag.id_user",$user->id);
+                                    ->where("white_tag.id_user",$user->id);
                                 })
+                                ->join("group_champion","group_champion.id_group_champion","curriculum_champion.id_group_champion")
                                 ->join("sub_group_champion as compGroup","compGroup.id_sub_group_champion","curriculum_champion.id_sub_group_champion")
                                 ->groupBy("curriculum_champion.id_curriculum_champion")
                                 ->orderBy("tagingStatus", "DESC")
