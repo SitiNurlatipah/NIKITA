@@ -444,7 +444,7 @@ class SupermanController extends Controller
                     $label = '<span class="badge badge-success">' . $row->tagingStatus . '</span>';
                     return $label;
                 } else {
-                    $label = '<span class="badge badge-secondary text-white">' . $row->tagingStatus . '</span>';
+                    $label = '<span class="badge badge-danger text-white">' . $row->tagingStatus . '</span>';
                     return $label;
                 }
             }
