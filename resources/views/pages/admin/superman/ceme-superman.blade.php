@@ -1,9 +1,9 @@
 @extends('layouts.master')
 
-@section('title', 'CEME')
+@section('title', 'CEME Superman')
 
 @section('content')
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-md-12">
                 <ul class="nav nav-pills" style="border-bottom:0px">
                     <li class="nav-item active">
@@ -11,13 +11,13 @@
                     </li>
                 </ul>
         </div>
-    </div>
+    </div> -->
     
     <div class="row">
         <div class="col-md-12 mb-4">
             <div class="card height-card" >
                 <div class="card-body">
-                    <h4 class="card-title">CEME</h4>
+                    <h4 class="card-title">CEME Superman</h4>
                     <div class="row">
                         <div class="col-6">
                             <h5>Competent Superman</h4>

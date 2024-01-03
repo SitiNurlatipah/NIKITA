@@ -1,17 +1,17 @@
 @extends('layouts.master')
 
-@section('title', 'CEME CHAMPION')
+@section('title', 'CEME Champion')
 
 @section('content')
     <div class="row">
         <div class="col-md-12 mb-4">
             <div class="card height-card" >
                 <div class="card-body">
-                    <h4 class="card-title">CEME</h4>
+                    <h4 class="card-title">CEME Champion</h4>
                     <div class="row">
                         <div class="col-6">
                             <h5>Competent Champion</h4>
-                            <canvas id="pieChart"></canvas>
+                            <canvas id="chartCompetent"></canvas>
                         </div>
                         <!-- <div class="col-6">
                             <h5>Multiskill Employee</h4>
@@ -32,7 +32,7 @@
                         <div class="col-12">
                             <div class="table-responsive">
                                 <table class="display expandable-table table table-sm table-striped table-hover mt-1"
-                                    id="tblcompetent" style="width:100%">
+                                    id="championtblcompetent" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>No.</th>
@@ -100,14 +100,14 @@
         });
         $(document).ready(function() {
             // initDatatable();
-            cemeTable();
+            cemeChampionTable();
             $('[data-toggle="tooltip"]').tooltip({
                 animation: true,
                 placement: "top",
                 trigger: "hover focus"
             });
         });
-        function cemeTable() {
+        function cemeChampionTable() {
             @if(Auth::user()->peran_pengguna == '1')
             var buttons = [
                 'copy', 'csv',
@@ -136,8 +136,8 @@
             @else
             var buttons = [];
             @endif
-            var competenJson = $('#tblcompetent').DataTable({
-                ajax: "{{ route('champion.competent.json') }}",
+            var competenChampionJson = $('#championtblcompetent').DataTable({
+                ajax: "{{ route('champion.competent') }}",
                 autoWidth: false,
                 serverSide: true,
                 processing: true,
@@ -184,7 +184,7 @@
         let pieTotalScore;
         let ceme = '{{ request('q') }}';
         $.ajax({
-            url:'{{ route('champion.ceme.chartCeme') }}',
+            url:'{{ route('champion.chartCompetent') }}',
             type:'POST',
             dataType:'JSON',
             data:{
@@ -198,7 +198,7 @@
             }
         })
         $.ajax({
-            url:'{{ route('superman.ceme.chartMe') }}',
+            url:'{{ route('champion.chartMultiskill') }}',
             type:'POST',
             dataType:'JSON',
             data:{
@@ -265,8 +265,8 @@
                 }
             };
 
-        if ($("#pieChart").length) {
-            var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
+        if ($("#chartCompetent").length) {
+            var pieChartCanvas = $("#chartCompetent").get(0).getContext("2d");
             var pieChart = new Chart(pieChartCanvas, {
             type: 'pie',
             data: doughnutPieData,
@@ -274,14 +274,14 @@
             });
         }
 
-        if ($("#pieChart2").length) {
-            var pieChartCanvas = $("#pieChart2").get(0).getContext("2d");
-            var pieChart = new Chart(pieChartCanvas, {
-            type: 'pie',
-            data: meData,
-            options: doughnutPieOptions
-            });
-        }
+        // if ($("#pieChart2").length) {
+        //     var pieChartCanvas = $("#pieChart2").get(0).getContext("2d");
+        //     var pieChart = new Chart(pieChartCanvas, {
+        //     type: 'pie',
+        //     data: meData,
+        //     options: doughnutPieOptions
+        //     });
+        // }
         
     </script>
 @endpush

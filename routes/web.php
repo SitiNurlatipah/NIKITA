@@ -239,7 +239,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/cek','SupermanController@dataTableGrouping');
 
         //ceme
-        Route::get('/ceme/superman', 'SupermanController@indexCemeSuperman')->name('superman.ceme');
+        Route::get('/competent-multiskill', 'SupermanController@indexCemeSuperman')->name('superman.ceme');
         Route::get('/ceme/json','SupermanController@cgJsonSuperman')->name('superman.ceme.json');
         // Route::post('/ceme-post', 'SupermanController@actionCeme')->name('actionCeme.ss');
         // Route::post('ceme/add-job-title','SupermanController@addJobTitle')->name('ceme.addJobTitle.ss');
@@ -297,16 +297,11 @@ Route::group(['middleware' => 'auth'], function () {
         // Route::post('/delete','ChampionController@deleteTagging')->name('tagging.destroy');
 
         //CEME
-        Route::get('/ceme-champion', 'ChampionController@indexCemeChampion')->name('champion.ceme');
-        Route::get('/champion/ceme/json','ChampionController@cgJsonChampion')->name('champion.ceme.json');
-        // Route::post('/ceme-post', 'ChampionController@actionCeme')->name('actionCeme.ss');
-        // Route::post('ceme/add-job-title','ChampionController@addJobTitle')->name('ceme.addJobTitle.ss');
-        // Route::post('ceme/get-job-title','ChampionController@getJobTitle')->name('ceme.getJobTitle.ss');
-        // Route::post('ceme/delete-job-title','ChampionController@deleteJobTitle')->name('ceme.deleteJobTitle.ss');
-        Route::post('/ceme-champion/chartCeme','ChampionController@chartCemeChampion')->name('champion.ceme.chartCeme');
-        Route::post('/ceme-champion/chartMe','ChampionController@chartMeChampion')->name('champion.ceme.chartMe');
-        Route::get('/champion-competent/json', 'ChampionController@competentChampionJson')->name('champion.competent.json');
-        
+        Route::get('/competent-champion', 'ChampionController@indexCemeChampion')->name('championCeme');
+        Route::get('/champion/ceme/json','ChampionController@cgJsonChampion')->name('champion.multiskillJson');
+        Route::post('/ceme-champion/chartCompetent','ChampionController@chartCemeChampion')->name('champion.chartCompetent');
+        Route::post('/ceme-champion/chartMultiskill','ChampionController@chartMeChampion')->name('champion.chartMultiskill');
+        Route::get('/champion-competent/json', 'ChampionController@competentChampionJson')->name('champion.competent');
         Route::get('/group-champion', 'ChampionController@getGroupChampion')->name('champion.group');
         Route::get('/sub-group-champion', 'ChampionController@getSubGroupChampion')->name('champion.group.sub');
 

@@ -116,7 +116,7 @@
                     <li class="nav-item"> <a class="nav-link" href="{{ route('champion.index') }}">Curriculum 4.0</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('kelola.champion.index') }}">Mapping Competency</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('champion.taging') }}">White Tag Champion</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('champion.ceme') }}">CEME Champion</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('championCeme') }}">CEME Champion</a></li>
                     </ul>
                 </div>
             </li>
@@ -265,7 +265,7 @@
                     <li class="nav-item"> <a class="nav-link" href="{{ route('champion.index') }}">Curriculum 4.0</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('kelola.champion.index') }}">Mapping Competency</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('champion.taging') }}">White Tag Champion</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('champion.ceme') }}">CEME Champion</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('championCeme') }}">CEME Champion</a></li>
                     </ul>
                 </div>
             </li>
