@@ -34,7 +34,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach ($data as $data)
+                                        @foreach ($data as $data)
                                             <tr id="row_{{ $data->id_curriculum_superman }}">
                                                 <th scope="row" class="text-center">{{ $loop->iteration }}</th>
                                                 <td>{{ $data->no_curriculum_champion }}</td>

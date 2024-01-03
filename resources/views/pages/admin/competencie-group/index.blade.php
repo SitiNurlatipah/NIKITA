@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Competencie Group Page')
+@section('title', 'Competency Group Page')
 
 @push('style')
     <style>
