@@ -38,7 +38,7 @@
                                             <th>Start</th>
                                             <th>Actual</th>
                                             <th>Target</th>
-                                            <th>Katerangan</th>
+                                            <!-- <th>Katerangan</th> -->
                                             <!-- <th>Description</th> -->
                                             <th width="15%">Action</th>
                                         </tr>
@@ -523,9 +523,9 @@
                 {
                     data: 'target'
                 },
-                {
-                    data: 'keterangan'
-                },
+                // {
+                //     data: 'keterangan'
+                // },
                 {
                     data: 'action'
                 }
