@@ -17,7 +17,7 @@
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <p class="card-title">Rotation</p>
+                    <p class="card-title">History Transaction</p>
                     <div class="row">
                         <div class="col-12">
                             <div class="table-responsive">
@@ -30,7 +30,7 @@
                                             <th>CG Out</th>
                                             <th>CG In</th>
                                             <th>Date Rotate</th>
-                                            <th>Detail History</th>
+                                            <!-- <th>Detail History</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -41,9 +41,9 @@
                                             <td class="bg-danger"><b class="text-white"><i class="icon-arrow-up text-bold"></i>  {{ $data->cg_out }}</b><p  class="text-white ml-3"><small>{{ $data->jt_out }}</small></p></td>
                                             <td class="bg-success"><b class="text-white"><i class="icon-arrow-down text-bold"></i>  {{ $data->cg_in }}</b><p  class="text-white ml-3"><small>{{ $data->jt_in }}</small></p></td>
                                             <td>{{ date('d F Y', strtotime($data->date)) }}</td>
-                                            <td>
+                                            <!-- <td>
                                                 <button class="btn btn-inverse-info btn-icon btn-hide-list" data-job="{{ $data->job_title }}" data-toggle="modal" data-target="#modal-detail-job"><i class="icon-eye"></i></button>
-                                            </td>
+                                            </td> -->
                                         </tr>   
                                         @endforeach
                                     </tbody>
