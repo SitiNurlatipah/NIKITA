@@ -14,8 +14,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
 use Maatwebsite\Excel\Facades\Excel;
-
-
+use Carbon\Carbon;
 
 class WhiteTag extends Controller
 {
@@ -557,7 +556,7 @@ class WhiteTag extends Controller
         }else{
             $between2 = $target->tahun;
         }
-
+        $currentYear = Carbon::now()->year;
         $select = [
             "competencies_directory.id_directory as id_directory","curriculum.no_training_module as no_training",
             "curriculum.training_module as training_module","curriculum.training_module_group as training_module_group",
@@ -565,6 +564,7 @@ class WhiteTag extends Controller
             "white_tag.actual as actual","competencies_directory.target as target",
             "white_tag.keterangan as ket",
             DB::raw("(SELECT COUNT(*) FROM taging_reason as tr where tr.id_white_tag = white_tag.id_white_tag) as cntTagingReason"),
+            DB::raw("(YEAR(NOW()) - YEAR(curriculum.curriculum_year)) AS tahuncurriculum"),
             // DB::raw("(IF(((white_tag.actual - competencies_directory.target) < 0),'Open','Close' )) as tagingStatus")
             DB::raw("(CASE WHEN (white_tag.actual - competencies_directory.target) < 0 THEN 'Open'
                             WHEN (white_tag.actual IS NULL) THEN 'Belum diatur'
@@ -577,16 +577,28 @@ class WhiteTag extends Controller
                  ->whereRaw("competencies_directory.id_job_title = '".$user->id_job_title."'");
         })
         ->joinSub(function ($query) use ($user, $between, $between2) {
-            $query->select('id_curriculum', 'id_skill_category')
+            $query->select('id_curriculum', 'id_skill_category','curriculum_year')
                   ->from('curriculum');
         }, 'sub', function ($join) use ($user, $between, $between2) {
             $join->on('competencies_directory.id_curriculum', '=', 'sub.id_curriculum');
         })
-        ->where(function ($query) use ($between, $between2) {
-            $query->where('sub.id_skill_category', '=', 1)
-                  ->whereRaw("competencies_directory.between_year = '".$between."'")
-                  ->orWhere('sub.id_skill_category', '<>', 1)
-                  ->whereRaw("competencies_directory.between_year = '".$between2."'");
+        ->where(function ($query) use ($between, $between2, $currentYear) {
+            $query->where(function ($subquery) use ($currentYear){
+                $subquery->whereNotNull('sub.curriculum_year')
+                    // ->whereRaw("competencies_directory.between_year = TIMESTAMPDIFF(YEAR, sub.curriculum_year, NOW())");
+                    ->whereRaw("competencies_directory.between_year = 
+                    GREATEST(LEAST($currentYear - sub.curriculum_year, 5), 0)");
+            })
+            ->orWhere(function ($subquery) use ($between) {
+                $subquery->where('sub.id_skill_category', '=', 1)
+                    ->whereNull('sub.curriculum_year')
+                    ->whereRaw("competencies_directory.between_year = '".$between."'");
+            })
+            ->orWhere(function ($subquery) use ($between2) {
+                $subquery->where('sub.id_skill_category', '<>', 1)
+                    ->whereNull('sub.curriculum_year')
+                    ->whereRaw("competencies_directory.between_year = '".$between2."'");
+            });
         })
         ->join("competencie_groups as compGroup","compGroup.id","curriculum.training_module_group")
         ->join("skill_category","skill_category.id_skill_category","curriculum.id_skill_category")
@@ -595,6 +607,7 @@ class WhiteTag extends Controller
                 ->where("white_tag.id_user",$user->id);
         })
         ->get();
+        // dd($comps);
         return view("pages.admin.white-tag.form",compact('comps','user','type'));
     }
 
