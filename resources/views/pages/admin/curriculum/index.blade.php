@@ -142,11 +142,11 @@
                                 </div>
                             </div>
                             <div class="col-6">
-                                {{--
+                                
                                 <div class="form-group">
                                     <label for="noModule">Tahun Berlaku Curriculum</label>
-                                    <input type="date" class="form-control" id="curriculum_year" name="curriculum_year">
-                                </div> --}}
+                                    <input type="year" class="form-control" id="curriculum_year" name="curriculum_year">
+                                </div>
                                 <div class="form-group">
                                     <label for="noModule">Job Title</label>
                                     <select id="id_job_title" class="selectpicker form-control form-control-sm"

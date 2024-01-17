@@ -92,6 +92,7 @@ class Curriculum extends Controller
                     $curriculum->level = $request->level;
                     $curriculum->training_module_group = $request->training_module_group;
                     $curriculum->training_module_desc = $request->training_module_desc;
+                    $curriculum->curriculum_year = $request->curriculum_year;
                     $curriculum->save();
                     $trainingModule = $curriculum->training_module;
                     $this->addLogActivity($curriculum, 'Penambahan kompetensi: ' .$trainingModule);
