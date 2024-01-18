@@ -586,8 +586,15 @@ class WhiteTag extends Controller
             $query->where(function ($subquery) use ($currentYear){
                 $subquery->whereNotNull('sub.curriculum_year')
                     // ->whereRaw("competencies_directory.between_year = TIMESTAMPDIFF(YEAR, sub.curriculum_year, NOW())");
+                    ->where('sub.id_skill_category', '>=', 1)
                     ->whereRaw("competencies_directory.between_year = 
-                    GREATEST(LEAST($currentYear - sub.curriculum_year, 5), 0)");
+                    COALESCE(
+                        CASE 
+                            WHEN $currentYear - (sub.curriculum_year-1) > 5 THEN 5
+                            ELSE $currentYear - (sub.curriculum_year-1)
+                        END,
+                        0
+                    )");
             })
             ->orWhere(function ($subquery) use ($between) {
                 $subquery->where('sub.id_skill_category', '=', 1)
@@ -607,7 +614,6 @@ class WhiteTag extends Controller
                 ->where("white_tag.id_user",$user->id);
         })
         ->get();
-        // dd($comps);
         return view("pages.admin.white-tag.form",compact('comps','user','type'));
     }
 
