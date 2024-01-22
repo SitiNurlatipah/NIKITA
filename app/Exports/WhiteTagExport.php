@@ -18,14 +18,14 @@ class WhiteTagExport implements FromCollection, WithHeadings, WithStyles, Should
     public function collection()
     {
         $select = [
-            "nama_pengguna","no_training_module","skill_category","training_module","level","training_module_group","white_tag.start as start","actual","target"
+            "nama_pengguna","no_training_module","skill_category","training_module","level","training_module_group","start","actual","target"
         ];
         $data = WhiteTagModel::select($select)
                 ->join("users","users.id","white_tag.id_user")
                 ->join("competencies_directory AS cd","cd.id_directory","white_tag.id_directory")
                 ->join("curriculum AS crclm","crclm.id_curriculum","cd.id_curriculum")
                 ->join("skill_category AS sc","sc.id_skill_category","crclm.id_skill_category")
-                ->where("white_tag.actual",">=","cd.target")
+                // ->where("white_tag.actual",">=","cd.target")
                 ->get();
         return $data;
     }
