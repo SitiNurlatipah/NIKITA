@@ -34,8 +34,8 @@ class Ceme extends Controller
                         ["white_tag.actual",">=","cd.target"]
                     ]);
                 })
-                ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
-                ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->join("curriculum as crclm","crclm.id_curriculum","white_tag.id_curriculum")
+                ->join("competencies_directory as cd","crclm.id_curriculum","cd.id_curriculum")
                 ->groupBy('id_user')
                 ->get();
         }else{
@@ -47,8 +47,8 @@ class Ceme extends Controller
                         ["white_tag.actual",">=","cd.target"]
                     ]);
                 })
-                ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
-                ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->join("curriculum as crclm","crclm.id_curriculum","white_tag.id_curriculum")
+                ->join("competencies_directory as cd","crclm.id_curriculum","cd.id_curriculum")
                 ->where('users.id_department', $dp)
                 ->groupBy('id_user')
                 ->get();
@@ -60,8 +60,8 @@ class Ceme extends Controller
                         ["white_tag.actual",">=","cd.target"]
                     ]);
                 })
-                ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
-                ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->join("curriculum as crclm","crclm.id_curriculum","white_tag.id_curriculum")
+                ->join("competencies_directory as cd","crclm.id_curriculum","cd.id_curriculum")
                 ->where('users.id', $id)
                 ->orWhere('users.id_cg', $cgtambah)
                 ->orWhere('users.id_cg', $cgtambah2)
@@ -78,8 +78,8 @@ class Ceme extends Controller
                         ["white_tag.actual",">=","cd.target"]
                     ]);
                 })
-                ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
-                ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->join("curriculum as crclm","crclm.id_curriculum","white_tag.id_curriculum")
+                ->join("competencies_directory as cd","crclm.id_curriculum","cd.id_curriculum")
                 ->groupBy('id_user')
                 ->get();
             } else {
@@ -90,8 +90,8 @@ class Ceme extends Controller
                         ["white_tag.actual",">=","cd.target"]
                     ]);
                 })
-                ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
-                ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->join("curriculum as crclm","crclm.id_curriculum","white_tag.id_curriculum")
+                ->join("competencies_directory as cd","crclm.id_curriculum","cd.id_curriculum")
                 ->where('id_cg', $cg)
                 ->groupBy('id_user')
                 ->get();
@@ -132,8 +132,8 @@ class Ceme extends Controller
                         ["white_tag.actual",">=","cd.target"]
                     ]);
                 })
-                ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
-                ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->join("curriculum as crclm","crclm.id_curriculum","white_tag.id_curriculum")
+                ->join("competencies_directory as cd","crclm.id_curriculum","cd.id_curriculum")
                 ->join('department as dp', 'users.id_department', '=', 'dp.id_department')
                 ->join('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
                 ->where('users.id_department', $dp)
@@ -147,8 +147,8 @@ class Ceme extends Controller
                         ["white_tag.actual",">=","cd.target"]
                     ]);
                 })
-                ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
-                ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->join("curriculum as crclm","crclm.id_curriculum","white_tag.id_curriculum")
+                ->join("competencies_directory as cd","crclm.id_curriculum","cd.id_curriculum")
                 ->join('department as dp', 'users.id_department', '=', 'dp.id_department')
                 ->join('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
                 ->where('users.id', $id)
@@ -167,8 +167,8 @@ class Ceme extends Controller
                         ["white_tag.actual",">=","cd.target"]
                     ]);
                 })
-                ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
-                ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->join("curriculum as crclm","crclm.id_curriculum","white_tag.id_curriculum")
+                ->join("competencies_directory as cd","crclm.id_curriculum","cd.id_curriculum")
                 ->join('department as dp', 'users.id_department', '=', 'dp.id_department')
                 ->join('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
                 ->groupBy('id_user')
@@ -181,11 +181,11 @@ class Ceme extends Controller
                         ["white_tag.actual",">=","cd.target"]
                     ]);
                 })
-                ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
-                ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->join("curriculum as crclm","crclm.id_curriculum","white_tag.id_curriculum")
+                ->join("competencies_directory as cd","crclm.id_curriculum","cd.id_curriculum")
                 ->join('department as dp', 'users.id_department', '=', 'dp.id_department')
                 ->join('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
-                ->where('id_cg', $cg)
+                ->where('users.id_cg', $cg)
                 ->groupBy('id_user')
                 ->get();
             }
@@ -233,8 +233,8 @@ class Ceme extends Controller
                         ["white_tag.actual",">=","cd.target"]
                     ]);
                 })
-                ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
-                ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->join("curriculum as crclm","crclm.id_curriculum","white_tag.id_curriculum")
+                ->join("competencies_directory as cd","crclm.id_curriculum","cd.id_curriculum")
                 ->groupBy('id_user')->get();
         }else{
             if (Auth::user()->id_level == 'LV-0003') {
@@ -249,8 +249,8 @@ class Ceme extends Controller
                     $join->on('users.id_department', 'department.id_department')
                     ->where('users.id_department', $dp);
                 })
-                ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
-                ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->join("curriculum as crclm","crclm.id_curriculum","white_tag.id_curriculum")
+                ->join("competencies_directory as cd","crclm.id_curriculum","cd.id_curriculum")
                 ->groupBy('id_user')->get();
             }else if (Auth::user()->id_level == 'LV-0004') {
                 $wt = WhiteTagModel::select('users.*')
@@ -269,8 +269,8 @@ class Ceme extends Controller
                     ->orWhere('users.id_cg', $cgtambah4)
                     ->orWhere('users.id_cg', $cgtambah5);
                 })
-                ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
-                ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->join("curriculum as crclm","crclm.id_curriculum","white_tag.id_curriculum")
+                ->join("competencies_directory as cd","crclm.id_curriculum","cd.id_curriculum")
                 ->groupBy('id_user')->get();
             }else if (Auth::user()->peran_pengguna == 1) {
                 $wt = WhiteTagModel::select('users.*')
@@ -280,8 +280,8 @@ class Ceme extends Controller
                         ["white_tag.actual",">=","cd.target"]
                     ]);
                 })
-                ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
-                ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->join("curriculum as crclm","crclm.id_curriculum","white_tag.id_curriculum")
+                ->join("competencies_directory as cd","crclm.id_curriculum","cd.id_curriculum")
                 ->groupBy('id_user')->get();
             }else{
             $wt = WhiteTagModel::select('users.*')
@@ -295,8 +295,8 @@ class Ceme extends Controller
                     $join->on('users.id_cg', 'cg.id_cg')
                     ->where('users.id_cg', $cgAuth);
                 })
-                ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
-                ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                ->join("curriculum as crclm","crclm.id_curriculum","white_tag.id_curriculum")
+                ->join("competencies_directory as cd","crclm.id_curriculum","cd.id_curriculum")
                 ->groupBy('id_user')->get();
             }
             

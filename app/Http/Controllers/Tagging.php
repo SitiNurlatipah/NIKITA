@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\CG;
 use App\WhiteTagModel;
 use App\TagingReason;
+use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Exports\TaggingListExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\Datatables\Datatables;
-
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class Tagging extends Controller
@@ -23,31 +24,96 @@ class Tagging extends Controller
 
     public function tagingJson(Request $request)
     {
-        $where = "white_tag.actual < cd.target OR (SELECT COUNT(*) FROM taging_reason where white_tag.id_white_tag = taging_reason.id_white_tag) > 0";
-        $cgAuth = Auth::user()->id_cg;
+        $where = "white_tag.actual < cd.target";
         $select = [
             "id_taging_reason","white_tag.id_white_tag","tr.no_taging as noTaging","nama_pengguna as employee_name",
             "skill_category","training_module","nama_cg","nik",
-            "level","training_module_group","white_tag.actual as actual",
-            "cd.target as target",DB::raw("(white_tag.actual - cd.target) as actualTarget"),DB::raw("(IF((white_tag.actual - cd.target) < 0,'Follow Up','Finished' )) as tagingStatus")
+            "level","training_module_group","white_tag.actual as actual", "cd.between_year",
+            "cd.target as target",DB::raw("(white_tag.actual - cd.target) as actualTarget"),DB::raw("(IF((white_tag.actual - cd.target) < 0,'Follow Up','Finished' )) as tagingStatus"),
+            "users.tgl_masuk","users.tgl_rotasi","tr.note_target"
         ];
+        $currentYear = Carbon::now()->year;
+        $cgAuth = Auth::user()->id_cg;
+        $cgExtraAuth = Auth::user()->id_cgtambahan;
+        $cgtambah2 = Auth::user()->id_cgtambahan_2;
+        $cgtambah3 = Auth::user()->id_cgtambahan_3;
+        $cgtambah4 = Auth::user()->id_cgtambahan_4;
+        $cgtambah5 = Auth::user()->id_cgtambahan_5;
+        $dp = Auth::user()->id_department;
+        $id = Auth::user()->id;
         $data = WhiteTagModel::select($select)
-                            ->join("competencies_directory as cd",function ($join){
-                                $join->on("cd.id_directory","white_tag.id_directory");
-                            })
-                            ->leftJoin("taging_reason as tr","tr.id_white_tag","white_tag.id_white_tag")
-                            ->join("users",function ($join) use ($request,$cgAuth) {
-                                $join->on("users.id","white_tag.id_user");
-                                if(isset($request->type) && $request->type == 'cg'){
-                                    $join->where("users.id_cg",$cgAuth);
-                                }
-                            })
-                            // ->join("users as member","member.id","white_tag.id_user")
-                            ->join("curriculum","curriculum.id_curriculum","cd.id_curriculum")
-                            ->join("skill_category as sc","sc.id_skill_category","curriculum.id_skill_category")
-                            ->leftJoin('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
-                            ->whereRaw($where)
-                            ->get();
+                ->join("curriculum",function ($join){
+                    $join->on("curriculum.id_curriculum","white_tag.id_curriculum");
+                })
+                ->leftJoin("taging_reason as tr","tr.id_white_tag","white_tag.id_white_tag")
+                ->join("users","users.id","white_tag.id_user")
+                ->join("competencies_directory as cd","curriculum.id_curriculum","cd.id_curriculum")
+                ->join("skill_category as sc","sc.id_skill_category","curriculum.id_skill_category")
+                ->leftJoin('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
+                ->joinSub(function ($query){
+                    $query->select('id_curriculum', 'id_skill_category','curriculum_year')
+                        ->from('curriculum');
+                }, 'sub', function ($join) {
+                    $join->on('cd.id_curriculum', '=', 'sub.id_curriculum');
+                })
+                ->where(function ($query) use ($currentYear) {
+                    $query->where(function ($subquery) use ($currentYear){
+                        $subquery->whereNotNull('sub.curriculum_year')
+                            // ->whereRaw("cd.between_year = TIMESTAMPDIFF(YEAR, sub.curriculum_year, NOW())");
+                            ->where('sub.id_skill_category', '>=', 1)
+                            ->whereRaw("cd.between_year = 
+                            COALESCE(
+                                CASE 
+                                    WHEN $currentYear - (sub.curriculum_year-1) > 5 THEN 5
+                                    ELSE $currentYear - (sub.curriculum_year-1)
+                                END,
+                                0
+                            )");
+                    })
+                    ->orWhere(function ($subquery){
+                        $subquery->where('sub.id_skill_category', '<>', 1)
+                            ->whereNull('sub.curriculum_year')
+                            ->whereRaw("cd.between_year = 
+                            COALESCE(
+                                CASE 
+                                    WHEN (YEAR(NOW()) - YEAR(tgl_masuk)) > 5 THEN 5
+                                    ELSE (YEAR(NOW()) - YEAR(tgl_masuk))
+                                END,
+                                0
+                            )");
+                    })
+                    ->orWhere(function ($subquery){
+                        $subquery->where('sub.id_skill_category', '=', 1)
+                            ->whereNull('sub.curriculum_year')
+                            ->whereRaw("cd.between_year = 
+                            COALESCE(
+                                CASE 
+                                    WHEN (YEAR(NOW()) - YEAR(IFNULL(tgl_rotasi, tgl_masuk))) > 5 THEN 5
+                                    ELSE (YEAR(NOW()) - YEAR(IFNULL(tgl_rotasi, tgl_masuk)))
+                                END,
+                                0
+                            )");
+                    });
+                })
+                ->when(Auth::user()->id_level == 'LV-0003', function ($query) use ($dp) {
+                    // LV-0003 conditions
+                    return $query->where('users.id_department', $dp);
+                })
+                ->when(Auth::user()->id_level == 'LV-0004', function ($query) use ($cgExtraAuth, $cgtambah2, $cgtambah3, $cgtambah4, $cgtambah5) {
+                    // LV-0004 conditions
+                    return $query->whereIn('users.id_cg', [$cgExtraAuth, $cgtambah2, $cgtambah3, $cgtambah4, $cgtambah5]);
+                })
+                ->when(Auth::user()->peran_pengguna == '2', function ($query) use ($cgAuth) {
+                    // LV-0004 conditions
+                    return $query->where('users.id_cg', $cgAuth);
+                })
+                ->when(Auth::user()->peran_pengguna == '3', function ($query) use ($id) {
+                    // LV-0004 conditions
+                    return $query->where('users.id', $id);
+                })
+                ->groupBy('white_tag.id_curriculum', 'white_tag.id_user')
+                ->whereRaw($where)
+                ->get();
         return Datatables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
@@ -60,7 +126,7 @@ class Tagging extends Controller
                 $btn = '<button white-tag-id="' . $row->id_white_tag . '" taging-reason-id="' . $row->id_taging_reason . '" onclick="formTaging(this)" class="button-add btn btn-inverse-success btn-icon mr-1" data-toggle="modal" data-target="#modal-tambah"><i class="icon-plus menu-icon"></i></button>';
                 return $btn;
             }
-        })
+            })
             ->addColumn('tagingStatus', function ($row) {
                 if (isset($row->tagingStatus)) {
                     if ($row->tagingStatus == 'Finished') {
@@ -70,19 +136,75 @@ class Tagging extends Controller
                         $label = '<span class="badge badge-secondary text-white">' . $row->tagingStatus . '</span>';
                         return $label;
                     }
-
-                    // switch ($row->tagingStatus) {
-                    //     case "Finished":
-                    //         $label = '<span class="badge badge-success">"' . $row->tagingStatus . '"</span>';
-                    //         return $label;
-                    //         break;
-                    //     case "Follow Up":
-                    //         $label = '<span class="badge badge-secondary">"' . $row->tagingStatus . '"</span>';
-                    //         return $label;
-                    //         break;
-                    //     default:
-                    //         return '';
-                    // }
+                }
+            })
+            ->addIndexColumn()
+            ->rawColumns(['action', 'tagingStatus'])
+            ->make(true);
+    }
+    public function tagingFinish()
+    {
+        $cgAuth = Auth::user()->id_cg;
+        $cgExtraAuth = Auth::user()->id_cgtambahan;
+        $cgtambah2 = Auth::user()->id_cgtambahan_2;
+        $cgtambah3 = Auth::user()->id_cgtambahan_3;
+        $cgtambah4 = Auth::user()->id_cgtambahan_4;
+        $cgtambah5 = Auth::user()->id_cgtambahan_5;
+        $dp = Auth::user()->id_department;
+        $id = Auth::user()->id;
+        $select = [
+            "id_taging_reason","white_tag.id_white_tag","taging_reason.no_taging as noTaging","nama_pengguna as employee_name",
+            "skill_category","training_module","nama_cg","nik","date_verified",
+            "level","training_module_group","white_tag.actual as actual", "cd.between_year","taging_reason.note_target",
+            "cd.target as target",DB::raw("(white_tag.actual - taging_reason.note_target) as actualTarget"),DB::raw("(IF((white_tag.actual - taging_reason.note_target) < 0,'Follow Up','Finished' )) as tagingStatus"),
+        ];
+        $data = TagingReason::select($select)
+                ->join("white_tag","white_tag.id_white_tag","taging_reason.id_white_tag")
+                ->join("users as member","member.id","white_tag.id_user")
+                ->join("curriculum","curriculum.id_curriculum","white_tag.id_curriculum")
+                ->join("competencies_directory as cd","curriculum.id_curriculum","cd.id_curriculum")
+                ->join("skill_category as sc","sc.id_skill_category","curriculum.id_skill_category")
+                ->join("cg","cg.id_cg","member.id_cg")
+                ->when(Auth::user()->id_level == 'LV-0003', function ($query) use ($dp) {
+                    // LV-0003 conditions
+                    return $query->where('member.id_department', $dp);
+                })
+                ->when(Auth::user()->id_level == 'LV-0004', function ($query) use ($cgExtraAuth, $cgtambah2, $cgtambah3, $cgtambah4, $cgtambah5) {
+                    // LV-0004 conditions
+                    return $query->whereIn('member.id_cg', [$cgExtraAuth, $cgtambah2, $cgtambah3, $cgtambah4, $cgtambah5]);
+                })
+                ->when(Auth::user()->peran_pengguna == '2', function ($query) use ($cgAuth) {
+                    // LV-0004 conditions
+                    return $query->where('member.id_cg', $cgAuth);
+                })
+                ->when(Auth::user()->peran_pengguna == '3', function ($query) use ($id) {
+                    // LV-0004 conditions
+                    return $query->where('member.id', $id);
+                })
+                ->groupBy('white_tag.id_curriculum')
+                ->get();
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function ($row) {
+            if (isset($row->id_taging_reason)) {
+                $btn = '<button white-tag-id="' . $row->id_white_tag . '" taging-reason-id="' . $row->id_taging_reason . '" onclick="formTaging(this)" class="button-add btn btn-inverse-success btn-icon mr-1" data-toggle="modal" data-target="#modal-tambah"><i class="icon-plus menu-icon"></i></button>';
+                $btn = $btn . '<button type="button" onclick="detailTaging(' . $row->id_taging_reason . ')" class="btn btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail"><i class="ti-eye"></i></button>';
+                $btn = $btn . '<button data-id="' . $row->id_taging_reason . '" class="btn btn-inverse-danger btn-icon tagging-hapus mr-1" data-toggle="modal" data-target="#modal-hapus"><i class="icon-trash"></i></button>';
+                return $btn;
+            } else {
+                $btn = '<button white-tag-id="' . $row->id_white_tag . '" taging-reason-id="' . $row->id_taging_reason . '" onclick="formTaging(this)" class="button-add btn btn-inverse-success btn-icon mr-1" data-toggle="modal" data-target="#modal-tambah"><i class="icon-plus menu-icon"></i></button>';
+                return $btn;
+            }
+            })
+            ->addColumn('tagingStatus', function ($row) {
+                if (isset($row->tagingStatus)) {
+                    if ($row->tagingStatus == 'Finished') {
+                        $label = '<span class="badge badge-success">' . $row->tagingStatus . '</span>';
+                        return $label;
+                    } else {
+                        $label = '<span class="badge badge-secondary text-white">' . $row->tagingStatus . '</span>';
+                        return $label;
+                    }
                 }
             })
             ->addIndexColumn()
@@ -231,9 +353,62 @@ class Tagging extends Controller
     {   
         $id_white_tag = $request->white_tag_id;
         $id_reason_tag = $request->reasonTagId;
-        $white_tag = WhiteTagModel::select("actual")
+        $target = User::select("id","id_job_title",DB::raw("(YEAR(NOW()) - YEAR(tgl_masuk)) AS tahun"))->join('white_tag','white_tag.id_user','users.id')->first();
+        $user = User::select("id", "id_job_title", DB::raw("(YEAR(NOW()) - YEAR(IFNULL(tgl_rotasi, tgl_masuk))) AS tahun"))->join('white_tag','white_tag.id_user','users.id')
+                ->first();
+        $between = 0;
+        if($user->tahun > 5){
+            $between = 5;
+        }else{
+            $between = $user->tahun;
+        }
+        // dd($between);
+        $between2 = 0;
+        if($target->tahun > 5){
+            $between2 = 5;
+        }else{
+            $between2 = $target->tahun;
+        }
+        $currentYear = Carbon::now()->year;
+        $white_tag = WhiteTagModel::select("actual", "cd.target")
+                                    ->join("curriculum",function ($join){
+                                        $join->on("curriculum.id_curriculum","white_tag.id_curriculum");
+                                    })
+                                    ->join("competencies_directory as cd","curriculum.id_curriculum","cd.id_curriculum")
+                                    ->joinSub(function ($query) use ($user, $between, $between2) {
+                                        $query->select('id_curriculum', 'id_skill_category','curriculum_year')
+                                            ->from('curriculum');
+                                    }, 'sub', function ($join) use ($user, $between, $between2) {
+                                        $join->on('cd.id_curriculum', '=', 'sub.id_curriculum');
+                                    })
+                                    ->where(function ($query) use ($between, $between2, $currentYear) {
+                                        $query->where(function ($subquery) use ($currentYear){
+                                            $subquery->whereNotNull('sub.curriculum_year')
+                                                // ->whereRaw("cd.between_year = TIMESTAMPDIFF(YEAR, sub.curriculum_year, NOW())");
+                                                ->where('sub.id_skill_category', '>=', 1)
+                                                ->whereRaw("cd.between_year = 
+                                                COALESCE(
+                                                    CASE 
+                                                        WHEN $currentYear - (sub.curriculum_year-1) > 5 THEN 5
+                                                        ELSE $currentYear - (sub.curriculum_year-1)
+                                                    END,
+                                                    0
+                                                )");
+                                        })
+                                        ->orWhere(function ($subquery) use ($between) {
+                                            $subquery->where('sub.id_skill_category', '=', 1)
+                                                ->whereNull('sub.curriculum_year')
+                                                ->whereRaw("cd.between_year = '".$between."'");
+                                        })
+                                        ->orWhere(function ($subquery) use ($between2) {
+                                            $subquery->where('sub.id_skill_category', '<>', 1)
+                                                ->whereNull('sub.curriculum_year')
+                                                ->whereRaw("cd.between_year = '".$between2."'");
+                                        });
+                                    })
                                     ->where("id_white_tag",$request->white_tag_id)
                                     ->first();
+        // dd($white_tag);
         if(isset($id_reason_tag)){
             $select = [
                 "taging_reason.id_taging_reason","taging_reason.id_white_tag as id_white_tag","year","period",
@@ -265,7 +440,7 @@ class Tagging extends Controller
 
         $this->validate($request,[
             "id_taging_reason" => "nullable|numeric",
-            "id_white_tag" => "required|string|min:15|max:15",
+            "id_white_tag" => "required|string|min:1|max:15",
             "year" => "required|digits:4",
             "period" => "required|string|max:20",
             // "date_open" => "required|date_format:d-m-Y",
@@ -300,7 +475,8 @@ class Tagging extends Controller
                 // "duration" => $data["duration"],
                 "date_verified" => date("Y-m-d", strtotime($data["date_verified"])),
                 "result_score" => $data["result_score"],
-                "notes_for_result" => $data["notes_for_result"]
+                "notes_for_result" => $data["notes_for_result"],
+                "note_target" => $data["target_tag"]
             ];
             if(isset($data["id_taging_reason"])){
                 TagingReason::where("id_taging_reason",$data["id_taging_reason"])
@@ -368,7 +544,8 @@ class Tagging extends Controller
                 "taging_reason.date_verified as date_verified",
                 "verified.nama_pengguna as verified_by",
                 "taging_reason.result_score as result_score",
-                "taging_reason.notes_for_result as notes_for_result"
+                "taging_reason.notes_for_result as notes_for_result",
+                "taging_reason.note_target as note_target"
             ];
             $data = TagingReason::select($select)
                                 ->join("users as verified",function ($join) use ($request){
@@ -377,8 +554,8 @@ class Tagging extends Controller
                                 })
                                 ->join("white_tag as wt","wt.id_white_tag","taging_reason.id_white_tag")
                                 ->join("users as member","member.id","wt.id_user")
-                                ->join("competencies_directory as cd","cd.id_directory","wt.id_directory")
-                                ->join("curriculum","curriculum.id_curriculum","cd.id_curriculum")
+                                ->join("curriculum","curriculum.id_curriculum","wt.id_curriculum")
+                                ->join("competencies_directory as cd","curriculum.id_curriculum","cd.id_curriculum")
                                 ->join("cg","cg.id_cg","member.id_cg")
                                 ->first();
             return view("pages.admin.taging-list.detail",compact("data"));

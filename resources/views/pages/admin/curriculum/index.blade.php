@@ -233,7 +233,20 @@
     </div>
 
 @endsection
+@push('style')
+    <link rel="stylesheet" href="{{ asset('assets/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+    <link rel="stylesheet"  href="{{asset('assets/css/datatables/jquery.dataTables.min.css') }}" type="text/css"/>
+    <link href="{{asset('assets/css/datatables/buttons.dataTables.min.css') }}" rel="stylesheet" type="text/css"/>
+@endpush
 @push('script')
+<script src="{{ asset('assets/vendors/datatables.net/jquery.dataTables.js') }}"></script>
+<script src="{{ asset('assets/vendors/datatables.net/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('assets/vendors/datatables.net/buttons.print.min.js') }}"></script>
+<script src="{{ asset('assets/vendors/datatables.net/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('assets/vendors/datatables.net-bs4/dataTables.bootstrap4.js') }}"></script>
+<script src="{{asset('assets/vendors/datatables.net/export-table-data.js')}}"></script>
+<script src="{{ asset('assets/vendors/datatables.net/jszip.min.js') }}" type="text/javascript"></script>
 
     <script type="text/javascript">
         $.ajaxSetup({
@@ -255,8 +268,15 @@
         })
 
 
-        $('#table-cr').DataTable();
-
+        // $('#table-cr').DataTable();
+        $(document).ready(function() {
+    $('#table-cr').DataTable( {
+        dom: 'lBfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+    } );
+} );
         function editPost(event) {
             var id = $(event).data("id");
             let _url = "{!! route('editCurriculum') !!}";

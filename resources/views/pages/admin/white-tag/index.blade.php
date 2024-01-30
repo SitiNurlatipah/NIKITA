@@ -111,6 +111,9 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                 <div class="row">
                     <div class="col-12 flex">
                         <div class="tab-pane container fade in active show" id="pills-home">
+                        <a class="btn btn-sm btn-success float-right" href="javascript:void(0)" id="createNewItem"
+                                data-toggle="modal" data-target="#modal-import"><i class="icon-plus"></i> Import
+                                Competency</a>
                             <div class="table-responsive">
                                 <table class="display nowrap expandable-table table-striped table-hover" id="table-cg" style="width:100%">
                                     <thead>
@@ -268,6 +271,30 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
         </form>
     </div>
 </div>
+
+<div class="modal fade" id="modal-import" tabindex="-1" role="dialog" aria-labelledby="modal-tambahLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-small" style="max-width: 1000px;" role="document">
+            <div class="modal-content">
+                <div class="modal-header p-3">
+                    <h5 class="modal-title" id="modal-tambahLabel">Import New Curriculum</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{ route('importWhiteTag') }}" id="" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body pt-3 pb-3">
+                        <input type="file" name="file" class="">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 @endsection
 @push('script')

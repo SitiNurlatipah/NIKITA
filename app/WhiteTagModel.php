@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\CompetenciesDirectoryModel;
-
+use Carbon\Carbon;
 
 class WhiteTagModel extends Model
 {
@@ -18,18 +18,19 @@ class WhiteTagModel extends Model
 
     public function score($id_user,$level)
     {
-        $totalactual = WhiteTagModel::select(DB::raw("sum(actual) as jml_actual"),"level","actual","target")
+        $currentYear = Carbon::now()->year;
+        $totalactualnew = WhiteTagModel::select(DB::raw("(sum(white_tag.actual)) as jml_actual"),"level","actual")
                     ->join("users",function ($join) use ($id_user){
                         $join->on("users.id","white_tag.id_user")
                         ->where([
                             ["white_tag.id_user",$id_user],
-                            ["white_tag.actual",">=","cd.target"]
+                            // ["white_tag.actual",">=","cd.target"]
                         ]);
                     })
-                    ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
-                    ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
+                    ->join("curriculum as crclm","crclm.id_curriculum","white_tag.id_curriculum")
                     ->where('crclm.level',$level)
                     ->get();
+                    // dd($totalactualnew);
         $target = User::select("id","id_job_title",DB::raw("(YEAR(NOW()) - YEAR(tgl_masuk)) AS tahun"))->where("id", $id_user)->first();
         $user = User::select("id", "id_job_title", DB::raw("(YEAR(NOW()) - YEAR(IFNULL(tgl_rotasi, tgl_masuk))) AS tahun"))
                 ->where("id", $id_user)
@@ -44,41 +45,61 @@ class WhiteTagModel extends Model
                              ->whereRaw("competencies_directory.id_job_title = '".$user->id_job_title."'");
                     })
                     ->joinSub(function ($query) use ($user, $between, $between2) {
-                        $query->select('id_curriculum', 'id_skill_category')
-                              ->from('curriculum');
+                        $query->select('id_curriculum', 'id_skill_category','curriculum_year')
+                            ->from('curriculum');
                     }, 'sub', function ($join) use ($user, $between, $between2) {
                         $join->on('competencies_directory.id_curriculum', '=', 'sub.id_curriculum');
                     })
-                    ->where(function ($query) use ($between, $between2) {
-                        $query->where('sub.id_skill_category', '=', 1)
-                              ->whereRaw("competencies_directory.between_year = '".$between."'")
-                              ->orWhere('sub.id_skill_category', '<>', 1)
-                              ->whereRaw("competencies_directory.between_year = '".$between2."'");
+                    ->where(function ($query) use ($between, $between2, $currentYear) {
+                        $query->where(function ($subquery) use ($currentYear){
+                            $subquery->whereNotNull('sub.curriculum_year')
+                                // ->whereRaw("competencies_directory.between_year = TIMESTAMPDIFF(YEAR, sub.curriculum_year, NOW())");
+                                ->where('sub.id_skill_category', '>=', 1)
+                                ->whereRaw("competencies_directory.between_year = 
+                                COALESCE(
+                                    CASE 
+                                        WHEN $currentYear - (sub.curriculum_year-1) > 5 THEN 5
+                                        ELSE $currentYear - (sub.curriculum_year-1)
+                                    END,
+                                    0
+                                )");
+                        })
+                        ->orWhere(function ($subquery) use ($between) {
+                            $subquery->where('sub.id_skill_category', '=', 1)
+                                ->whereNull('sub.curriculum_year')
+                                ->whereRaw("competencies_directory.between_year = '".$between."'");
+                        })
+                        ->orWhere(function ($subquery) use ($between2) {
+                            $subquery->where('sub.id_skill_category', '<>', 1)
+                                ->whereNull('sub.curriculum_year')
+                                ->whereRaw("competencies_directory.between_year = '".$between2."'");
+                        });
                     })
-                    ->leftJoin("white_tag", function ($join) use ($id_user) {
-                        $join->on("white_tag.id_directory", "=", "competencies_directory.id_directory")
+                    ->Join("white_tag", function ($join) use ($id_user) {
+                        $join->on("white_tag.id_curriculum", "=", "curriculum.id_curriculum")
                             ->where("white_tag.id_user", $id_user);
                     })
                     ->where('curriculum.level',$level)
                     ->get();
         $target_total = $totaltarget[0]["jml_target"];
-        $actual = $totalactual[0]["jml_actual"];
+        $actualLevel = $totalactualnew[0]["jml_actual"];
+        // dd($actualLevel);
         if ($target_total != 0) {
             if($totaltarget[0]['level'] == 'B'){
-                $count = ($actual/$target_total)*100;
+                $count = ($actualLevel/$target_total)*100;
             }elseif($totaltarget[0]['level'] == 'I'){
-                $count = ($actual/$target_total)*100;
+                $count = ($actualLevel/$target_total)*100;
             }else{
-                $count = ($actual/$target_total)*100;
+                $count = ($actualLevel/$target_total)*100;
             } 
         }else{
             $count = 0;
         }
-        if($count >= 100){
-            $count=100;
-        }else{
-            $count=$count;
-        }
+        // if($count >= 100){
+        //     $count=100;
+        // }else{
+        //     $count=$count;
+        // }
         return $count;
     }
 
@@ -90,6 +111,7 @@ class WhiteTagModel extends Model
             'A'
         ];
         $data = array();
+        $currentYear = Carbon::now()->year;
         foreach($levels as $lv => $key)
         {
             $target = User::select("id","id_job_title",DB::raw("(YEAR(NOW()) - YEAR(tgl_masuk)) AS tahun"))->where("id", $id_user)->first();
@@ -107,35 +129,53 @@ class WhiteTagModel extends Model
                         ->whereRaw("competencies_directory.id_job_title = '".$user->id_job_title."'");
                 })
                 ->joinSub(function ($query) use ($user, $between, $between2) {
-                    $query->select('id_curriculum', 'id_skill_category')
+                    $query->select('id_curriculum', 'id_skill_category','curriculum_year')
                         ->from('curriculum');
                 }, 'sub', function ($join) use ($user, $between, $between2) {
                     $join->on('competencies_directory.id_curriculum', '=', 'sub.id_curriculum');
                 })
-                ->where(function ($query) use ($between, $between2) {
-                    $query->where('sub.id_skill_category', '=', 1)
-                        ->whereRaw("competencies_directory.between_year = '".$between."'")
-                        ->orWhere('sub.id_skill_category', '<>', 1)
-                        ->whereRaw("competencies_directory.between_year = '".$between2."'");
+                ->where(function ($query) use ($between, $between2, $currentYear) {
+                    $query->where(function ($subquery) use ($currentYear){
+                        $subquery->whereNotNull('sub.curriculum_year')
+                            // ->whereRaw("competencies_directory.between_year = TIMESTAMPDIFF(YEAR, sub.curriculum_year, NOW())");
+                            ->where('sub.id_skill_category', '>=', 1)
+                            ->whereRaw("competencies_directory.between_year = 
+                            COALESCE(
+                                CASE 
+                                    WHEN $currentYear - (sub.curriculum_year-1) > 5 THEN 5
+                                    ELSE $currentYear - (sub.curriculum_year-1)
+                                END,
+                                0
+                            )");
+                    })
+                    ->orWhere(function ($subquery) use ($between) {
+                        $subquery->where('sub.id_skill_category', '=', 1)
+                            ->whereNull('sub.curriculum_year')
+                            ->whereRaw("competencies_directory.between_year = '".$between."'");
+                    })
+                    ->orWhere(function ($subquery) use ($between2) {
+                        $subquery->where('sub.id_skill_category', '<>', 1)
+                            ->whereNull('sub.curriculum_year')
+                            ->whereRaw("competencies_directory.between_year = '".$between2."'");
+                    });
                 })
                 ->leftJoin("white_tag", function ($join) use ($id_user) {
-                    $join->on("white_tag.id_directory", "=", "competencies_directory.id_directory")
+                    $join->on("white_tag.id_curriculum", "=", "curriculum.id_curriculum")
                         ->where("white_tag.id_user", $id_user);
                 })
                 ->where('curriculum.level',$key)
                 ->get();
-           $jmlactual = WhiteTagModel::select(DB::raw("sum(actual) as cnt"),DB::raw("sum(cd.target) as totaltarget"),"level","actual","target")
-                                 ->join("users",function ($join) use ($id_user){
-                                    $join->on("users.id","white_tag.id_user")
-                                        ->where([
-                                            ["white_tag.id_user",$id_user],
-                                            ["white_tag.actual",">=","cd.target"]
-                                        ]);
-                                    })
-                                 ->join("competencies_directory as cd","cd.id_directory","white_tag.id_directory")
-                                 ->join("curriculum as crclm","crclm.id_curriculum","cd.id_curriculum")
-                                 ->where('crclm.level',$key)
-                                 ->get();
+           $jmlactual = WhiteTagModel::select(DB::raw("(sum(white_tag.actual)) as cnt"),"level","actual")
+                        ->join("users",function ($join) use ($id_user){
+                        $join->on("users.id","white_tag.id_user")
+                            ->where([
+                                ["white_tag.id_user",$id_user],
+                                // ["white_tag.actual",">=","cd.target"]
+                            ]);
+                        })
+                        ->join("curriculum as crclm","crclm.id_curriculum","white_tag.id_curriculum")
+                        ->where('crclm.level',$key)
+                        ->get();
             $target = $wt[0]["total_target"];
             $actual = $jmlactual[0]["cnt"];
             if ($target != 0) {

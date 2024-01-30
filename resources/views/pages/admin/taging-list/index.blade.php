@@ -46,13 +46,13 @@
                 <!-- <div class="row">
                     <p class="card-title ml-4">White Tag</p>
                 </div> -->
-                @if(Auth::user()->peran_pengguna == '1')
+                
                     <ul class="nav nav-pills pb-0">
                         <li class="nav-item active">
-                            <a class="nav-link active btn-primary" data-toggle="tab" href="#pills-home" type="button">White Tag ALL</a>
+                            <a class="nav-link active btn-primary" data-toggle="tab" href="#pills-home" type="button">Follow Up</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link btn-primary" data-toggle="tab" href="#pills-profile" type="button">White Tag CG</a>
+                            <a class="nav-link btn-primary" data-toggle="tab" href="#pills-finish" type="button">Finish</a>
                         </li>
                     </ul>
                     <div class="row">
@@ -61,7 +61,7 @@
                                 @if(Auth::user()->peran_pengguna == '1')
                                     <button class="btn btn-inverse-success mb-2 btn-sm float-right" data-toggle="modal" data-target="#modal-export"><i class="icon-file"></i> Export to Excel</button>
                                 @endif
-                                    <div class="table-responsive">
+                                    <div class="table-responsive mt-2">
                                             <table class="display expandable-table table-striped table-hover" id="table-taging-list" style="width:100%">
                                                 <thead>
                                                     <tr>
@@ -72,38 +72,40 @@
                                                         <th>Skill Category</th>
                                                         <th>Competency</th>
                                                         <th>Level</th>
-                                                        <!-- <th>Competenc Group</th> -->
                                                         <th>Actual</th>
                                                         <th>Target</th>
                                                         <th>Gap</th>
                                                         <th style="width: max-content" class="text-center">Tagging Status</th>
+                                                        @if(Auth::user()->peran_pengguna != '3')
                                                         <th style="width: max-content" class="text-center">Action</th>
+                                                        @endif
                                                     </tr>
                                                 </thead>
                                                 <tbody></tbody>
                                             </table>
                                     </div>
                                 </div>
-                                <div class="tab-pane container fade" id="pills-profile">
+                                <div class="tab-pane container fade" id="pills-finish">
                                     @if(Auth::user()->peran_pengguna == '1')
                                         <button class="btn btn-inverse-success mb-2 btn-sm float-right" data-toggle="modal" data-target="#modal-export-cg"><i class="icon-file"></i> Export to Excel</button>
                                     @endif
-                                    <div class="table-responsive">
-                                        <table class="display expandable-table table-striped table-hover" id="table-taging-list-cg" style="width:100%">
+                                    <div class="table-responsive mt-2">
+                                        <table class="display expandable-table table-striped table-hover" id="table-taging-finish" style="width:100%">
                                             <thead>
                                                 <tr>
                                                     <th>No Taging</th>
+                                                    <th>Date Verified</th>
                                                     <th>NIK</th>
                                                     <th>Employee Name</th>
                                                     <th>Skill Category</th>
                                                     <th>Competency</th>
                                                     <th>Level</th>
-                                                    <!-- <th>Competenc Group</th> -->
                                                     <th>Actual</th>
                                                     <th>Target</th>
-                                                    <th>Gap</th>
                                                     <th style="width: max-content" class="text-center">Tagging Status</th>
+                                                    @if(Auth::user()->peran_pengguna != '3')
                                                     <th style="width: max-content" class="text-center">Action</th>
+                                                    @endif
                                                 </tr>
                                             </thead>
                                             <tbody></tbody>
@@ -112,10 +114,14 @@
                                 </div>
                         </div>
                     </div>
+                {{--
+                @if(Auth::user()->peran_pengguna == '1')
+                <ul class="nav nav-pills pb-0">
+                </ul>
                 @elseif(Auth::user()->peran_pengguna == '2')
                     <div class="container" id="pills-profile">
                         <div class="table-responsive">
-                            <table class="display expandable-table table-striped table-hover" id="table-taging-list-cg" style="width:100%">
+                            <table class="display expandable-table table-striped table-hover" id="table-taging-cg" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>No Taging</th>
@@ -200,6 +206,7 @@
                         </table>
                     </div>
                 @endif
+                --}}
             </div>
         </div>
     </div>
@@ -307,10 +314,23 @@
         </div>
     </div>
 </div>
-
 @endsection
+@push('style')
+    <link rel="stylesheet" href="{{ asset('assets/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+    <link rel="stylesheet"  href="{{asset('assets/css/datatables/jquery.dataTables.min.css') }}" type="text/css"/>
+    <link href="{{asset('assets/css/datatables/buttons.dataTables.min.css') }}" rel="stylesheet" type="text/css"/>
+@endpush
 
 @push('script')
+<script src="{{ asset('assets/vendors/datatables.net/jquery.dataTables.js') }}"></script>
+<script src="{{ asset('assets/vendors/datatables.net/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('assets/vendors/datatables.net/buttons.print.min.js') }}"></script>
+<script src="{{ asset('assets/vendors/datatables.net/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('assets/vendors/datatables.net-bs4/dataTables.bootstrap4.js') }}"></script>
+<script src="{{asset('assets/vendors/datatables.net/export-table-data.js')}}"></script>
+<script src="{{ asset('assets/vendors/datatables.net/jszip.min.js') }}" type="text/javascript"></script>
+
 <script type="text/javascript">
     $.ajaxSetup({
             headers: {
@@ -558,6 +578,25 @@
         })
     })
   function iniDatatable() {
+      var currentDate = new Date();
+        @if(Auth::user()->peran_pengguna == '1' || Auth::user()->peran_pengguna == '2')
+        var buttons = [
+            // 'copy', 'csv', 'excel', 'pdf', 'print'
+            {
+            extend: 'copy',
+            },
+            {
+            extend: 'csv',
+            title: 'Follow Up_' + currentDate.getDate() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getFullYear()
+            },
+            {
+            extend: 'excel',
+            title: 'Follow Up_' + currentDate.getDate() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getFullYear()
+            },
+        ];
+        @else
+        var buttons = [];
+        @endif
       var dtJson = $('#table-taging-list').DataTable({
           ajax: "{{ route('taggingJson') }}",
           responsive:true,
@@ -567,15 +606,16 @@
               [0, "desc"]
           ],
           searching: true,
-          dom: '<"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
-          displayLength: 11,
-          // lengthMenu: [10, 15, 20],
+          dom: 'lBfrtip',
+          buttons: buttons,
+          displayLength: 10,
+          lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
           language: {
-              paginate: {
-                  // remove previous & next text from pagination
-                  previous: '&nbsp;',
-                  next: '&nbsp;'
-              }
+                paginate: {
+                    // remove previous & next text from pagination
+                    previous: '&nbsp;',
+                    next: '&nbsp;'
+                }
           },
           scrollX: true,
           columns: [
@@ -600,9 +640,6 @@
               {
                   data: 'level'
               },
-            //   {
-            //       data: 'training_module_group'
-            //   },
               {
                   data: 'actual'
               },
@@ -615,9 +652,11 @@
               {
                  data: 'tagingStatus'
               },
+              @if(Auth::user()->peran_pengguna != '3')
               {
                  data: 'action'
               }
+              @endif
           ]
       });
   }
@@ -679,10 +718,29 @@
       });
     }
 
-
     function tagingCgDataTable() {
-        var dtJson = $('#table-taging-list-cg').DataTable({
-          ajax: "{{ route('taggingJson') }}?type=cg",
+        var currentDate = new Date();
+        @if(Auth::user()->peran_pengguna == '1' || Auth::user()->peran_pengguna == '2')
+        var buttons = [
+            // 'copy', 'csv', 'excel', 'pdf', 'print'
+            {
+            extend: 'copy',
+            },
+            {
+            extend: 'csv',
+            title: 'Finish Taging_' + currentDate.getDate() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getFullYear()
+            },
+          {
+            extend: 'excel',
+            title: 'Finish Taging_' + currentDate.getDate() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getFullYear()
+            },
+        ];
+        @else
+        var buttons = [];
+        @endif
+        
+        var dtJson = $('#table-taging-finish').DataTable({
+          ajax: "{{ route('taggingFinishJson') }}",
           responsive:true,
           serverSide: true,
           processing: true,
@@ -690,20 +748,25 @@
               [0, "desc"]
           ],
           searching: true,
-          dom: '<"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
-          displayLength: 11,
-          // lengthMenu: [10, 15, 20],
+          dom: 'lBfrtip',
+          buttons: buttons,
+          displayLength: 10,
+          lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
           language: {
-              paginate: {
-                  // remove previous & next text from pagination
-                  previous: '&nbsp;',
-                  next: '&nbsp;'
-              }
+                paginate: {
+                    // remove previous & next text from pagination
+                    previous: '&nbsp;',
+                    next: '&nbsp;'
+                }
           },
           scrollX: true,
           columns: [
               {
                   data: 'noTaging',
+              },
+              {
+                  data: 'date_verified',
+                  render: function(data) { return new Date(data).toLocaleDateString('en-GB'); }
               },
               {
                   data: 'nik',
@@ -720,24 +783,20 @@
               {
                   data: 'level'
               },
-            //   {
-            //       data: 'training_module_group'
-            //   },
               {
                   data: 'actual'
               },
               {
-                  data: 'target'
-              },
-              {
-                  data: 'actualTarget'
+                  data: 'note_target'
               },
               {
                  data: 'tagingStatus'
               },
+              @if(Auth::user()->peran_pengguna != '3')
               {
                  data: 'action'
               }
+              @endif
           ]
       });
     }

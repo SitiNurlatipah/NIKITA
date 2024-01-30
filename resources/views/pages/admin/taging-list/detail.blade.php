@@ -186,7 +186,7 @@
                   <label class="col-form-label pl-1 col-sm-7">Target</label>
                   <div>
                     @php
-                      switch($data->target){
+                      switch($data->note_target){
                         case 0:
                           $targetUrl = asset('assets/images/point/0.png');
                         break;
@@ -224,7 +224,7 @@
                   <div class="col-sm-12 rounded border mb-2 d-flex">
                   <label class="col-sm-7 col-form-label">Value</label>
                     <div class="col-sm-5 m-auto">
-                      <p>{{$data->target}}</p>
+                      <p>{{$data->note_target}}</p>
                     </div>
                 </div>
                 </div>

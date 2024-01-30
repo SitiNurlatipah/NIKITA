@@ -113,6 +113,8 @@
         <div class="invalid-feedback" id="feed-back-duration"></div>
     </div>
 </div> -->
+<input type="hidden" class="form-control form-control-sm" name="target_tag" id="target_tag" value="{{$taging->note_target ?? $white_tag->target}}">
+
 <div class="form-row">
     <div class="col-md-12 mb-2">
         <b>Result</b>

@@ -71,6 +71,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::prefix("tagging-list")->group(function () {
         Route::get('/', 'Tagging@index')->name('TagList');
         Route::get('/tagging-json','Tagging@tagingJson')->name('taggingJson');
+        Route::get('/tagging-finish','Tagging@tagingFinish')->name('taggingFinishJson');
         Route::get('/tagging-member','Tagging@tagingJsonMember')->name('taggingJsonMember');
         Route::get('/tagging-atasan','Tagging@tagingJsonAtasan')->name('taggingJsonAtasan');
         Route::get('/form','Tagging@formTaggingList')->name('tagingForm');
@@ -106,6 +107,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/form','WhiteTag@formWhiteTag')->name("formWhiteTag");
         Route::post('/action','WhiteTag@actionWhiteTag')->name("actionWhiteTag");
         Route::get('/detail', 'WhiteTag@detailWhiteTag')->name('detailWhiteTag');
+        Route::POST('/import', 'WhiteTag@importWhiteTag')->name('importWhiteTag');
 
         Route::get('/chart-skill-category','WhiteTag@chartSkillCategory')->name("chartSkillCategory");
         Route::get('/chart-comp-group','WhiteTag@chartCompGroup')->name("chartCompGroup");
