@@ -111,9 +111,6 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                 <div class="row">
                     <div class="col-12 flex">
                         <div class="tab-pane container fade in active show" id="pills-home">
-                        <a class="btn btn-sm btn-success float-right" href="javascript:void(0)" id="createNewItem"
-                                data-toggle="modal" data-target="#modal-import"><i class="icon-plus"></i> Import
-                                Competency</a>
                             <div class="table-responsive">
                                 <table class="display nowrap expandable-table table-striped table-hover" id="table-cg" style="width:100%">
                                     <thead>

@@ -95,11 +95,11 @@ class WhiteTagModel extends Model
         }else{
             $count = 0;
         }
-        // if($count >= 100){
-        //     $count=100;
-        // }else{
-        //     $count=$count;
-        // }
+        if($count >= 100){
+            $count=100;
+        }else{
+            $count=$count;
+        }
         return $count;
     }
 
