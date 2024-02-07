@@ -59,7 +59,7 @@
                         <div class="col-12 flex">
                                 <div class="tab-pane container fade in active show" id="pills-home">
                                 @if(Auth::user()->peran_pengguna == '1')
-                                    <button class="btn btn-inverse-success mb-2 btn-sm float-right" data-toggle="modal" data-target="#modal-export"><i class="icon-file"></i> Export to Excel</button>
+                                    <!-- <button class="btn btn-inverse-success mb-2 btn-sm float-right" data-toggle="modal" data-target="#modal-export"><i class="icon-file"></i> Export to Excel</button> -->
                                 @endif
                                     <div class="table-responsive mt-2">
                                             <table class="display expandable-table table-striped table-hover" id="table-taging-list" style="width:100%">
@@ -87,7 +87,7 @@
                                 </div>
                                 <div class="tab-pane container fade" id="pills-finish">
                                     @if(Auth::user()->peran_pengguna == '1')
-                                        <button class="btn btn-inverse-success mb-2 btn-sm float-right" data-toggle="modal" data-target="#modal-export-cg"><i class="icon-file"></i> Export to Excel</button>
+                                        <!-- <button class="btn btn-inverse-success mb-2 btn-sm float-right" data-toggle="modal" data-target="#modal-export-cg"><i class="icon-file"></i> Export to Excel</button> -->
                                     @endif
                                     <div class="table-responsive mt-2">
                                         <table class="display expandable-table table-striped table-hover" id="table-taging-finish" style="width:100%">

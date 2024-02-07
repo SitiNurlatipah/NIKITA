@@ -11,7 +11,7 @@
         <!-- <input type="hidden" name="data[{{$key.time()}}][id]" value="{{$comp->id_directory}}"> -->
         <input type="text" class="form-control" value="{{$comp->start}}" disabled>
         @else
-            <!-- <input type="hidden" name="data[{{$key.time()}}][id]" value="{{$comp->id_directory}}"> -->
+            <input type="hidden" name="data[{{$key.time()}}][iddir]" value="{{$comp->id_directory}}">
             <input type="hidden" name="data[{{$key.time()}}][id]" value="{{$comp->id_curriculum}}">
             <select class="form-control" name="data[{{$key.time()}}][start]" id="selectStart{{$key.time()}}">
                 <option value=""  {{($comp->start == null || $comp->tagingStatus == 'Belum diatur') ? 'selected' : ''}}>Pilih Level</option>

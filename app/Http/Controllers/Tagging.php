@@ -30,7 +30,7 @@ class Tagging extends Controller
             "skill_category","training_module","nama_cg","nik",
             "level","training_module_group","white_tag.actual as actual", "cd.between_year",
             "cd.target as target",DB::raw("(white_tag.actual - cd.target) as actualTarget"),DB::raw("(IF((white_tag.actual - cd.target) < 0,'Follow Up','Finished' )) as tagingStatus"),
-            "users.tgl_masuk","users.tgl_rotasi","tr.note_target"
+            "users.tgl_masuk","users.tgl_rotasi","tr.note_target",
         ];
         $currentYear = Carbon::now()->year;
         $cgAuth = Auth::user()->id_cg;
@@ -76,8 +76,8 @@ class Tagging extends Controller
                             ->whereRaw("cd.between_year = 
                             COALESCE(
                                 CASE 
-                                    WHEN (YEAR(NOW()) - YEAR(tgl_masuk)) > 5 THEN 5
-                                    ELSE (YEAR(NOW()) - YEAR(tgl_masuk))
+                                    WHEN (YEAR(NOW()) - YEAR(tgl_masuk) + 1) > 5 THEN 5
+                                    ELSE (YEAR(NOW()) - YEAR(tgl_masuk) + 1)
                                 END,
                                 0
                             )");
@@ -111,7 +111,7 @@ class Tagging extends Controller
                     // LV-0004 conditions
                     return $query->where('users.id', $id);
                 })
-                ->groupBy('white_tag.id_curriculum', 'white_tag.id_user')
+                ->groupBy('white_tag.id_white_tag')
                 ->whereRaw($where)
                 ->get();
         return Datatables::of($data)
@@ -353,35 +353,21 @@ class Tagging extends Controller
     {   
         $id_white_tag = $request->white_tag_id;
         $id_reason_tag = $request->reasonTagId;
-        $target = User::select("id","id_job_title",DB::raw("(YEAR(NOW()) - YEAR(tgl_masuk)) AS tahun"))->join('white_tag','white_tag.id_user','users.id')->first();
-        $user = User::select("id", "id_job_title", DB::raw("(YEAR(NOW()) - YEAR(IFNULL(tgl_rotasi, tgl_masuk))) AS tahun"))->join('white_tag','white_tag.id_user','users.id')
-                ->first();
-        $between = 0;
-        if($user->tahun > 5){
-            $between = 5;
-        }else{
-            $between = $user->tahun;
-        }
-        // dd($between);
-        $between2 = 0;
-        if($target->tahun > 5){
-            $between2 = 5;
-        }else{
-            $between2 = $target->tahun;
-        }
+        
         $currentYear = Carbon::now()->year;
-        $white_tag = WhiteTagModel::select("actual", "cd.target")
+        $white_tag = WhiteTagModel::select("actual", "cd.target", "tgl_rotasi","tgl_masuk")
                                     ->join("curriculum",function ($join){
                                         $join->on("curriculum.id_curriculum","white_tag.id_curriculum");
                                     })
+                                    ->join("users","users.id","white_tag.id_user")
                                     ->join("competencies_directory as cd","curriculum.id_curriculum","cd.id_curriculum")
-                                    ->joinSub(function ($query) use ($user, $between, $between2) {
+                                    ->joinSub(function ($query) {
                                         $query->select('id_curriculum', 'id_skill_category','curriculum_year')
                                             ->from('curriculum');
-                                    }, 'sub', function ($join) use ($user, $between, $between2) {
+                                    }, 'sub', function ($join) {
                                         $join->on('cd.id_curriculum', '=', 'sub.id_curriculum');
                                     })
-                                    ->where(function ($query) use ($between, $between2, $currentYear) {
+                                    ->where(function ($query) use ($currentYear) {
                                         $query->where(function ($subquery) use ($currentYear){
                                             $subquery->whereNotNull('sub.curriculum_year')
                                                 // ->whereRaw("cd.between_year = TIMESTAMPDIFF(YEAR, sub.curriculum_year, NOW())");
@@ -395,15 +381,29 @@ class Tagging extends Controller
                                                     0
                                                 )");
                                         })
-                                        ->orWhere(function ($subquery) use ($between) {
+                                        ->orWhere(function ($subquery) {
                                             $subquery->where('sub.id_skill_category', '=', 1)
                                                 ->whereNull('sub.curriculum_year')
-                                                ->whereRaw("cd.between_year = '".$between."'");
+                                                ->whereRaw("cd.between_year = 
+                                                COALESCE(
+                                                    CASE 
+                                                        WHEN (YEAR(NOW()) - YEAR(IFNULL(tgl_rotasi, tgl_masuk))) > 5 THEN 5
+                                                        ELSE (YEAR(NOW()) - YEAR(IFNULL(tgl_rotasi, tgl_masuk)))
+                                                    END,
+                                                    0
+                                                )");
                                         })
-                                        ->orWhere(function ($subquery) use ($between2) {
+                                        ->orWhere(function ($subquery) {
                                             $subquery->where('sub.id_skill_category', '<>', 1)
                                                 ->whereNull('sub.curriculum_year')
-                                                ->whereRaw("cd.between_year = '".$between2."'");
+                                                ->whereRaw("cd.between_year = 
+                                                COALESCE(
+                                                    CASE 
+                                                        WHEN (YEAR(NOW()) - YEAR(tgl_masuk) + 1) > 5 THEN 5
+                                                        ELSE (YEAR(NOW()) - YEAR(tgl_masuk) + 1)
+                                                    END,
+                                                    0
+                                                )");
                                         });
                                     })
                                     ->where("id_white_tag",$request->white_tag_id)
