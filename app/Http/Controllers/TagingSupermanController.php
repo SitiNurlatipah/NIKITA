@@ -23,9 +23,9 @@ class TagingSupermanController extends Controller
     {
         $where = "competencies_superman.actual < cd.target OR (SELECT COUNT(*) FROM tagging_superman where competencies_superman.id_competencies_superman = tagging_superman.id_competency_superman) > 0";
         $select = [
-            "id_taging_superman","competencies_superman.id_competencies_superman","tr.no_taging as noTaging","nama_pengguna as employee_name",
+            "id_taging_superman","tr.no_taging as noTaging","nama_pengguna as employee_name",
             "skill_category","curriculum_superman.curriculum_superman as curriculum_name","nama_cg","nik",
-            "curriculum_group","competencies_superman.actual as actual",
+            "curriculum_group","competencies_superman.actual as actual","competencies_superman.id_competencies_superman",
             "cd.target as target",DB::raw("(competencies_superman.actual - cd.target) as actualTarget"),DB::raw("(IF((competencies_superman.actual - cd.target) < 0,'Follow Up','Finished' )) as tagingStatus")
         ];
         $data = Superman::select($select)
@@ -365,10 +365,11 @@ class TagingSupermanController extends Controller
             "tagging_superman.tahun as tahun",
             "tagging_superman.periode as periode",
             "member.nama_pengguna as name",
-            "curriculum.curriculum_group as curriculum_group",
-            "curriculum.training_module as training_module",
+            "curriculum_superman.curriculum_group as curriculum_group",
+            "curriculum_superman.curriculum_superman as training_module",
             "wt.actual as actual",
             "cd.target as target",
+            "cg.nama_cg as cg",
             // "tagging_superman.date_open as date_open",
             // "tagging_superman.due_date as due_date",
             "tagging_superman.date_plan_implementation as date_plan_implementation",
@@ -394,12 +395,13 @@ class TagingSupermanController extends Controller
                                 $join->on("verified.id","id_verified_by")
                                         ->where("id_taging_superman",$request->id);
                             })
-                            ->join("competencies_superman as wt","wt.id_competencies_superman","tagging_superman.id_competencies_superman")
+                            ->join("competencies_superman as wt","wt.id_competencies_superman","tagging_superman.id_competency_superman")
                             ->join("users as member","member.id","wt.id_user")
-                            ->join("competencies_dictionary_superman as cd","cd.id_dictionary_superman","wt.id_directory")
-                            ->join("curriculum_superman","curriculum.id_curriculum_superman","cd.id_curriculum_superman")
+                            ->join("competencies_dictionary_superman as cd","cd.id_dictionary_superman","wt.id_cstu")
+                            ->join("curriculum_superman","curriculum_superman.id_curriculum_superman","cd.id_curriculum_superman")
+                            ->join("cg","cg.id_cg","member.id_cg")
                             ->first();
-        return view("pages.admin.taging-list.print-competency-tag",compact("data"));
+        return view("pages.admin.superman.tagging.print-competency-tag-superman",compact("data"));
     }
     public function deleteSupermanTagging()
     {

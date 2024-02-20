@@ -89,7 +89,7 @@
               <label class="col-3 col-form-label">Circle Group</label>
               <div class="col-9 m-auto">
                 <div class="input">
-                  {{$data->training_module_group}}
+                  {{$data->cg}}
                 </div>
               </div>
             </div>

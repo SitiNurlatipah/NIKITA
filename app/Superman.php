@@ -9,8 +9,10 @@ use App\CompDictionarySupermanModel;
 class Superman extends Model
 {
     protected $table = 'competencies_superman';
-    
-    protected $primaryKey = 'id_competencies_superman';
+    // protected $primaryKey = 'id_competencies_superman';
+    protected $fillable = [
+        'id_competencies_superman', 'id_user', 'actual', 'start', 'id_cstu', 'keterangan'
+    ];
     public $timestamps = true;
 
     public function totalScore($id_user)

@@ -234,9 +234,7 @@ class SupermanController extends Controller
             $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
                     ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
                     ->leftJoin('level', 'users.id_level', '=', 'level.id_level')
-                    ->Where('users.id_level', 'LV-0002')
-                    ->orWhere('users.id_level', 'LV-0003')
-                    ->orWhere('users.id_level', 'LV-0004')
+                    ->Where('users.is_superman', 1)
                     ->orderBy('nama_pengguna', 'DESC')
                     ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','level.nama_level']);
         }

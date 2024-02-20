@@ -344,7 +344,8 @@ class ManagementSystemController extends Controller
 
     }
     
-    public function importSertifikasiMember(Request $request){
+    public function importSertifikasiMember(Request $request)
+    {
         try {
             Excel::import(new ManagementSystemToUserImport, $request->file('file'));
             return response()->json([
