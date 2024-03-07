@@ -43,7 +43,6 @@ class RotationController extends Controller
         $cgId = Auth::user()->id_cg;
         if (Auth::user()->peran_pengguna === '2') {
             $history = WhiteTagHistory::leftJoin('users', 'white_tag_history.id_user', '=', 'users.id')
-                    ->leftJoin('job_title','users.id_job_title', '=', 'job_title.id_job_title')
                     ->leftJoin('cg','users.id_cg', '=', 'cg.id_cg')
                     ->where('users.id_cg', $cgId)
                     ->orderBy('id_user','ASC')

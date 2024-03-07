@@ -38,11 +38,10 @@ class MemberCG extends Controller
         $id = Auth::user()->id;
         $role = Auth::user()->peran_pengguna;
         $cgId = Auth::user()->id_cg;
-        if (Auth::user()->peran_pengguna == '2') {
+        if (Auth::user()->peran_pengguna == '1') {
             $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
                 ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
                 ->leftJoin('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
-                ->where('users.id_cg', $cgId)
                 ->orderBy('nama_pengguna', 'desc')
                 ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','cg.nama_cg']);
         } 
@@ -72,6 +71,7 @@ class MemberCG extends Controller
                 ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
                 ->leftJoin('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
                 ->orderBy('nama_pengguna', 'desc')
+                ->where('users.id_cg', $cgId)
                 ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','cg.nama_cg']);
         }
         return Datatables::of($data)

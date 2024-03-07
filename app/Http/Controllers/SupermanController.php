@@ -14,6 +14,7 @@ use App\Superman;
 use App\User;
 use App\CompetencySupermanModel;
 use App\JobTitleUsers;
+use App\ScaleCorporateModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -207,19 +208,21 @@ class SupermanController extends Controller
     }
     // Kelola User
     public function indexKelola(){
-        return view('pages.admin.superman.index');
+        $head=User::select("id","nama_pengguna")
+            ->where("id_level","=","LV-0003")
+            ->get();
+        return view('pages.admin.superman.index', compact('head'));
     }
     
     public function supermanJson(Request $request)
     {   
         $id = Auth::user()->id;
         $dp = Auth::user()->id_department;
-        if(Auth::user()->id_level == 'LV-0003'){
+        if(Auth::user()->peran_pengguna == 1){
             $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
                     ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
                     ->leftJoin('level', 'users.id_level', '=', 'level.id_level')
                     ->Where('users.is_superman', 1)
-                    ->Where('users.id_department', $dp)
                     ->orderBy('nama_pengguna', 'DESC')
                     ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','level.nama_level']);
         }else if(Auth::user()->id_level == 'LV-0004'){
@@ -230,11 +233,12 @@ class SupermanController extends Controller
                     ->Where('users.id', $id)
                     ->orderBy('nama_pengguna', 'DESC')
                     ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','level.nama_level']);
-        }else{
+        }else if(Auth::user()->id_level == 'LV-0003'){
             $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
                     ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
                     ->leftJoin('level', 'users.id_level', '=', 'level.id_level')
                     ->Where('users.is_superman', 1)
+                    ->Where('users.id_department', $dp)
                     ->orderBy('nama_pengguna', 'DESC')
                     ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','level.nama_level']);
         }
@@ -243,6 +247,45 @@ class SupermanController extends Controller
             ->addColumn('action', function ($row) {
                 $btn = '<button data-id="' . $row->id . '" onclick="getCompSuperman('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="button-add btn btn-inverse-success btn-icon mr-1" data-toggle="modal" data-target="#modal-edit"><i class="icon-plus menu-icon"></i></button>';
                 $btn = $btn . '<button type="button" onclick="detailMapcomSuperman('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="btn btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail"><i class="ti-eye"></i></button>';
+                    return $btn;
+                })
+            ->addIndexColumn()
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+    public function corporateJson(Request $request)
+    {   
+        $id = Auth::user()->id;
+        $dp = Auth::user()->id_department;
+        if(Auth::user()->peran_pengguna == 1){
+            $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+                    ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+                    ->leftJoin('level', 'users.id_level', '=', 'level.id_level')
+                    ->Where('users.is_superman', 1)
+                    ->orderBy('nama_pengguna', 'DESC')
+                    ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','level.nama_level']);
+        }else if(Auth::user()->id_level == 'LV-0004'){
+            $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+                    ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+                    ->leftJoin('level', 'users.id_level', '=', 'level.id_level')
+                    ->Where('users.is_superman', 1)
+                    ->Where('users.id', $id)
+                    ->orderBy('nama_pengguna', 'DESC')
+                    ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','level.nama_level']);
+        }else if(Auth::user()->id_level == 'LV-0003'){
+            $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+                    ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+                    ->leftJoin('level', 'users.id_level', '=', 'level.id_level')
+                    ->Where('users.is_superman', 1)
+                    ->Where('users.id_department', $dp)
+                    ->orderBy('nama_pengguna', 'DESC')
+                    ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','level.nama_level']);
+        }
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function ($row) {
+                $btn = '<button data-id="' . $row->id . '" onclick="getCorporateSuperman('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="button-add btn btn-inverse-success btn-icon mr-1" data-toggle="modal" data-target="#modal-edit-corporate"><i class="icon-plus menu-icon"></i></button>';
+                $btn = $btn . '<button type="button" onclick="detailMapCorporateSuperman('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="btn btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail-corporate"><i class="ti-eye"></i></button>';
                     return $btn;
                 })
             ->addIndexColumn()
@@ -282,11 +325,63 @@ class SupermanController extends Controller
                 ->join("skill_category","skill_category.id_skill_category","curriculum_superman.id_skill_category")
                 ->leftJoin("competencies_superman",function ($join) use ($user){
                     $join->on("competencies_superman.id_cstu","competencies_dictionary_superman.id_dictionary_superman")
-                        ->where("competencies_superman.id_user",$user->id);
+                        ->where("competencies_superman.id_user",$user->id)
+                        ->where("competencies_superman.id_depthead",0);
                 })
+                // ->where("compGroup.id","!=", 5)
+                // ->where("competencies_superman.id_depthead",0)
+                ->groupBy("curriculum_superman.id_curriculum_superman")
                 ->get();
                 // dd($comps);
         return view("pages.admin.superman.form",compact('comps','user','type'));
+    }
+    public function formCorporateSuperman(Request $request)
+    {
+
+        $validator = Validator::make($request->all(),[
+            "id" => "requeired|numeric",
+            "type" => "required|string|in:functional,general"
+        ]);
+        $type = $request->type;
+        $user = User::select("id","id_level")
+                    ->where("id",$request->id)
+                    ->first();
+        $id_dept = Auth::user()->id;
+        $select = [
+            "curriculum_superman.no_curriculum_superman as no_curriculum", "competencies_dictionary_superman.target as target",
+            "curriculum_superman.curriculum_superman as curriculum_superman","curriculum_superman.curriculum_group as curriculum_group",
+            "skill_category.skill_category as skill_category","compsuperman.start as start", "compcorporate.actual as actual","compcorporate.keterangan as ket",
+            "competencies_dictionary_superman.id_dictionary_superman", "compsuperman.actual as before",
+            // DB::raw("(SELECT COUNT(*) FROM taging_reason as tr where tr.id_competencies_superman = competencies_superman.id_competencies_superman) as cntTagingReason"),
+            DB::raw("(CASE WHEN (compcorporate.actual - competencies_dictionary_superman.target) < 0 THEN 'Open'
+                            WHEN (compcorporate.actual IS NULL) THEN 'Belum diatur'
+                            WHEN compcorporate.actual >= competencies_dictionary_superman.target THEN 'Close' 
+                            END) as tagingStatus"),"compGroup.name as compGroupName"
+        ];
+
+        $comps = CompDictionarySupermanModel::select($select)
+                ->join("curriculum_superman",function ($join) use ($user){
+                    $join->on("curriculum_superman.id_curriculum_superman","competencies_dictionary_superman.id_curriculum_superman")
+                        ->whereRaw("competencies_dictionary_superman.id_user = '".$user->id."'");
+                })
+                ->join("competencie_groups as compGroup","compGroup.id","curriculum_superman.curriculum_group")
+                ->join("skill_category","skill_category.id_skill_category","curriculum_superman.id_skill_category")
+                ->leftJoin("competencies_superman as compsuperman",function ($join) use ($user){
+                    $join->on("compsuperman.id_cstu","competencies_dictionary_superman.id_dictionary_superman")
+                    ->where("compsuperman.id_user",$user->id)
+                    ->where("compsuperman.id_depthead",0);
+                })
+                ->leftJoin("competencies_superman as compcorporate",function ($join) use ($user, $id_dept){
+                    $join->on("compcorporate.id_cstu","competencies_dictionary_superman.id_dictionary_superman")
+                    ->where("compcorporate.id_user",$user->id)
+                    ->where("compcorporate.id_depthead",$id_dept);
+                })
+                ->where("compGroup.id",5)
+                // ->where("competencies_superman.id_depthead",0)
+                ->groupBy("curriculum_superman.id_curriculum_superman")
+                ->get();
+                // dd($comps);
+        return view("pages.admin.superman.form-corporate",compact('comps','user','type'));
     }
 
     public function actionSuperman(Request $request)
@@ -303,7 +398,7 @@ class SupermanController extends Controller
         try{
             $data = $this->validate_input_v2($request);
             $skillId = [1,2];
-            Superman::where('id_user', $request->user_id)->where(function ($query){
+            Superman::where('id_user', $request->user_id)->where('id_depthead',0)->where(function ($query){
                 $query->whereIn('id_cstu', function ($subquery) {
                     $subquery->select('id_dictionary_superman')
                         ->from('competencies_dictionary_superman')
@@ -319,6 +414,53 @@ class SupermanController extends Controller
                             "id_competencies_superman"=> $this->random_string(5,5,false).time(),
                             "id_cstu" => $data["data"][$i]["id"],
                             "id_user" => $data["user_id"],
+                            "start" => $data["data"][$i]["start"],
+                            "actual" => $data["data"][$i]["actual"],
+                            "keterangan" => $data["data"][$i]["ket"],
+                        ];
+                    }
+                }
+                if(count($insert) > 0)Superman::insert($insert);
+            }
+            DB::commit();
+        }catch(\Exception $e){
+            DB::rollback();
+            return response()->json(['code' => 500, 'message' => 'Error saving data: ' . $e->getMessage()], 500);
+        }
+        return response()->json(['code' => 200, 'message' => 'Post successfully'], 200);
+    }
+    public function actionCorporateSuperman(Request $request)
+    {
+        $request->validate([
+            "id_user" => "required|numeric",
+            "id_depthead" => "required|numeric",
+            "data" => "nullable|array",
+            "data.*.id" => "nullable|numeric",
+            "data.*.start" => "nullable|numeric",
+            "data.*.actual" => "nullable|numeric",
+            // "data.*.ket" => "nullable|string",
+        ]);
+        DB::beginTransaction();
+        try{
+            $data = $this->validate_input_v2($request);
+            $skillId = [1,2];
+            Superman::where('id_user', $request->id_user)->where('id_depthead', $request->id_depthead)->where('id_depthead', '!=', 0)->where(function ($query){
+                $query->whereIn('id_cstu', function ($subquery) {
+                    $subquery->select('id_dictionary_superman')
+                        ->from('competencies_dictionary_superman')
+                        ->join('curriculum_superman', 'curriculum_superman.id_curriculum_superman', '=', 'competencies_dictionary_superman.id_curriculum_superman');
+                        // ->whereIn('curriculum_superman.id_skill_category', $skillId);
+                });
+            })->delete();
+           if(isset($data["data"]) && count($data["data"]) > 0){
+                $insert = [];
+                for($i=0; $i < count($data["data"]); $i++){
+                    if($data["data"][$i]["start"] != "" && $data["data"][$i]["actual"] != ""){
+                        $insert[$i] = [
+                            "id_competencies_superman"=> $this->random_string(5,5,false).time(),
+                            "id_cstu" => $data["data"][$i]["id"],
+                            "id_user" => $data["id_user"],
+                            "id_depthead" => $data["id_depthead"],
                             "start" => $data["data"][$i]["start"],
                             "actual" => $data["data"][$i]["actual"],
                             "keterangan" => $data["data"][$i]["ket"],
@@ -360,6 +502,7 @@ class SupermanController extends Controller
                 })
                 ->groupBy("curriculum_superman.id_curriculum_superman")
                 ->orderBy("tagingStatus", "DESC")
+                ->where("competencies_superman.id_depthead",0)
                 ->get();
         // dd($data);                        
         return Datatables::of($data)
@@ -432,6 +575,123 @@ class SupermanController extends Controller
                 case 5:
                     $icon = '<div style="width:50px;heigth:50px" title="'.$row->target.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/5.png').'"></div>';
                 break;
+    
+            }
+            return $icon;
+        })
+        ->addColumn('tagingStatus', function ($row) {
+            if (isset($row->tagingStatus)) {
+                if ($row->tagingStatus == 'Close') {
+                    $label = '<span class="badge badge-success">' . $row->tagingStatus . '</span>';
+                    return $label;
+                } else {
+                    $label = '<span class="badge badge-danger text-white">' . $row->tagingStatus . '</span>';
+                    return $label;
+                }
+            }
+        })
+        ->rawColumns(['start','actual','target','tagingStatus'])
+        ->make(true);
+        
+    }
+    public function detailCorporateSuperman(Request $request)
+    {
+        $user = User::select("id","id_job_title")->where("id",$request->id)->first();
+        $skillId = [1,2];
+        $select = [
+            "curriculum_superman.no_curriculum_superman as no_curriculum","curriculum_superman.curriculum_superman as curriculum_superman","compGroup.name as curriculum_group","competencies_dictionary_superman.target as target","skill_category.skill_category as skill_category","competencies_superman.start as start","competencies_superman.actual as actual",
+            DB::raw("(CASE WHEN (competencies_superman.actual - competencies_dictionary_superman.target) < 0 THEN 'Open'
+                            WHEN (competencies_superman.actual IS NULL) THEN 'Belum diatur'
+                            WHEN competencies_superman.actual >= competencies_dictionary_superman.target THEN 'Close' 
+                            END) as tagingStatus"),"users.nama_pengguna",
+                            "competencies_superman.keterangan as ket"
+        ];
+        $data = CompDictionarySupermanModel::select($select)
+                ->join("curriculum_superman",function ($join) use ($user){
+                    $join->on("curriculum_superman.id_curriculum_superman","competencies_dictionary_superman.id_curriculum_superman")
+                        ->whereRaw("competencies_dictionary_superman.id_user = '".$user->id."'");
+                })
+                ->join("competencie_groups as compGroup","compGroup.id","curriculum_superman.curriculum_group")
+                ->join("skill_category","skill_category.id_skill_category","curriculum_superman.id_skill_category")
+                ->leftJoin("competencies_superman",function ($join) use ($user){
+                    $join->on("competencies_superman.id_cstu","competencies_dictionary_superman.id_dictionary_superman")
+                        ->where("competencies_superman.id_user",$user->id);
+                })
+                ->join("users","users.id","competencies_superman.id_depthead")
+                // ->groupBy("curriculum_superman.id_curriculum_superman")
+                ->orderBy("tagingStatus", "DESC")
+                ->where("compGroup.id",5)
+                ->get();
+        // dd($data);                        
+        return Datatables::of($data)
+        ->addIndexColumn()
+        ->editColumn('start', function ($row) {
+            switch($row->start){
+                case 0:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->start.'" class="mx-auto"><img class="img-thumbnail mx-auto tooltip-info" src="'.asset('assets/images/point/0.png').'"></div>';
+                break;
+                case 1:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->start.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/1.png').'"></div>';
+                break;
+                case 2:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->start.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/2.png').'"></div>';
+                break;
+                case 3:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->start.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/3.png').'"></div>';
+                break;
+                case 4:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->start.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/4.png').'"></div>';
+                break;
+                case 5:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->start.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/5.png').'"></div>';
+                break;
+            }
+            return $icon;
+        })
+        ->editColumn('actual', function ($row) {
+            switch($row->actual){
+                case 0:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->actual.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/0.png').'"></div>';
+                break;
+                case 1:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->actual.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/1.png').'"></div>';
+                break;
+                case 2:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->actual.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/2.png').'"></div>';
+                break;
+                case 3:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->actual.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/3.png').'"></div>';
+                break;
+                case 4:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->actual.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/4.png').'"></div>';
+                break;
+                case 5:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->actual.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/5.png').'"></div>';
+                break;
+                    
+            }
+            return $icon;
+        })
+        ->editColumn('target', function ($row) {
+            switch($row->target){
+                case 0:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->target.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/0.png').'"></div>';
+                break;
+                case 1:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->target.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/1.png').'"></div>';
+                break;
+                case 2:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->target.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/2.png').'"></div>';
+                break;
+                case 3:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->target.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/3.png').'"></div>';
+                break;
+                case 4:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->target.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/4.png').'"></div>';
+                break;
+                case 5:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->target.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/5.png').'"></div>';
+                break;
                     
             }
             return $icon;
@@ -451,7 +711,12 @@ class SupermanController extends Controller
         ->make(true);
         
     }
-
+    public function scaleJson(){
+        $data = ScaleCorporateModel::where('golongan',4)->get();
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->make(true);
+    }
     //halaman member superman
     public function indexMember(){
         return view('pages.admin.superman.index-member');

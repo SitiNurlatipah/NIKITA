@@ -32,6 +32,7 @@
                     <li class="nav-item"> <a class="nav-link" href="{{ route('divisi.index') }}">Divisi</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('jabatan.index') }}">Job Title</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('level.index') }}">Level</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('scale.index') }}">Skala Corporate</a></li>
                     <!-- <li class="nav-item"> <a class="nav-link" href="{{ route('target.index') }}">Target</a></li> -->
                     </ul>
                 </div>

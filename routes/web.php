@@ -195,6 +195,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/delete','LevelController@destroy')->name('level.destroy');
     });
 
+    Route::prefix("scale-corporate-competency")->group(function () {
+        Route::get('/', 'ScaleCorporateController@index')->name('scale.index');
+        Route::post('/create', 'ScaleCorporateController@store')->name('scale.store');
+        Route::post('/delete','ScaleCorporateController@destroy')->name('scale.destroy');
+        Route::get('/json','ScaleCorporateController@scaleJson')->name('scale.corporate.get');
+    });
+
     // sub department
     Route::prefix("competencie-groups")->group(function () {
         Route::get('/', 'CompetencieGroupController@index')->name('competencie-groups.index');
@@ -232,6 +239,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/kelola/action','SupermanController@actionSuperman')->name("action.superman");
         Route::get('/kelola/detail', 'SupermanController@detailMapcomSuperman')->name('detail.kelola.superman');
         Route::get('/kelola/superman', 'SupermanController@indexKelola')->name('kelola.superman.index');
+        Route::get('/kelola/general-corporate', 'SupermanController@corporateJson')->name('corporate.json');
+        Route::get('/kelola/form/corporate','SupermanController@formCorporateSuperman')->name("form.corporate.superman");
+        Route::post('/kelola/corporate','SupermanController@actionCorporateSuperman')->name("action.corporate.superman");
+        Route::get('/kelola/detail-corporate', 'SupermanController@detailCorporateSuperman')->name('detail.corporate.superman');
+        Route::get('/kelola/scale-corporate', 'SupermanController@scaleJson')->name('scale.corporate.superman');
+
 
         Route::get('/dictionary/superman', 'SupermanController@indexDictionary')->name('DictionarySuperman');
         Route::get('/dictionary/json', 'SupermanController@jsonDataTable')->name("jsonDictionarySuperman");
