@@ -12,8 +12,9 @@ class WhiteTagModel extends Model
 {
     protected $table = 'white_tag';
     protected $fillable = [
-        'id_curriculum', 'id_user', 'id_training_module', 'start', 'actual', 'target', 'keterangan'
+        'id_curriculum', 'id_user', 'start', 'actual', 'target', 'keterangan','id_white_tag'
     ];
+    protected $primaryKey = 'id_white_tag';
     public $timestamps = false;
 
     public function score($id_user,$level)

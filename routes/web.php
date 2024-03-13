@@ -108,6 +108,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/action','WhiteTag@actionWhiteTag')->name("actionWhiteTag");
         Route::get('/detail', 'WhiteTag@detailWhiteTag')->name('detailWhiteTag');
         Route::POST('/import', 'WhiteTag@importWhiteTag')->name('importWhiteTag');
+        Route::get('/mapping-corporate-json', 'WhiteTag@whiteTagCorporateJson')->name('member.corporate.Json');
+        Route::get('/form-mapping-corporate','WhiteTag@formCorporateWhiteTag')->name("form.corporate.WhiteTag");
+        Route::post('/action-mapping-corporate','WhiteTag@actionCorporateWhiteTag')->name("action.corporate.WhiteTag");
+        Route::get('/detail-mapping-corporate', 'WhiteTag@detailCorporate')->name('detail.corporate');
 
         Route::get('/chart-skill-category','WhiteTag@chartSkillCategory')->name("chartSkillCategory");
         Route::get('/chart-comp-group','WhiteTag@chartCompGroup')->name("chartCompGroup");
@@ -337,6 +341,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/delete','ManagementSystemController@destroy')->name('system.destroy');
 
         Route::post('/get-target','ManagementSystemController@getTarget')->name('system.get.target');
+        Route::get('/get-curriculum','ManagementSystemController@getCurriculum')->name('master.curriculum.get');
     });
     Route::prefix("master-management-system")->group(function(){
         Route::get('/', 'ManagementSystemController@indexMaster')->name('master.system.index');

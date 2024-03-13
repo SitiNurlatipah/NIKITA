@@ -619,50 +619,8 @@ class WhiteTag extends Controller
                     $join->on("white_tag.id_curriculum","curriculum.id_curriculum")
                         ->where("white_tag.id_user",$user->id);
                 })
+                ->where("compGroup.id", "!=",5)
                 ->get();
-        // $comps = CompetenciesDirectoryModel::select($select)
-        //         ->join("curriculum", function ($join) use ($user, $between, $between2) {
-        //             $join->on("curriculum.id_curriculum", "competencies_directory.id_curriculum")
-        //                 ->whereRaw("competencies_directory.id_job_title = '".$user->id_job_title."'");
-        //         })
-        //         ->joinSub(function ($query) use ($user, $between, $between2) {
-        //             $query->select('id_curriculum', 'id_skill_category','curriculum_year')
-        //                 ->from('curriculum');
-        //         }, 'sub', function ($join) use ($user, $between, $between2) {
-        //             $join->on('competencies_directory.id_curriculum', '=', 'sub.id_curriculum');
-        //         })
-        //         ->where(function ($query) use ($between, $between2, $currentYear) {
-        //             $query->where(function ($subquery) use ($currentYear){
-        //                 $subquery->whereNotNull('sub.curriculum_year')
-        //                     // ->whereRaw("competencies_directory.between_year = TIMESTAMPDIFF(YEAR, sub.curriculum_year, NOW())");
-        //                     ->where('sub.id_skill_category', '>=', 1)
-        //                     ->whereRaw("competencies_directory.between_year = 
-        //                     COALESCE(
-        //                         CASE 
-        //                             WHEN $currentYear - (sub.curriculum_year-1) > 5 THEN 5
-        //                             ELSE $currentYear - (sub.curriculum_year-1)
-        //                         END,
-        //                         0
-        //                     )");
-        //             })
-        //             ->orWhere(function ($subquery) use ($between) {
-        //                 $subquery->where('sub.id_skill_category', '=', 1)
-        //                     ->whereNull('sub.curriculum_year')
-        //                     ->whereRaw("competencies_directory.between_year = '".$between."'");
-        //             })
-        //             ->orWhere(function ($subquery) use ($between2) {
-        //                 $subquery->where('sub.id_skill_category', '<>', 1)
-        //                     ->whereNull('sub.curriculum_year')
-        //                     ->whereRaw("competencies_directory.between_year = '".$between2."'");
-        //             });
-        //         })
-        //         ->join("competencie_groups as compGroup","compGroup.id","curriculum.training_module_group")
-        //         ->join("skill_category","skill_category.id_skill_category","curriculum.id_skill_category")
-        //         ->leftJoin("white_tag",function ($join) use ($user){
-        //             $join->on("white_tag.id_directory","competencies_directory.id_directory")
-        //                 ->where("white_tag.id_user",$user->id);
-        //         })
-        //         ->get();
         return view("pages.admin.white-tag.form",compact('comps','user','type'));
     }
 
@@ -686,6 +644,8 @@ class WhiteTag extends Controller
                                 ->join('competencies_directory','curriculum.id_curriculum','competencies_directory.id_curriculum')
                                 ->whereIn('curriculum.id_skill_category',$skillId);
                         })
+                        ->join("competencie_groups as compGroup","compGroup.id","curriculum.training_module_group")
+                        ->where("compGroup.id", "!=",5)
                         ->delete();
             if(isset($data["data"]) && count($data["data"]) > 0){
                 $insert = [];
@@ -882,6 +842,361 @@ class WhiteTag extends Controller
     public function importWhiteTag(Request $request){
         Excel::import(new WhiteTagImport, $request->file('file'));
         return redirect()->route('WhiteTag')->with('message', 'Data berhasil di-import.');
+    }
+
+    public function whiteTagCorporateJson(Request $request)
+    {
+        $cgExtraAuth = Auth::user()->id_cgtambahan;
+        $cgtambah2 = Auth::user()->id_cgtambahan_2;
+        $cgtambah3 = Auth::user()->id_cgtambahan_3;
+        $cgtambah4 = Auth::user()->id_cgtambahan_4;
+        $cgtambah5 = Auth::user()->id_cgtambahan_5;
+        $dp = Auth::user()->id_department;
+        if (Auth::user()->peran_pengguna == '1'){ //Level Admin
+            $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+            ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+            ->leftJoin('cg', 'users.id_cg', '=', 'cg.id_cg')
+            ->leftJoin('divisi', 'users.id_divisi', '=', 'divisi.id_divisi')
+            ->Where('users.is_superman','!=', 1)
+            ->orderBy('users.nama_pengguna', 'DESC')
+            ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','cg.nama_cg','divisi.nama_divisi']);
+        }else if(Auth::user()->id_level == 'LV-0003'){ //LV-0003 = Level Dept. Head
+            $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+            ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+            ->leftJoin('divisi', 'users.id_divisi', '=', 'divisi.id_divisi')
+            ->leftJoin('cg', 'users.id_cg', '=', 'cg.id_cg')
+            ->Where('users.id_department', $dp)
+            ->Where('users.is_superman','!=', 1)
+            ->orderBy('users.nama_pengguna', 'DESC')
+            ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','cg.nama_cg','divisi.nama_divisi']);
+        }else if(Auth::user()->id_level == 'LV-0004'){ //LV-0004 = Level Spv
+            $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+            ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+            ->leftJoin('divisi', 'users.id_divisi', '=', 'divisi.id_divisi')
+            ->leftJoin('cg', 'users.id_cg', '=', 'cg.id_cg')
+            ->Where('users.is_superman','!=', 1)
+            ->Where('users.id_cg', $cgExtraAuth)
+            ->orWhere('users.id_cg', $cgtambah2)
+            ->orWhere('users.id_cg', $cgtambah3)
+            ->orWhere('users.id_cg', $cgtambah4)
+            ->orWhere('users.id_cg', $cgtambah5)
+            ->orderBy('users.nama_pengguna', 'DESC')
+            ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','cg.nama_cg','divisi.nama_divisi']);
+        } 
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function ($row) {
+            $btn = '<button data-id="' . $row->id . '" onclick="getCorporateComp('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="button-add btn btn-inverse-success btn-icon mr-1" data-toggle="modal" data-target="#modal-tambah-corporate"><i class="icon-plus menu-icon"></i></button>';
+            $btn = $btn . '<button type="button" onclick="detailCorporate('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="btn btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail-corporate"><i class="ti-eye"></i></button>';
+                return $btn;
+            })
+            ->addIndexColumn()
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+
+    public function formCorporateWhiteTag(Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            "id" => "requeired|numeric",
+            "type" => "required|string|in:functional,general"
+        ]);
+        $type = $request->type;
+        $target = User::select("id","id_job_title",DB::raw("(YEAR(NOW()) - YEAR(tgl_masuk)) AS tahun"))->where("id",$request->id)->first();
+        $user = User::select("id", "id_job_title", DB::raw("(YEAR(NOW()) - YEAR(IFNULL(tgl_rotasi, tgl_masuk))) AS tahun"))
+                ->where("id", $request->id)
+                ->first();
+        
+        
+        $between = 0;
+        if($user->tahun > 5){
+            $between = 5;
+        }else{
+            $between = $user->tahun;
+        }
+        $between2 = 0;
+        if($target->tahun > 5){
+            $between2 = 5;
+        }else{
+            $between2 = $target->tahun;
+        }
+        $currentYear = Carbon::now()->year;
+        $select = [
+            "competencies_directory.id_directory as id_directory","curriculum.no_training_module as no_training",
+            "curriculum.training_module as training_module","curriculum.training_module_group as training_module_group",
+            "curriculum.level as level","skill_category.skill_category as skill_category","white_tag.start as start",
+            "white_tag.actual as actual","competencies_directory.target as target",
+            "white_tag.keterangan as ket","curriculum.id_curriculum",
+            DB::raw("(SELECT COUNT(*) FROM taging_reason as tr where tr.id_white_tag = white_tag.id_white_tag) as cntTagingReason"),
+            DB::raw("(YEAR(NOW()) - YEAR(curriculum.curriculum_year)) AS tahuncurriculum"),
+            // DB::raw("(IF(((white_tag.actual - competencies_directory.target) < 0),'Open','Close' )) as tagingStatus")
+            DB::raw("(CASE WHEN (white_tag.actual - competencies_directory.target) < 0 THEN 'Open'
+                            WHEN (white_tag.actual IS NULL) THEN 'Belum diatur'
+                            WHEN white_tag.actual >= competencies_directory.target THEN 'Close'
+                            END) as tagingStatus"),"compGroup.name as compGroupName"
+        ];
+        $comps = CompetenciesDirectoryModel::select($select)
+                ->join("curriculum", function ($join) use ($user, $between, $between2) {
+                    $join->on("curriculum.id_curriculum", "competencies_directory.id_curriculum")
+                        ->whereRaw("competencies_directory.id_job_title = '".$user->id_job_title."'");
+                })
+                ->joinSub(function ($query) use ($user, $between, $between2) {
+                    $query->select('id_curriculum', 'id_skill_category','curriculum_year')
+                        ->from('curriculum');
+                }, 'sub', function ($join) use ($user, $between, $between2) {
+                    $join->on('competencies_directory.id_curriculum', '=', 'sub.id_curriculum');
+                })
+                ->where(function ($query) use ($between, $between2, $currentYear) {
+                    $query->where(function ($subquery) use ($currentYear){
+                        $subquery->whereNotNull('sub.curriculum_year')
+                            // ->whereRaw("competencies_directory.between_year = TIMESTAMPDIFF(YEAR, sub.curriculum_year, NOW())");
+                            ->where('sub.id_skill_category', '>=', 1)
+                            ->whereRaw("competencies_directory.between_year = 
+                            COALESCE(
+                                CASE 
+                                    WHEN $currentYear - (sub.curriculum_year-1) > 5 THEN 5
+                                    ELSE $currentYear - (sub.curriculum_year-1)
+                                END,
+                                0
+                            )");
+                    })
+                    ->orWhere(function ($subquery) use ($between) {
+                        $subquery->where('sub.id_skill_category', '=', 1)
+                            ->whereNull('sub.curriculum_year')
+                            ->whereRaw("competencies_directory.between_year = '".$between."'");
+                    })
+                    ->orWhere(function ($subquery) use ($between2) {
+                        $subquery->where('sub.id_skill_category', '<>', 1)
+                            ->whereNull('sub.curriculum_year')
+                            ->whereRaw("competencies_directory.between_year = '".$between2."'");
+                    });
+                })
+                ->join("competencie_groups as compGroup","compGroup.id","curriculum.training_module_group")
+                ->join("skill_category","skill_category.id_skill_category","curriculum.id_skill_category")
+                ->leftJoin("white_tag",function ($join) use ($user){
+                    $join->on("white_tag.id_curriculum","curriculum.id_curriculum")
+                        ->where("white_tag.id_user",$user->id);
+                })
+                ->where("compGroup.id",5)
+                ->get();
+        return view("pages.admin.white-tag.form-corporate",compact('comps','user','type'));
+    }
+
+    public function actionCorporateWhiteTag(Request $request)
+    {
+        $request->validate([
+            "user_id_corporate" => "required|numeric",
+            "data" => "nullable|array",
+            "data.*.id" => "nullable|numeric",
+            "data.*.start" => "nullable|numeric",
+            "data.*.actual" => "nullable|numeric",
+            "data.*.ket" => "nullable|string",
+        ]);
+        DB::beginTransaction();
+        try{
+            $data = $this->validate_input_v2($request);
+            $skillId = [1,2];
+            $cek = WhiteTagModel::whereRaw("id_user = '".$request->user_id_corporate."' AND (select count(*) from taging_reason where taging_reason.id_white_tag = white_tag.id_white_tag) <= 0 ")
+                        ->join("curriculum",function ($join) use ($skillId){
+                            $join->on('curriculum.id_curriculum','white_tag.id_curriculum')
+                                ->join('competencies_directory','curriculum.id_curriculum','competencies_directory.id_curriculum')
+                                ->whereIn('curriculum.id_skill_category',$skillId);
+                        })
+                        ->join("competencie_groups as compGroup","compGroup.id","curriculum.training_module_group")
+                        ->where("compGroup.id",5)
+                        ->delete();
+            if(isset($data["data"]) && count($data["data"]) > 0){
+                $insert = [];
+                for($i=0; $i < count($data["data"]); $i++){
+                    if($data["data"][$i]["start"] != "" && $data["data"][$i]["actual"] != ""){
+                        $insert[$i] = [
+                            "id_white_tag"=> $this->random_string(5,5,false).time(),
+                            "id_curriculum" => $data["data"][$i]["id"],
+                            "id_directory" => $data["data"][$i]["iddir"],
+                            "id_user" => $data["user_id_corporate"],
+                            "start" => $data["data"][$i]["start"],
+                            "actual" => $data["data"][$i]["actual"],
+                            "keterangan" => $data["data"][$i]["ket"],
+
+                        ];
+                    }
+                }
+                if(count($insert) > 0)WhiteTagModel::insert($insert);
+            }
+            DB::commit();
+        }catch(\Exception $e){
+            DB::rollback();
+        }
+        return response()->json(['code' => 200, 'message' => 'Post successfully'], 200);
+    }
+
+    public function detailCorporate(Request $request)
+    {
+        $user = User::select("id","id_job_title")->where("id",$request->id)->first();
+        $skillId = [1,2];
+        $select = [
+            "curriculum.no_training_module as no_training","curriculum.training_module as training_module","curriculum.training_module_group as training_module_group","curriculum.level as level","skill_category.skill_category as skill_category","white_tag.start as start","white_tag.actual as actual","competencies_directory.target as target",
+            // DB::raw("(IF((white_tag.actual - competencies_directory.target) < 0,'Open','Close' )) as tagingStatus")
+            DB::raw("(CASE WHEN (white_tag.actual - competencies_directory.target) < 0 THEN 'Open'
+                            WHEN (white_tag.actual IS NULL) THEN 'Belum diatur'
+                            WHEN white_tag.actual >= competencies_directory.target THEN 'Close'
+                            END) as tagingStatus"),
+                            "white_tag.keterangan as ket"
+        ];
+        $target = User::select("id","id_job_title",DB::raw("(YEAR(NOW()) - YEAR(tgl_masuk)) AS tahun"))->where("id",$request->id)->first();
+        $userTarget = User::select("id", "id_job_title", DB::raw("(YEAR(NOW()) - YEAR(IFNULL(tgl_rotasi, tgl_masuk))) AS tahun"))
+                ->where("id", $request->id)
+                ->first();
+        
+        
+        $between = 0;
+        if($userTarget->tahun > 5){
+            $between = 5;
+        }else{
+            $between = $userTarget->tahun;
+        }
+        $between2 = 0;
+        if($target->tahun > 5){
+            $between2 = 5;
+        }else{
+            $between2 = $target->tahun;
+        }
+        $currentYear = Carbon::now()->year;
+        $data = CompetenciesDirectoryModel::select($select)
+                ->join("curriculum", function ($join) use ($user, $between, $between2) {
+                    $join->on("curriculum.id_curriculum", "competencies_directory.id_curriculum")
+                        ->whereRaw("competencies_directory.id_job_title = '".$user->id_job_title."'");
+                })
+                ->joinSub(function ($query) use ($user, $between, $between2) {
+                    $query->select('id_curriculum', 'id_skill_category','curriculum_year')
+                        ->from('curriculum');
+                }, 'sub', function ($join) use ($user, $between, $between2) {
+                    $join->on('competencies_directory.id_curriculum', '=', 'sub.id_curriculum');
+                })
+                ->where(function ($query) use ($between, $between2, $currentYear) {
+                    $query->where(function ($subquery) use ($currentYear){
+                        $subquery->whereNotNull('sub.curriculum_year')
+                            // ->whereRaw("competencies_directory.between_year = TIMESTAMPDIFF(YEAR, sub.curriculum_year, NOW())");
+                            ->where('sub.id_skill_category', '>=', 1)
+                            ->whereRaw("competencies_directory.between_year = 
+                            COALESCE(
+                                CASE 
+                                    WHEN $currentYear - (sub.curriculum_year-1) > 5 THEN 5
+                                    ELSE $currentYear - (sub.curriculum_year-1)
+                                END,
+                                0
+                            )");
+                    })
+                    ->orWhere(function ($subquery) use ($between) {
+                        $subquery->where('sub.id_skill_category', '=', 1)
+                            ->whereNull('sub.curriculum_year')
+                            ->whereRaw("competencies_directory.between_year = '".$between."'");
+                    })
+                    ->orWhere(function ($subquery) use ($between2) {
+                        $subquery->where('sub.id_skill_category', '<>', 1)
+                            ->whereNull('sub.curriculum_year')
+                            ->whereRaw("competencies_directory.between_year = '".$between2."'");
+                    });
+                })
+                ->join("competencie_groups as compGroup","compGroup.id","curriculum.training_module_group")
+                ->join("skill_category","skill_category.id_skill_category","curriculum.id_skill_category")
+                ->leftJoin("white_tag",function ($join) use ($user){
+                    $join->on("white_tag.id_curriculum","curriculum.id_curriculum")
+                        ->where("white_tag.id_user",$user->id);
+                })
+                ->groupBy("competencies_directory.id_curriculum")
+                ->orderBy("tagingStatus", "DESC")
+                ->where("compGroup.id", 5)
+                ->get();
+        
+        return Datatables::of($data)
+        ->addIndexColumn()
+        ->editColumn('start', function ($row) {
+            switch($row->start){
+                case 0:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->start.'" class="mx-auto"><img class="img-thumbnail mx-auto tooltip-info" src="'.asset('assets/images/point/0.png').'"></div>';
+                break;
+                case 1:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->start.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/1.png').'"></div>';
+                break;
+                case 2:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->start.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/2.png').'"></div>';
+                break;
+                case 3:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->start.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/3.png').'"></div>';
+                break;
+                case 4:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->start.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/4.png').'"></div>';
+                break;
+                case 5:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->start.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/5.png').'"></div>';
+                break;
+
+            }
+            return $icon;
+        })
+        ->editColumn('actual', function ($row) {
+            switch($row->actual){
+                case 0:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->actual.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/0.png').'"></div>';
+                break;
+                case 1:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->actual.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/1.png').'"></div>';
+                break;
+                case 2:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->actual.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/2.png').'"></div>';
+                break;
+                case 3:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->actual.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/3.png').'"></div>';
+                break;
+                case 4:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->actual.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/4.png').'"></div>';
+                break;
+                case 5:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->actual.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/5.png').'"></div>';
+                break;
+
+            }
+            return $icon;
+        })
+        ->editColumn('target', function ($row) {
+            switch($row->target){
+                case 0:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->target.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/0.png').'"></div>';
+                break;
+                case 1:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->target.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/1.png').'"></div>';
+                break;
+                case 2:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->target.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/2.png').'"></div>';
+                break;
+                case 3:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->target.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/3.png').'"></div>';
+                break;
+                case 4:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->target.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/4.png').'"></div>';
+                break;
+                case 5:
+                    $icon = '<div style="width:50px;heigth:50px" title="'.$row->target.'" class="mx-auto"><img class="img-thumbnail mx-auto" src="'.asset('assets/images/point/5.png').'"></div>';
+                break;
+
+            }
+            return $icon;
+        })
+        ->addColumn('tagingStatus', function ($row) {
+            if (isset($row->tagingStatus)) {
+                if ($row->tagingStatus == 'Close') {
+                    $label = '<span class="badge badge-success">' . $row->tagingStatus . '</span>';
+                    return $label;
+                } else {
+                    $label = '<span class="badge badge-danger text-white">' . $row->tagingStatus . '</span>';
+                    return $label;
+                }
+            }
+        })
+        ->rawColumns(['start','actual','target','tagingStatus'])
+        ->make(true);
+
     }
 }
 

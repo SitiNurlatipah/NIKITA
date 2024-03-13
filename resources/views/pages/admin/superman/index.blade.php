@@ -220,7 +220,7 @@
                         </div>
                         <div class="tab-pane container fade tab-corporate" id="tab-content">
                             <div class="table-responsive">
-                                <table class="display expandable-table table-striped table-hover" id="table-scale"
+                                <table class="display expandable-table table-striped table-bordered table-hover" id="table-scale"
                                     style="width:100%">
                                     <thead>
                                         <tr>

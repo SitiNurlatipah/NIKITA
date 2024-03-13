@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\ManagementSystem;
 use App\ManagementSystemToUser;
 use App\User;
+use App\CurriculumModel;
+use App\WhiteTagModel;
 use Validator;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
@@ -247,7 +249,7 @@ class ManagementSystemController extends Controller
             ->rawColumns(['action','start','actual','target'])
             ->make(true);
     }
-    public function store()
+    public function store(Request $request)
     {
         // dd(request()->all());
         $validator = Validator::make(request()->all(),[
@@ -286,6 +288,35 @@ class ManagementSystemController extends Controller
                 'no_surat_lisensi' => request('no_surat_lisensi'),
                 'no_sertifikat' => request('no_sertifikat'),
             ]);
+            $id_user =  request('user');
+            $start =  request('start');
+            $actual =  request('actual');
+            $insert = [];
+            for ($i = 0; $i < count($request->id_curriculum); $i++) {
+                $insert[$i] = [
+                    'id_user' => $id_user,
+                    'id_curriculum' => $request->id_curriculum[$i],
+                    'actual' => $actual,
+                    'start' => $start,
+                    "id_white_tag"=> $this->random_string(5,5,false).time(),
+                ];
+            }
+
+            if (count($insert) > 0) {
+                foreach ($insert as $data) {
+                    WhiteTagModel::updateOrCreate(
+                        [
+                            'id_user' => $id_user,
+                            'id_curriculum' => $data['id_curriculum']
+                        ],
+                        [
+                            'id_white_tag'=> $data['id_white_tag'],
+                            'start' => $data['start'],
+                            'actual' => $data['actual'],
+                        ]
+                    );
+                }
+            }
         $response = [
                 'code' => 200,
                 'status' => 'success',
@@ -307,7 +338,35 @@ class ManagementSystemController extends Controller
             $data = User::where('id',request('user'))->update([
                 'is_system_management' => 1,
             ]);
+            $id_user =  $request->user;
+            $start =  $request->start;
+            $actual =  $request->actual;
+            $insert = [];
+            for ($i = 0; $i < count($request->id_curriculum); $i++) {
+                $insert[$i] = [
+                    'id_user' => $id_user,
+                    'id_curriculum' => $request->id_curriculum[$i],
+                    'actual' => $actual,
+                    'start' => $start,
+                    "id_white_tag"=> $this->random_string(5,5,false).time(),
+                ];
+            }
 
+            if (count($insert) > 0) {
+                foreach ($insert as $data) {
+                    WhiteTagModel::updateOrCreate(
+                        [
+                            'id_user' => $id_user,
+                            'id_curriculum' => $data['id_curriculum']
+                        ],
+                        [
+                            'id_white_tag'=> $data['id_white_tag'],
+                            'start' => $data['start'],
+                            'actual' => $data['actual'],
+                        ]
+                    );
+                }
+            }
             $response = [
                 'code' => 200,
                 'status' => 'success',
@@ -381,6 +440,15 @@ class ManagementSystemController extends Controller
         $users = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')->get(['nama_pengguna','nama_department','id']);
         return response()->json([
             'data' => $users,
+            'status' => 200,
+            'success' => true,
+        ]);
+    }
+    public function getCurriculum()
+    {
+        $curriculum = CurriculumModel::where('id_skill_category',1)->get(['training_module','id_curriculum']);
+        return response()->json([
+            'data' => $curriculum,
             'status' => 200,
             'success' => true,
         ]);

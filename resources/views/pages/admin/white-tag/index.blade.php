@@ -100,17 +100,22 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                     </div>
                 </div>
             @else
-                <ul class="nav nav-pills">
+                <ul class="nav nav-pills nav-mapcomp">
                     <li class="nav-item active">
-                        <a class="nav-link active btn-primary" data-toggle="tab" href="#pills-home" type="button" data-toggle="tooltip" data-placement="top" title="Edit Actual Point">Edit</a>
+                        <a class="nav-link active btn-primary" data-toggle="tab" href="#pills-home" type="button" data-toggle="tooltip" data-placement="top" title="Edit Actual Point">All</a>
                     </li>
+                    @if(Auth::user()->peran_pengguna == '1' || Auth::user()->peran_pengguna == '4')
+                    <li class="nav-item">
+                        <a class="nav-link btn-primary" data-toggle="tab" href="#pills-mapcompcorporate" type="button" data-toggle="tooltip" data-placement="top" title="Edit Mapcomp Corporate">Corporate</a>
+                    </li>
+                    @endif
                     <li class="nav-item">
                         <a class="nav-link btn-primary" data-toggle="tab" href="#pills-profile" type="button" data-toggle="tooltip" data-placement="top" title="Lihat Semua Competencies">Preview</a>
                     </li>
                 </ul>
                 <div class="row">
                     <div class="col-12 flex">
-                        <div class="tab-pane container fade in active show" id="pills-home">
+                        <div class="tab-pane container fade in active show tab-mapcomp" id="pills-home">
                             <div class="table-responsive">
                                 <table class="display nowrap expandable-table table-striped table-hover" id="table-cg" style="width:100%">
                                     <thead>
@@ -128,7 +133,25 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                                 </table>
                             </div>
                         </div>
-                        <div class="tab-pane container fade" id="pills-profile">
+                        <div class="tab-pane container fade tab-mapcomp" id="pills-mapcompcorporate">                            
+                            <div class="table-responsive">
+                                <table class="display expandable-table table-sm table-striped table-hover" id="table-corporate" style="width:100% !important">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">No</th>
+                                            <th>Nama Anggota</th>
+                                            <th>Job Title</th>
+                                            <th>Dept</th>
+                                            <th>Divisi</th>
+                                            <th>Liga CG</th>
+                                            <th class="text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tab-pane container fade tab-mapcomp" id="pills-profile">
                             @if(Auth::user()->peran_pengguna == '1')
                                 <a href="{!!route('exportWhiteTagAll')!!}" class="btn btn-sm btn-inverse-success float-right mb-2"><i class="icon-file"></i> Export to Excel</a>
                             @endif
@@ -211,6 +234,53 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
         </div>
     </div>
 </div>
+<div class="modal fade" id="modal-tambah-corporate" tabindex="-1" role="dialog" aria-labelledby="modal-tambahLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header p-3">
+                <h5 class="modal-title" id="modal-tambahCorporate">Edit Corporate Competencies</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{!!route('action.corporate.WhiteTag')!!}" id="formCorporateWhiteTag" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" id="user_id_corporate" name="user_id_corporate" value="">
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="display expandable-table table-striped table-hover" id="tableCorporateEdit" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2" class="text-center">No</th>
+                                    <th rowspan="2">No. Competency</th>
+                                    <th rowspan="2">Skill Category</th>
+                                    <th rowspan="2">Competency</th>
+                                    <th rowspan="2">Level</th>
+                                    <th rowspan="2">Competency Group</th>
+                                    <th colspan="4" class="text-center">Action</th>
+                                    <th class="text-center" rowspan="2">Status</th>
+                                </tr>
+                                <tr>
+                                    <th class="text-center" style="min-width:90px">Start</th>
+                                    <th class="text-center" style="min-width:90px">Actual</th>
+                                    <th class="text-center" style="min-width:50px">Target</th>
+                                    <th class="text-center" style="min-width:90px">Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody id="formCorporateComp">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="submitCorporate" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="modal-detail" tabindex="-1" role="dialog" aria-labelledby="modal-detailLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -240,6 +310,43 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                             </tr>
                         </thead>
                         <tbody id="formMapComp"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal-detail-corporate" tabindex="-1" role="dialog" aria-labelledby="modal-detailLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header p-3">
+                <h5 class="modal-title" id="modal-detailCorporate">Detail Corporate Competencies</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="display expandable-table table-striped table-hover" id="table-detail-corporate" width="100%">
+                        <thead>
+                            <tr>
+                                <th class="text-center">No</th>
+                                <th>No Competency</th>
+                                <th>Skill Category</th>
+                                <th>Competency</th>
+                                <th>Level</th>
+                                <th>Competency Group</th>
+                                <th class="text-center">Start</th>
+                                <th class="text-center">Actual</th>
+                                <th class="text-center">Target</th>
+                                <th class="text-center">Keterangan</th>
+                                <th class="text-center">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="formCorporateComp"></tbody>
                     </table>
                 </div>
             </div>
@@ -298,35 +405,18 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
 <script type="text/javascript">
   $(document).ready(function () {
 
-    $(".nav-pills a").click(function(){
-        $(this).tab('show');
-    });
-
-    $('.nav-pills a').on('show.bs.tab', function(){
-        $('.tab-pane').each(function(i,obj){
-            if(!$(this).hasClass("active")){
-                $(this).show()
-            }else{
-                $(this).hide()
-            }
-        });
-    })
-
-    var peran_pengguna = "{{Auth::user()->peran_pengguna}}"
-    // if (peran_pengguna = 1){
-    //     chartSkillCategory();
-    //     getCg();
-    //     whiteTagAllDataTable();
-    //     initDatatable();
-    // }else if(peran_pengguna = 2){
-
-    // }else if(peran_pengguna = 3){
-
-    // }
+    $(".nav-mapcomp a").click(function(){
+    // Menampilkan konten tab yang dipilih
+    var targetTab = $(this).attr("href");
+    $(".tab-mapcomp").hide(); // Menyembunyikan semua konten tab
+    $(targetTab).show(); // Menampilkan konten tab yang dipilih
+});
+    
     chartSkillCategory();
     getCg();
     whiteTagAllDataTable();
     initDatatable();
+    corporateDatatable();
     whiteTagDataTableRoleMember();
     $('[data-toggle="tooltip"]').tooltip({
         animation: true,
@@ -355,6 +445,49 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                 $("#modal-tambah").modal('hide');
                 $('#table-cg').DataTable().destroy();
                 initDatatable();
+                Swal.fire({
+                    position:'center',
+                    icon:'success',
+                    title:data.message,
+                    showConfirmButton:false,
+                    timer:1500
+                });
+            },
+            error:function(err){
+                console.log(err)
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: err.statusText,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            }
+        })
+    })
+    $("#submitCorporate").click(function (e) {
+        var tableEdit = $('#tableCorporateEdit').DataTable();
+        e.preventDefault()
+        var form = $("#formCorporateWhiteTag")
+        const url = form.attr("action");
+        var formSerialize = $("#formCorporateWhiteTag > input[name=user_id_corporate], input[name=_token]").serialize()
+        var serializeDatatable = tableEdit.$('input,select,textarea').serialize()
+        var formData = formSerialize+'&'+serializeDatatable
+
+        console.log(serializeDatatable);
+        // exit();
+        $.ajax({
+            url:url,
+            type:"post",
+            cache:false,
+            data:formData,
+            success:function(data){
+                console.log(data);
+                $("#modal-tambah-corporate").modal('hide');
+                $('#table-cg').DataTable().destroy();
+                $('#table-corporate').DataTable().destroy();
+                initDatatable();
+                corporateDatatable();
                 Swal.fire({
                     position:'center',
                     icon:'success',
@@ -404,6 +537,46 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                     }
                     $("#formMapComp").html(html);
                     tableEdit = $('#tableEdit').DataTable({
+                        searching: true,
+                        retrieve: true,
+                        paging: true,
+                columnDefs: [
+                    {
+                        orderable: false,
+                        targets: [6, 7, 8],
+                    },
+                    {
+                                width: "200px",
+                                targets: 9
+                            }
+                ]
+            });
+        },
+        error: function(req, sts, err) {
+            console.log(err);
+        }
+
+      });
+  }
+  function getCorporateComp(id, el) {
+    //tombol add mapping competencies
+    // $('#tableEdit').DataTable().destroy()
+    $("#user_id_corporate").val(id);
+    var nama = $(el).attr("userName")
+    console.log(nama);
+    $("#modal-tambahCorporate").html('Edit Corporate Competencies <b>('+nama+')</b>')
+      const url = "{!! route('form.corporate.WhiteTag') !!}?id="+id+"&type=general";
+      $.ajax({
+        url:url,
+        // cache:false,
+        type:'GET',
+        success: function(html) {
+            $("#formCorporateComp").show();
+                    if($.fn.DataTable.isDataTable( '#tableCorporateEdit' )){
+                        $('#tableCorporateEdit').DataTable().destroy()
+                    }
+                    $("#formCorporateComp").html(html);
+                    tableCorporateEdit = $('#tableCorporateEdit').DataTable({
                         searching: true,
                         retrieve: true,
                         paging: true,
@@ -489,11 +662,120 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
       });
 
   }
+  function detailCorporate(id, el) {
+    console.log("cek read");
+      const url = "{{ route('detail.corporate') }}?id="+id+"&type=general";
+      var name = $(el).attr("userName");
+      $("#modal-detailLabel").html('Detail Corporate Competencies <b>('+name+')</b>')
+      $('#table-detail-corporate').DataTable().destroy();
+      var dtJson = $('#table-detail-corporate').DataTable({
+          ajax:  url,
+          autoWidth: true,
+          serverSide: true,
+          processing: true,
+          searching: true,
+          dom: '<"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+          displayLength: 10,
+          language: {
+              paginate: {
+                  // remove previous & next text from pagination
+                  previous: '&nbsp;',
+                  next: '&nbsp;'
+              }
+          },
+          columnDefs: [
+                { "width": "150px", "targets": 9 }
+          ],
+          scrollX: true,
+          columns: [
+              {
+                  data: 'DT_RowIndex', name: 'DT_RowIndex'
+              },
+              {
+                  data: 'no_training'
+              },
+              {
+                  data: 'skill_category'
+              },
+              {
+                  data: 'training_module'
+              },
+              {
+                  data: 'level'
+              },
+              {
+                  data: 'training_module_group'
+              },
+              {
+                data: 'start'
+                },
+                {
+                    data: 'actual'
+                },
+                {
+                    data: 'target'
+                },
+                {
+                    data: 'ket'
+                },
+                {
+                    data: 'tagingStatus'
+                },
+          ]
+      });
+
+  }
 
 
   function initDatatable() {
       var dtJson = $('#table-cg').DataTable({
           ajax: "{{ route('memberJson') }}",
+          autoWidth: false,
+          serverSide: true,
+          processing: true,
+          aaSorting: [
+              [0, "desc"]
+          ],
+          searching: true,
+          dom: '<"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+          displayLength: 10,
+          lengthMenu: [10, 15, 20],
+          language: {
+              paginate: {
+                  // remove previous & next text from pagination
+                  previous: '&nbsp;',
+                  next: '&nbsp;'
+              }
+          },
+          scrollX: true,
+          columns: [
+              {
+                  data: 'DT_RowIndex', name: 'DT_RowIndex'
+              },
+              {
+                  data: 'nama_pengguna'
+              },
+              {
+                  data: 'nama_job_title'
+              },
+              {
+                  data: 'nama_department'
+              },
+              {
+                  data: 'nama_divisi'
+              },
+              {
+                  data: 'nama_cg'
+              },
+              {
+                  data: 'action'
+              }
+          ],
+      })
+  }
+  function corporateDatatable() {
+      var dtJson = $('#table-corporate').DataTable({
+          ajax: "{{ route('member.corporate.Json') }}",
           autoWidth: false,
           serverSide: true,
           processing: true,

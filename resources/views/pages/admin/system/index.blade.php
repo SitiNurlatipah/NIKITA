@@ -16,8 +16,8 @@
                         <div class="col-md mb-2">
                         <a class="btn btn-success btn-sm float-right btnAdd ml-2" href="javascript:void(0)" id="createNewItem"><i
                                     class="icon-plus"></i> Sertifikasi User</a>
-                        <a class="btn btn-success btn-sm float-right" data-toggle="modal" data-target="#modal_import" data-whatever="@mdo"><i
-                                    class="icon-plus"></i> Import User</a>
+                        <!-- <a class="btn btn-success btn-sm float-right" data-toggle="modal" data-target="#modal_import" data-whatever="@mdo"><i
+                                    class="icon-plus"></i> Import User</a> -->
                         </div>
                     </div>
 
@@ -87,6 +87,15 @@
                                         <label>Pilih Certification Module</label>
                                         <select id="system" class="form-control form-control-sm" name="system">
                                             <option value="">Pilih System Module</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-row mb-3">
+                                    <div class="col">
+                                        <label>Pilih Curriculum Module</label>
+                                        <select id="curriculum" class="form-control form-control-sm" name="id_curriculum[]" placeholder="Pilih Curriculum Module" multiple>
                                         </select>
                                     </div>
                                 </div>
@@ -217,6 +226,9 @@
         $('#user').select2({
             theme:'bootstrap4'
         });
+        $('#curriculum').select2({
+            theme:'bootstrap4'
+        });
         $('#system').select2({
             theme:'bootstrap4'
         });
@@ -268,6 +280,18 @@
                     });
                 }
             })
+            $.ajax({
+                url: '{{ route("master.curriculum.get") }}',
+                type: 'GET',
+                dataType: 'JSON',
+                success: function(response) {
+                    // console.log(response);
+                    $('#curriculum').empty();
+                    response.data.forEach(el => {
+                        $('#curriculum').append('<option value="' + el.id_curriculum + '">' + el.training_module + '</option>');
+                    });
+                }
+            })
 
             modalTitle.text('Certification User');
             modal.modal('show');
@@ -315,6 +339,18 @@
                         } else {
                             $('#system').append('<option value="' + el.id_system + '">' + el.nama_system + '</option>');
                         }
+                    });
+                }
+            })
+            $.ajax({
+                url: '{{ route("master.curriculum.get") }}',
+                type: 'GET',
+                dataType: 'JSON',
+                success: function(response) {
+                    // console.log(response);
+                    $('#curriculum').empty();
+                    response.data.forEach(el => {
+                        $('#curriculum').append('<option value="' + el.id_curriculum + '">' + el.training_module + '</option>');
                     });
                 }
             })
