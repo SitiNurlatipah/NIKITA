@@ -225,6 +225,16 @@ class SupermanController extends Controller
                     ->Where('users.is_superman', 1)
                     ->orderBy('nama_pengguna', 'DESC')
                     ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','level.nama_level']);
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $btn = '<button data-id="' . $row->id . '" onclick="getCompSuperman('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="button-add btn btn-inverse-success btn-icon mr-1" data-toggle="modal" data-target="#modal-edit"><i class="icon-plus menu-icon"></i></button>';
+                    $btn = $btn . '<button type="button" onclick="detailMapcomSuperman('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="btn btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail"><i class="ti-eye"></i></button>';
+                        return $btn;
+                    })
+                ->addIndexColumn()
+                ->rawColumns(['action'])
+                    ->make(true);
         }else if(Auth::user()->id_level == 'LV-0004'){
             $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
                     ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
@@ -233,6 +243,15 @@ class SupermanController extends Controller
                     ->Where('users.id', $id)
                     ->orderBy('nama_pengguna', 'DESC')
                     ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','level.nama_level']);
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $btn = '<button type="button" onclick="detailMapcomSuperman('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="btn btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail"><i class="ti-eye"></i></button>';
+                        return $btn;
+                    })
+                ->addIndexColumn()
+                ->rawColumns(['action'])
+                ->make(true);
         }else if(Auth::user()->id_level == 'LV-0003'){
             $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
                     ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
@@ -241,17 +260,18 @@ class SupermanController extends Controller
                     ->Where('users.id_department', $dp)
                     ->orderBy('nama_pengguna', 'DESC')
                     ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','level.nama_level']);
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $btn = '<button data-id="' . $row->id . '" onclick="getCompSuperman('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="button-add btn btn-inverse-success btn-icon mr-1" data-toggle="modal" data-target="#modal-edit"><i class="icon-plus menu-icon"></i></button>';
+                    $btn = $btn . '<button type="button" onclick="detailMapcomSuperman('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="btn btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail"><i class="ti-eye"></i></button>';
+                        return $btn;
+                    })
+                ->addIndexColumn()
+                ->rawColumns(['action'])
+                ->make(true);
         }
-        return Datatables::of($data)
-            ->addIndexColumn()
-            ->addColumn('action', function ($row) {
-                $btn = '<button data-id="' . $row->id . '" onclick="getCompSuperman('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="button-add btn btn-inverse-success btn-icon mr-1" data-toggle="modal" data-target="#modal-edit"><i class="icon-plus menu-icon"></i></button>';
-                $btn = $btn . '<button type="button" onclick="detailMapcomSuperman('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="btn btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail"><i class="ti-eye"></i></button>';
-                    return $btn;
-                })
-            ->addIndexColumn()
-            ->rawColumns(['action'])
-            ->make(true);
+        
     }
     public function corporateJson(Request $request)
     {   
@@ -264,6 +284,16 @@ class SupermanController extends Controller
                     ->Where('users.is_superman', 1)
                     ->orderBy('nama_pengguna', 'DESC')
                     ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','level.nama_level']);
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $btn = '<button data-id="' . $row->id . '" onclick="getCorporateSuperman('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="button-add btn btn-inverse-success btn-icon mr-1" data-toggle="modal" data-target="#modal-edit-corporate"><i class="icon-plus menu-icon"></i></button>';
+                    $btn = $btn . '<button type="button" onclick="detailMapCorporateSuperman('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="btn btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail-corporate"><i class="ti-eye"></i></button>';
+                        return $btn;
+                    })
+                ->addIndexColumn()
+                ->rawColumns(['action'])
+                ->make(true);
         }else if(Auth::user()->id_level == 'LV-0004'){
             $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
                     ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
@@ -272,6 +302,15 @@ class SupermanController extends Controller
                     ->Where('users.id', $id)
                     ->orderBy('nama_pengguna', 'DESC')
                     ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','level.nama_level']);
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $btn = '<button type="button" onclick="detailMapCorporateSuperman('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="btn btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail-corporate"><i class="ti-eye"></i></button>';
+                        return $btn;
+                    })
+                ->addIndexColumn()
+                ->rawColumns(['action'])
+                ->make(true);
         }else if(Auth::user()->id_level == 'LV-0003'){
             $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
                     ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
@@ -280,17 +319,18 @@ class SupermanController extends Controller
                     ->Where('users.id_department', $dp)
                     ->orderBy('nama_pengguna', 'DESC')
                     ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title','level.nama_level']);
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $btn = '<button data-id="' . $row->id . '" onclick="getCorporateSuperman('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="button-add btn btn-inverse-success btn-icon mr-1" data-toggle="modal" data-target="#modal-edit-corporate"><i class="icon-plus menu-icon"></i></button>';
+                    $btn = $btn . '<button type="button" onclick="detailMapCorporateSuperman('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="btn btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail-corporate"><i class="ti-eye"></i></button>';
+                        return $btn;
+                    })
+                ->addIndexColumn()
+                ->rawColumns(['action'])
+                ->make(true);
         }
-        return Datatables::of($data)
-            ->addIndexColumn()
-            ->addColumn('action', function ($row) {
-                $btn = '<button data-id="' . $row->id . '" onclick="getCorporateSuperman('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="button-add btn btn-inverse-success btn-icon mr-1" data-toggle="modal" data-target="#modal-edit-corporate"><i class="icon-plus menu-icon"></i></button>';
-                $btn = $btn . '<button type="button" onclick="detailMapCorporateSuperman('.$row->id.',this)" userName="'.$row->nama_pengguna.'" class="btn btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail-corporate"><i class="ti-eye"></i></button>';
-                    return $btn;
-                })
-            ->addIndexColumn()
-            ->rawColumns(['action'])
-            ->make(true);
+        
     }
 
     public function formSuperman(Request $request)

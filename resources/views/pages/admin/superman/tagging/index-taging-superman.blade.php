@@ -554,7 +554,7 @@
                   data: 'skill_category'
               },
               {
-                  data: 'curriculum_superman'
+                  data: 'curriculum_name'
               },
               {
                   data: 'actual'
