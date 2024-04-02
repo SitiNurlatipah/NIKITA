@@ -75,7 +75,7 @@ class Curriculum extends Controller
                     if($request->id_skill_category == 1){
                         $noTrainingModul = $number."/KMI/".$curriculumcg."/FUNC";
                     }else if($request->id_skill_category == 2){
-                        $noTrainingModul = $number."/KMI/GEN";
+                        $noTrainingModul = $number."/KMI/".$curriculumcg."/GEN";
                     }
                 }else{
                     if($request->id_skill_category == 1){

@@ -32,7 +32,6 @@ class Tagging extends Controller
             "cd.target as target",DB::raw("(white_tag.actual - cd.target) as actualTarget"),DB::raw("(IF((white_tag.actual - cd.target) < 0,'Follow Up','Finished' )) as tagingStatus"),
             "users.tgl_masuk","users.tgl_rotasi","tr.note_target",
         ];
-        $currentYear = Carbon::now()->year;
         $cgAuth = Auth::user()->id_cg;
         $cgExtraAuth = Auth::user()->id_cgtambahan;
         $cgtambah2 = Auth::user()->id_cgtambahan_2;
@@ -42,59 +41,16 @@ class Tagging extends Controller
         $dp = Auth::user()->id_department;
         $id = Auth::user()->id;
         $data = WhiteTagModel::select($select)
-                ->join("curriculum",function ($join){
-                    $join->on("curriculum.id_curriculum","white_tag.id_curriculum");
+                ->join("competencies_directory as cd",function ($join){
+                    $join->on("cd.id_directory","white_tag.id_directory");
                 })
                 ->leftJoin("taging_reason as tr","tr.id_white_tag","white_tag.id_white_tag")
-                ->join("users","users.id","white_tag.id_user")
-                ->join("competencies_directory as cd","curriculum.id_curriculum","cd.id_curriculum")
+                ->join("users",function ($join) use ($request,$cgAuth) {
+                    $join->on("users.id","white_tag.id_user");
+                })
+                ->join("cg","users.id_cg","cg.id_cg")
+                ->join("curriculum","curriculum.id_curriculum","cd.id_curriculum")
                 ->join("skill_category as sc","sc.id_skill_category","curriculum.id_skill_category")
-                ->leftJoin('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
-                ->joinSub(function ($query){
-                    $query->select('id_curriculum', 'id_skill_category','curriculum_year')
-                        ->from('curriculum');
-                }, 'sub', function ($join) {
-                    $join->on('cd.id_curriculum', '=', 'sub.id_curriculum');
-                })
-                ->where(function ($query) use ($currentYear) {
-                    $query->where(function ($subquery) use ($currentYear){
-                        $subquery->whereNotNull('sub.curriculum_year')
-                            // ->whereRaw("cd.between_year = TIMESTAMPDIFF(YEAR, sub.curriculum_year, NOW())");
-                            ->where('sub.id_skill_category', '>=', 1)
-                            ->whereRaw("cd.between_year = 
-                            COALESCE(
-                                CASE 
-                                    WHEN $currentYear - (sub.curriculum_year-1) > 5 THEN 5
-                                    ELSE $currentYear - (sub.curriculum_year-1)
-                                END,
-                                0
-                            )");
-                    })
-                    ->orWhere(function ($subquery){
-                        $subquery->where('sub.id_skill_category', '<>', 1)
-                            ->whereNull('sub.curriculum_year')
-                            ->whereRaw("cd.between_year = 
-                            COALESCE(
-                                CASE 
-                                    WHEN (YEAR(NOW()) - YEAR(tgl_masuk) + 1) > 5 THEN 5
-                                    ELSE (YEAR(NOW()) - YEAR(tgl_masuk) + 1)
-                                END,
-                                0
-                            )");
-                    })
-                    ->orWhere(function ($subquery){
-                        $subquery->where('sub.id_skill_category', '=', 1)
-                            ->whereNull('sub.curriculum_year')
-                            ->whereRaw("cd.between_year = 
-                            COALESCE(
-                                CASE 
-                                    WHEN (YEAR(NOW()) - YEAR(IFNULL(tgl_rotasi, tgl_masuk))) > 5 THEN 5
-                                    ELSE (YEAR(NOW()) - YEAR(IFNULL(tgl_rotasi, tgl_masuk)))
-                                END,
-                                0
-                            )");
-                    });
-                })
                 ->when(Auth::user()->id_level == 'LV-0003', function ($query) use ($dp) {
                     // LV-0003 conditions
                     return $query->where('users.id_department', $dp);
@@ -111,9 +67,10 @@ class Tagging extends Controller
                     // LV-0004 conditions
                     return $query->where('users.id', $id);
                 })
-                ->groupBy('white_tag.id_white_tag')
+                // ->groupBy('white_tag.id_white_tag')
                 ->whereRaw($where)
                 ->get();
+                // dd($data);
         return Datatables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
@@ -161,8 +118,8 @@ class Tagging extends Controller
         $data = TagingReason::select($select)
                 ->join("white_tag","white_tag.id_white_tag","taging_reason.id_white_tag")
                 ->join("users as member","member.id","white_tag.id_user")
-                ->join("curriculum","curriculum.id_curriculum","white_tag.id_curriculum")
-                ->join("competencies_directory as cd","curriculum.id_curriculum","cd.id_curriculum")
+                ->join("competencies_directory as cd","white_tag.id_directory","cd.id_directory")
+                ->join("curriculum","curriculum.id_curriculum","cd.id_curriculum")
                 ->join("skill_category as sc","sc.id_skill_category","curriculum.id_skill_category")
                 ->join("cg","cg.id_cg","member.id_cg")
                 ->when(Auth::user()->id_level == 'LV-0003', function ($query) use ($dp) {
@@ -353,62 +310,13 @@ class Tagging extends Controller
     {   
         $id_white_tag = $request->white_tag_id;
         $id_reason_tag = $request->reasonTagId;
-        
-        $currentYear = Carbon::now()->year;
-        $white_tag = WhiteTagModel::select("actual", "cd.target", "tgl_rotasi","tgl_masuk")
-                                    ->join("curriculum",function ($join){
-                                        $join->on("curriculum.id_curriculum","white_tag.id_curriculum");
-                                    })
-                                    ->join("users","users.id","white_tag.id_user")
-                                    ->join("competencies_directory as cd","curriculum.id_curriculum","cd.id_curriculum")
-                                    ->joinSub(function ($query) {
-                                        $query->select('id_curriculum', 'id_skill_category','curriculum_year')
-                                            ->from('curriculum');
-                                    }, 'sub', function ($join) {
-                                        $join->on('cd.id_curriculum', '=', 'sub.id_curriculum');
-                                    })
-                                    ->where(function ($query) use ($currentYear) {
-                                        $query->where(function ($subquery) use ($currentYear){
-                                            $subquery->whereNotNull('sub.curriculum_year')
-                                                // ->whereRaw("cd.between_year = TIMESTAMPDIFF(YEAR, sub.curriculum_year, NOW())");
-                                                ->where('sub.id_skill_category', '>=', 1)
-                                                ->whereRaw("cd.between_year = 
-                                                COALESCE(
-                                                    CASE 
-                                                        WHEN $currentYear - (sub.curriculum_year-1) > 5 THEN 5
-                                                        ELSE $currentYear - (sub.curriculum_year-1)
-                                                    END,
-                                                    0
-                                                )");
-                                        })
-                                        ->orWhere(function ($subquery) {
-                                            $subquery->where('sub.id_skill_category', '=', 1)
-                                                ->whereNull('sub.curriculum_year')
-                                                ->whereRaw("cd.between_year = 
-                                                COALESCE(
-                                                    CASE 
-                                                        WHEN (YEAR(NOW()) - YEAR(IFNULL(tgl_rotasi, tgl_masuk))) > 5 THEN 5
-                                                        ELSE (YEAR(NOW()) - YEAR(IFNULL(tgl_rotasi, tgl_masuk)))
-                                                    END,
-                                                    0
-                                                )");
-                                        })
-                                        ->orWhere(function ($subquery) {
-                                            $subquery->where('sub.id_skill_category', '<>', 1)
-                                                ->whereNull('sub.curriculum_year')
-                                                ->whereRaw("cd.between_year = 
-                                                COALESCE(
-                                                    CASE 
-                                                        WHEN (YEAR(NOW()) - YEAR(tgl_masuk) + 1) > 5 THEN 5
-                                                        ELSE (YEAR(NOW()) - YEAR(tgl_masuk) + 1)
-                                                    END,
-                                                    0
-                                                )");
-                                        });
-                                    })
+        $white_tag = WhiteTagModel::select("actual","target")
                                     ->where("id_white_tag",$request->white_tag_id)
+                                    ->join("competencies_directory as cd",function ($join){
+                                        $join->on("cd.id_directory","white_tag.id_directory");
+                                    })
                                     ->first();
-        // dd($white_tag);
+                                    // dd($white_tag);
         if(isset($id_reason_tag)){
             $select = [
                 "taging_reason.id_taging_reason","taging_reason.id_white_tag as id_white_tag","year","period",

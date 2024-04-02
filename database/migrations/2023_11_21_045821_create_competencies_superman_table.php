@@ -17,6 +17,7 @@ class CreateCompetenciesSupermanTable extends Migration
             $table->increments('id_competencies_superman');
             $table->integer('id_cstu');
             $table->integer('id_user');
+            $table->integer('id_depthead');
             $table->integer('start');
             $table->integer('actual');
             $table->string('keterangan');

@@ -14,7 +14,8 @@ class WhiteTagModel extends Model
     protected $fillable = [
         'id_curriculum', 'id_user', 'start', 'actual', 'target', 'keterangan','id_white_tag'
     ];
-    protected $primaryKey = 'id_white_tag';
+    //primary key kalo diaktifin gabisa ngambil id_white_tag buat taging
+    // protected $primaryKey = 'id_white_tag'; 
     public $timestamps = false;
 
     public function score($id_user,$level)
