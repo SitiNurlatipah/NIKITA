@@ -103,7 +103,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/mapping-competencies-json', 'WhiteTag@whiteTagJson')->name('memberJson');
         Route::get('/mapping-competencies-all-json', 'WhiteTag@whiteTagAll')->name('whiteTagAll');
         Route::get('/mapping-competencies-member', 'WhiteTag@whiteTagRoleMember')->name('whiteTagRoleMember');
-        Route::get('/mapping-competencies-all-export','WhiteTag@exportWhiteTagAll')->middleware(['isAdmin'])->name('exportWhiteTagAll');
+        Route::get('/mapping-competencies-all-export','WhiteTag@exportWhiteTagAll')->name('exportWhiteTagAll');
         Route::get('/form','WhiteTag@formWhiteTag')->name("formWhiteTag");
         Route::post('/action','WhiteTag@actionWhiteTag')->name("actionWhiteTag");
         Route::get('/detail', 'WhiteTag@detailWhiteTag')->name('detailWhiteTag');

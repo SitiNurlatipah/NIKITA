@@ -152,9 +152,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                             </div>
                         </div>
                         <div class="tab-pane container fade tab-mapcomp" id="pills-profile">
-                            @if(Auth::user()->peran_pengguna == '1')
                                 <a href="{!!route('exportWhiteTagAll')!!}" class="btn btn-sm btn-inverse-success float-right mb-2"><i class="icon-file"></i> Export to Excel</a>
-                            @endif
                             <div class="table-responsive">
                                 <table class="display expandable-table table-sm table-striped table-hover" id="table-white-tag-all" style="width:100% !important">
                                     <thead>
