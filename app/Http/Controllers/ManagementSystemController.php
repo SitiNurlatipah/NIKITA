@@ -13,6 +13,7 @@ use Yajra\Datatables\Datatables;
 use App\Imports\ManagementSystemImport;
 use App\Imports\ManagementSystemToUserImport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\DB;
 
 class ManagementSystemController extends Controller
 {
@@ -304,16 +305,9 @@ class ManagementSystemController extends Controller
 
             if (count($insert) > 0) {
                 foreach ($insert as $data) {
-                    WhiteTagModel::updateOrCreate(
-                        [
-                            'id_user' => $id_user,
-                            'id_curriculum' => $data['id_curriculum']
-                        ],
-                        [
-                            'id_white_tag'=> $data['id_white_tag'],
-                            'start' => $data['start'],
-                            'actual' => $data['actual'],
-                        ]
+                    DB::table('white_tag')->updateOrInsert(
+                        ['id_user' => $id_user, 'id_curriculum' => $data['id_curriculum']],
+                        ['id_white_tag' => $data['id_white_tag'], 'start' => $data['start'], 'actual' => $data['actual']]
                     );
                 }
             }
@@ -354,16 +348,9 @@ class ManagementSystemController extends Controller
 
             if (count($insert) > 0) {
                 foreach ($insert as $data) {
-                    WhiteTagModel::updateOrCreate(
-                        [
-                            'id_user' => $id_user,
-                            'id_curriculum' => $data['id_curriculum']
-                        ],
-                        [
-                            'id_white_tag'=> $data['id_white_tag'],
-                            'start' => $data['start'],
-                            'actual' => $data['actual'],
-                        ]
+                    DB::table('white_tag')->updateOrInsert(
+                        ['id_user' => $id_user, 'id_curriculum' => $data['id_curriculum']],
+                        ['id_white_tag' => $data['id_white_tag'], 'start' => $data['start'], 'actual' => $data['actual']]
                     );
                 }
             }
@@ -446,7 +433,7 @@ class ManagementSystemController extends Controller
     }
     public function getCurriculum()
     {
-        $curriculum = CurriculumModel::where('id_skill_category',1)->get(['training_module','id_curriculum']);
+        $curriculum = CurriculumModel::get(['training_module','id_curriculum']);
         return response()->json([
             'data' => $curriculum,
             'status' => 200,
