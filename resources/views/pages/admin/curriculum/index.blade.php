@@ -142,11 +142,19 @@
                                 </div>
                             </div>
                             <div class="col-6">
-                                
                                 <div class="form-group">
-                                    <label for="noModule">Tahun Berlaku Curriculum</label>
-                                    <input type="year" class="form-control" id="curriculum_year" name="curriculum_year">
+                                    <label for="txtMedia">New Curriculum?</label>
+                                    <select name="newcurriculum" class="form-control" id="newCurriculumColumn" required>
+                                        <option value="">--Pilih Status Curriculum--</option>
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
                                 </div>
+                                <div class="hidden" id="tahunBerlakuColumn">
+                                    <label for="noModule">Tahun Berlaku Curriculum</label>
+                                    <input type="number" class="form-control" id="curriculum_year" name="curriculum_year">
+                                </div>
+
                                 <div class="form-group">
                                     <label for="noModule">Job Title</label>
                                     <select id="id_job_title" class="selectpicker form-control form-control-sm"
@@ -249,11 +257,28 @@
 <script src="{{ asset('assets/vendors/datatables.net/jszip.min.js') }}" type="text/javascript"></script>
 
     <script type="text/javascript">
+        $(document).ready(function() {
+    // Sembunyikan elemen "Tahun Berlaku Curriculum" saat halaman dimuat
+    $('#tahunBerlakuColumn').hide();
+
+    // Tangani perubahan pada dropdown "New Curriculum?"
+    $('#newCurriculumColumn').change(function() {
+        // Jika opsi yang dipilih adalah "Yes" (nilai 1), maka tampilkan field "Tahun Berlaku Curriculum"
+        if ($(this).val() === "1") {
+            $('#tahunBerlakuColumn').show();
+        } else {
+            // Jika tidak, sembunyikan field "Tahun Berlaku Curriculum"
+            $('#tahunBerlakuColumn').hide();
+        }
+    });
+});
+
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+        
     </script>
     <script>
         $('.btn-hide-list').click(function() {

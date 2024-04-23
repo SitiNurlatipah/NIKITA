@@ -133,6 +133,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                                 </table>
                             </div>
                         </div>
+                        @if(Auth::user()->peran_pengguna == '1' || Auth::user()->peran_pengguna == '4')
                         <div class="tab-pane container fade tab-mapcomp" id="pills-mapcompcorporate">                            
                             <div class="table-responsive">
                                 <table class="display expandable-table table-sm table-striped table-hover" id="table-corporate" style="width:100% !important">
@@ -151,6 +152,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                                 </table>
                             </div>
                         </div>
+                        @endif
                         <div class="tab-pane container fade tab-mapcomp" id="pills-profile">
                                 <a href="{!!route('exportWhiteTagAll')!!}" class="btn btn-sm btn-inverse-success float-right mb-2"><i class="icon-file"></i> Export to Excel</a>
                             <div class="table-responsive">
