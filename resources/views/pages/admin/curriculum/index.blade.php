@@ -483,10 +483,25 @@
                         }
                         $('#training_module_group').html();
                         $('#training_module_group').append(option);
+                        if (training_module_group === 9) {
+                            $('#level').val('B');
+                        }
                     }
                 })
             })
         })
+        $('#training_module_group').on('change', function() {
+            // Ambil nilai yang dipilih
+            var selectedValue = $(this).val();
+
+            // Jika nilai yang dipilih adalah 3
+            if (selectedValue === '9') {
+                // Atur nilai #level menjadi "B" (Basic)
+                $('#level').val('B');
+            }else{
+                $('#level').val('');
+            }
+        });
 
         $(document).ready(function() {
             getJabatan();
