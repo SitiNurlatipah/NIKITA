@@ -21,10 +21,10 @@
                 <div class="row">
                     <p class="card-title ml-4">Curriculum</p>
                     <div class="col-md mb-2">
-                            <a class="btn btn-sm btn-success float-right" href="javascript:void(0)" id="createNewItem"
-                                data-toggle="modal" data-target="#modal-tambah"><i class="icon-plus"></i> Add
-                                Curriculum</a>
-                        </div>
+                        <a class="btn btn-sm btn-success float-right" href="javascript:void(0)" id="createNewItem"
+                            data-toggle="modal" data-target="#modal-tambah"><i class="icon-plus"></i> Add
+                            Curriculum</a>
+                    </div>
                 </div>
                     <div class="row">
                         <div class="col-12">
@@ -98,15 +98,15 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label for="skillCategory">Curriculum Circle Group</label>
-                                    <select id="" class="form-control form-control-sm" name="cg">
+                                    <select id="curriculumCG" class="form-control form-control-sm" name="cg">
                                         <option value="">- Pilih Option Curriculum -</option>
+                                        <option value="0">No</option>
                                         <option value="1">Yes</option>
-                                        <option value="2">No</option>
                                     </select>
                                 </div>
-                                <div class="form-group">
+                                <div class="hidden form-group" id="namaCircleGroup">
                                     <label for="skillCategory">Nama Circle Group</label>
-                                    <input type="text" class="form-control" name="curriculum_cg"
+                                    <input type="text" class="form-control" name="curriculum_cg" 
                                         placeholder="Masukan Singkatan CG">
                                 </div>
                                 <div class="form-group">
@@ -150,9 +150,9 @@
                                         <option value="1">Yes</option>
                                     </select>
                                 </div>
-                                <div class="hidden" id="tahunBerlakuColumn">
+                                <div class="hidden form-group" id="tahunBerlakuColumn">
                                     <label for="noModule">Tahun Berlaku Curriculum</label>
-                                    <input type="number" class="form-control" id="curriculum_year" name="curriculum_year">
+                                    <input type="number" class="form-control" id="curriculum_year" name="curriculum_year" placeholder="Masukan Tahun Berlaku Curriculum">
                                 </div>
 
                                 <div class="form-group">
@@ -258,20 +258,30 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-    // Sembunyikan elemen "Tahun Berlaku Curriculum" saat halaman dimuat
-    $('#tahunBerlakuColumn').hide();
-
-    // Tangani perubahan pada dropdown "New Curriculum?"
-    $('#newCurriculumColumn').change(function() {
-        // Jika opsi yang dipilih adalah "Yes" (nilai 1), maka tampilkan field "Tahun Berlaku Curriculum"
-        if ($(this).val() === "1") {
-            $('#tahunBerlakuColumn').show();
-        } else {
-            // Jika tidak, sembunyikan field "Tahun Berlaku Curriculum"
+            // Sembunyikan elemen "Tahun Berlaku Curriculum" saat halaman dimuat
             $('#tahunBerlakuColumn').hide();
-        }
-    });
-});
+            // Tangani perubahan pada dropdown "New Curriculum?"
+            $('#newCurriculumColumn').change(function() {
+                // Jika opsi yang dipilih adalah "Yes" (nilai 1), maka tampilkan field "Tahun Berlaku Curriculum"
+                if ($(this).val() === "1") {
+                    $('#tahunBerlakuColumn').show();
+                } else {
+                    // Jika tidak, sembunyikan field "Tahun Berlaku Curriculum"
+                    $('#tahunBerlakuColumn').hide();
+                }
+            });
+            $('#namaCircleGroup').hide();
+            // Tangani perubahan pada dropdown "New Curriculum?"
+            $('#curriculumCG').change(function() {
+                // Jika opsi yang dipilih adalah "Yes" (nilai 1), maka tampilkan field "Tahun Berlaku Curriculum"
+                if ($(this).val() === "1") {
+                    $('#namaCircleGroup').show();
+                } else {
+                    // Jika tidak, sembunyikan field "Tahun Berlaku Curriculum"
+                    $('#namaCircleGroup').hide();
+                }
+            });
+        });
 
         $.ajaxSetup({
             headers: {
