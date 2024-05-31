@@ -155,7 +155,7 @@
                   <label class="col-form-label pl-1 col-sm-7">Existing</label>
                   <div>
                       @php
-                          switch($data->actual){
+                          switch($data->result_score){
                             case 0:
                               $existingUrl = asset('assets/images/point/0.png');
                             break;
@@ -218,7 +218,7 @@
                     <div class="col-sm-12 rounded border mb-2 d-flex">
                     <label class="col-sm-7 col-form-label">Value</label>
                     <div class="col-sm-5 m-auto">
-                      <p>{{$data->actual}}</p>
+                      <p>{{$data->result_score}}</p>
                     </div>
                   </div>
                   <div class="col-sm-12 rounded border mb-2 d-flex">

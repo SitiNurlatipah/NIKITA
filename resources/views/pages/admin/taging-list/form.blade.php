@@ -92,6 +92,9 @@
         <div class="invalid-feedback" id="feed-back-notes-for-result"></div>
     </div>
 </div>
+<input type="hidden" class="form-control form-control-sm" name="id_curriculum" id="id_curriculum" value="{{$taging->id_curriculum ?? $white_tag->id_curriculum}}">
+<input type="hidden" class="form-control form-control-sm" name="id_user" id="id_user" value="{{$taging->id_user ?? $white_tag->id_user}}">
+
 
 <script>
     $(function() {

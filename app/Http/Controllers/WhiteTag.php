@@ -569,7 +569,7 @@ class WhiteTag extends Controller
             "curriculum.level as level","skill_category.skill_category as skill_category","white_tag.start as start",
             "white_tag.actual as actual","competencies_directory.target as target",
             "white_tag.keterangan as ket","curriculum.id_curriculum",
-            DB::raw("(SELECT COUNT(*) FROM taging_reason as tr where tr.id_white_tag = white_tag.id_white_tag) as cntTagingReason"),
+            DB::raw("(SELECT COUNT(*) FROM taging_reason as tr where tr.id_white_tag = white_tag.id_white_tag AND tr.year=YEAR(NOW())) as cntTagingReason"),
             DB::raw("(YEAR(NOW()) - YEAR(curriculum.curriculum_year)) AS tahuncurriculum"),
             // DB::raw("(IF(((white_tag.actual - competencies_directory.target) < 0),'Open','Close' )) as tagingStatus")
             DB::raw("(CASE WHEN (white_tag.actual - competencies_directory.target) < 0 THEN 'Open'
@@ -638,7 +638,7 @@ class WhiteTag extends Controller
         try{
             $data = $this->validate_input_v2($request);
             $skillId = [1,2];
-            $cek = WhiteTagModel::whereRaw("id_user = '".$request->user_id."' AND (select count(*) from taging_reason where taging_reason.id_white_tag = white_tag.id_white_tag) <= 0 ")
+            $cek = WhiteTagModel::whereRaw("id_user = '".$request->user_id."' AND (select count(*) from taging_reason where taging_reason.id_white_tag = white_tag.id_white_tag AND taging_reason.year=YEAR(NOW())) <= 0 ")
                         ->join("curriculum",function ($join) use ($skillId){
                             $join->on('curriculum.id_curriculum','white_tag.id_curriculum')
                                 ->join('competencies_directory','curriculum.id_curriculum','competencies_directory.id_curriculum')
@@ -927,7 +927,7 @@ class WhiteTag extends Controller
             "curriculum.level as level","skill_category.skill_category as skill_category","white_tag.start as start",
             "white_tag.actual as actual","competencies_directory.target as target",
             "white_tag.keterangan as ket","curriculum.id_curriculum",
-            DB::raw("(SELECT COUNT(*) FROM taging_reason as tr where tr.id_white_tag = white_tag.id_white_tag) as cntTagingReason"),
+            DB::raw("(SELECT COUNT(*) FROM taging_reason as tr where tr.id_white_tag = white_tag.id_white_tag AND tr.year=YEAR(NOW())) as cntTagingReason"),
             DB::raw("(YEAR(NOW()) - YEAR(curriculum.curriculum_year)) AS tahuncurriculum"),
             // DB::raw("(IF(((white_tag.actual - competencies_directory.target) < 0),'Open','Close' )) as tagingStatus")
             DB::raw("(CASE WHEN (white_tag.actual - competencies_directory.target) < 0 THEN 'Open'
@@ -996,7 +996,7 @@ class WhiteTag extends Controller
         try{
             $data = $this->validate_input_v2($request);
             $skillId = [1,2];
-            $cek = WhiteTagModel::whereRaw("id_user = '".$request->user_id_corporate."' AND (select count(*) from taging_reason where taging_reason.id_white_tag = white_tag.id_white_tag) <= 0 ")
+            $cek = WhiteTagModel::whereRaw("id_user = '".$request->user_id_corporate."' AND (select count(*) from taging_reason where taging_reason.id_white_tag = white_tag.id_white_tag AND tr.year=YEAR(NOW())) <= 0 ")
                         ->join("curriculum",function ($join) use ($skillId){
                             $join->on('curriculum.id_curriculum','white_tag.id_curriculum')
                                 ->join('competencies_directory','curriculum.id_curriculum','competencies_directory.id_curriculum')

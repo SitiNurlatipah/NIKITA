@@ -72,6 +72,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/', 'Tagging@index')->name('TagList');
         Route::get('/tagging-json','Tagging@tagingJson')->name('taggingJson');
         Route::get('/tagging-finish','Tagging@tagingFinish')->name('taggingFinishJson');
+        Route::get('/last-finish','Tagging@lastYearFinish')->name('taggingLastJson');
+        // Route::get('/last-finish','Tagging@tagingLast')->name('taggingLastyear');
         Route::get('/tagging-member','Tagging@tagingJsonMember')->name('taggingJsonMember');
         Route::get('/tagging-atasan','Tagging@tagingJsonAtasan')->name('taggingJsonAtasan');
         Route::get('/form','Tagging@formTaggingList')->name('tagingForm');
@@ -81,6 +83,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/tagging-print','Tagging@taggingPrint')->name('taggingPrint');
         // Route::delete('/tagging-delete/{id_taging_reason}', 'Tagging@deleteTagging');   
         Route::post('/delete','Tagging@deleteTagging')->name('tagging.destroy');
+
  
 
     });
