@@ -35,6 +35,34 @@ class SupermanController extends Controller
         return view('pages.admin.superman.index-curriculum', compact('data'));
     }
 
+    public function curriculumSupermanJson(Request $request) //list nama superman table all
+    {   
+        // $users_data = ;
+        $data = CurriculumSuperman::select(DB::raw("(SELECT GROUP_CONCAT(nama_pengguna) FROM curriculum_superman_to_user AS cstu JOIN users ON users.id = cstu.id_user WHERE cstu.id_curriculum_superman = curriculum_superman.id_curriculum_superman GROUP BY cstu.id_curriculum_superman ) AS users"),'curriculum_superman.*', 'sc.skill_category','compGroup.name as compGroupName')
+        ->leftJoin('skill_category as sc', 'curriculum_superman.id_skill_category', '=', 'sc.id_skill_category')
+        ->join("competencie_groups as compGroup","compGroup.id","curriculum_superman.curriculum_group")
+        // ->join("competencies_dictionary_superman","curriculum_superman.id_curriculum_superman","competencies_dictionary_superman.id_curriculum_superman")
+        ->get();
+        // dd($data);
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $btn = '<button data-id="' . $row->id_curriculum_superman . '" onclick="getFormEdit(this)" class="btn btn-inverse-success btn-icon mr-1" data-toggle="modal" data-target="#modal-edit" data-placement="top" title="Edit Curriculum"><i class="icon-file menu-icon"></i></button>';
+                    $btn = $btn . '<button data-id="' . $row->id_curriculum_superman . '"  class="btn btn-inverse-info btn-icon cr-hapus" data-toggle="modal" data-target="#modal-hapus"><i class="icon-trash" data-placement="top" title="Hapus Curriculum"></i></button>';
+                        return $btn;
+                    })
+                ->addColumn('details', function ($row) {
+                    $btn = '<button data-id="' . $row->users . '" onclick="getFormDetails(this)" class="btn btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail-user"  data-placement="top" title="Details"><i class="icon-eye"></i></button>';
+                        return $btn;
+                    })
+                ->addColumn('target', function ($row) {
+                    $btn = '<button class="btn btn-inverse-primary btn-icon edit-directory mr-1" data-toggle="modal" data-target="#modal-tambah-target" data-id="' . $row->id_curriculum_superman . '" onclick="formCompetencyDirectory(this)" data-placement="top" title="Atur Target"><i class="icon-paper-clip"></i></button>';
+                        return $btn;
+                    })
+                ->addIndexColumn()
+                ->rawColumns(['action','details','target'])
+                ->make(true);        
+    }
     public function getSuperman()
     {
         $superman = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
@@ -214,7 +242,9 @@ class SupermanController extends Controller
         return view('pages.admin.superman.index', compact('head'));
     }
     
-    public function supermanJson(Request $request)
+
+    //Halaman Mapping Competency
+    public function supermanJson(Request $request) //list nama superman table all
     {   
         $id = Auth::user()->id;
         $dp = Auth::user()->id_department;
@@ -273,7 +303,7 @@ class SupermanController extends Controller
         }
         
     }
-    public function corporateJson(Request $request)
+    public function corporateJson(Request $request) //list nama superman table corporate
     {   
         $id = Auth::user()->id;
         $dp = Auth::user()->id_department;
@@ -332,8 +362,7 @@ class SupermanController extends Controller
         }
         
     }
-
-    public function formSuperman(Request $request)
+    public function formSuperman(Request $request) //form mapping all
     {
         $validator = Validator::make($request->all(),[
             "id" => "requeired|numeric",
@@ -375,7 +404,7 @@ class SupermanController extends Controller
                 // dd($comps);
         return view("pages.admin.superman.form",compact('comps','user','type'));
     }
-    public function formCorporateSuperman(Request $request)
+    public function formCorporateSuperman(Request $request) //form mapping corporate
     {
 
         $validator = Validator::make($request->all(),[
@@ -423,7 +452,6 @@ class SupermanController extends Controller
                 // dd($comps);
         return view("pages.admin.superman.form-corporate",compact('comps','user','type'));
     }
-
     public function actionSuperman(Request $request)
     {
         $request->validate([
@@ -516,7 +544,6 @@ class SupermanController extends Controller
         }
         return response()->json(['code' => 200, 'message' => 'Post successfully'], 200);
     }
-
     public function detailMapcomSuperman(Request $request)
     {
         $user = User::select("id","id_job_title")->where("id",$request->id)->first();
@@ -757,6 +784,8 @@ class SupermanController extends Controller
             ->addIndexColumn()
             ->make(true);
     }
+
+
     //halaman member superman
     public function indexMember(){
         return view('pages.admin.superman.index-member');
@@ -972,6 +1001,7 @@ class SupermanController extends Controller
         return response()->json(['code' => 200, 'message' => 'Post successfully'], 200);
     }
 
+    //halaman CEME Superman
     public function indexCemeSuperman(Request $request)
     {
         return view('pages.admin.superman.ceme-superman');

@@ -20,7 +20,7 @@
 <!-- inject:css -->
 <link rel="stylesheet" href="{{ asset('assets/css/vertical-layout-light/style.css')}}">
 <!-- endinject -->
-<link rel="shortcut icon" href="{{ asset('assets/images/favicon.png')}}" />
+<!-- <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png')}}" /> -->
 <style>
     .dataTable .btn {
         padding: 0px !important;

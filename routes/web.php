@@ -55,6 +55,7 @@ Route::group(['middleware' => 'auth'], function () {
     // Kurikulum
     Route::prefix("curriculum")->group(function () {
         Route::get('/', 'Curriculum@index')->name('Curriculum');
+        Route::get('/json', 'Curriculum@curriculumJson')->name('CurriculumJson');
         Route::get('/cr/get-skill', 'Curriculum@getSkill')->name('get.skill');
         Route::get('/cr/get-jabatan', 'Curriculum@getJabatan')->name('get.cr.jabatan');
         Route::post('/curriculum-post', 'Curriculum@store')->name('Curriculum.post');
@@ -234,6 +235,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/', 'SupermanController@index')->name('superman.index');
         Route::get('/get', 'SupermanController@getSuperman')->name('superman.get');
+        Route::get('/json/get', 'SupermanController@curriculumSupermanJson')->name('superman.curriculum');
         Route::post('/create', 'SupermanController@store')->name('superman.store');
         Route::get('/get-form','SupermanController@getFormEdit')->name('superman.get.form');
         Route::post('/edit', 'SupermanController@edit')->name('superman.update');

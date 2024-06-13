@@ -10,6 +10,7 @@ use App\CurriculumToJob;
 use App\CurriculumActivityLog;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\DataTables;
 
 class Curriculum extends Controller
 {
@@ -29,7 +30,41 @@ class Curriculum extends Controller
         // dd($chart);
         return view('pages.admin.curriculum.index', compact('data' , 'chart'));
     }
+    public function curriculumJson(Request $request) //list nama superman table all
+    {   
+        // $users_data = ;
+        // $jobtitle = DB::raw("(SELECT GROUP_CONCAT(nama_job_title) FROM curriculum_to_job AS ctb JOIN job_title AS jt ON jt.id_job_title = ctb.id_job_title WHERE ctb.id_curriculum = curriculum.id_curriculum GROUP BY ctb.id_curriculum ) AS job_title");
+        DB::statement("SET SESSION group_concat_max_len = 1000000");
+        $data = CurriculumModel::select(DB::raw("(SELECT GROUP_CONCAT(nama_job_title) FROM curriculum_to_job AS ctb JOIN job_title AS jt ON jt.id_job_title = ctb.id_job_title WHERE ctb.id_curriculum = curriculum.id_curriculum GROUP BY ctb.id_curriculum ) AS job_title"),'curriculum.*', 'sc.skill_category','compGroup.name as compGroupName')
+        ->leftJoin('skill_category as sc', 'curriculum.id_skill_category', '=', 'sc.id_skill_category')
+        ->join("competencie_groups as compGroup","compGroup.id","curriculum.training_module_group")
+        ->get();
+        // dd($data);
 
+        // dd($data);
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $btn = '<button data-id="' . $row->id_curriculum . '" onclick="editdata(this)" class="btn btn-inverse-success btn-icon delete-button mr-1 Edit-button"
+                    data-toggle="modal" data-target="#modal-edit" data-toggle="tooltip" data-placement="top" title="Edit Data"><i
+                    class="icon-file menu-icon"></i></button>';
+                    $btn = $btn . '<button data-id="' . $row->id_curriculum . '"  class="btn btn-inverse-danger btn-icon mr-1 cr-hapus"
+                    data-toggle="modal" data-target="#modal-cr-hapus" data-toggle="tooltip" data-placement="top" title="Delete Data" ><i class="icon-trash" data-placement="top" title="Hapus Curriculum"></i></button>';
+                        return $btn;
+                    })
+                ->addColumn('job', function ($row) {
+                    $btn = '<button data-id="' . $row->job_title . '" onclick="getDetails(this)" class="btn btn-inverse-info btn-icon" data-toggle="modal" data-target="#modal-detail-job" data-placement="top" title="Details"><i class="icon-archive"></i></button>';
+                        return $btn;
+                    })
+                ->addColumn('target', function ($row) {
+                    $btn = '<button class="btn btn-inverse-primary btn-icon edit-directory mr-1" data-toggle="modal" data-target="#modal-tambah-target" data-id="' . $row->id_curriculum . '" onclick="formCompetencyDirectory(this)" data-placement="top" title="Atur Target"><i class="icon-paper-clip"></i></button>
+                            <button class="btn btn-inverse-warning btn-icon" data-toggle="modal" data-target="#modal-detail" onclick="detailCompetencyDirectory(this)" data-id="' . $row->id_curriculum . '" data-placement="top" title="Lihat Target"><i class="icon-eye"></i></button>';
+                    return $btn;
+                    })
+                ->addIndexColumn()
+                ->rawColumns(['action','job','target'])
+                ->make(true);        
+    }
     public function getFormEditCurriculum(Request $request)
     {
         $curriculum = CurriculumModel::where("id_curriculum",$request->id)->first();

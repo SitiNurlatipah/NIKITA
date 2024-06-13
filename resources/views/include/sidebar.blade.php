@@ -51,9 +51,28 @@
                 </div>
             </li>
             <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#cgOption" aria-expanded="false" aria-controls="cg">
+                    <i class="icon-grid-2 menu-icon"></i>
+                    <span class="menu-title">CG</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="cgOption">
+                    <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('EmployeeMember') }}">Member CG</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('Curriculum') }}">Competency Matrix</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('LogHistory') }}">Log History Curriculum</a></li>
+                    <!-- <li class="nav-item"> <a class="nav-link" href="{{ route('CompetenciesDirectory') }}">Competency Dictionary</a></li> -->
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('WhiteTag') }}">Mapping Competency</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('TagList') }}">White Tag</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('ceme') }}">CEME</a></li>
+                    </ul>
+                </div>
+            </li>
+            {{--
+            <li class="nav-item">
                 <a class="nav-link" href="{{ route('Curriculum') }}">
                     <i class="icon-grid-2 menu-icon"></i>
-                    <span class="menu-title">Curriculum</span>
+                    <span class="menu-title">Competency Matrix</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -86,7 +105,7 @@
                     <span class="menu-title">CEME</span>
                 </a>
             </li>
-            {{-- Hide Temporary --}}
+            --}}
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#superman" aria-expanded="false" aria-controls="superman">
                     <i class="icon-command menu-icon"></i>
@@ -96,19 +115,18 @@
                 <div class="collapse" id="superman">
                     <ul class="nav flex-column sub-menu">
                     <li class="nav-item"> <a class="nav-link" href="{{ route('member.superman.index') }}">Member Superman</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('superman.index') }}">Curriculum Superman</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('DictionarySuperman') }}">Competency Dictionary</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('superman.index') }}">Competency Matrix</a></li>
+                    <!-- <li class="nav-item"> <a class="nav-link" href="{{ route('DictionarySuperman') }}">Competency Dictionary</a></li> -->
                     <li class="nav-item"> <a class="nav-link" href="{{ route('kelola.superman.index') }}">Mapping Competency</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('superman.tagging') }}">White Tag Superman</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('superman.ceme') }}">CEME Superman</a></li>
                     </ul>
                 </div>
             </li>
-            
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#champion" aria-expanded="false" aria-controls="champion">
                     <i class="icon-cloud menu-icon"></i>
-                    <span class="menu-title">Competencies 4.0</span>
+                    <span class="menu-title">Champions 4.0</span>
                     <i class="menu-arrow"></i>
                 </a>
                 <div class="collapse" id="champion">
@@ -121,21 +139,7 @@
                     </ul>
                 </div>
             </li>
-            {{-- 
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="collapse" href="#management-system" aria-expanded="false" aria-controls="management-system">
-                    <i class="icon-paper menu-icon"></i>
-                    <span class="menu-title">Certification</span>
-                    <i class="menu-arrow"></i>
-                </a>
-                <div class="collapse" id="management-system">
-                    <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('master.system.index') }}">Data Certification</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('system.index') }}">Mapping Certification</a></li>
-                    </ul>
-                </div>
-            </li> 
-            --}}
+            
         @elseif(Auth::user()->peran_pengguna == 2)
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('EmployeeMember') }}">
@@ -159,15 +163,15 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('Curriculum') }}">
                     <i class="icon-grid-2 menu-icon"></i>
-                    <span class="menu-title">Curriculum</span>
+                    <span class="menu-title">Competency Matrix</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" href="{{ route('CompetenciesDirectory') }}">
                     <i class="icon-book menu-icon"></i>
                     <span class="menu-title">Competency Dictionary</span>
                 </a>
-            </li>
+            </li> -->
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('WhiteTag') }}">
                     <i class="icon-flag menu-icon"></i>
@@ -201,6 +205,26 @@
             </li>
         @else
             <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#cgDropdown" aria-expanded="false" aria-controls="cg">
+                    <i class="icon-grid-2 menu-icon"></i>
+                    <span class="menu-title">CG</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="cgDropdown">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item"> <a class="nav-link" href="{{ route('EmployeeMember') }}">Member CG</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('rotation.index') }}">History Transaction</a></li>
+                    <!-- <li class="nav-item"> <a class="nav-link" href="{{ route('comp.history.index') }}">Competency History</a></li> -->
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('Curriculum') }}">Competency Matrix</a></li>
+                    <!-- <li class="nav-item"> <a class="nav-link" href="{{ route('CompetenciesDirectory') }}">Competency Dictionary</a></li> -->
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('WhiteTag') }}">Mapping Competency</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('TagList') }}">White Tag</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('ceme') }}">CEME</a></li>
+                    </ul>
+                </div>
+            </li>
+            {{--
+            <li class="nav-item">
                 <a class="nav-link" href="{{ route('EmployeeMember') }}">
                     <i class="icon-head menu-icon"></i>
                     <span class="menu-title">Member CG</span>
@@ -209,7 +233,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('Curriculum') }}">
                     <i class="icon-grid-2 menu-icon"></i>
-                    <span class="menu-title">Curriculum</span>
+                    <span class="menu-title">Competency Matrix</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -236,6 +260,7 @@
                     <span class="menu-title">CEME</span>
                 </a>
             </li>
+            --}}
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#superman" aria-expanded="false" aria-controls="superman">
                     <i class="icon-command menu-icon"></i>
@@ -245,19 +270,18 @@
                 <div class="collapse" id="superman">
                     <ul class="nav flex-column sub-menu">
                     <li class="nav-item"> <a class="nav-link" href="{{ route('member.superman.index') }}">Member Superman</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('superman.index') }}">Curriculum Superman</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('DictionarySuperman') }}">Competency Dictionary</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('superman.index') }}">Competency Matrix</a></li>
+                    <!-- <li class="nav-item"> <a class="nav-link" href="{{ route('DictionarySuperman') }}">Competency Dictionary</a></li> -->
                     <li class="nav-item"> <a class="nav-link" href="{{ route('kelola.superman.index') }}">Mapping Competency</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('superman.tagging') }}">White Tag Superman</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('superman.ceme') }}">CEME Superman</a></li>
                     </ul>
                 </div>
             </li>
-            
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#champion" aria-expanded="false" aria-controls="champion">
                     <i class="icon-cloud menu-icon"></i>
-                    <span class="menu-title">Competencies 4.0</span>
+                    <span class="menu-title">Champions 4.0</span>
                     <i class="menu-arrow"></i>
                 </a>
                 <div class="collapse" id="champion">
@@ -271,7 +295,7 @@
                 </div>
             </li>
         @endif
-        @if(Auth::user()->peran_pengguna == 1 || Auth::user()->id_job_title == "JT-0102" || Auth::user()->id_job_title == "JT-0049")
+        @if(Auth::user()->peran_pengguna == 1 || Auth::user()->id_job_title == "JT-0102" || Auth::user()->id_job_title == "JT-0049" || Auth::user()->nik == "180600122")
             <li class="nav-item"> 
                 <a class="nav-link" data-toggle="collapse" href="#management-system" aria-expanded="false" aria-controls="management-system">
                     <i class="icon-paper menu-icon"></i>

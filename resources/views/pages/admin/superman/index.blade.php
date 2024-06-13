@@ -96,7 +96,7 @@
                                     <th class="text-center" style="min-width:90px">Start</th>
                                     <th class="text-center" style="min-width:90px">Actual</th>
                                     <th class="text-center" style="min-width:50px">Target</th>
-                                    <th class="text-center" style="min-width:90px">Keterangan</th>
+                                    <th class="text-center" style="min-width:90px">Evidence</th>
                                 </tr>
                             </thead>
                             <tbody id="formMapComp">
@@ -136,7 +136,7 @@
                                     <th>Start</th>
                                     <th>Actual</th>
                                     <th>Target</th>
-                                    <th>Keterangan</th>
+                                    <th>Evidence</th>
                                     <th>Status</th>
                                 </tr> 
                             </thead>
@@ -210,7 +210,7 @@
                                             <th class="text-center" style="min-width:50px">Start</th>
                                             <th class="text-center" style="min-width:90px">Actual</th>
                                             <th class="text-center" style="min-width:50px">Target</th>
-                                            <th class="text-center" style="min-width:90px">Keterangan</th>
+                                            <th class="text-center" style="min-width:90px">Evidence</th>
                                         </tr>
                                     </thead>
                                     <tbody id="formMapCompCorporate">
@@ -276,7 +276,7 @@
                                     <th>Start</th>
                                     <th>Actual</th>
                                     <th>Target</th>
-                                    <th>Keterangan</th>
+                                    <th>Evidence</th>
                                     <th>Asesor</th>
                                     <th>Status</th>
                                 </tr> 

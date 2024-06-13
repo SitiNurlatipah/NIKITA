@@ -118,9 +118,9 @@ $(document).ready(function(){
     $('select').on('change', function() {
       idd = $("option:selected").attr("id_curriculum") ;
         if(idd == 5){
-          $("#myView").html('<img src="{{ asset("assets/images/general.png") }}" id="img-key" class="img-accordion" style="max-height:400px;margin-left:100px">');
+          $("#myView").html('<img src="{{ asset("assets/images/general.png") }}" id="img-key" class="img-accordion" style="max-height:200px;margin-left:100px">');
         }else{
-          $("#myView").html('<img src="{{ asset("assets/images/Functional.png") }}" id="img-key" class="img-accordion" style="max-height:400px; margin-left:100px">');
+          $("#myView").html('<img src="{{ asset("assets/images/Functional.png") }}" id="img-key" class="img-accordion" style="max-height:200px; margin-left:100px">');
         }
     });
   });

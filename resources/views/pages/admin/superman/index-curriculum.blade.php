@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-body">
                 <div class="row">
-                    <p class="card-title ml-4">Curriculum Superman</p>
+                    <p class="card-title ml-4">Competency Matrix Superman</p>
                     <div class="col-md mb-2">
                             <a class="btn btn-sm btn-success float-right ml-2" href="javascript:void(0)" id="createNewItem"
                                 data-toggle="modal" data-target="#modal-tambah"><i class="icon-plus"></i> Add
@@ -29,11 +29,14 @@
                                             <th>Competency Superman</th>
                                             <th>Competency Group</th>
                                             <th>Competency Description</th>
-                                            <th width="15%">Detail</th>
-                                            <th width="15%">Action</th>
+                                            <th>Detail</th>
+                                            <th>Target</th>
+                                            <th width="10%">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    </tbody>
+                                    {{--
                                     @foreach ($data as $data)
                                             <tr id="row_{{ $data->id_curriculum_superman }}">
                                                 <th scope="row" class="text-center">{{ $loop->iteration }}</th>
@@ -59,7 +62,8 @@
                                                 </td>
                                             </tr>
                                         @endforeach
-                                    </tbody>
+                                    --}}
+                                    
                                 </table>
                             </div>
                         </div>
@@ -220,6 +224,27 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modal-tambah-target" tabindex="-1" role="dialog" aria-labelledby="modal-tambahLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header p-3">
+                <h5 class="modal-title" id="modal-tambahLabel">Add Competencies Dictionary </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{ route('storeDictionarySuperman') }}" id="formCompetencyDictionarySuperman" method="POST" enctype="multipart/form-data">
+                    @csrf
+                <div class="modal-body pt-3" id="formCompetency"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="submitForm" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+    
 
 @endsection
 @push('script')
@@ -231,17 +256,55 @@
         });
     </script>
     <script>
-        $('.btn-detail-user').click(function() {
-            var data = $(this).data('users');
+        $(document).ready(function() {
+            getSupermanMember();
+            getSkill();
+            initDatatable();
+            $("#submitForm").click(function (e) {
+                e.preventDefault();
+                var form = $("#formCompetencyDictionarySuperman")
+                const url = form.attr("action");
+                var formData = form.serialize();
+                $.ajax({
+                    url:url,
+                    type:"post",
+                    cache:false,
+                    data:formData,
+                    success:function (data) {
+                        $("#modal-tambah-target").modal('hide');
+                        $('#table-cr-superman').DataTable().destroy();
+                        initDatatable();
+                        Swal.fire({
+                            position:'center',
+                            icon:'success',
+                            title:data.message,
+                            showConfirmButton:false,
+                            timer:1500
+                        });
+                    },
+                    error:function (err) {
+                        console.log(err);
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: err.statusText,
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+                })
+            })
+        });
+        function getFormDetails(el) {
+            var data = $(el).attr("data-id");
             var data = data.split(",");
             let txt = "";
+            console.log(data);
             for (x in data) {
                 txt += '<li>'+ data[x] + '</li>'
             }
             document.getElementById("tampil-user").innerHTML = txt;
-        })
-        $('#table-cr-superman').DataTable();
-
+        }
         function createPost() {
             let _url = "{{ route('superman.store') }}";
             let _token = $('meta[name="csrf-token"]').attr('content');
@@ -323,12 +386,10 @@
                 }
             })
         }
-
         $('#table-cr-superman').on('click', '.cr-hapus', function() {
             var id = $(this).data('id');
             $('#btnHapus').attr('data-id', id);
         })
-
         function deleteCurriculum(el) {
             var id = $(el).attr("data-id");
             
@@ -433,14 +494,90 @@
                 })
             })
         })
+        function initDatatable() {
+            var dtJson = $('#table-cr-superman').DataTable({
+                ajax: "{{ route('superman.curriculum') }}",
+                responsive:true,
+                serverSide: true,
+                processing: true,
+                searching: true,
+                scrollX: true,
+                displayLength: 10,
+                lengthMenu: [10, 15, 20,100],
+                language: {
+                    paginate: {
+                        // remove previous & next text from pagination
+                        previous: '&nbsp;',
+                        next: '&nbsp;'
+                    }
+                },
+                columns: [
+                    {
+                        data: 'DT_RowIndex', name: 'DT_RowIndex'
+                    },
+                    {
+                        data: 'no_curriculum_superman'
+                    },
+                    {
+                        data: 'skill_category'
+                    },
+                    {
+                        data : 'curriculum_superman'
+                    },
+                    {
+                        data : 'compGroupName'
+                    },
+                    {
+                        data : 'curriculum_desc'
+                    },
+                    {
+                        data: 'details'
+                    },
+                    {
+                        data: 'target'
+                    },
+                    {
+                        data: 'action'
+                    }
+                ]
+            });
+        }
 
-        $(document).ready(function() {
-            getSupermanMember();
-            getSkill();
+        //comp dictionary
+        function formCompetencyDirectory(el) {
+            var id = $(el).attr("data-id");
+            if(id == ''){
+                var url = "{!!route('formDictionarySuperman')!!}?type=add";
+                $("#modal-tambahLabel").html("Add Competencies Dictionary");
+            }else{
+                var url = "{!!route('formDictionarySuperman')!!}?type=edit&id="+id;
+                $("#modal-tambahLabel").html("Update Competencies Dictionary");
+            }
+            $.ajax({
+                url:url,
+                cache:false,
+                type:"get",
+                success:function(html){
+                    $("#formCompetency").html(html);
+                    
+                }
+            })
+        }
+        function confirmDelete(element) {
+            swal({
+            title: "Konfirmasi",
+            text: "Apakah Anda yakin ingin menghapus baris ini?",
+            icon: "warning",
+            buttons: ["Batal", "Hapus"],
+            dangerMode: true,
+            })
+            .then((willDelete) => {
+            if (willDelete) {
+                delRow(element);
+            }
+            });
+        }
 
-
-            // Data retrieved from https://netmarketshare.com/
-
-        });
+        
     </script>
 @endpush

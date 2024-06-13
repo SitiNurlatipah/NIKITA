@@ -91,7 +91,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                                             <th>Actual</th>
                                             <th>Target</th>
                                             <th>Status</th>
-                                            <th>Keterangan</th>
+                                            <th>Evidence</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -171,7 +171,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                                             <th>Actual</th>
                                             <th>Target</th>
                                             <th>Status</th>
-                                            <th>Keterangan</th>
+                                            <th>Evidence</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -217,7 +217,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                                     <th class="text-center" style="min-width:90px">Start</th>
                                     <th class="text-center" style="min-width:90px">Actual</th>
                                     <th class="text-center" style="min-width:50px">Target</th>
-                                    <th class="text-center" style="min-width:90px">Keterangan</th>
+                                    <th class="text-center" style="min-width:90px">Evidence</th>
                                 </tr>
                             </thead>
                             <tbody id="formMapComp">
@@ -264,7 +264,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                                     <th class="text-center" style="min-width:90px">Start</th>
                                     <th class="text-center" style="min-width:90px">Actual</th>
                                     <th class="text-center" style="min-width:50px">Target</th>
-                                    <th class="text-center" style="min-width:90px">Keterangan</th>
+                                    <th class="text-center" style="min-width:90px">Evidence</th>
                                 </tr>
                             </thead>
                             <tbody id="formCorporateComp">
@@ -305,7 +305,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                                 <th class="text-center">Start</th>
                                 <th class="text-center">Actual</th>
                                 <th class="text-center">Target</th>
-                                <th class="text-center">Keterangan</th>
+                                <th class="text-center">Evidence</th>
                                 <th class="text-center">Status</th>
                             </tr>
                         </thead>
@@ -342,7 +342,7 @@ table.dataTable.table-sm > thead > tr > th:not(.sorting_disabled) {
                                 <th class="text-center">Start</th>
                                 <th class="text-center">Actual</th>
                                 <th class="text-center">Target</th>
-                                <th class="text-center">Keterangan</th>
+                                <th class="text-center">Evidence</th>
                                 <th class="text-center">Status</th>
                             </tr>
                         </thead>
