@@ -58,7 +58,7 @@
                 </a>
                 <div class="collapse" id="cgOption">
                     <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('EmployeeMember') }}">Member CG</a></li>
+                    <!-- <li class="nav-item"> <a class="nav-link" href="{{ route('EmployeeMember') }}">Member CG</a></li> -->
                     <li class="nav-item"> <a class="nav-link" href="{{ route('Curriculum') }}">Competency Matrix</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('LogHistory') }}">Log History Curriculum</a></li>
                     <!-- <li class="nav-item"> <a class="nav-link" href="{{ route('CompetenciesDirectory') }}">Competency Dictionary</a></li> -->
