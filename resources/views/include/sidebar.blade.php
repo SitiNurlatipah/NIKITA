@@ -10,11 +10,11 @@
             </li>
         @if(Auth::user()->peran_pengguna == 1)
             <li class="nav-item">
-                        <a class="nav-link" href="{{ route('EmployeeMember') }}">
-                            <i class="icon-head menu-icon"></i>
-                            <span class="menu-title">Employee Data</span>
-                        </a>
-                    </li>
+                <a class="nav-link" href="{{ route('EmployeeMember') }}">
+                    <i class="icon-head menu-icon"></i>
+                    <span class="menu-title">Employee Data</span>
+                </a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
                     <i class="icon-layout menu-icon"></i>
@@ -205,6 +205,12 @@
             </li>
         @else
             <li class="nav-item">
+                <a class="nav-link" href="{{ route('EmployeeMember') }}">
+                    <i class="icon-head menu-icon"></i>
+                    <span class="menu-title">Employee Data</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#cgDropdown" aria-expanded="false" aria-controls="cg">
                     <i class="icon-grid-2 menu-icon"></i>
                     <span class="menu-title">CG</span>
@@ -212,7 +218,7 @@
                 </a>
                 <div class="collapse" id="cgDropdown">
                     <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"> <a class="nav-link" href="{{ route('EmployeeMember') }}">Member CG</a></li>
+                        <!-- <li class="nav-item"> <a class="nav-link" href="{{ route('EmployeeMember') }}">Member CG</a></li> -->
                     <li class="nav-item"> <a class="nav-link" href="{{ route('rotation.index') }}">History Transaction</a></li>
                     <!-- <li class="nav-item"> <a class="nav-link" href="{{ route('comp.history.index') }}">Competency History</a></li> -->
                     <li class="nav-item"> <a class="nav-link" href="{{ route('Curriculum') }}">Competency Matrix</a></li>
@@ -269,7 +275,7 @@
                 </a>
                 <div class="collapse" id="superman">
                     <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('member.superman.index') }}">Member Superman</a></li>
+                    <!-- <li class="nav-item"> <a class="nav-link" href="{{ route('member.superman.index') }}">Member Superman</a></li> -->
                     <li class="nav-item"> <a class="nav-link" href="{{ route('superman.index') }}">Competency Matrix</a></li>
                     <!-- <li class="nav-item"> <a class="nav-link" href="{{ route('DictionarySuperman') }}">Competency Dictionary</a></li> -->
                     <li class="nav-item"> <a class="nav-link" href="{{ route('kelola.superman.index') }}">Mapping Competency</a></li>

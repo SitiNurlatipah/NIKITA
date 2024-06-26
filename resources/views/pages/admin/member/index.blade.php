@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Member CG')
+@section('title', 'Member')
 
 @section('content')
 <style>
