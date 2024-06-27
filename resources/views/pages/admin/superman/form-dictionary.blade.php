@@ -47,7 +47,7 @@
   <div class="col-md-12 mb-3 mt-3">
       <div class="col-sm mb-2">
           <button class="btn btn-success float-right" id="btnAddRowJobTitle" {{isset($curriculum) ? '' : 'disabled'}} curriculum-id="{{isset($curriculum) ? $curriculum->id_curriculum_superman : ''}}" type="button" onclick="addRow(this)">
-              <i class="icon-plus"></i> Add Row Job Title
+              <i class="icon-plus"></i> Add Row Member
           </button>
       </div>
   </div>

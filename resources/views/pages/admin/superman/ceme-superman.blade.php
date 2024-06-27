@@ -48,7 +48,7 @@
                                             <th>No.</th>
                                             <th style="width:10%">Name</th>
                                             <th style="width:10%">NIK</th>
-                                            <th style="width:10%">CG</th>
+                                            <th style="width:10%">Job Title</th>
                                             <th style="width:10%">Department</th>
                                             <th>Avr</th>
                                         </tr>

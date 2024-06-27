@@ -275,7 +275,7 @@
                 </a>
                 <div class="collapse" id="superman">
                     <ul class="nav flex-column sub-menu">
-                    <!-- <li class="nav-item"> <a class="nav-link" href="{{ route('member.superman.index') }}">Member Superman</a></li> -->
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('member.superman.index') }}">Member Superman</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('superman.index') }}">Competency Matrix</a></li>
                     <!-- <li class="nav-item"> <a class="nav-link" href="{{ route('DictionarySuperman') }}">Competency Dictionary</a></li> -->
                     <li class="nav-item"> <a class="nav-link" href="{{ route('kelola.superman.index') }}">Mapping Competency</a></li>

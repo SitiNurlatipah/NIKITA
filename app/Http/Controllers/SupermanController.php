@@ -793,7 +793,10 @@ class SupermanController extends Controller
 
     public function supermanMemberJson()
     {
-        $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+        $dp= Auth::user()->id_department;
+        $id = Auth::user()->id;
+        if (Auth::user()->peran_pengguna == '1') {
+            $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
             ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
             ->leftJoin('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
             ->where('is_superman', 1)
@@ -802,6 +805,24 @@ class SupermanController extends Controller
             ->orWhere('users.id_level', 'LV-0004')
             ->orderBy('nama_pengguna', 'DESC')
             ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title']);
+        }else if (Auth::user()->id_level == 'LV-0003') {
+            $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+            ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+            ->leftJoin('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
+            ->where('is_superman', 1)
+            ->where('users.id_department', $dp)
+            ->orderBy('nama_pengguna', 'DESC')
+            ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title']);
+        }else if (Auth::user()->id_level == 'LV-0004') {
+            $data = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
+            ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
+            ->leftJoin('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
+            ->where('is_superman', 1)
+            ->where('id', $id)
+            ->orderBy('nama_pengguna', 'DESC')
+            ->get(['users.*', 'dp.nama_department', 'jt.nama_job_title']);
+        }
+        
         return Datatables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
