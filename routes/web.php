@@ -133,6 +133,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('ceme/chartCeme','Ceme@chartCeme')->name('ceme.chartCeme');
     Route::post('ceme/chartMe','Ceme@chartMe')->name('ceme.chartMe');
     Route::get('/competent/json', 'Ceme@competentEmployeeJson')->name('competent.json');
+    Route::get('/expertise/json', 'Ceme@expertiseJson')->name('expertise.json');
 
 
     Route::prefix("grade")->group(function () {

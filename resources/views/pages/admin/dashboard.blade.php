@@ -145,8 +145,12 @@ h4 {
         <div class="col-md-6 mb-4 stretch-card transparent">
           <div class="card card-tale">
             <div class="card-body">
-              <p class="mb-4">CG Name</p>
+              <p class="mb-4">Group Name</p>
+              @if(Auth::user()->id_cg == 'CG_0028')
               <p class="fs-30 mb-2">{{ $data['nama_cg'] }}</p>
+              @else
+              <p class="fs-30 mb-2">CG {{ $data['nama_cg'] }}</p>
+              @endif
             </div>
           </div>
         </div>

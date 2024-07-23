@@ -78,7 +78,39 @@
             </div>
         </div>
     </div>
-
+    @if(Auth::user()->id_department =='DP-0008'||Auth::user()->id_job_title =='JT-0035'||Auth::user()->id_job_title =='JT-0060'||Auth::user()->id_job_title =='JT-0068')
+    <div class="row">
+        <div class="col-md-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Expertise Employee</h4>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="table-responsive">
+                                <table class="display expandable-table table table-smtable-striped table-hover mt-1"
+                                    id="expertiseTbl" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">No.</th>
+                                            <th class="text-center">NIK</th>
+                                            <th class="text-center">Name</th>
+                                            <th class="text-center">Department</th>
+                                            <th class="text-center">CG</th>
+                                            <th class="text-center">Expertise</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
     <div class="row">
     <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
@@ -342,6 +374,7 @@
         $(document).ready(function() {
             initDatatable();
             cemeTable();
+            expertDatatable();
             $('[data-toggle="tooltip"]').tooltip({
                 animation: true,
                 placement: "top",
@@ -422,7 +455,7 @@
         
 
 
-        function initDatatable() {
+        function expertDatatable() {
             var q = '{{ $q }}';
             if (q != '') {
                 var ajaxRoute = '{{ route('ceme.json.all') }}';
@@ -484,6 +517,57 @@
                         data: 'action'
                     }
                     @endif
+                ],
+            })
+        }
+        function initDatatable() {
+            @if(Auth::user()->peran_pengguna == '1')
+            var buttons = [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ];
+            @else
+            var buttons = [];
+            @endif
+            var dtJson = $('#expertiseTbl').DataTable({
+                ajax: "{{ route('expertise.json') }}",
+                autoWidth: false,
+                serverSide: true,
+                processing: true,
+                aaSorting: [
+                    [0, "desc"]
+                ],
+                searching: true,
+                dom: 'lBfrtip',
+                buttons: buttons,
+                displayLength: 10,
+                lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
+                language: {
+                    paginate: {
+                        // remove previous & next text from pagination
+                        previous: '&nbsp;',
+                        next: '&nbsp;'
+                    }
+                },
+                scrollX: true,
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex'
+                    },
+                    {
+                        data: 'nik'
+                    },
+                    {
+                        data: 'nama_pengguna'
+                    },
+                    {
+                        data: 'nama_department'
+                    },
+                    {
+                        data: 'nama_cg'
+                    },
+                    {
+                        data: 'training_module'
+                    },
                 ],
             })
         }

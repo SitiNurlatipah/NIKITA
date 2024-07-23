@@ -208,6 +208,26 @@ class Ceme extends Controller
         ->rawColumns(['rata_rata']) // Ini penting untuk merender elemen HTML
         ->make(true);      
     }
+    public function expertiseJson(){
+        $expertise = WhiteTagModel::select('users.nik','users.nama_pengguna', 'dp.nama_department', 'cg.nama_cg','crclm.training_module')
+                ->join("users",function ($join){
+                    $join->on("users.id","white_tag.id_user")
+                    ->where([
+                        ["white_tag.actual","=",4]
+                    ]);
+                })
+                ->join("curriculum as crclm","crclm.id_curriculum","white_tag.id_curriculum")
+                ->join("competencies_directory as cd","crclm.id_curriculum","cd.id_curriculum")
+                ->join('department as dp', 'users.id_department', '=', 'dp.id_department')
+                ->join('cg as cg', 'users.id_cg', '=', 'cg.id_cg')
+                ->where('crclm.id_skill_category', '=', 1)
+                ->where('dp.nama_department', '=', 'ENG')
+                ->groupBy('id_white_tag')
+                ->get();
+        return Datatables::of($expertise)
+        ->addIndexColumn()
+        ->make(true);         
+    }
 
     public function chart(Request $request)
     {
