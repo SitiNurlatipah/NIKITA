@@ -316,6 +316,24 @@
                 </div>
             </li> 
         @endif
+        @if(Auth::user()->nik == "100192702")
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#champion" aria-expanded="false" aria-controls="champion">
+                    <i class="icon-cloud menu-icon"></i>
+                    <span class="menu-title">Champions 4.0</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="champion">
+                    <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('member.champion.index') }}">Member Champion</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('champion.index') }}">Curriculum 4.0</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('kelola.champion.index') }}">Mapping Competency</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('champion.taging') }}">White Tag Champion</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('championCeme') }}">CEME Champion</a></li>
+                    </ul>
+                </div>
+            </li>
+        @endif
       </ul>
   </nav>
   <!-- END: Main Menu-->

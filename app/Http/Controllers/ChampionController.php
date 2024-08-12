@@ -217,14 +217,7 @@ class ChampionController extends Controller
         $cgtambah3 = Auth::user()->id_cgtambahan_3;
         $cgtambah4 = Auth::user()->id_cgtambahan_4;
         $cgtambah5 = Auth::user()->id_cgtambahan_5;
-        if(Auth::user()->id_level == 'LV-0003'){
-            $champion = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
-            ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
-            ->leftJoin('level', 'users.id_level', '=', 'level.id_level')
-            ->where('is_champion', 1)
-            ->Where('users.id_department', $dp)
-            ->get(['users.id', 'users.nama_pengguna', 'users.id_department', 'dp.nama_department', 'jt.id_job_title', 'jt.nama_job_title', 'level.nama_level']);
-        }else if(Auth::user()->id_level == 'LV-0004'){
+        if(Auth::user()->id_level == 'LV-0004' && Auth::user()->nik != '120500031'){
             $champion = User::leftJoin('department as dp', 'users.id_department', '=', 'dp.id_department')
             ->leftJoin('job_title as jt', 'users.id_job_title', '=', 'jt.id_job_title')
             ->leftJoin('level', 'users.id_level', '=', 'level.id_level')
