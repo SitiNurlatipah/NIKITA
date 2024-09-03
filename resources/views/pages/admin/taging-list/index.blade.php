@@ -99,6 +99,7 @@
                                                     <th>Date Verified</th>
                                                     <th>NIK</th>
                                                     <th>Employee Name</th>
+                                                    <th>Circle Group</th>
                                                     <th>Skill Category</th>
                                                     <th>Competency</th>
                                                     <th>Level</th>
@@ -123,6 +124,7 @@
                                                     <th>Date Verified</th>
                                                     <th>NIK</th>
                                                     <th>Employee Name</th>
+                                                    <th>Circle Group</th>
                                                     <th>Skill Category</th>
                                                     <th>Competency</th>
                                                     <th>Year</th>
@@ -738,6 +740,9 @@
                   data: 'employee_name'
               },
               {
+                  data: 'nama_cg'
+              },
+              {
                   data: 'skill_category'
               },
               {
@@ -818,6 +823,9 @@
               },
               {
                   data: 'employee_name'
+              },
+              {
+                  data: 'nama_cg'
               },
               {
                   data: 'skill_category'

@@ -229,44 +229,6 @@
                     </ul>
                 </div>
             </li>
-            {{--
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('EmployeeMember') }}">
-                    <i class="icon-head menu-icon"></i>
-                    <span class="menu-title">Member CG</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('Curriculum') }}">
-                    <i class="icon-grid-2 menu-icon"></i>
-                    <span class="menu-title">Competency Matrix</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('CompetenciesDirectory') }}">
-                    <i class="icon-book menu-icon"></i>
-                    <span class="menu-title">Competency Dictionary</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('WhiteTag') }}">
-                    <i class="icon-flag menu-icon"></i>
-                    <span class="menu-title">Mapping Competency</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('TagList') }}">
-                    <i class="icon-tag menu-icon"></i>
-                    <span class="menu-title">White Tag</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('ceme') }}">
-                    <i class="icon-bar-graph menu-icon"></i>
-                    <span class="menu-title">CEME</span>
-                </a>
-            </li>
-            --}}
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#superman" aria-expanded="false" aria-controls="superman">
                     <i class="icon-command menu-icon"></i>
@@ -284,6 +246,7 @@
                     </ul>
                 </div>
             </li>
+            @if(Auth::user()->id_level == 'LV-0003' || Auth::user()->nik == '120500031')
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#champion" aria-expanded="false" aria-controls="champion">
                     <i class="icon-cloud menu-icon"></i>
@@ -300,6 +263,7 @@
                     </ul>
                 </div>
             </li>
+            @endif
         @endif
         @if(Auth::user()->peran_pengguna == 1 || Auth::user()->id_job_title == "JT-0102" || Auth::user()->id_job_title == "JT-0049" || Auth::user()->nik == "180600122")
             <li class="nav-item"> 
